@@ -7,6 +7,7 @@ import styles from "./SignIn.module.sass";
 
 import Background from "../../assets/png/sign_in_background.png";
 import Logo from "../../assets/svg/logo.svg";
+import BackArrowIcon from '../../assets/svg/back-arrow.svg';
 
 export const SignIn = () => {
   const [currentStage, setCurrentStage] = useState(0);
@@ -25,7 +26,8 @@ export const SignIn = () => {
         )}
         {currentStage === 1 ? (
           <button className={styles.back_button} type="button" onClick={() => setCurrentStage(0)}>
-            Назад
+            <img src={BackArrowIcon} alt="" />
+            <span>Назад</span>
           </button>
         ) : null}
       </div>

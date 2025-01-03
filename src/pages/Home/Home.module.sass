@@ -1,0 +1,128 @@
+$background_secondary_color: #F5F5F5
+$background_primary_color: #FFFFFF
+$text_primary_color: #000000
+$text_neutral_color: #202327
+$hover_color: #2023270F
+$separator_color: #CBD5E0
+$system_error_color: #FF3B30
+
+.container
+    display: flex
+    gap: 8px
+    padding: 8px
+    width: calc(100vw - 16px)
+    height: calc(100vh - 16px)
+    background-color: $background_secondary_color
+
+    .navigation
+        display: flex
+        flex-direction: column
+        justify-content: space-between
+        width: 164px
+        padding-top: 12px
+        padding-bottom: 24px
+        flex-shrink: 0
+        transition: all .2s ease-out
+
+        &.minimized
+            width: 64px
+
+            .nav_item_container
+                .nav_item
+                    padding: 6px
+                    width: 24px
+
+        .part
+            display: flex
+            flex-direction: column
+            height: 33%
+
+            &.bottom
+                gap: 24px
+                padding: 0 8px
+                justify-content: end
+
+        .logo
+            height: 64px
+            width: auto
+
+        nav
+            display: flex
+            flex-direction: column
+            justify-content: center
+            gap: 24px
+            padding: 0 8px
+            flex-grow: 1
+
+        .nav_item_container
+            position: relative
+
+            .nav_item
+                display: flex
+                padding: 6px 12px
+                gap: 12px
+                align-items: center
+                font-size: 14px
+                font-weight: 400
+                color: $text_primary_color
+                cursor: pointer
+                border-radius: 6px
+                background-color: $background_secondary_color
+                transition: all .2s ease-out
+
+                &.active
+                    font-weight: 700
+
+                &.logout
+                    color: $system_error_color
+
+                &.minimize
+                    img
+                        &.minimized
+                            rotate: 180deg
+
+                img
+                    width: 24px
+                    height: auto
+
+            .hidden
+                position: absolute
+                z-index: 1
+                left: calc(100% + 14px)
+                top: 0
+                display: flex
+                align-items: center
+                height: 36px
+                border-radius: 6px
+                padding: 0 12px
+                font-size: 14px
+                color: $background_primary_color
+                background-color: $text_neutral_color
+                opacity: 0
+                transition: all .1s ease-out
+
+        .separator
+            width: 100%
+            height: 0px
+            border: 1px dashed $separator_color
+            flex-shrink: 0
+
+    .content
+        display: flex
+        flex-grow: 1
+        padding: 8px
+
+@media (hover: hover)
+    .container
+        .navigation
+            .nav_item_container
+                .nav_item
+                    &:hover
+                        background-color: $hover_color
+
+            &.minimized
+                .nav_item_container
+                    .nav_item
+                        &:hover
+                            +.hidden
+                                opacity: 1
