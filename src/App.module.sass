@@ -1,0 +1,78 @@
+$background_primary_color: #FFFFFF
+$background_secondary_color: #F5F5F5
+$border_neutral_color: #CBD5E0
+$text_neutral_color: #202327
+$error_color: #DD6B20
+$active_neutral_color: #68778D
+$placeholder_neutral_color: #8496AE
+$disabled_neutral_color: #F1F4F9
+
+@font-face
+    font-family: "SFProRegular"
+    src: url("./assets/fonts/SFPro/SF-Pro-Display-Regular.otf")
+
+*
+    padding: 0px
+    margin: 0px
+    font-family: 'Open Sans', serif
+    line-height: 1.5
+
+html,
+body
+    width: 100%
+    overflow-y: auto
+    overflow-x: hidden
+    margin: 0
+    padding: 0
+    background-color: $background_secondary_color
+
+h2
+    font-size: 28px
+    font-weight: 700
+    line-height: 36px
+
+button
+    border-radius: 12px
+    overflow: hidden
+    background: linear-gradient(180deg, #9D70FF 0%, #7460FF 100%)
+    color: $background_primary_color
+    display: flex
+    justify-content: center
+    align-items: center
+    height: 56px
+    cursor: pointer
+    font-size: 18px
+    font-weight: 700
+    border: none
+    transition: all .1s ease-out
+
+button:disabled,
+button[disabled]
+    cursor: default
+    background: $disabled_neutral_color
+    color: $active_neutral_color
+
+input
+    height: 48px
+    padding: 0 16px
+    border-radius: 12px
+    background-color: $background_primary_color
+    flex-shrink: 0
+    outline: none
+    border: 1px solid $border_neutral_color
+    font-size: 16px
+    color: $text_neutral_color
+    transition: all .1s ease-out
+
+    &::placeholder
+        font-weight: 400
+        color: $placeholder_neutral_color
+
+    &.wrong
+        border: 1px solid $error_color
+
+        &:focus
+            border: 1px solid $error_color
+
+    &:focus
+        border: 1px solid $active_neutral_color

@@ -1,0 +1,106 @@
+$background_primary_color: #FFFFFF
+$text_neutral_color: #202327
+$text_gray_neutral_color: #68778D
+$text_secondary_color: #939393
+$border_neutral_color: #CBD5E0
+    
+.container
+    display: flex
+    width: 100vw
+    height: 100vh
+
+    .background
+        display: flex
+        position: relative
+        height: 100%
+        flex-shrink: 0
+
+        .background_image
+            height: 100%
+            width: auto
+
+        .logo
+            position: absolute
+            z-index: 1
+            top: 32px
+            left: 50%
+            transform: translateX(calc(-50% - 30px))
+            height: 44px
+            width: auto
+
+    .content
+        background-color: $background_primary_color
+        display: flex
+        align-items: center
+        justify-content: center
+        position: relative
+        z-index: 2
+        flex-grow: 1
+        height: 100%
+        margin-left: -60px        
+        border-radius: 24px 0 0 24px
+
+        .form_container
+            display: flex
+            flex-direction: column
+            align-items: center
+            justify-content: center
+            width: 420px
+            text-align: center
+
+            &.sign_in_form
+                gap: 48px
+            
+            &.application_form
+                gap: 32px
+
+                img
+                    width: 315px
+                    height: auto
+
+                .description
+                    margin-top: -16px
+                    font-size: 18px
+                    color: $text_secondary_color
+
+            h2
+                color: $text_neutral_color
+
+            form
+                display: flex
+                flex-direction: column
+                width: 100%
+                gap: 16px
+
+                button
+                    margin-top: 16px
+
+                .bottom_info
+                    margin-top: 8px
+                    font-size: 14
+                    font-family: "SFProRegular"
+                    color: $text_gray_neutral_color
+                    
+                    span
+                        font-size: 14px
+                        font-family: "SFProRegular"
+                        cursor: pointer
+                        background: linear-gradient(180deg, #9D70FF 0%, #7460FF 100%)
+                        -webkit-background-clip: text
+                        -webkit-text-fill-color: transparent
+                        background-clip: text
+                        text-fill-color: transparent
+                        user-select: none
+
+        .back_button
+            position: absolute
+            top: 52px
+            left: 64px
+            z-index: 3
+            width: 137px
+            height: 48px
+            background-color: $background_primary_color
+            background: none
+            color: #202327
+            border-radius: 50px
+            border: 1px solid $border_neutral_color
