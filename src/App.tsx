@@ -9,8 +9,8 @@ function App() {
   return (
     <section className={styles.wrapper}>
       <Routes>
-        <Route path="/auth" element={<SignIn />} />
-        <Route path="/" element={<Home />} />
+        <Route path="/" element={<SignIn />} />
+        <Route path="/home" element={<Home />} />
       </Routes>
     </section>
   )

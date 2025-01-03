@@ -35,7 +35,7 @@ export const SignInForm: React.FC<ISignInFormProps> = ({ setCurrentStage }) => {
     if (email !== "test@mail.ru") {
       setErrorForm("Логин или пароль указаны неправильно");
     } else {
-      navigate('/');
+      navigate('/home');
     }
   };
 

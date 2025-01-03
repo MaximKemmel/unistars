@@ -84,7 +84,7 @@ export const Home = () => {
           <div className={styles.nav_item_container}>
             <div
               className={`${styles.nav_item} ${styles.logout}`}
-              onClick={() => navigate("/auth")}
+              onClick={() => navigate("/")}
             >
               <img src={LogoutIcon} alt="" />
               {!isMimimized ? "Выход" : ""}
