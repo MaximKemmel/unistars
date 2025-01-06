@@ -2,8 +2,8 @@ $inactive_overlay_background_color: #000000
 $overlay_background_color: #00000033
 $modal_background_color: #FFFFFF
 $text_neutral_color: #202327
-$text_secondary_color: #939393
-    
+$divider_color: #E2E8F0
+
 .modal,
 .overlay
     position: fixed
@@ -40,7 +40,8 @@ $text_secondary_color: #939393
         display: flex
         flex-direction: column
         align-items: center
-        gap: 32px
+        width: 930px
+        max-height: 80vh
         top: 50%
         left: 50%
         transform: translate(-50%, -50%)
@@ -48,40 +49,45 @@ $text_secondary_color: #939393
         z-index: 21
         background-color: $modal_background_color
         box-shadow: 0px 8px 50px -6px rgba(20, 23, 26, 0.12)
-        padding: 32px 20px
         border-radius: 16px
 
-        .close            
-            position: absolute
-            z-index: 21
-            top: 15px
-            right: 15px
-            width: 32px
-            height: 32px
-            cursor: pointer
+        .head
             display: flex
-            justify-content: center
             align-items: center
-
-            img
-                width: 100%
-                height: auto
-
-        .image
-            width: 180px
-            height: auto
-        
-        .text
-            display: flex
-            flex-direction: column
-            align-items: center
-            gap: 16px
-            text-align: center
-            width: 360px
+            justify-content: space-between
+            width: calc(100% - 64px)
+            padding: 26px 32px
+            padding-bottom: 10px
+            border-bottom: 1px solid $divider_color
 
             h3
                 color: $text_neutral_color
 
-            .message
-                font-size: 18px
-                color: $text_secondary_color
+            .close
+                display: flex
+                justify-content: center
+                align-items: center
+                width: 32px
+                height: 32px
+                cursor: pointer
+
+                img
+                    width: 100%
+                    height: auto
+
+        .gallery_content
+            display: flex
+            flex-direction: column
+            gap: 24px
+            width: 100%
+            overflow: hidden
+
+            .gallery_actions
+                display: flex
+                justify-content: end
+                align-items: center
+                flex-shrink: 0
+                gap: 16px
+                width: calc(100% - 64px)
+                padding: 16px 32px 28px 32px
+                border-top: 1px solid $divider_color

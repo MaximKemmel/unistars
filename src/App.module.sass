@@ -53,10 +53,11 @@ button
     border: none
     transition: all .1s ease-out
 
-    &.profile
+    &.small
         height: 40px
         font-size: 14px
         font-weight: 600
+        padding: 0px 20px
 
     &.inverted
         background: none
@@ -77,9 +78,8 @@ button[disabled]
     background: $disabled_neutral_color
     color: $active_neutral_color
 
+textarea,
 input
-    height: 48px
-    padding: 0 16px
     border-radius: 12px
     background-color: $background_primary_color
     flex-shrink: 0
@@ -101,3 +101,11 @@ input
 
     &:focus
         border: 1px solid $active_neutral_color
+
+input
+    height: 48px
+    padding: 0 16px
+
+textarea
+    padding: 12px 16px
+    resize: none

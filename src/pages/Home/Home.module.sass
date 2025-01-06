@@ -17,6 +17,8 @@ $border_neutral_color: #E2E8F0
     width: calc(100vw - 16px)
     height: calc(100vh - 16px)
     background-color: $background_secondary_color
+    position: relative
+    overflow: hidden
 
     .navigation
         display: flex
@@ -117,6 +119,7 @@ $border_neutral_color: #E2E8F0
         gap: 24px
         flex-grow: 1
         padding: 8px
+        overflow-y: auto 
 
         .content_container_multi
             display: flex
@@ -241,7 +244,6 @@ $border_neutral_color: #E2E8F0
 
                 button
                     align-self: center
-                    padding: 0 20px
 
         .main_about
             .empty_info
@@ -312,7 +314,6 @@ $border_neutral_color: #E2E8F0
             button
                 width: max-content
                 align-self: center
-                padding: 0 20px
 
         .main_gallery
             .main_gallery_container

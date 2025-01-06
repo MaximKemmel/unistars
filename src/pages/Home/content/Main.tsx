@@ -1,5 +1,8 @@
 import { useState } from "react";
 
+import { UniversityModal } from "../../../modals/University/UniversityModal";
+import { GalleryModal } from "../../../modals/Gallery/GalleryModal";
+
 import globalStyles from "../../../App.module.sass";
 import styles from "../Home.module.sass";
 
@@ -49,6 +52,8 @@ export const Main = () => {
   };
   const [gallery, setGallery] = useState<number[]>([]);
   const [buklets, setBuklets] = useState<number[]>([]);
+  const [isAboutModalShow, setIsAboutModalShow] = useState(false);
+  const [isGalleryModalShow, setIsGalleryModalShow] = useState(false);
 
   return (
     <div className={styles.content}>
@@ -81,7 +86,12 @@ export const Main = () => {
             <h4>Об университете</h4>
           </div>
           {aboutInfo ? (
-            <div className={styles.head_action}>Редактировать</div>
+            <div
+              className={styles.head_action}
+              onClick={() => setIsAboutModalShow(true)}
+            >
+              Редактировать
+            </div>
           ) : null}
         </div>
         {aboutInfo ? (
@@ -141,25 +151,19 @@ export const Main = () => {
                 <div className={styles.part_title}>Контакты</div>
                 <div className={styles.part_container}>
                   <div className={styles.part_item}>
-                    <div className={styles.part_item_label}>
-                      Телефон
-                    </div>
+                    <div className={styles.part_item_label}>Телефон</div>
                     <div className={styles.part_item_value}>
                       {aboutInfo.phone}
                     </div>
                   </div>
                   <div className={styles.part_item}>
-                    <div className={styles.part_item_label}>
-                      Сайт
-                    </div>
+                    <div className={styles.part_item_label}>Сайт</div>
                     <div className={styles.part_item_value}>
                       {aboutInfo.site}
                     </div>
                   </div>
                   <div className={styles.part_item}>
-                    <div className={styles.part_item_label}>
-                      E-mail
-                    </div>
+                    <div className={styles.part_item_label}>E-mail</div>
                     <div className={styles.part_item_value}>
                       {aboutInfo.email}
                     </div>
@@ -171,17 +175,13 @@ export const Main = () => {
                 <div className={styles.part_title}>Ссылки на разделы сайта</div>
                 <div className={styles.part_container}>
                   <div className={styles.part_item}>
-                    <div className={styles.part_item_label}>
-                      Поступление
-                    </div>
+                    <div className={styles.part_item_label}>Поступление</div>
                     <div className={styles.part_item_value}>
                       {aboutInfo.postupUrl}
                     </div>
                   </div>
                   <div className={styles.part_item}>
-                    <div className={styles.part_item_label}>
-                      Карьера
-                    </div>
+                    <div className={styles.part_item_label}>Карьера</div>
                     <div className={styles.part_item_value}>
                       {aboutInfo.careerUrl}
                     </div>
@@ -213,7 +213,7 @@ export const Main = () => {
               больше узнать о вас!
             </div>
             <button
-              className={globalStyles.profile}
+              className={globalStyles.small}
               type="button"
               onClick={() => setAboutInfo(tmpAboutInfo)}
             >
@@ -251,7 +251,7 @@ export const Main = () => {
                 В вашем профиле пока нет фотографий.
               </div>
               <button
-                className={globalStyles.profile}
+                className={globalStyles.small}
                 type="button"
                 onClick={() => setGallery([0, 0, 0, 0, 0, 0, 0, 0, 0, 0])}
               >
@@ -260,7 +260,7 @@ export const Main = () => {
             </div>
           )}
           {gallery.length > 6 ? (
-            <button className={globalStyles.inverted} type="button">
+            <button className={`${globalStyles.inverted} ${globalStyles.small}`} type="button" onClick={() => setIsGalleryModalShow(true)}>
               <span>Посмотреть все</span>
             </button>
           ) : null}
@@ -300,7 +300,7 @@ export const Main = () => {
                 В вашем профиле пока нет буклетов.
               </div>
               <button
-                className={globalStyles.profile}
+                className={globalStyles.small}
                 type="button"
                 onClick={() => setBuklets([0, 0, 0, 0])}
               >
@@ -309,12 +309,35 @@ export const Main = () => {
             </div>
           )}
           {buklets.length > 2 ? (
-            <button className={globalStyles.inverted} type="button">
+            <button className={`${globalStyles.inverted} ${globalStyles.small}`} type="button">
               <span>Посмотреть все</span>
             </button>
           ) : null}
         </div>
       </div>
+      <UniversityModal
+        isShow={isAboutModalShow}
+        universityInfo={{}}
+        onClose={() => {
+          setIsAboutModalShow(false);
+        }}
+        onSave={() => {
+          setIsAboutModalShow(false);
+        }}
+      />      
+      <GalleryModal
+        isShow={isGalleryModalShow}
+        photos={[]}
+        onClose={() => {
+          setIsGalleryModalShow(false);
+        }}
+        onUpload={() => {
+          setIsGalleryModalShow(false);
+        }}
+        onEdit={() => {
+          setIsGalleryModalShow(false);
+        }}
+      />
     </div>
   );
 };
