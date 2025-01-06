@@ -3,6 +3,7 @@ $background_secondary_color: #F5F5F5
 $border_neutral_color: #CBD5E0
 $text_neutral_color: #202327
 $error_color: #DD6B20
+$delete_color: #FF3B30
 $active_neutral_color: #68778D
 $placeholder_neutral_color: #8496AE
 $disabled_neutral_color: #F1F4F9
@@ -46,6 +47,7 @@ button
     display: flex
     justify-content: center
     align-items: center
+    gap: 8px
     height: 56px
     cursor: pointer
     font-size: 18px
@@ -71,6 +73,14 @@ button
             background-clip: text
             text-fill-color: transparent
             user-select: none
+
+        &.delete
+            border: 1px solid $delete_color
+            color: $delete_color
+
+    img
+        width: 16px
+        height: auto
 
 button:disabled,
 button[disabled]

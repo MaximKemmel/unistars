@@ -1,7 +1,9 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { UniversityModal } from "../../../modals/University/UniversityModal";
 import { GalleryModal } from "../../../modals/Gallery/GalleryModal";
+
+import { Booklet } from "../../../components/booklet/Booklet";
 
 import globalStyles from "../../../App.module.sass";
 import styles from "../Home.module.sass";
@@ -9,7 +11,7 @@ import styles from "../Home.module.sass";
 import TestImage from "../../../assets/png/test_image.png";
 import AwardIcon from "../../../assets/svg/award.svg";
 import TestPhoto from "../../../assets/png/test_photo.png";
-import TestBuklet from "../../../assets/png/test_buklet.png";
+import TestBooklet from "../../../assets/png/test_booklet.png";
 
 export const Main = () => {
   const socialsInfo = [
@@ -51,9 +53,16 @@ export const Main = () => {
     coursesUrl: "urfu.ru/ru/",
   };
   const [gallery, setGallery] = useState<number[]>([]);
-  const [buklets, setBuklets] = useState<number[]>([]);
+  const [booklets, setbooklets] = useState<number[]>([]);
   const [isAboutModalShow, setIsAboutModalShow] = useState(false);
   const [isGalleryModalShow, setIsGalleryModalShow] = useState(false);
+  const testPhotos = Array(32).fill(1).map((_item, index) => {
+    return {
+      id: index,
+      url: TestPhoto,
+      isChecked: false,
+    }
+  });
 
   return (
     <div className={styles.content}>
@@ -260,36 +269,41 @@ export const Main = () => {
             </div>
           )}
           {gallery.length > 6 ? (
-            <button className={`${globalStyles.inverted} ${globalStyles.small}`} type="button" onClick={() => setIsGalleryModalShow(true)}>
+            <button
+              className={`${globalStyles.inverted} ${globalStyles.small}`}
+              type="button"
+              onClick={() => setIsGalleryModalShow(true)}
+            >
               <span>Посмотреть все</span>
             </button>
           ) : null}
         </div>
         <div
-          className={`${styles.main_buklets} ${styles.content_container} ${styles.half}`}
+          className={`${styles.main_booklets} ${styles.content_container} ${styles.half}`}
         >
           <div className={styles.content_container_head}>
             <div className={styles.head_title}>
               <h4>Буклеты</h4>
-              <div className={styles.count}>{buklets.length}</div>
+              <div className={styles.count}>{booklets.length}</div>
             </div>
-            {buklets.length > 0 ? (
+            {booklets.length > 0 ? (
               <div className={styles.head_action}>Создать</div>
             ) : null}
           </div>
-          {buklets.length > 0 ? (
-            <div className={styles.main_buklets_container}>
-              {buklets.slice(0, 2).map((_, index) => {
+          {booklets.length > 0 ? (
+            <div className={styles.main_booklets_container}>
+              {booklets.slice(0, 2).map((_, index) => {
                 return (
-                  <div className={styles.main_buklet_item} key={index}>
-                    <img src={TestBuklet} alt="" />
-                    <div className={styles.main_buklet_info}>
-                      <div className={styles.buklet_name}>Название буклета</div>
-                      <div className={styles.buklet_description}>
-                        Описание буклета Описание буклета Описание буклета
-                        Описание буклета Описание буклета Описание буклета
-                      </div>
-                    </div>
+                  <div className={styles.main_booklet_item} key={index}>
+                    <Booklet
+                      bookletItem={{
+                        id: index,
+                        photo: TestBooklet,
+                        name: "Название буклета",
+                        description:
+                          "Описание буклета Описание буклета Описание буклета Описание буклета Описание буклета Описание буклета",
+                      }}
+                    />
                   </div>
                 );
               })}
@@ -302,14 +316,17 @@ export const Main = () => {
               <button
                 className={globalStyles.small}
                 type="button"
-                onClick={() => setBuklets([0, 0, 0, 0])}
+                onClick={() => setbooklets([0, 0, 0, 0])}
               >
                 Создать буклет
               </button>
             </div>
           )}
-          {buklets.length > 2 ? (
-            <button className={`${globalStyles.inverted} ${globalStyles.small}`} type="button">
+          {booklets.length > 2 ? (
+            <button
+              className={`${globalStyles.inverted} ${globalStyles.small}`}
+              type="button"
+            >
               <span>Посмотреть все</span>
             </button>
           ) : null}
@@ -324,10 +341,10 @@ export const Main = () => {
         onSave={() => {
           setIsAboutModalShow(false);
         }}
-      />      
+      />
       <GalleryModal
         isShow={isGalleryModalShow}
-        photos={[]}
+        photos={testPhotos}
         onClose={() => {
           setIsGalleryModalShow(false);
         }}

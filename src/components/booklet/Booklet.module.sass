@@ -1,0 +1,54 @@
+$background_primary_color: #FFFFFF
+$text_neutral_color: #202327
+$text_neutral_description_color: #8496AE
+$border_neutral_color: #E2E8F0
+
+.booklet_container
+    position: relative
+    display: flex
+    flex-direction: column
+    width: 100%
+    overflow: hidden
+    border-radius: 8px
+    border: 1px solid $border_neutral_color
+
+    img
+        width: 100%
+        height: auto
+
+    .booklet_info
+        display: flex
+        flex-direction: column
+        gap: 4px
+        padding: 12px
+
+        .booklet_name
+            font-size: 16px
+            color: $text_neutral_color
+            font-weight: 600
+
+        .booklet_description
+            font-size: 12px
+            color: $text_neutral_description_color
+            display: -webkit-box
+            -webkit-line-clamp: 2
+            -webkit-box-orient: vertical
+            overflow: hidden
+
+    .booklet_edit
+        position: absolute
+        z-index: 1
+        right: 10px
+        top: 10px
+        display: flex
+        align-items: center
+        justify-content: center
+        width: 32px
+        height: 32px
+        border-radius: 6px
+        background-color: $background_primary_color
+        cursor: pointer
+
+        img
+            width: 16px
+            height: auto
