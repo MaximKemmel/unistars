@@ -40,6 +40,7 @@ export const GalleryModal: React.FC<IGalleryModalProps> = ({
         onClick={() => {
           setIsEditMode(false);
           onClose();
+          onEdit();
         }}
       />
       <div className={styles.modal_content}>
