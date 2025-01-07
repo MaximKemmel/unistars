@@ -318,16 +318,21 @@ $border_neutral_color: #E2E8F0
         .main_gallery
             .main_gallery_container
                 display: flex
+                justify-content: space-between
                 flex-wrap: wrap
                 gap: 12px
 
                 .main_gallery_item
+                    position: relative
                     display: flex
-                    width: calc(33% - 10px)
+                    width: calc(33% - 8px)
+                    aspect-ratio: 5/3
                     border-radius: 8px
                     overflow: hidden
 
                     img
+                        position: absolute
+                        z-index: 1
                         width: 100%
                         height: auto
 

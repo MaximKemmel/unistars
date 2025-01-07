@@ -1,7 +1,8 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 import { UniversityModal } from "../../../modals/University/UniversityModal";
 import { GalleryModal } from "../../../modals/Gallery/GalleryModal";
+import { BookletsModal } from "../../../modals/Booklets/BookletsModal";
 
 import { Booklet } from "../../../components/booklet/Booklet";
 
@@ -10,7 +11,7 @@ import styles from "../Home.module.sass";
 
 import TestImage from "../../../assets/png/test_image.png";
 import AwardIcon from "../../../assets/svg/award.svg";
-import TestPhoto from "../../../assets/png/test_photo.png";
+import TestPhoto from "../../../assets/png/sign_in_background.png";
 import TestBooklet from "../../../assets/png/test_booklet.png";
 
 export const Main = () => {
@@ -56,13 +57,27 @@ export const Main = () => {
   const [booklets, setbooklets] = useState<number[]>([]);
   const [isAboutModalShow, setIsAboutModalShow] = useState(false);
   const [isGalleryModalShow, setIsGalleryModalShow] = useState(false);
-  const testPhotos = Array(32).fill(1).map((_item, index) => {
-    return {
-      id: index,
-      url: TestPhoto,
-      isChecked: false,
-    }
-  });
+  const [isBookletsModalShow, setIsBookletsModalShow] = useState(false);
+  const testPhotos = Array(32)
+    .fill(1)
+    .map((_item, index) => {
+      return {
+        id: index,
+        url: TestPhoto,
+        isChecked: false,
+      };
+    });
+  const testBooklets = Array(8)
+    .fill(1)
+    .map((_item, index) => {
+      return {
+        id: index,
+        photo: TestBooklet,
+        name: "Название буклета",
+        description:
+          "Описание буклета Описание буклета Описание буклета Описание буклета Описание буклета Описание буклета",
+      };
+    });
 
   return (
     <div className={styles.content}>
@@ -326,6 +341,7 @@ export const Main = () => {
             <button
               className={`${globalStyles.inverted} ${globalStyles.small}`}
               type="button"
+              onClick={() => setIsBookletsModalShow(true)}
             >
               <span>Посмотреть все</span>
             </button>
@@ -353,6 +369,13 @@ export const Main = () => {
         }}
         onEdit={() => {
           setIsGalleryModalShow(false);
+        }}
+      />
+      <BookletsModal
+        isShow={isBookletsModalShow}
+        booklets={testBooklets}
+        onClose={() => {
+          setIsBookletsModalShow(false);
         }}
       />
     </div>
