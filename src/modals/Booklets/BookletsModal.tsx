@@ -1,4 +1,4 @@
-import { Booklet } from "../../components/booklet/Booklet";
+import { BookletCard } from "../../cards/booklet/BookletCard";
 
 import globalStyles from "../../App.module.sass";
 import styles from "./BookletsModal.module.sass";
@@ -34,7 +34,7 @@ export const BookletsModal: React.FC<IBookletsModalProps> = ({
           <div className={styles.booklets_content}>
             {booklets.map((booklet, index) => (
               <div className={styles.booklet_item} key={index}>
-                <Booklet bookletItem={booklet} />
+                <BookletCard bookletItem={booklet} />
               </div>
             ))}
           </div>

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-import Checkbox from "../../components/checkbox/Checkbox";
+import { Checkbox } from "../../components/checkbox/Checkbox";
 
 import globalStyles from "../../App.module.sass";
 import styles from "./GalleryModal.module.sass";

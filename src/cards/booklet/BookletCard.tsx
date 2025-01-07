@@ -1,12 +1,12 @@
-import styles from "./Booklet.module.sass";
+import styles from "./BookletCard.module.sass";
 
 import EditIcon from "../../assets/svg/edit.svg";
 
-interface IBookletProps {
+interface IBookletCardProps {
   bookletItem: any;
 }
 
-export const Booklet: React.FC<IBookletProps> = ({ bookletItem }) => {
+export const BookletCard: React.FC<IBookletCardProps> = ({ bookletItem }) => {
   return (
     <div className={styles.booklet_container}>
       <img src={bookletItem.photo}  alt="" />

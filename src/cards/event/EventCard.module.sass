@@ -1,0 +1,79 @@
+$background_primary_color: #FFFFFF
+$text_neutral_color: #202327
+$text_secondary_color: #939393
+$border_neutral_color: #E2E8F0
+
+.event_container
+    position: relative
+    display: flex
+    flex-direction: column
+    width: 100%
+    border-radius: 8px
+    border: 1px solid $border_neutral_color
+
+    .event_image
+        position: relative
+        width: 100%
+        border-radius: 8px 8px 0px 0px
+        aspect-ratio: 5/3
+        overflow: hidden
+
+        img
+            position: absolute
+            z-index: 1
+            width: 100%
+            height: auto
+
+    .event_info
+        display: flex
+        flex-direction: column
+        gap: 8px
+        padding: 12px
+
+        .event_name
+            font-size: 18px
+            color: $text_neutral_color
+            font-weight: 700
+            display: -webkit-box
+            -webkit-line-clamp: 1
+            -webkit-box-orient: vertical
+            overflow: hidden
+
+        .event_participants
+            font-size: 14px
+            color: $text_secondary_color
+            display: -webkit-box
+            -webkit-line-clamp: 2
+            -webkit-box-orient: vertical
+            overflow: hidden
+
+    .event_date
+        position: absolute
+        z-index: 1
+        left: -6px
+        top: 10px
+        display: flex
+        padding: 6px 12px
+        background: linear-gradient(180deg, #9D70FF 0%, #7460FF 100%)
+        font-size: 14px
+        color: $background_primary_color
+        font-weight: 600
+        border-radius: 6px
+
+    .event_edit
+        position: absolute
+        z-index: 1
+        right: 10px
+        top: 10px
+        display: flex
+        align-items: center
+        justify-content: center
+        width: 32px
+        height: 32px
+        border-radius: 6px
+        background-color: $background_primary_color
+        cursor: pointer
+
+        img
+            width: 16px
+            height: auto

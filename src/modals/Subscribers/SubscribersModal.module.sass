@@ -3,6 +3,7 @@ $overlay_background_color: #00000033
 $modal_background_color: #FFFFFF
 $text_neutral_color: #202327
 $divider_color: #E2E8F0
+$clear_color: #68778D
 
 .modal,
 .overlay
@@ -40,7 +41,7 @@ $divider_color: #E2E8F0
         display: flex
         flex-direction: column
         align-items: center
-        width: 930px
+        width: 500px
         max-height: 80vh
         top: 50%
         left: 50%
@@ -75,14 +76,14 @@ $divider_color: #E2E8F0
                     width: 100%
                     height: auto
 
-        .booklets_container
+        .subscribers_container
             display: flex
             flex-direction: column
             gap: 24px
             width: 100%
             overflow: hidden
 
-            .booklets_content
+            .subscribers_content
                 display: flex
                 flex-wrap: wrap
                 gap: 12px
@@ -90,18 +91,45 @@ $divider_color: #E2E8F0
                 padding: 16px 32px
                 overflow-y: auto
 
-                .booklet_item
-                    display: flex
-                    width: calc(33% - 10px)
-                    position: absolute
-                    z-index: 5
-                    display: flex
-                    align-items: center
-                    justify-content: center
-                    width: 32px
-                    height: 32px
+                .search_input
+                    width: 100%
+                    position: relative
 
-            .booklets_actions
+                    input
+                        padding: 0 45px
+                        width: calc(100% - 92px)
+
+                    .search_icon
+                        position: absolute
+                        z-index: 1
+                        top: 50%
+                        left: 12px
+                        transform: translateY(-50%)
+                        width: 24px
+                        height: auto
+
+                    .clear
+                        position: absolute
+                        z-index: 1
+                        top: 50%
+                        right: 12px
+                        transform: translateY(-50%)
+                        display: flex
+                        justify-content: center
+                        align-items: center
+                        width: 28px
+                        height: 28px
+                        cursor: pointer
+
+                        svg
+                            *
+                                stroke: $clear_color
+
+                        .clear_icon
+                            width: 100%
+                            height: auto
+
+            .subscribers_actions
                 display: flex
                 justify-content: end
                 align-items: center

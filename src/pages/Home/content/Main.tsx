@@ -3,8 +3,9 @@ import { useState } from "react";
 import { UniversityModal } from "../../../modals/University/UniversityModal";
 import { GalleryModal } from "../../../modals/Gallery/GalleryModal";
 import { BookletsModal } from "../../../modals/Booklets/BookletsModal";
+import { SubscribersModal } from "../../../modals/Subscribers/SubscribersModal";
 
-import { Booklet } from "../../../components/booklet/Booklet";
+import { BookletCard } from "../../../cards/booklet/BookletCard";
 
 import globalStyles from "../../../App.module.sass";
 import styles from "../Home.module.sass";
@@ -17,25 +18,28 @@ import TestBooklet from "../../../assets/png/test_booklet.png";
 export const Main = () => {
   const socialsInfo = [
     {
+      id: 0,
       value: "2,6k",
       label: "Подписчиков",
     },
     {
+      id: 1,
       value: "768",
       label: "Студентов",
     },
     {
+      id: 2,
       value: "92",
       label: "Амбассадоров",
     },
     {
+      id: 3,
       value: "92",
       label: "Сотрудников",
     },
   ];
 
-  const [aboutInfo, setAboutInfo] = useState<any>(null);
-  const tmpAboutInfo = {
+  const aboutInfo = {
     fullName: "Уральский федеральный университет",
     description:
       "Lorem ipsum dolor sit amet consectetur. Ac porttitor et lectus magna mi adipiscing viverra urna. Adipiscing purus lacinia cras augue. Diam amet vitae auctor id facilisis enim volutpat. Vulputate at massa penatibus sed morbi viverra et aliquet fames.",
@@ -53,12 +57,7 @@ export const Main = () => {
     faqUrl: "urfu.ru/ru/",
     coursesUrl: "urfu.ru/ru/",
   };
-  const [gallery, setGallery] = useState<number[]>([]);
-  const [booklets, setbooklets] = useState<number[]>([]);
-  const [isAboutModalShow, setIsAboutModalShow] = useState(false);
-  const [isGalleryModalShow, setIsGalleryModalShow] = useState(false);
-  const [isBookletsModalShow, setIsBookletsModalShow] = useState(false);
-  const testPhotos = Array(32)
+  const gallery = Array(32)
     .fill(1)
     .map((_item, index) => {
       return {
@@ -67,7 +66,7 @@ export const Main = () => {
         isChecked: false,
       };
     });
-  const testBooklets = Array(8)
+  const booklets = Array(8)
     .fill(1)
     .map((_item, index) => {
       return {
@@ -78,6 +77,10 @@ export const Main = () => {
           "Описание буклета Описание буклета Описание буклета Описание буклета Описание буклета Описание буклета",
       };
     });
+  const [isAboutModalShow, setIsAboutModalShow] = useState(false);
+  const [isGalleryModalShow, setIsGalleryModalShow] = useState(false);
+  const [isBookletsModalShow, setIsBookletsModalShow] = useState(false);
+  const [isSubscribersModalShow, setIsSubscribersModalShow] = useState(false);
 
   return (
     <div className={styles.content}>
@@ -96,7 +99,11 @@ export const Main = () => {
         <div className={styles.main_socials}>
           {socialsInfo.map((item, index) => {
             return (
-              <div className={styles.main_socials_item} key={index}>
+              <div className={styles.main_socials_item} key={index} onClick={() => {
+                if (item.id === 0) {
+                  setIsSubscribersModalShow(true);
+                }
+              }}>
                 <div className={styles.item_value}>{item.value}</div>
                 <div className={styles.item_label}>{item.label}</div>
               </div>
@@ -239,7 +246,7 @@ export const Main = () => {
             <button
               className={globalStyles.small}
               type="button"
-              onClick={() => setAboutInfo(tmpAboutInfo)}
+              onClick={() => setIsAboutModalShow(true)}
             >
               Заполнить профиль
             </button>
@@ -277,7 +284,7 @@ export const Main = () => {
               <button
                 className={globalStyles.small}
                 type="button"
-                onClick={() => setGallery([0, 0, 0, 0, 0, 0, 0, 0, 0, 0])}
+                onClick={() => setIsGalleryModalShow(true)}
               >
                 Загрузить фотографии
               </button>
@@ -310,7 +317,7 @@ export const Main = () => {
               {booklets.slice(0, 2).map((_, index) => {
                 return (
                   <div className={styles.main_booklet_item} key={index}>
-                    <Booklet
+                    <BookletCard
                       bookletItem={{
                         id: index,
                         photo: TestBooklet,
@@ -331,7 +338,7 @@ export const Main = () => {
               <button
                 className={globalStyles.small}
                 type="button"
-                onClick={() => setbooklets([0, 0, 0, 0])}
+                onClick={() => setIsBookletsModalShow(true)}
               >
                 Создать буклет
               </button>
@@ -350,7 +357,7 @@ export const Main = () => {
       </div>
       <UniversityModal
         isShow={isAboutModalShow}
-        universityInfo={{}}
+        universityInfo={aboutInfo}
         onClose={() => {
           setIsAboutModalShow(false);
         }}
@@ -360,7 +367,7 @@ export const Main = () => {
       />
       <GalleryModal
         isShow={isGalleryModalShow}
-        photos={testPhotos}
+        photos={gallery}
         onClose={() => {
           setIsGalleryModalShow(false);
         }}
@@ -373,9 +380,16 @@ export const Main = () => {
       />
       <BookletsModal
         isShow={isBookletsModalShow}
-        booklets={testBooklets}
+        booklets={booklets}
         onClose={() => {
           setIsBookletsModalShow(false);
+        }}
+      />
+      <SubscribersModal
+        isShow={isSubscribersModalShow}
+        subscribers={[]}
+        onClose={() => {
+          setIsSubscribersModalShow(false);
         }}
       />
     </div>

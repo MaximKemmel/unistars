@@ -1,0 +1,33 @@
+$background_primary_color: #FFFFFF
+$background_neutral_color: #F1F4F9
+$text_primary_color: #202327
+$text_neutral_color: #4A5568
+
+.toggle_container
+    display: flex
+    align-items: center
+    justify-content: space-between
+    padding: 4px
+    height: 40px
+    width: 100%
+    background-color: $background_neutral_color
+    border-radius: 50px
+    user-select: none
+
+    .toggle_item
+        display: flex
+        align-items: center
+        justify-content: center
+        height: 100%
+        width: 50%
+        font-size: 14px
+        color: $text_neutral_color
+        font-weight: 400
+        border-radius: 50px
+        cursor: pointer
+
+        &.active
+            background-color: $background_primary_color
+            color: $text_primary_color
+            font-weight: 600
+            box-shadow: 0px 0px 8px rgba(20, 23, 26, 0.08), 0px 0px 4px rgba(20, 23, 26, 0.04)

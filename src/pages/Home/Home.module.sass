@@ -217,6 +217,8 @@ $border_neutral_color: #E2E8F0
                     width: 131px
                     border-radius: 8px
                     background-color: $background_secondary_color
+                    cursor: pointer
+                    user-select: none
 
                     .item_value
                         font-size: 18px
@@ -228,7 +230,8 @@ $border_neutral_color: #E2E8F0
 
         .main_about,
         .main_gallery,
-        .main_booklets
+        .main_booklets,
+        .events
             display: flex
             flex-direction: column
             gap: 20px
@@ -310,7 +313,8 @@ $border_neutral_color: #E2E8F0
                         border-top: 1px dashed $border_neutral_color
 
         .main_gallery,
-        .main_booklets
+        .main_booklets,
+        .events
             button
                 width: max-content
                 align-self: center
@@ -318,7 +322,6 @@ $border_neutral_color: #E2E8F0
         .main_gallery
             .main_gallery_container
                 display: flex
-                justify-content: space-between
                 flex-wrap: wrap
                 gap: 12px
 
@@ -344,6 +347,17 @@ $border_neutral_color: #E2E8F0
 
                 .main_booklet_item
                     width: calc(50% - 8px)
+
+        .events
+            .events_container
+                display: flex
+                flex-wrap: wrap
+                gap: 12px
+
+                .event_item
+                    position: relative
+                    display: flex
+                    width: calc(25% - 9px)
 
 @media (hover: hover)
     .container

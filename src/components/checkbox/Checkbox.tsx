@@ -7,7 +7,7 @@ interface ICheckboxProps {
   onChangeStatus: Function;
 }
 
-const Checkbox: React.FC<ICheckboxProps> = ({ isChecked, onChangeStatus }) => {
+export const Checkbox: React.FC<ICheckboxProps> = ({ isChecked, onChangeStatus }) => {
   return (
     <label className={styles.checkbox}>
       <input type="checkbox" onChange={() => onChangeStatus(!isChecked)} />
@@ -21,4 +21,3 @@ const Checkbox: React.FC<ICheckboxProps> = ({ isChecked, onChangeStatus }) => {
     </label>
   );
 };
-export default Checkbox;

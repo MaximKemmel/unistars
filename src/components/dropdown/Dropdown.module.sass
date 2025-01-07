@@ -1,0 +1,81 @@
+$placeholder_color: #8496AE
+$text_neutral_color: #202327
+$border_color: #CBD5E0
+$background_primary_color: #FFFFFF
+
+.dropdown
+    position: relative
+    width: 100%
+    user-select: none
+    font-size: 16px
+    color: $text_neutral_color
+
+    .dropdown_button
+        display: flex
+        align-items: center
+        width: calc(100% - 32px)
+        height: 46px
+        padding: 0 15px
+        border-radius: 12px
+        flex-shrink: 0
+        border: 1px solid $border_color
+        transition: all .15s ease-out
+
+        .label
+            width: calc(100% - 16px)
+            display: -webkit-box
+            -webkit-line-clamp: 1
+            -webkit-box-orient: vertical
+            overflow: hidden
+
+        &.not_selected
+            color: $placeholder_color
+
+        &.active
+            border-radius: 12px 12px 0 0
+
+        .arrow
+            position: absolute
+            right: 15px
+            width: 16px
+            height: auto
+            transition: all .20s ease-out
+
+            &.active
+                transform: rotate(180deg)
+
+    .dropdown_container
+        position: absolute
+        z-index: 5
+        top: 47px
+        right: 0
+        display: flex
+        flex-direction: column
+        width: 100%
+        border-radius: 0 0 12px 12px
+        max-height: 0px
+        overflow: hidden
+        background-color: $background_primary_color
+
+        &.active
+            border: 1px solid $border_color
+            width: calc(100% - 2px)
+            max-height: 216px
+
+        .dropdown_list
+            width: 100%
+            max-height: 216px
+            height: max-content
+            display: flex
+            flex-direction: column
+            overflow-y: auto
+            transform: translateY(0)
+
+            .dropdown_item
+                display: flex
+                align-items: center
+                flex-shrink: 0
+                height: 48px
+                width: calc(100% - 32px)
+                padding: 0 16px
+                cursor: pointer
