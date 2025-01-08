@@ -17,13 +17,7 @@ interface IGalleryModalProps {
   onClose: Function;
 }
 
-export const GalleryModal: React.FC<IGalleryModalProps> = ({
-  isShow,
-  photos,
-  onUpload,
-  onEdit,
-  onClose,
-}) => {
+export const GalleryModal: React.FC<IGalleryModalProps> = ({ isShow, photos, onUpload, onEdit, onClose }) => {
   const [isEditMode, setIsEditMode] = useState(false);
   const [currentPhotos, setCurrentPhotos] = useState(photos);
 
@@ -45,7 +39,7 @@ export const GalleryModal: React.FC<IGalleryModalProps> = ({
       />
       <div className={styles.modal_content}>
         <div className={styles.head}>
-          <h3>Галерея</h3>
+          <h4>Галерея</h4>
           <div
             className={styles.close}
             onClick={() => {
@@ -61,9 +55,9 @@ export const GalleryModal: React.FC<IGalleryModalProps> = ({
             {currentPhotos.map((photo, index) => (
               <div className={styles.gallery_item_container} key={index}>
                 <div
-                  className={`${styles.gallery_item} ${
-                    isEditMode ? styles.edited : ""
-                  } ${isEditMode && photo.isChecked ? styles.selected : ""}`}
+                  className={`${styles.gallery_item} ${isEditMode ? styles.edited : ""} ${
+                    isEditMode && photo.isChecked ? styles.selected : ""
+                  }`}
                 >
                   <img className={styles.photo} src={photo.url} alt="" />
                 </div>
@@ -92,9 +86,7 @@ export const GalleryModal: React.FC<IGalleryModalProps> = ({
               {isEditMode ? (
                 <>
                   <div className={styles.edited_count}>
-                    {`Выбрано ${
-                      currentPhotos.filter((photo) => photo.isChecked).length
-                    }`}
+                    {`Выбрано ${currentPhotos.filter((photo) => photo.isChecked).length}`}
                   </div>
                   <button
                     className={`${globalStyles.inverted} ${globalStyles.small} ${globalStyles.delete}`}
@@ -117,11 +109,7 @@ export const GalleryModal: React.FC<IGalleryModalProps> = ({
                   >
                     <span>Отменить</span>
                   </button>
-                  <button
-                    className={globalStyles.small}
-                    type="button"
-                    onClick={() => onUpload()}
-                  >
+                  <button className={globalStyles.small} type="button" onClick={() => onUpload()}>
                     Сохранить изменения
                   </button>
                 </>
@@ -134,11 +122,7 @@ export const GalleryModal: React.FC<IGalleryModalProps> = ({
                   >
                     <span>Редактировать</span>
                   </button>
-                  <button
-                    className={globalStyles.small}
-                    type="button"
-                    onClick={() => onUpload()}
-                  >
+                  <button className={globalStyles.small} type="button" onClick={() => onUpload()}>
                     Загрузить фотографию
                     <img src={UploadIcon} alt="" />
                   </button>

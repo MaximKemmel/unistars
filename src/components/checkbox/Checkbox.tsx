@@ -1,6 +1,6 @@
 import styles from "./Checkbox.module.sass";
 
-import CheckIcon from "../../assets/svg/check-mark.svg";
+import { Check as CheckIcon } from "../../assets/svgComponents/Check";
 
 interface ICheckboxProps {
   isChecked: boolean;
@@ -14,7 +14,7 @@ export const Checkbox: React.FC<ICheckboxProps> = ({ isChecked, onChangeStatus }
       <span className={`${styles.checkbox_mark} ${isChecked ? styles.active : ""}`} aria-hidden="true">
         {isChecked ? (
           <div className={styles.mark}>
-            <img className={styles.icon} src={CheckIcon} alt="" />
+            <CheckIcon fill="#FFFFFF" />
           </div>
         ) : null}
       </span>

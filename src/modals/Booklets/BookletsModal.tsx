@@ -12,20 +12,13 @@ interface IBookletsModalProps {
   onClose: Function;
 }
 
-export const BookletsModal: React.FC<IBookletsModalProps> = ({
-  isShow,
-  booklets,
-  onClose,
-}) => {
+export const BookletsModal: React.FC<IBookletsModalProps> = ({ isShow, booklets, onClose }) => {
   return (
     <div className={`${styles.modal} ${isShow ? styles.active : ""}`}>
-      <div
-        className={`${styles.overlay} ${isShow ? styles.active : ""}`}
-        onClick={() => onClose()}
-      />
+      <div className={`${styles.overlay} ${isShow ? styles.active : ""}`} onClick={() => onClose()} />
       <div className={styles.modal_content}>
         <div className={styles.head}>
-          <h3>Буклеты</h3>
+          <h4>Буклеты</h4>
           <div className={styles.close} onClick={() => onClose()}>
             <img src={CloseIcon} alt="" />
           </div>
@@ -39,11 +32,7 @@ export const BookletsModal: React.FC<IBookletsModalProps> = ({
             ))}
           </div>
           <div className={styles.booklets_actions}>
-            <button
-              className={globalStyles.small}
-              type="button"
-              onClick={() => onClose()}
-            >
+            <button className={globalStyles.small} type="button" onClick={() => onClose()}>
               Создать буклет
               <img src={PlusIcon} alt="" />
             </button>

@@ -1,11 +1,14 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+
+import { Subscribers } from "./content/Subscribers";
+import { Loading } from "./content/Loading";
 
 import globalStyles from "../../App.module.sass";
+import modalStyles from "../Modal.module.sass";
 import styles from "./SubscribersModal.module.sass";
 
-import CloseIcon from "../../assets/svg/close.svg";
-import ExportIcon from "../../assets/svg/export.svg";
-import SearchIcon from "../../assets/svg/search.svg";
+import { Close as CloseIcon } from "../../assets/svgComponents/Close";
+import { Export as ExportIcon } from "../../assets/svgComponents/Export";
 
 interface ISubscribersModalProps {
   isShow: boolean;
@@ -13,59 +16,66 @@ interface ISubscribersModalProps {
   onClose: Function;
 }
 
-export const SubscribersModal: React.FC<ISubscribersModalProps> = ({
-  isShow,
-  subscribers,
-  onClose,
-}) => {
-  const [searchValue, setSearchValue] = useState("");
+export const SubscribersModal: React.FC<ISubscribersModalProps> = ({ isShow, subscribers, onClose }) => {
+  const [activeSection, setActiveSection] = useState(0);
+  const [isLoadShow, setIsLoadShow] = useState(false);
+  const [isLoadingSuccess, setIsLoadingSuccess] = useState(false);
+  const contentSections = [
+    <Subscribers subscribers={subscribers} />,
+    <Loading isLoadShow={isLoadShow} isLoadingSuccess={isLoadingSuccess} />,
+  ] as JSX.Element[];
+
+  useEffect(() => {
+    setActiveSection(0);
+    setIsLoadShow(false);
+    setIsLoadingSuccess(false);
+  }, [isShow]);
 
   return (
-    <div className={`${styles.modal} ${isShow ? styles.active : ""}`}>
-      <div
-        className={`${styles.overlay} ${isShow ? styles.active : ""}`}
-        onClick={() => onClose()}
-      />
-      <div className={styles.modal_content}>
-        <div className={styles.head}>
-          <h3>Подписчики</h3>
-          <div className={styles.close} onClick={() => onClose()}>
-            <img src={CloseIcon} alt="" />
+    <div className={`${modalStyles.modal} ${isShow ? modalStyles.active : ""}`}>
+      <div className={`${modalStyles.overlay} ${isShow ? modalStyles.active : ""}`} onClick={() => onClose()} />
+      <div className={`${modalStyles.modal_content} ${styles.modal_content}`}>
+        <div className={modalStyles.head}>
+          <h4>{activeSection === 0 ? "Подписчики" : "Выгрузка данных подписчиков"}</h4>
+          <div className={modalStyles.close} onClick={() => onClose()}>
+            <CloseIcon />
           </div>
         </div>
-        <div className={styles.subscribers_container}>
-          <div className={styles.subscribers_content}>
-            <div className={styles.search_input}>
-              <input
-                placeholder={"Поиск по подписчикам"}
-                type="text"
-                onChange={(event) => setSearchValue(event.target.value)}
-                value={searchValue}
-              />
-              <img className={styles.search_icon} src={SearchIcon} alt="" />
-              {searchValue.length > 0 ? (
-                <div
-                  className={styles.clear}
-                  onClick={() => setSearchValue("")}
+        <div className={styles.subscribers_container}>{contentSections[activeSection]}</div>
+        <div className={modalStyles.actions}>
+          {!isLoadShow ? (
+            <>
+              <div />
+              {activeSection === 0 ? (
+                <button
+                  className={globalStyles.small}
+                  type="button"
+                  disabled={subscribers.length === 0}
+                  onClick={() => setActiveSection(1)}
                 >
-                  <img className={styles.clear_icon} src={CloseIcon} alt="" />
-                </div>
-              ) : null}
-            </div>
-            {subscribers.map((_, index) => (
-              <div key={index}></div>
-            ))}
-          </div>
-          <div className={styles.subscribers_actions}>
-            <button
-              className={globalStyles.small}
-              type="button"
-              onClick={() => onClose()}
-            >
-              <img src={ExportIcon} alt="" />
-              Выгрузить данные
-            </button>
-          </div>
+                  <ExportIcon isDisabled={subscribers.length === 0} />
+                  Выгрузить данные
+                </button>
+              ) : (
+                <button className={globalStyles.small} type="button" onClick={() => setIsLoadShow(true)}>
+                  Начать выгрузку
+                </button>
+              )}
+            </>
+          ) : (
+            <>
+              <div />
+              {isLoadingSuccess ? (
+                <button className={globalStyles.small} type="button" onClick={() => onClose()}>
+                  Закрыть
+                </button>
+              ) : (
+                <button className={globalStyles.small} type="button" onClick={() => setIsLoadingSuccess(true)}>
+                  Попробовать снова
+                </button>
+              )}
+            </>
+          )}
         </div>
       </div>
     </div>

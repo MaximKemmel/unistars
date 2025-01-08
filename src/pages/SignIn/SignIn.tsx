@@ -5,9 +5,9 @@ import { ApplicationForm } from "./content/ApplicationForm";
 
 import styles from "./SignIn.module.sass";
 
-import Background from "../../assets/png/sign_in_background.png";
+import Background from "../../assets/png/sign-in-background.png";
 import Logo from "../../assets/svg/logo.svg";
-import BackArrowIcon from '../../assets/svg/back-arrow.svg';
+import BackArrowIcon from "../../assets/svg/back-arrow.svg";
 
 export const SignIn = () => {
   const [currentStage, setCurrentStage] = useState(0);

@@ -4,6 +4,7 @@ import { UniversityModal } from "../../../modals/University/UniversityModal";
 import { GalleryModal } from "../../../modals/Gallery/GalleryModal";
 import { BookletsModal } from "../../../modals/Booklets/BookletsModal";
 import { SubscribersModal } from "../../../modals/Subscribers/SubscribersModal";
+import { AmbassadorsModal } from "../../..//modals/Ambassadors/AmbassadorsModal";
 
 import { BookletCard } from "../../../cards/booklet/BookletCard";
 
@@ -12,8 +13,9 @@ import styles from "../Home.module.sass";
 
 import TestImage from "../../../assets/png/test_image.png";
 import AwardIcon from "../../../assets/svg/award.svg";
-import TestPhoto from "../../../assets/png/sign_in_background.png";
+import TestPhoto from "../../../assets/png/sign-in-background.png";
 import TestBooklet from "../../../assets/png/test_booklet.png";
+import TestAvatar from "../../../assets/png/test-avatar.png";
 
 export const Main = () => {
   const socialsInfo = [
@@ -57,6 +59,7 @@ export const Main = () => {
     faqUrl: "urfu.ru/ru/",
     coursesUrl: "urfu.ru/ru/",
   };
+
   const gallery = Array(32)
     .fill(1)
     .map((_item, index) => {
@@ -66,6 +69,7 @@ export const Main = () => {
         isChecked: false,
       };
     });
+
   const booklets = Array(8)
     .fill(1)
     .map((_item, index) => {
@@ -73,14 +77,47 @@ export const Main = () => {
         id: index,
         photo: TestBooklet,
         name: "Название буклета",
-        description:
-          "Описание буклета Описание буклета Описание буклета Описание буклета Описание буклета Описание буклета",
+        description: "Описание буклета Описание буклета Описание буклета Описание буклета Описание буклета Описание буклета",
+      };
+    });
+
+  const subscribers = Array(50)
+    .fill(1)
+    .map((_item, index) => {
+      return {
+        id: index,
+        photo: TestAvatar,
+        name: "Tom Smith",
+        university: "Ural Federal University",
+      };
+    });
+
+  const ambassadors = Array(29)
+    .fill(1)
+    .map((_item, index) => {
+      return {
+        id: index,
+        photo: TestAvatar,
+        name: "Tom Smith",
+        university: "Ural Federal University",
+      };
+    });
+
+  const requestedAmbassadors = Array(11)
+    .fill(1)
+    .map((_item, index) => {
+      return {
+        id: index + 100,
+        photo: TestAvatar,
+        name: "Tom Smith",
+        university: "Ural Federal University",
       };
     });
   const [isAboutModalShow, setIsAboutModalShow] = useState(false);
   const [isGalleryModalShow, setIsGalleryModalShow] = useState(false);
   const [isBookletsModalShow, setIsBookletsModalShow] = useState(false);
   const [isSubscribersModalShow, setIsSubscribersModalShow] = useState(false);
+  const [isAmbassadorsModalShow, setIsAmbassadorsModalShow] = useState(false);
 
   return (
     <div className={styles.content}>
@@ -92,18 +129,23 @@ export const Main = () => {
               <img src={AwardIcon} alt="" />
             </div>
           </div>
-          <h3 className={styles.main_univ_name}>
-            Уральский федеральный университет (УрФУ)
-          </h3>
+          <h3 className={styles.main_univ_name}>Уральский федеральный университет (УрФУ)</h3>
         </div>
         <div className={styles.main_socials}>
           {socialsInfo.map((item, index) => {
             return (
-              <div className={styles.main_socials_item} key={index} onClick={() => {
-                if (item.id === 0) {
-                  setIsSubscribersModalShow(true);
-                }
-              }}>
+              <div
+                className={styles.main_socials_item}
+                key={index}
+                onClick={() => {
+                  if (item.id === 0) {
+                    setIsSubscribersModalShow(true);
+                  }
+                  if (item.id === 2) {
+                    setIsAmbassadorsModalShow(true);
+                  }
+                }}
+              >
                 <div className={styles.item_value}>{item.value}</div>
                 <div className={styles.item_label}>{item.label}</div>
               </div>
@@ -117,10 +159,7 @@ export const Main = () => {
             <h4>Об университете</h4>
           </div>
           {aboutInfo ? (
-            <div
-              className={styles.head_action}
-              onClick={() => setIsAboutModalShow(true)}
-            >
+            <div className={styles.head_action} onClick={() => setIsAboutModalShow(true)}>
               Редактировать
             </div>
           ) : null}
@@ -131,30 +170,20 @@ export const Main = () => {
               <div className={styles.part_title}>Основное</div>
               <div className={styles.part_container}>
                 <div className={styles.part_item}>
-                  <div className={styles.part_item_label}>
-                    Полное наименование университета
-                  </div>
-                  <div className={styles.part_item_value}>
-                    {aboutInfo.fullName}
-                  </div>
+                  <div className={styles.part_item_label}>Полное наименование университета</div>
+                  <div className={styles.part_item_value}>{aboutInfo.fullName}</div>
                 </div>
                 <div className={styles.part_item}>
                   <div className={styles.part_item_label}>Описание</div>
-                  <div className={styles.part_item_value}>
-                    {aboutInfo.description}
-                  </div>
+                  <div className={styles.part_item_value}>{aboutInfo.description}</div>
                 </div>
                 <div className={styles.part_item}>
                   <div className={styles.part_item_label}>Дата основания</div>
-                  <div className={styles.part_item_value}>
-                    {aboutInfo.birthDate}
-                  </div>
+                  <div className={styles.part_item_value}>{aboutInfo.birthDate}</div>
                 </div>
                 <div className={styles.part_item}>
                   <div className={styles.part_item_label}>Страна</div>
-                  <div className={styles.part_item_value}>
-                    {aboutInfo.country}
-                  </div>
+                  <div className={styles.part_item_value}>{aboutInfo.country}</div>
                 </div>
                 <div className={styles.part_item}>
                   <div className={styles.part_item_label}>Город</div>
@@ -163,15 +192,11 @@ export const Main = () => {
                 <div className={styles.part_item_double}>
                   <div className={styles.part_item}>
                     <div className={styles.part_item_label}>Дом</div>
-                    <div className={styles.part_item_value}>
-                      {aboutInfo.house}
-                    </div>
+                    <div className={styles.part_item_value}>{aboutInfo.house}</div>
                   </div>
                   <div className={styles.part_item}>
                     <div className={styles.part_item_label}>Корпус</div>
-                    <div className={styles.part_item_value}>
-                      {aboutInfo.korpus}
-                    </div>
+                    <div className={styles.part_item_value}>{aboutInfo.korpus}</div>
                   </div>
                 </div>
               </div>
@@ -183,21 +208,15 @@ export const Main = () => {
                 <div className={styles.part_container}>
                   <div className={styles.part_item}>
                     <div className={styles.part_item_label}>Телефон</div>
-                    <div className={styles.part_item_value}>
-                      {aboutInfo.phone}
-                    </div>
+                    <div className={styles.part_item_value}>{aboutInfo.phone}</div>
                   </div>
                   <div className={styles.part_item}>
                     <div className={styles.part_item_label}>Сайт</div>
-                    <div className={styles.part_item_value}>
-                      {aboutInfo.site}
-                    </div>
+                    <div className={styles.part_item_value}>{aboutInfo.site}</div>
                   </div>
                   <div className={styles.part_item}>
                     <div className={styles.part_item_label}>E-mail</div>
-                    <div className={styles.part_item_value}>
-                      {aboutInfo.email}
-                    </div>
+                    <div className={styles.part_item_value}>{aboutInfo.email}</div>
                   </div>
                 </div>
               </div>
@@ -207,31 +226,19 @@ export const Main = () => {
                 <div className={styles.part_container}>
                   <div className={styles.part_item}>
                     <div className={styles.part_item_label}>Поступление</div>
-                    <div className={styles.part_item_value}>
-                      {aboutInfo.postupUrl}
-                    </div>
+                    <div className={styles.part_item_value}>{aboutInfo.postupUrl}</div>
                   </div>
                   <div className={styles.part_item}>
                     <div className={styles.part_item_label}>Карьера</div>
-                    <div className={styles.part_item_value}>
-                      {aboutInfo.careerUrl}
-                    </div>
+                    <div className={styles.part_item_value}>{aboutInfo.careerUrl}</div>
                   </div>
                   <div className={styles.part_item}>
-                    <div className={styles.part_item_label}>
-                      Вопросы и ответы
-                    </div>
-                    <div className={styles.part_item_value}>
-                      {aboutInfo.faqUrl}
-                    </div>
+                    <div className={styles.part_item_label}>Вопросы и ответы</div>
+                    <div className={styles.part_item_value}>{aboutInfo.faqUrl}</div>
                   </div>
                   <div className={styles.part_item}>
-                    <div className={styles.part_item_label}>
-                      Подготовительные курсы
-                    </div>
-                    <div className={styles.part_item_value}>
-                      {aboutInfo.coursesUrl}
-                    </div>
+                    <div className={styles.part_item_label}>Подготовительные курсы</div>
+                    <div className={styles.part_item_value}>{aboutInfo.coursesUrl}</div>
                   </div>
                 </div>
               </div>
@@ -240,31 +247,22 @@ export const Main = () => {
         ) : (
           <div className={styles.empty_info}>
             <div className={styles.empty_message}>
-              В профиле пока пусто. Заполните его, чтобы абитуриенты могли
-              больше узнать о вас!
+              В профиле пока пусто. Заполните его, чтобы абитуриенты могли больше узнать о вас!
             </div>
-            <button
-              className={globalStyles.small}
-              type="button"
-              onClick={() => setIsAboutModalShow(true)}
-            >
+            <button className={globalStyles.small} type="button" onClick={() => setIsAboutModalShow(true)}>
               Заполнить профиль
             </button>
           </div>
         )}
       </div>
       <div className={styles.content_container_multi}>
-        <div
-          className={`${styles.main_gallery} ${styles.content_container} ${styles.half}`}
-        >
+        <div className={`${styles.main_gallery} ${styles.content_container} ${styles.half}`}>
           <div className={styles.content_container_head}>
             <div className={styles.head_title}>
               <h4>Галерея</h4>
               <div className={styles.count}>{gallery.length}</div>
             </div>
-            {gallery.length > 0 ? (
-              <div className={styles.head_action}>Загрузить еще</div>
-            ) : null}
+            {gallery.length > 0 ? <div className={styles.head_action}>Загрузить еще</div> : null}
           </div>
           {gallery.length > 0 ? (
             <div className={styles.main_gallery_container}>
@@ -278,14 +276,8 @@ export const Main = () => {
             </div>
           ) : (
             <div className={styles.empty_info}>
-              <div className={styles.empty_message}>
-                В вашем профиле пока нет фотографий.
-              </div>
-              <button
-                className={globalStyles.small}
-                type="button"
-                onClick={() => setIsGalleryModalShow(true)}
-              >
+              <div className={styles.empty_message}>В вашем профиле пока нет фотографий.</div>
+              <button className={globalStyles.small} type="button" onClick={() => setIsGalleryModalShow(true)}>
                 Загрузить фотографии
               </button>
             </div>
@@ -300,17 +292,13 @@ export const Main = () => {
             </button>
           ) : null}
         </div>
-        <div
-          className={`${styles.main_booklets} ${styles.content_container} ${styles.half}`}
-        >
+        <div className={`${styles.main_booklets} ${styles.content_container} ${styles.half}`}>
           <div className={styles.content_container_head}>
             <div className={styles.head_title}>
               <h4>Буклеты</h4>
               <div className={styles.count}>{booklets.length}</div>
             </div>
-            {booklets.length > 0 ? (
-              <div className={styles.head_action}>Создать</div>
-            ) : null}
+            {booklets.length > 0 ? <div className={styles.head_action}>Создать</div> : null}
           </div>
           {booklets.length > 0 ? (
             <div className={styles.main_booklets_container}>
@@ -332,14 +320,8 @@ export const Main = () => {
             </div>
           ) : (
             <div className={styles.empty_info}>
-              <div className={styles.empty_message}>
-                В вашем профиле пока нет буклетов.
-              </div>
-              <button
-                className={globalStyles.small}
-                type="button"
-                onClick={() => setIsBookletsModalShow(true)}
-              >
+              <div className={styles.empty_message}>В вашем профиле пока нет буклетов.</div>
+              <button className={globalStyles.small} type="button" onClick={() => setIsBookletsModalShow(true)}>
                 Создать буклет
               </button>
             </div>
@@ -387,9 +369,17 @@ export const Main = () => {
       />
       <SubscribersModal
         isShow={isSubscribersModalShow}
-        subscribers={[]}
+        subscribers={subscribers}
         onClose={() => {
           setIsSubscribersModalShow(false);
+        }}
+      />
+      <AmbassadorsModal
+        isShow={isAmbassadorsModalShow}
+        ambassadors={ambassadors}
+        requestedAmbassadors={requestedAmbassadors}
+        onClose={() => {
+          setIsAmbassadorsModalShow(false);
         }}
       />
     </div>

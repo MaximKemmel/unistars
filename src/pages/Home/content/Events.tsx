@@ -27,6 +27,7 @@ export const Events = () => {
         ambassadors: 2,
         event_type: -1,
         event_kind: 0,
+        event_visibility: -1,
       };
     });
 
@@ -52,22 +53,14 @@ export const Events = () => {
         ) : (
           <div className={styles.empty_info}>
             <div className={styles.empty_message}>У вас пока нет ивентов.</div>
-            <button
-              className={globalStyles.small}
-              type="button"
-              onClick={() => setIsEventModalShow(true)}
-            >
+            <button className={globalStyles.small} type="button" onClick={() => setIsEventModalShow(true)}>
               Создать ивент
               <img src={PlusIcon} alt="" />
             </button>
           </div>
         )}
         {events.length > 0 ? (
-          <button
-            className={globalStyles.small}
-            type="button"
-            onClick={() => setIsEventModalShow(true)}
-          >
+          <button className={globalStyles.small} type="button" onClick={() => setIsEventModalShow(true)}>
             Создать ивент
             <img src={PlusIcon} alt="" />
           </button>

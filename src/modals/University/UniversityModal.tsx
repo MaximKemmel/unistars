@@ -14,12 +14,7 @@ interface IUniversityModalProps {
   onClose: Function;
 }
 
-export const UniversityModal: React.FC<IUniversityModalProps> = ({
-  isShow,
-  universityInfo,
-  onSave,
-  onClose,
-}) => {
+export const UniversityModal: React.FC<IUniversityModalProps> = ({ isShow, universityInfo, onSave, onClose }) => {
   const [currentInfo, setCurrentInfo] = useState(universityInfo);
 
   const handleOnSubmit = (event) => {
@@ -29,17 +24,10 @@ export const UniversityModal: React.FC<IUniversityModalProps> = ({
 
   return (
     <div className={`${styles.modal} ${isShow ? styles.active : ""}`}>
-      <div
-        className={`${styles.overlay} ${isShow ? styles.active : ""}`}
-        onClick={() => onClose()}
-      />
+      <div className={`${styles.overlay} ${isShow ? styles.active : ""}`} onClick={() => onClose()} />
       <div className={styles.modal_content}>
         <div className={styles.head}>
-          <h3>
-            {universityInfo
-              ? "Редактирование данных об университете"
-              : "Об университете"}
-          </h3>
+          <h4>{universityInfo ? "Редактирование данных об университете" : "Об университете"}</h4>
           <div className={styles.close} onClick={() => onClose()}>
             <img src={CloseIcon} alt="" />
           </div>
@@ -50,9 +38,7 @@ export const UniversityModal: React.FC<IUniversityModalProps> = ({
               <div className={styles.part_container_title}>Основное</div>
               <div className={`${styles.part_multi} ${styles.double}`}>
                 <div className={styles.part}>
-                  <div className={styles.part_label}>
-                    Полное наименование университета
-                  </div>
+                  <div className={styles.part_label}>Полное наименование университета</div>
                   <input
                     placeholder={"Введите заголовок"}
                     type="text"
@@ -86,9 +72,7 @@ export const UniversityModal: React.FC<IUniversityModalProps> = ({
                 <div className={styles.part}>
                   <div className={styles.part_label}>Описание</div>
                   <textarea
-                    placeholder={
-                      "Это описание отображается при просмотре основной страницы"
-                    }
+                    placeholder={"Это описание отображается при просмотре основной страницы"}
                     required
                     onChange={(event) =>
                       setCurrentInfo({
@@ -135,9 +119,7 @@ export const UniversityModal: React.FC<IUniversityModalProps> = ({
                   <div className={styles.part_label}>Местонахождение</div>
                   <div className={styles.location_selector}>
                     <img src={LocationIcon} alt="" />
-                    <div className={styles.selector_label}>
-                      Определить местоположение
-                    </div>
+                    <div className={styles.selector_label}>Определить местоположение</div>
                   </div>
                 </div>
               </div>
@@ -195,9 +177,7 @@ export const UniversityModal: React.FC<IUniversityModalProps> = ({
             </div>
             <div className={styles.form_separator} />
             <div className={styles.part_container}>
-              <div className={styles.part_container_title}>
-                Ссылки на разделы сайта
-              </div>
+              <div className={styles.part_container_title}>Ссылки на разделы сайта</div>
               <div className={`${styles.part_multi} ${styles.double}`}>
                 <div className={styles.part}>
                   <div className={styles.part_label}>
@@ -280,7 +260,9 @@ export const UniversityModal: React.FC<IUniversityModalProps> = ({
             <button className={`${globalStyles.inverted} ${globalStyles.small}`} type="button">
               <span>Отменить</span>
             </button>
-            <button className={globalStyles.small} type="submit">Сохранить изменения</button>
+            <button className={globalStyles.small} type="submit">
+              Сохранить изменения
+            </button>
           </div>
         </form>
       </div>

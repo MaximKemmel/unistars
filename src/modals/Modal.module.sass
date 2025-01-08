@@ -1,8 +1,8 @@
-$inactive_overlay_background_color: #000000
+$inactive_overlay_background_color: #00000000
 $overlay_background_color: #00000033
 $modal_background_color: #FFFFFF
-$text_neutral_color: #202327
 $divider_color: #E2E8F0
+$text_neutral_color: #202327
 
 .modal,
 .overlay
@@ -26,7 +26,7 @@ $divider_color: #E2E8F0
         left: 0
 
     .overlay
-        background: rgba(0, 0, 0, 0)
+        background: $inactive_overlay_background_color
         transition: all .15s ease-out
         height: 100vh
         width: 100%
@@ -40,7 +40,7 @@ $divider_color: #E2E8F0
         display: flex
         flex-direction: column
         align-items: center
-        width: 930px
+        width: 500px
         max-height: 80vh
         top: 50%
         left: 50%
@@ -60,7 +60,7 @@ $divider_color: #E2E8F0
             padding-bottom: 10px
             border-bottom: 1px solid $divider_color
 
-            h3
+            h4
                 color: $text_neutral_color
 
             .close
@@ -71,41 +71,16 @@ $divider_color: #E2E8F0
                 height: 32px
                 cursor: pointer
 
-                img
+                svg
                     width: 16px
                     height: auto
 
-        .booklets_container
+        .actions
             display: flex
-            flex-direction: column
-            gap: 24px
-            width: 100%
-            overflow: hidden
-
-            .booklets_content
-                display: flex
-                flex-wrap: wrap
-                gap: 12px
-                width: calc(100% - 64px)
-                padding: 16px 32px
-                overflow-y: auto
-
-                .booklet_item
-                    display: flex
-                    width: calc(33% - 10px)
-                    position: absolute
-                    z-index: 5
-                    display: flex
-                    align-items: center
-                    justify-content: center
-                    width: 32px
-                    height: 32px
-
-            .booklets_actions
-                display: flex
-                justify-content: end
-                align-items: center
-                flex-shrink: 0
-                width: calc(100% - 64px)
-                padding: 16px 32px 28px 32px
-                border-top: 1px solid $divider_color
+            justify-content: space-between
+            align-items: center
+            flex-shrink: 0
+            gap: 16px
+            width: calc(100% - 64px)
+            padding: 16px 32px 28px 32px
+            border-top: 1px solid $divider_color

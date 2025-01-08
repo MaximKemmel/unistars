@@ -22,12 +22,7 @@ interface IEventModalProps {
   onClose: Function;
 }
 
-export const EventModal: React.FC<IEventModalProps> = ({
-  isShow,
-  eventInfo,
-  onSave,
-  onClose,
-}) => {
+export const EventModal: React.FC<IEventModalProps> = ({ isShow, eventInfo, onSave, onClose }) => {
   const [currentInfo, setCurrentInfo] = useState(eventInfo);
   const [activeComponent, setActiveComponent] = useState(DropdownType.None);
 
@@ -57,15 +52,10 @@ export const EventModal: React.FC<IEventModalProps> = ({
 
   return (
     <div className={`${styles.modal} ${isShow ? styles.active : ""}`}>
-      <div
-        className={`${styles.overlay} ${isShow ? styles.active : ""}`}
-        onClick={() => onClose()}
-      />
+      <div className={`${styles.overlay} ${isShow ? styles.active : ""}`} onClick={() => onClose()} />
       <div className={styles.modal_content}>
         <div className={styles.head}>
-          <h3>
-            {eventInfo.id > -1 ? "Редактирование ивента" : "Создание ивента"}
-          </h3>
+          <h4>{eventInfo.id > -1 ? "Редактирование ивента" : "Создание ивента"}</h4>
           <div className={styles.close} onClick={() => onClose()}>
             <img src={CloseIcon} alt="" />
           </div>
@@ -96,9 +86,7 @@ export const EventModal: React.FC<IEventModalProps> = ({
                     <div className={styles.upload}>
                       <img src={UploadImageIcon} alt="" />
                     </div>
-                    <div className={styles.cover_placeholder}>
-                      Выберите обложку для ивента
-                    </div>
+                    <div className={styles.cover_placeholder}>Выберите обложку для ивента</div>
                   </div>
                 </div>
               </div>
@@ -122,20 +110,21 @@ export const EventModal: React.FC<IEventModalProps> = ({
                 <div className={styles.part}>
                   <div className={styles.part_label}>Тип ивента</div>
                   <Dropdown
+                    placeholder="Выберите тип ивента"
                     activeComponent={activeComponent}
                     setActiveComponent={setActiveComponent}
                     dropdownIndex={DropdownType.EventType}
                     items={[
                       {
                         id: -1,
-                        text: "Выберите тип ивента",
+                        text: "Не выбрано",
                         is_selected: currentInfo.event_type === -1,
                       } as IDropdownItem,
                       ...(eventTypes.map((typeItem: IEventType) => {
                         return {
                           id: typeItem.id,
                           text: typeItem.type,
-                          is_selected: eventInfo.event_type === typeItem.id,
+                          is_selected: currentInfo.event_type === typeItem.id,
                         } as IDropdownItem;
                       }) as IDropdownItem[]),
                     ]}
@@ -148,25 +137,26 @@ export const EventModal: React.FC<IEventModalProps> = ({
                 <div className={styles.part}>
                   <div className={styles.part_label}>Видимость</div>
                   <Dropdown
+                    placeholder="Выберите, кому будет доступен ивент"
                     activeComponent={activeComponent}
                     setActiveComponent={setActiveComponent}
                     dropdownIndex={DropdownType.EventVisibility}
                     items={[
                       {
                         id: -1,
-                        text: "Выберите, кому будет доступен ивент",
-                        is_selected: currentInfo.event_type === -1,
+                        text: "Не выбрано",
+                        is_selected: currentInfo.event_visibility === -1,
                       } as IDropdownItem,
                       ...(eventTypes.map((typeItem: IEventType) => {
                         return {
                           id: typeItem.id,
                           text: typeItem.type,
-                          is_selected: eventInfo.event_type === typeItem.id,
+                          is_selected: currentInfo.event_visibility === typeItem.id,
                         } as IDropdownItem;
                       }) as IDropdownItem[]),
                     ]}
                     onItemSelect={(item: IDropdownItem) => {
-                      setCurrentInfo({ ...currentInfo, event_type: item.id });
+                      setCurrentInfo({ ...currentInfo, event_visibility: item.id });
                       setActiveComponent(DropdownType.None);
                     }}
                   />
@@ -176,9 +166,7 @@ export const EventModal: React.FC<IEventModalProps> = ({
             <div className={styles.form_separator} />
             <div className={styles.part_container_multi}>
               <div className={styles.part_container}>
-                <div className={styles.part_container_title}>
-                  Время проведения
-                </div>
+                <div className={styles.part_container_title}>Время проведения</div>
                 <div className={`${styles.part_multi} ${styles.single}`}>
                   <div className={styles.part}>
                     <div className={styles.part_label}>Дата</div>
@@ -216,9 +204,7 @@ export const EventModal: React.FC<IEventModalProps> = ({
               </div>
               <div className={styles.form_separator} />
               <div className={styles.part_container}>
-                <div className={styles.part_container_title}>
-                  Место проведения
-                </div>
+                <div className={styles.part_container_title}>Место проведения</div>
                 <div className={`${styles.part_multi} ${styles.single}`}>
                   <div className={styles.part}>
                     <div className={styles.part_label}>Форма ивента</div>
@@ -236,7 +222,7 @@ export const EventModal: React.FC<IEventModalProps> = ({
                           } as IToggleItem,
                         ] as IToggleItem[]
                       }
-                      onItemSelect={(item: IToggleItem) => setCurrentInfo({...currentInfo, event_kind: item.id})}
+                      onItemSelect={(item: IToggleItem) => setCurrentInfo({ ...currentInfo, event_kind: item.id })}
                     />
                   </div>
                 </div>
@@ -259,13 +245,9 @@ export const EventModal: React.FC<IEventModalProps> = ({
                 </div>
                 <div className={`${styles.part_multi} ${styles.single}`}>
                   <div className={styles.part}>
-                    <div className={styles.part_label}>
-                      Ссылка на дополнительную информацию
-                    </div>
+                    <div className={styles.part_label}>Ссылка на дополнительную информацию</div>
                     <input
-                      placeholder={
-                        "Введите ссылку на сайт или другие источники"
-                      }
+                      placeholder={"Введите ссылку на сайт или другие источники"}
                       type="text"
                       required
                       onChange={(event) =>
@@ -282,10 +264,7 @@ export const EventModal: React.FC<IEventModalProps> = ({
             </div>
           </div>
           <div className={styles.form_actions}>
-            <button
-              className={`${globalStyles.inverted} ${globalStyles.small}`}
-              type="button"
-            >
+            <button className={`${globalStyles.inverted} ${globalStyles.small}`} type="button">
               <span>Отменить</span>
             </button>
             <button className={globalStyles.small} type="submit">

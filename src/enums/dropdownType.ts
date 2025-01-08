@@ -1,5 +1,6 @@
 export enum DropdownType {
-    "None",
-    "EventType",
-    "EventVisibility"
+  "None",
+  "EventType",
+  "EventVisibility",
+  "SubscribersPeriod",
 }

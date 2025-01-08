@@ -1,0 +1,133 @@
+$background_primary_color: #FFFFFF
+$text_primary_color: #000000
+$text_secondary_color: #939393
+$text_action_color: #7B61FF
+$border_color: #CBD5E0
+
+.modal_content
+    width: 500px
+
+    .ambassadors_container
+        display: flex
+        flex-direction: column
+        gap: 24px
+        width: 100%
+        overflow: hidden
+
+        .ambassadors_content
+            display: flex
+            flex-wrap: wrap
+            gap: 12px
+            width: calc(100% - 64px)
+            padding: 16px 32px
+            overflow-y: auto
+
+            .head
+                display: flex
+                justify-content: space-between
+                align-items: center
+                width: 100%
+
+                .head_action
+                    font-size: 14px
+                    color: $text_action_color
+                    cursor: pointer
+
+            h4
+                display: flex
+                align-items: center
+                gap: 4px
+                color: $text_primary_color
+
+                span
+                    color: $text_secondary_color
+
+            .ambassador_item
+                width: 100%
+
+            .ambassadors_selector
+                display: flex
+                align-items: center
+                gap: 12px
+                padding: 8px 0
+                width: 100%
+                font-size: 16px
+                color: $text_primary_color
+
+            .requested_ambassador
+                display: flex
+                align-items: center
+                justify-content: space-between
+                width: 100%
+                gap: 12px
+
+                .checkbox
+                    display: flex
+                    align-items: center
+                    justify-content: center
+                    width: 32px
+                    height: 32px
+
+                .ambassador_item
+                    width: auto
+                    flex-grow: 1
+
+                .ambassador_item_actions
+                    display: flex
+                    align-items: center
+                    gap: 8px
+
+                    .button
+                        display: flex
+                        align-items: center
+                        justify-content: center
+                        flex-shrink: 0
+                        border-radius: 12px
+                        cursor: pointer
+
+                        svg
+                            width: 16px
+                            height: auto
+
+                        &.accept
+                            background: linear-gradient(180deg, #9D70FF 0%, #7460FF 100%)
+                            width: 32px
+                            height: 32px
+
+                        &.cancel
+                            background-color: $background_primary_color
+                            width: 30px
+                            height: 30px
+                            border: 1px solid $border_color
+
+            .ambassadors_separator
+                height: 0
+                width: 100%
+                border-top: none
+                border-top: 1px dashed $border_color
+
+            .empty_ambassadors
+                display: flex
+                flex-direction: column
+                width: 100%
+                gap: 12px
+                align-items: center
+
+                img
+                    width: 180px
+                    height: auto
+
+                .empty_info
+                    display: flex
+                    flex-direction: column
+                    align-items: center
+                    gap: 8px
+
+                    .empty_title
+                        font-size: 20px
+                        color: $text_primary_color
+                        font-weight: 700
+
+                    .empty_description
+                        font-size: 16px
+                        color: $text_secondary_color

@@ -74,8 +74,13 @@ $background_primary_color: #FFFFFF
             .dropdown_item
                 display: flex
                 align-items: center
+                justify-content: space-between
                 flex-shrink: 0
                 height: 48px
                 width: calc(100% - 32px)
                 padding: 0 16px
+                color: $placeholder_color
                 cursor: pointer
+
+                &.active
+                    color: $text_neutral_color

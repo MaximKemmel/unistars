@@ -1,139 +1,148 @@
-$inactive_overlay_background_color: #000000
-$overlay_background_color: #00000033
-$modal_background_color: #FFFFFF
-$text_neutral_color: #202327
-$divider_color: #E2E8F0
-$clear_color: #68778D
+$text_primary_color: #000000
+$text_secondary_color: #68778D
+$border_color: #CBD5E0
+$background_error_color: #FAEAE0
+$text_error_color: #C45F1C
+$background_success_color: #DEEDDE
+$text_success_color: #3F753E
 
-.modal,
-.overlay
-    position: fixed
-    z-index: 21
+.modal_content
+    width: 500px
 
-.modal
-    height: 0
-    width: 0
-    top: 50%
-    left: 50%
-    transform: translate(-50%, -50%)
-    overflow: hidden
-
-    &.active
-        display: block
-        height: 100vh
-        width: 100vw
-        transform: translate(0)
-        top: 0
-        left: 0
-
-    .overlay
-        background: rgba(0, 0, 0, 0)
-        transition: all .15s ease-out
-        height: 100vh
-        width: 100%
-        top: 0
-        left: 0
-
-        &.active
-            background: $overlay_background_color
-
-    .modal_content
+    .subscribers_container
         display: flex
         flex-direction: column
-        align-items: center
-        width: 500px
-        max-height: 80vh
-        top: 50%
-        left: 50%
-        transform: translate(-50%, -50%)
-        position: absolute
-        z-index: 21
-        background-color: $modal_background_color
-        box-shadow: 0px 8px 50px -6px rgba(20, 23, 26, 0.12)
-        border-radius: 16px
+        gap: 24px
+        width: 100%
+        overflow: hidden
 
-        .head
+        .subscribers_content
             display: flex
-            align-items: center
-            justify-content: space-between
+            flex-wrap: wrap
+            gap: 12px
             width: calc(100% - 64px)
-            padding: 26px 32px
-            padding-bottom: 10px
-            border-bottom: 1px solid $divider_color
+            padding: 16px 32px
+            overflow-y: auto
 
-            h3
-                color: $text_neutral_color
+            .search_input
+                width: 100%
+                position: relative
 
-            .close
-                display: flex
-                justify-content: center
-                align-items: center
-                width: 32px
-                height: 32px
-                cursor: pointer
+                input
+                    padding: 0 45px
+                    width: calc(100% - 92px)
 
-                img
-                    width: 100%
+                .search_icon
+                    position: absolute
+                    z-index: 1
+                    top: 50%
+                    left: 12px
+                    transform: translateY(-50%)
+                    width: 24px
                     height: auto
 
-        .subscribers_container
+                .clear
+                    position: absolute
+                    z-index: 1
+                    top: 50%
+                    right: 12px
+                    transform: translateY(-50%)
+                    display: flex
+                    justify-content: center
+                    align-items: center
+                    width: 28px
+                    height: 28px
+                    cursor: pointer
+
+            .subscribers_count
+                font-size: 14px
+                color: $text_primary_color
+
+            .subscriber_item
+                width: 100%
+
+            .dropdown_input
+                width: 100%
+
+            .empty_subscribers
+                display: flex
+                flex-direction: column
+                width: 100%
+                gap: 12px
+                align-items: center
+
+                img
+                    width: 180px
+                    height: auto
+
+                .empty_info
+                    display: flex
+                    flex-direction: column
+                    align-items: center
+                    gap: 8px
+
+                    .empty_title
+                        font-size: 20px
+                        color: $text_primary_color
+                        font-weight: 700
+
+                    .empty_description
+                        font-size: 16px
+                        color: $text_secondary_color
+
+        .loading_content
             display: flex
             flex-direction: column
             gap: 24px
-            width: 100%
-            overflow: hidden
+            width: calc(100% - 64px)
+            padding: 16px 32px
+            overflow-y: auto
 
-            .subscribers_content
+            .loading_description
+                font-size: 16px
+                color: $text_primary_color
+
+            .loading_separator
+                height: 0
+                width: 100%
+                border-top: none
+                border-top: 1px dashed $border_color
+
+            .loading_status
                 display: flex
-                flex-wrap: wrap
-                gap: 12px
-                width: calc(100% - 64px)
-                padding: 16px 32px
-                overflow-y: auto
+                align-items: center
+                justify-content: space-between
+                width: 100%
 
-                .search_input
-                    width: 100%
-                    position: relative
+                .loading_file
+                    display: flex
+                    align-items: center
+                    gap: 4px
+                    font-size: 14px
+                    color: $text_primary_color
 
-                    input
-                        padding: 0 45px
-                        width: calc(100% - 92px)
-
-                    .search_icon
-                        position: absolute
-                        z-index: 1
-                        top: 50%
-                        left: 12px
-                        transform: translateY(-50%)
-                        width: 24px
+                    img
+                        width: 16px
                         height: auto
 
-                    .clear
-                        position: absolute
-                        z-index: 1
-                        top: 50%
-                        right: 12px
-                        transform: translateY(-50%)
-                        display: flex
-                        justify-content: center
-                        align-items: center
-                        width: 28px
-                        height: 28px
-                        cursor: pointer
+                .loading_progress
+                    display: flex
+                    align-items: center
+                    gap: 6px
+                    padding: 8px 16px
+                    font-size: 14px
+                    font-weight: 700
+                    border-radius: 50px
 
-                        svg
-                            *
-                                stroke: $clear_color
+                    img,
+                    svg
+                        width: 16px
+                        height: auto
 
-                        .clear_icon
-                            width: 100%
-                            height: auto
+                    &.success
+                        background-color: $background_success_color
+                        color: $text_success_color
 
-            .subscribers_actions
-                display: flex
-                justify-content: end
-                align-items: center
-                flex-shrink: 0
-                width: calc(100% - 64px)
-                padding: 16px 32px 28px 32px
-                border-top: 1px solid $divider_color
+                    &.error
+                        background-color: $background_error_color
+                        color: $text_error_color
