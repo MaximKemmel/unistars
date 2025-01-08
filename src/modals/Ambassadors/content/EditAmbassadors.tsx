@@ -10,19 +10,18 @@ import styles from "../AmbassadorsModal.module.sass";
 
 import { CheckboxState } from "../../../enums/checkboxState";
 
-import { Close as CloseIcon } from "../../../assets/svgComponents/Close";
-import { Check as CheckIcon } from "../../../assets/svgComponents/Check";
+import {Trash as TrashIcon} from "../../../assets/svgComponents/Trash";
 
-interface IEditRequestsAmbassadorsProps {
-  requestedAmbassadors: any[];
-  onAmbassadorAccepted: Function;
-  onAmbassadorCanceled: Function;
+interface IEditAmbassadorsProps {
+  ambassadors: any[];
+  onSave: Function;
 }
 
-export const EditRequestsAmbassadors: React.FC<
-  IEditRequestsAmbassadorsProps
-> = ({ requestedAmbassadors, onAmbassadorAccepted, onAmbassadorCanceled }) => {
-  const [currentRequests, setCurrentRequests] = useState(requestedAmbassadors);
+export const EditAmbassadors: React.FC<IEditAmbassadorsProps> = ({
+  ambassadors,
+  onSave,
+}) => {
+  const [currentAmbassadors, setCurrentAmbassadors] = useState(ambassadors);
 
   return (
     <>
@@ -31,16 +30,16 @@ export const EditRequestsAmbassadors: React.FC<
           <div className={styles.checkbox}>
             <MultiCheckbox
               checkboxState={
-                currentRequests.filter((item) => item.isChecked).length === 0
+                currentAmbassadors.filter((item) => item.isChecked).length === 0
                   ? CheckboxState.NotChecked
-                  : currentRequests.filter((item) => item.isChecked).length ===
-                    currentRequests.length
+                  : currentAmbassadors.filter((item) => item.isChecked)
+                      .length === currentAmbassadors.length
                   ? CheckboxState.AllChecked
                   : CheckboxState.AnyChecked
               }
               onChangeStatus={(status) =>
-                setCurrentRequests(
-                  currentRequests.map((tmpItem) => {
+                setCurrentAmbassadors(
+                  currentAmbassadors.map((tmpItem) => {
                     return {
                       ...tmpItem,
                       isChecked: status === CheckboxState.AllChecked,
@@ -52,14 +51,14 @@ export const EditRequestsAmbassadors: React.FC<
           </div>
           Выбрать все
         </div>
-        {currentRequests.map((item, index) => (
+        {currentAmbassadors.map((item, index) => (
           <div className={styles.requested_ambassador} key={index}>
             <div className={styles.checkbox}>
               <Checkbox
                 isChecked={item.isChecked}
                 onChangeStatus={(status) =>
-                  setCurrentRequests(
-                    currentRequests.map((tmpItem) => {
+                  setCurrentAmbassadors(
+                    currentAmbassadors.map((tmpItem) => {
                       if (tmpItem.id === item.id) {
                         return { ...tmpItem, isChecked: status };
                       } else {
@@ -73,55 +72,39 @@ export const EditRequestsAmbassadors: React.FC<
             <div className={styles.ambassador_item}>
               <UserCard userItem={item} />
             </div>
-            <div className={styles.ambassador_item_actions}>
-              <div
-                className={`${styles.button} ${styles.cancel}`}
-                onClick={() => onAmbassadorCanceled([item])}
-              >
-                <CloseIcon fill="#FF2941" />
-              </div>
-              <div
-                className={`${styles.button} ${styles.accept}`}
-                onClick={() => onAmbassadorAccepted([item])}
-              >
-                <CheckIcon fill="#FFFFFF" />
-              </div>
-            </div>
           </div>
         ))}
       </div>
-      <div className={modalStyles.actions}>
+      <div className={styles.bottom_actions}>
         <div className={styles.selected_count}>{`${
-          currentRequests.filter((item) => item.isChecked).length
+          currentAmbassadors.filter((item) => item.isChecked).length
         } выбрано`}</div>
+        <button
+          className={`${globalStyles.inverted} ${globalStyles.small} ${globalStyles.delete}`}
+          type="button"
+          disabled={currentAmbassadors.filter((item) => item.isChecked).length === 0}
+          onClick={() => onSave()}
+        >
+          <TrashIcon isDisabled={currentAmbassadors.filter((item) => item.isChecked).length === 0} />
+          Удалить
+        </button>
+      </div>
+      <div className={modalStyles.actions}>
+        <div />
         <div className={styles.buttons}>
           <button
             className={`${globalStyles.small} ${globalStyles.inverted}`}
             type="button"
-            disabled={
-              currentRequests.filter((item) => item.isChecked).length === 0
-            }
-            onClick={() =>
-              onAmbassadorCanceled(
-                currentRequests.filter((item) => item.isChecked)
-              )
-            }
+            onClick={() => onSave()}
           >
-            <span>Отклонить</span>
+            <span>Отменить</span>
           </button>
           <button
             className={globalStyles.small}
             type="button"
-            disabled={
-              currentRequests.filter((item) => item.isChecked).length === 0
-            }
-            onClick={() =>
-              onAmbassadorAccepted(
-                currentRequests.filter((item) => item.isChecked)
-              )
-            }
+            onClick={() => onSave()}
           >
-            <span>Одобрить</span>
+            <span>Сохранить изменения</span>
           </button>
         </div>
       </div>

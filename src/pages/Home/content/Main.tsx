@@ -4,6 +4,7 @@ import { UniversityModal } from "../../../modals/University/UniversityModal";
 import { GalleryModal } from "../../../modals/Gallery/GalleryModal";
 import { BookletsModal } from "../../../modals/Booklets/BookletsModal";
 import { SubscribersModal } from "../../../modals/Subscribers/SubscribersModal";
+import { StudentsModal } from "../../..//modals/Students/StudentsModal";
 import { AmbassadorsModal } from "../../..//modals/Ambassadors/AmbassadorsModal";
 
 import { BookletCard } from "../../../cards/booklet/BookletCard";
@@ -88,7 +89,7 @@ export const Main = () => {
         id: index,
         photo: TestAvatar,
         name: "Tom Smith",
-        university: "Ural Federal University",
+        isChecked: false,
       };
     });
 
@@ -100,6 +101,7 @@ export const Main = () => {
         photo: TestAvatar,
         name: "Tom Smith",
         university: "Ural Federal University",
+        isChecked: false,
       };
     });
 
@@ -111,12 +113,26 @@ export const Main = () => {
         photo: TestAvatar,
         name: "Tom Smith",
         university: "Ural Federal University",
+        isChecked: false,
       };
-    });
+    });    
+
+  const students = Array(29)
+  .fill(1)
+  .map((_item, index) => {
+    return {
+      id: index,
+      photo: TestAvatar,
+      name: "Tom Smith",
+      university: "Ural Federal University",
+      isChecked: false,
+    };
+  });
   const [isAboutModalShow, setIsAboutModalShow] = useState(false);
   const [isGalleryModalShow, setIsGalleryModalShow] = useState(false);
   const [isBookletsModalShow, setIsBookletsModalShow] = useState(false);
   const [isSubscribersModalShow, setIsSubscribersModalShow] = useState(false);
+  const [isStudentsModalShow, setIsStudentsModalShow] = useState(false);
   const [isAmbassadorsModalShow, setIsAmbassadorsModalShow] = useState(false);
 
   return (
@@ -140,6 +156,9 @@ export const Main = () => {
                 onClick={() => {
                   if (item.id === 0) {
                     setIsSubscribersModalShow(true);
+                  }
+                  if (item.id === 1) {
+                    setIsStudentsModalShow(true);
                   }
                   if (item.id === 2) {
                     setIsAmbassadorsModalShow(true);
@@ -372,6 +391,13 @@ export const Main = () => {
         subscribers={subscribers}
         onClose={() => {
           setIsSubscribersModalShow(false);
+        }}
+      />
+      <StudentsModal
+        isShow={isStudentsModalShow}
+        students={students}
+        onClose={() => {
+          setIsStudentsModalShow(false);
         }}
       />
       <AmbassadorsModal

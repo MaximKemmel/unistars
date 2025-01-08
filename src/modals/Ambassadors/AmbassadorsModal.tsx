@@ -1,11 +1,13 @@
 import { useEffect, useState } from "react";
 
+import { Ambassadors } from "./content/Ambassadors";
+import { EditRequestsAmbassadors } from "./content/EditRequestsAmbassadors";
+import { EditAmbassadors } from "./content/EditAmbassadors";
+
 import modalStyles from "../Modal.module.sass";
 import styles from "./AmbassadorsModal.module.sass";
 
 import { Close as CloseIcon } from "../../assets/svgComponents/Close";
-import { Ambassadors } from "./content/Ambassadors";
-import { EditRequestsAmbassadors } from "./content/EditRequestsAmbassadors";
 
 interface IAmbassadorsModalProps {
   isShow: boolean;
@@ -27,6 +29,7 @@ export const AmbassadorsModal: React.FC<IAmbassadorsModalProps> = ({
       requestedAmbassadors={requestedAmbassadors}
       setActiveSection={setActiveSection}
     />,
+    <EditAmbassadors ambassadors={ambassadors} onSave={() => {}} />,
     <EditRequestsAmbassadors
       requestedAmbassadors={requestedAmbassadors}
       onAmbassadorAccepted={() => {}}

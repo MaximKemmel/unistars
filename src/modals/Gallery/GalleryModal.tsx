@@ -7,7 +7,7 @@ import styles from "./GalleryModal.module.sass";
 
 import CloseIcon from "../../assets/svg/close.svg";
 import UploadIcon from "../../assets/svg/upload.svg";
-import TrashIcon from "../../assets/svg/trash.svg";
+import {Trash as TrashIcon} from "../../assets/svgComponents/Trash";
 
 interface IGalleryModalProps {
   isShow: boolean;
@@ -93,7 +93,7 @@ export const GalleryModal: React.FC<IGalleryModalProps> = ({ isShow, photos, onU
                     type="button"
                     onClick={() => onUpload()}
                   >
-                    <img src={TrashIcon} alt="" />
+                    <TrashIcon />
                     Удалить
                   </button>
                 </>

@@ -89,6 +89,16 @@ button[disabled]
     background: $disabled_neutral_color
     color: $active_neutral_color
 
+    &.inverted
+        border: none
+
+        &.delete
+            color: $active_neutral_color
+
+        span
+            background: none
+            -webkit-text-fill-color: $active_neutral_color
+
 textarea,
 input
     border-radius: 12px
