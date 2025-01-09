@@ -37,16 +37,16 @@ export const Subscribers: React.FC<ISubscribersProps> = ({ subscribers }) => {
 
   return (
     <div className={styles.subscribers_content}>
-      <div className={styles.search_input}>
+      <div className={modalStyles.search_input}>
         <input
           placeholder={"Поиск по подписчикам"}
           type="text"
           onChange={(event) => setSearchValue(event.target.value)}
           value={searchValue}
         />
-        <img className={styles.search_icon} src={SearchIcon} alt="" />
+        <img className={modalStyles.search_icon} src={SearchIcon} alt="" />
         {searchValue.length > 0 ? (
-          <div className={styles.clear} onClick={() => setSearchValue("")}>
+          <div className={modalStyles.clear} onClick={() => setSearchValue("")}>
             <CloseIcon fill="#68778D" />
           </div>
         ) : null}

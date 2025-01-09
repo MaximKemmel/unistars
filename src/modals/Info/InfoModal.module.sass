@@ -1,87 +1,38 @@
-$inactive_overlay_background_color: #000000
-$overlay_background_color: #00000033
-$modal_background_color: #FFFFFF
 $text_neutral_color: #202327
 $text_secondary_color: #939393
 
-.modal,
-.overlay
-    position: fixed
-    z-index: 21
+.modal_content
+    .close
+        position: absolute
+        z-index: 21
+        top: 15px
+        right: 15px
+        width: 32px
+        height: 32px
+        cursor: pointer
+        display: flex
+        justify-content: center
+        align-items: center
 
-.modal
-    height: 0
-    width: 0
-    top: 50%
-    left: 50%
-    transform: translate(-50%, -50%)
-    overflow: hidden
+        svg
+            width: 16px
+            height: auto
 
-    &.active
-        display: block
-        height: 100vh
-        width: 100vw
-        transform: translate(0)
-        top: 0
-        left: 0
+    .image
+        width: 180px
+        height: auto
 
-    .overlay
-        background: rgba(0, 0, 0, 0)
-        transition: all .15s ease-out
-        height: 100vh
-        width: 100%
-        top: 0
-        left: 0
-
-        &.active
-            background: $overlay_background_color
-
-    .modal_content
+    .text
         display: flex
         flex-direction: column
         align-items: center
-        gap: 32px
-        top: 50%
-        left: 50%
-        transform: translate(-50%, -50%)
-        position: absolute
-        z-index: 21
-        background-color: $modal_background_color
-        box-shadow: 0px 8px 50px -6px rgba(20, 23, 26, 0.12)
-        padding: 32px 20px
-        border-radius: 16px
+        gap: 16px
+        text-align: center
+        width: 360px
 
-        .close
-            position: absolute
-            z-index: 21
-            top: 15px
-            right: 15px
-            width: 32px
-            height: 32px
-            cursor: pointer
-            display: flex
-            justify-content: center
-            align-items: center
+        h3
+            color: $text_neutral_color
 
-            svg
-                width: 16px
-                height: auto
-
-        .image
-            width: 180px
-            height: auto
-
-        .text
-            display: flex
-            flex-direction: column
-            align-items: center
-            gap: 16px
-            text-align: center
-            width: 360px
-
-            h3
-                color: $text_neutral_color
-
-            .message
-                font-size: 18px
-                color: $text_secondary_color
+        .message
+            font-size: 18px
+            color: $text_secondary_color

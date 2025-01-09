@@ -1,3 +1,4 @@
+import modalStyles from "../Modal.module.sass";
 import styles from "./InfoModal.module.sass";
 
 import CloseIcon from "../../assets/svg/close.svg";
@@ -12,9 +13,9 @@ interface IInfoModalProps {
 
 export const InfoModal: React.FC<IInfoModalProps> = ({ isShow, title, message, image, onClose }) => {
   return (
-    <div className={`${styles.modal} ${isShow ? styles.active : ""}`}>
-      <div className={`${styles.overlay} ${isShow ? styles.active : ""}`} onClick={() => onClose()} />
-      <div className={styles.modal_content}>
+    <div className={`${modalStyles.modal} ${isShow ? modalStyles.active : ""}`}>
+      <div className={`${modalStyles.overlay} ${isShow ? modalStyles.active : ""}`} onClick={() => onClose()} />
+      <div className={`${modalStyles.modal_content} ${styles.modal_content}`}>
         <div className={styles.close} onClick={() => onClose()}>
           <img src={CloseIcon} alt="" />
         </div>

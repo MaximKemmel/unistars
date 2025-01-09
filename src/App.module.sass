@@ -7,6 +7,7 @@ $delete_color: #FF3B30
 $active_neutral_color: #68778D
 $placeholder_neutral_color: #8496AE
 $disabled_neutral_color: #F1F4F9
+$scrollbar_color: #E2E8F0
 
 @font-face
     font-family: "SFProRegular"
@@ -17,6 +18,8 @@ $disabled_neutral_color: #F1F4F9
     margin: 0px
     font-family: 'Open Sans', serif
     line-height: 1.33
+    scrollbar-width: thin
+    scrollbar-color: $scrollbar_color $background_primary_color
 
 html,
 body
@@ -27,6 +30,19 @@ body
     padding: 0
     background-color: $background_secondary_color
 
+::-webkit-scrollbar 
+  width: 12px
+
+::-webkit-scrollbar-track 
+  background: $background_primary_color
+  border-radius: 0
+  width: 12px
+
+::-webkit-scrollbar-thumb 
+  background-color: $scrollbar_color
+  border-radius: 0
+  width: 12px
+ 
 h2
     font-size: 28px
     font-weight: 700

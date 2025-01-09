@@ -5,6 +5,9 @@ $divider_color: #E2E8F0
 $text_primary_color: #000000
 $text_neutral_color: #202327
 $text_secondary_color: #939393
+$text_secondary_neutral_color: #8496AE
+$text_action_alternative_color: #7B61FF
+$text_separator_color: #68778D
 
 .modal,
 .overlay
@@ -53,6 +56,9 @@ $text_secondary_color: #939393
         box-shadow: 0px 8px 50px -6px rgba(20, 23, 26, 0.12)
         border-radius: 16px
 
+        &.wide
+            width: 1000px
+
         .head
             display: flex
             align-items: center
@@ -76,6 +82,36 @@ $text_secondary_color: #939393
                 svg
                     width: 16px
                     height: auto
+
+        .search_input
+            width: 100%
+            position: relative
+
+            input
+                padding: 0 45px
+                width: calc(100% - 92px)
+
+            .search_icon
+                position: absolute
+                z-index: 1
+                top: 50%
+                left: 12px
+                transform: translateY(-50%)
+                width: 24px
+                height: auto
+
+            .clear
+                position: absolute
+                z-index: 1
+                top: 50%
+                right: 12px
+                transform: translateY(-50%)
+                display: flex
+                justify-content: center
+                align-items: center
+                width: 28px
+                height: 28px
+                cursor: pointer
 
         .empty_container
             display: flex
@@ -102,6 +138,153 @@ $text_secondary_color: #939393
                 .empty_description
                     font-size: 16px
                     color: $text_secondary_color
+
+        .form
+            display: flex
+            flex-direction: column
+            gap: 24px
+            width: 100%
+            overflow: hidden
+
+            .form_content
+                display: flex
+                flex-direction: column
+                gap: 24px
+                width: calc(100% - 64px)
+                padding: 16px 32px
+                overflow-y: auto
+
+                .part_container_multi
+                    width: 100%
+                    display: flex
+                    justify-content: space-between
+                    gap: 24px
+
+                    .part_container
+                        width: calc(50% - 25px)
+
+                    .form_separator
+                        height: auto
+                        width: 0
+                        border-top: none
+                        border-right: 1px dashed $divider_color
+
+                .form_separator
+                    width: 100%
+                    height: 0
+                    border-top: 1px dashed $divider_color
+
+                .part_container
+                    display: flex
+                    flex-direction: column
+                    gap: 16px
+                    width: 100%
+
+                    .part_container_title
+                        font-size: 16px
+                        color: $text_neutral_color
+                        font-weight: 600
+
+                    .part_multi
+                        display: flex
+                        justify-content: space-between
+                        gap: 16px
+
+                        &.double
+                            .part
+                                width: calc(50% - 8px)
+
+                        &.triple
+                            .part
+                                width: calc(33% - 11px)
+
+                    .part
+                        display: flex
+                        flex-direction: column
+                        align-items: start
+                        gap: 16px
+                        flex-shrink: 0
+
+                        .part_label
+                            display: flex
+                            align-items: center
+                            gap: 8px
+                            font-size: 16px
+                            color: $text_neutral_color
+
+                            img
+                                width: 16px
+                                height: auto
+                                cursor: pointer
+
+                        textarea
+                            width: calc(100% - 32px)
+                            height: 100px
+
+                        input
+                            width: calc(100% - 32px)     
+
+                        .input_multi
+                            display: flex
+                            align-items: center
+                            justify-content: space-between
+                            width: 100% 
+
+                            .separator
+                                font-size: 16px
+                                color: $text_separator_color
+
+                            input
+                                width: calc(50% - 44px)    
+
+                        .input_length,
+                        .input_description
+                            display: flex
+                            margin-top: -12px
+                            font-size: 14px
+                            color: $text_secondary_neutral_color
+
+                        .input_length                            
+                            align-self: end
+
+                        .location_selector
+                            display: flex
+                            align-items: center
+                            gap: 6px
+                            height: 48px
+                            cursor: pointer
+
+                            img
+                                width: 24px
+                                height: auto
+
+                            .selector_label
+                                color: $text_action_alternative_color
+                                font-size: 16px
+                        
+                        .cover
+                            display: flex
+                            align-items: center
+                            gap: 16px
+
+                            .upload
+                                display: flex
+                                align-items: center
+                                justify-content: center
+                                height: 48px
+                                width: 48px
+                                border-radius: 12px
+                                border: 1px solid $divider_color
+                                cursor: pointer
+
+                                img
+                                    width: 24px
+                                    height: auto
+
+                            .cover_placeholder
+                                font-size: 14px
+                                color: $text_secondary_neutral_color
+                                font-weight: 400
 
         .actions
             display: flex

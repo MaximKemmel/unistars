@@ -4,7 +4,7 @@ import { Dropdown } from "../../components/dropdown/Dropdown";
 import { Toggle } from "../../components/toggle/Toggle";
 
 import globalStyles from "../../App.module.sass";
-import styles from "./EventModal.module.sass";
+import modalStyles from "../Modal.module.sass";
 
 import { IDropdownItem } from "../../types/dropdownItem";
 import { IEventType } from "../../types/eventType";
@@ -22,7 +22,12 @@ interface IEventModalProps {
   onClose: Function;
 }
 
-export const EventModal: React.FC<IEventModalProps> = ({ isShow, eventInfo, onSave, onClose }) => {
+export const EventModal: React.FC<IEventModalProps> = ({
+  isShow,
+  eventInfo,
+  onSave,
+  onClose,
+}) => {
   const [currentInfo, setCurrentInfo] = useState(eventInfo);
   const [activeComponent, setActiveComponent] = useState(DropdownType.None);
 
@@ -51,22 +56,29 @@ export const EventModal: React.FC<IEventModalProps> = ({ isShow, eventInfo, onSa
   };
 
   return (
-    <div className={`${styles.modal} ${isShow ? styles.active : ""}`}>
-      <div className={`${styles.overlay} ${isShow ? styles.active : ""}`} onClick={() => onClose()} />
-      <div className={styles.modal_content}>
-        <div className={styles.head}>
-          <h4>{eventInfo.id > -1 ? "Редактирование ивента" : "Создание ивента"}</h4>
-          <div className={styles.close} onClick={() => onClose()}>
+    <div className={`${modalStyles.modal} ${isShow ? modalStyles.active : ""}`}>
+      <div
+        className={`${modalStyles.overlay} ${isShow ? modalStyles.active : ""}`}
+        onClick={() => onClose()}
+      />
+      <div className={`${modalStyles.modal_content} ${modalStyles.wide}`}>
+        <div className={modalStyles.head}>
+          <h4>
+            {eventInfo.id > -1 ? "Редактирование ивента" : "Создание ивента"}
+          </h4>
+          <div className={modalStyles.close} onClick={() => onClose()}>
             <img src={CloseIcon} alt="" />
           </div>
         </div>
-        <form onSubmit={handleOnSubmit}>
-          <div className={styles.form_content} id="form">
-            <div className={styles.part_container}>
-              <div className={styles.part_container_title}>Основное</div>
-              <div className={`${styles.part_multi} ${styles.double}`}>
-                <div className={styles.part}>
-                  <div className={styles.part_label}>Название ивента</div>
+        <form onSubmit={handleOnSubmit} className={modalStyles.form}>
+          <div className={modalStyles.form_content} id="form">
+            <div className={modalStyles.part_container}>
+              <div className={modalStyles.part_container_title}>Основное</div>
+              <div
+                className={`${modalStyles.part_multi} ${modalStyles.double}`}
+              >
+                <div className={modalStyles.part}>
+                  <div className={modalStyles.part_label}>Название ивента</div>
                   <input
                     placeholder={"Введите название ивента"}
                     type="text"
@@ -80,35 +92,37 @@ export const EventModal: React.FC<IEventModalProps> = ({ isShow, eventInfo, onSa
                     value={currentInfo.name}
                   />
                 </div>
-                <div className={styles.part}>
-                  <div className={styles.part_label}>Обложка ивента</div>
-                  <div className={styles.cover}>
-                    <div className={styles.upload}>
+                <div className={modalStyles.part}>
+                  <div className={modalStyles.part_label}>Обложка ивента</div>
+                  <div className={modalStyles.cover}>
+                    <div className={modalStyles.upload}>
                       <img src={UploadImageIcon} alt="" />
                     </div>
-                    <div className={styles.cover_placeholder}>Выберите обложку для ивента</div>
+                    <div className={modalStyles.cover_placeholder}>
+                      Выберите обложку для ивента
+                    </div>
                   </div>
                 </div>
               </div>
-              <div className={`${styles.part_multi} ${styles.single}`}>
-                <div className={styles.part}>
-                  <div className={styles.part_label}>Описание</div>
-                  <textarea
-                    placeholder={"Введите описание ивента"}
-                    required
-                    onChange={(event) =>
-                      setCurrentInfo({
-                        ...currentInfo,
-                        description: event.target.value.trim(),
-                      })
-                    }
-                    value={currentInfo.description}
-                  />
-                </div>
+              <div className={modalStyles.part}>
+                <div className={modalStyles.part_label}>Описание</div>
+                <textarea
+                  placeholder={"Введите описание ивента"}
+                  required
+                  onChange={(event) =>
+                    setCurrentInfo({
+                      ...currentInfo,
+                      description: event.target.value.trim(),
+                    })
+                  }
+                  value={currentInfo.description}
+                />
               </div>
-              <div className={`${styles.part_multi} ${styles.double}`}>
-                <div className={styles.part}>
-                  <div className={styles.part_label}>Тип ивента</div>
+              <div
+                className={`${modalStyles.part_multi} ${modalStyles.double}`}
+              >
+                <div className={modalStyles.part}>
+                  <div className={modalStyles.part_label}>Тип ивента</div>
                   <Dropdown
                     placeholder="Выберите тип ивента"
                     activeComponent={activeComponent}
@@ -134,8 +148,8 @@ export const EventModal: React.FC<IEventModalProps> = ({ isShow, eventInfo, onSa
                     }}
                   />
                 </div>
-                <div className={styles.part}>
-                  <div className={styles.part_label}>Видимость</div>
+                <div className={modalStyles.part}>
+                  <div className={modalStyles.part_label}>Видимость</div>
                   <Dropdown
                     placeholder="Выберите, кому будет доступен ивент"
                     activeComponent={activeComponent}
@@ -151,120 +165,125 @@ export const EventModal: React.FC<IEventModalProps> = ({ isShow, eventInfo, onSa
                         return {
                           id: typeItem.id,
                           text: typeItem.type,
-                          is_selected: currentInfo.event_visibility === typeItem.id,
+                          is_selected:
+                            currentInfo.event_visibility === typeItem.id,
                         } as IDropdownItem;
                       }) as IDropdownItem[]),
                     ]}
                     onItemSelect={(item: IDropdownItem) => {
-                      setCurrentInfo({ ...currentInfo, event_visibility: item.id });
+                      setCurrentInfo({
+                        ...currentInfo,
+                        event_visibility: item.id,
+                      });
                       setActiveComponent(DropdownType.None);
                     }}
                   />
                 </div>
               </div>
             </div>
-            <div className={styles.form_separator} />
-            <div className={styles.part_container_multi}>
-              <div className={styles.part_container}>
-                <div className={styles.part_container_title}>Время проведения</div>
-                <div className={`${styles.part_multi} ${styles.single}`}>
-                  <div className={styles.part}>
-                    <div className={styles.part_label}>Дата</div>
-                    <input
-                      placeholder={"Введите дату ивента"}
-                      type="text"
-                      required
-                      onChange={(event) =>
-                        setCurrentInfo({
-                          ...currentInfo,
-                          date: event.target.value.trim(),
-                        })
-                      }
-                      value={currentInfo.date}
-                    />
-                  </div>
+            <div className={modalStyles.form_separator} />
+            <div className={modalStyles.part_container_multi}>
+              <div className={modalStyles.part_container}>
+                <div className={modalStyles.part_container_title}>
+                  Время проведения
                 </div>
-                <div className={`${styles.part_multi} ${styles.single}`}>
-                  <div className={styles.part}>
-                    <div className={styles.part_label}>Время</div>
-                    <input
-                      placeholder={"Введите время ивента"}
-                      type="text"
-                      required
-                      onChange={(event) =>
-                        setCurrentInfo({
-                          ...currentInfo,
-                          time: event.target.value.trim(),
-                        })
-                      }
-                      value={currentInfo.time}
-                    />
-                  </div>
+                <div className={modalStyles.part}>
+                  <div className={modalStyles.part_label}>Дата</div>
+                  <input
+                    placeholder={"Введите дату ивента"}
+                    type="text"
+                    required
+                    onChange={(event) =>
+                      setCurrentInfo({
+                        ...currentInfo,
+                        date: event.target.value.trim(),
+                      })
+                    }
+                    value={currentInfo.date}
+                  />
+                </div>
+                <div className={modalStyles.part}>
+                  <div className={modalStyles.part_label}>Время</div>
+                  <input
+                    placeholder={"Введите время ивента"}
+                    type="text"
+                    required
+                    onChange={(event) =>
+                      setCurrentInfo({
+                        ...currentInfo,
+                        time: event.target.value.trim(),
+                      })
+                    }
+                    value={currentInfo.time}
+                  />
                 </div>
               </div>
-              <div className={styles.form_separator} />
-              <div className={styles.part_container}>
-                <div className={styles.part_container_title}>Место проведения</div>
-                <div className={`${styles.part_multi} ${styles.single}`}>
-                  <div className={styles.part}>
-                    <div className={styles.part_label}>Форма ивента</div>
-                    <Toggle
-                      selectedIndex={currentInfo.event_kind}
-                      items={
-                        [
-                          {
-                            id: 0,
-                            text: "Офлайн",
-                          } as IToggleItem,
-                          {
-                            id: 1,
-                            text: "Онлайн",
-                          } as IToggleItem,
-                        ] as IToggleItem[]
-                      }
-                      onItemSelect={(item: IToggleItem) => setCurrentInfo({ ...currentInfo, event_kind: item.id })}
-                    />
-                  </div>
+              <div className={modalStyles.form_separator} />
+              <div className={modalStyles.part_container}>
+                <div className={modalStyles.part_container_title}>
+                  Место проведения
                 </div>
-                <div className={`${styles.part_multi} ${styles.single}`}>
-                  <div className={styles.part}>
-                    <div className={styles.part_label}>Место проведения</div>
-                    <input
-                      placeholder={"Введите место проведения ивента"}
-                      type="text"
-                      required
-                      onChange={(event) =>
-                        setCurrentInfo({
-                          ...currentInfo,
-                          place: event.target.value.trim(),
-                        })
-                      }
-                      value={currentInfo.place}
-                    />
-                  </div>
+                <div className={modalStyles.part}>
+                  <div className={modalStyles.part_label}>Форма ивента</div>
+                  <Toggle
+                    selectedIndex={currentInfo.event_kind}
+                    items={
+                      [
+                        {
+                          id: 0,
+                          text: "Офлайн",
+                        } as IToggleItem,
+                        {
+                          id: 1,
+                          text: "Онлайн",
+                        } as IToggleItem,
+                      ] as IToggleItem[]
+                    }
+                    onItemSelect={(item: IToggleItem) =>
+                      setCurrentInfo({ ...currentInfo, event_kind: item.id })
+                    }
+                  />
                 </div>
-                <div className={`${styles.part_multi} ${styles.single}`}>
-                  <div className={styles.part}>
-                    <div className={styles.part_label}>Ссылка на дополнительную информацию</div>
-                    <input
-                      placeholder={"Введите ссылку на сайт или другие источники"}
-                      type="text"
-                      required
-                      onChange={(event) =>
-                        setCurrentInfo({
-                          ...currentInfo,
-                          site: event.target.value.trim(),
-                        })
-                      }
-                      value={currentInfo.site}
-                    />
+                <div className={modalStyles.part}>
+                  <div className={modalStyles.part_label}>Место проведения</div>
+                  <input
+                    placeholder={"Введите место проведения ивента"}
+                    type="text"
+                    required
+                    onChange={(event) =>
+                      setCurrentInfo({
+                        ...currentInfo,
+                        place: event.target.value.trim(),
+                      })
+                    }
+                    value={currentInfo.place}
+                  />
+                </div>
+                <div className={modalStyles.part}>
+                  <div className={modalStyles.part_label}>
+                    Ссылка на дополнительную информацию
                   </div>
+                  <input
+                    placeholder={"Введите ссылку на сайт или другие источники"}
+                    type="text"
+                    required
+                    onChange={(event) =>
+                      setCurrentInfo({
+                        ...currentInfo,
+                        site: event.target.value.trim(),
+                      })
+                    }
+                    value={currentInfo.site}
+                  />
                 </div>
               </div>
             </div>
           </div>
-          <div className={styles.form_actions}>
-            <button className={`${globalStyles.inverted} ${globalStyles.small}`} type="button">
+          <div className={modalStyles.actions}>
+            <button
+              className={`${globalStyles.inverted} ${globalStyles.small}`}
+              type="button"
+            >
               <span>Отменить</span>
             </button>
             <button className={globalStyles.small} type="submit">
