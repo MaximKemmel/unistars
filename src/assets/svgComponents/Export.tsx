@@ -11,7 +11,7 @@ export const Export: React.FC<IExportProps> = ({ isDisabled }) => {
         strokeLinecap="round"
         strokeLinejoin="round"
       />
-      <path d="M8 10V2.41333" stroke={isDisabled ? "#68778D" : "#FFFFFF"} stroke-linecap="round" stroke-linejoin="round" />
+      <path d="M8 10V2.41333" stroke={isDisabled ? "#68778D" : "#FFFFFF"} strokeLinecap="round" strokeLinejoin="round" />
       <path
         d="M10.2338 3.89999L8.00042 1.66666L5.76709 3.89999"
         stroke={isDisabled ? "#68778D" : "#FFFFFF"}

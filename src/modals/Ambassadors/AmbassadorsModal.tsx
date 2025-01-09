@@ -52,7 +52,7 @@ export const AmbassadorsModal: React.FC<IAmbassadorsModalProps> = ({
             <CloseIcon />
           </div>
         </div>
-        <div className={styles.ambassadors_container}>{contentSections[activeSection]}</div>
+        {contentSections[activeSection]}
       </div>
     </div>
   );

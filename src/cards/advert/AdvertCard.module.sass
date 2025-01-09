@@ -1,0 +1,135 @@
+$background_secondary_color: #F5F5F5
+$text_primary_color: #FFFFFF
+$text_info_color: #323A43
+$text_info_secondary_color: #939393
+$text_neutral_description_color: #8496AE
+$published_background_color: #EEF6EE
+$published_border_color: #5BA85A
+$moderation_background_color: #EDF4FC
+$moderation_border_color: #007AFF
+
+.advert_container
+    position: relative
+    display: flex
+    flex-direction: column
+    gap: 16px
+    width: 100%
+    padding-bottom: 24px
+    background-color: $background_secondary_color
+    overflow: hidden
+    border-radius: 16px
+
+    .advert_head
+        position: relative
+        display: flex
+        width: calc(100% - 32px)
+        padding: 16px
+        border-radius: 16px
+        overflow: hidden
+        filter: drop-shadow(0px 4px 24px rgba(0, 0, 0, 0.08))
+
+        img
+            position: absolute
+            z-index: 1
+            top: 0
+            left: 0
+            width: 100%
+            aspect-ratio: 2/1
+
+        .photo_overlay
+            position: absolute
+            background: linear-gradient(90deg, #363636 24%, rgba(0, 0, 0, 0) 67.5%)
+            z-index: 2
+            top: 0
+            left: 0
+            width: 100%
+            height: 100%
+
+        .advert_info
+            z-index: 3
+            display: flex
+            flex-direction: column
+            justify-content: center
+            gap: 3px
+            width: calc(100% - 132px)
+            color: $text_primary_color
+
+            .advert_name
+                font-size: 16px
+                font-weight: 700
+
+            .advert_description
+                font-size: 12px
+                font-weight: 600
+
+        .advert_status
+            position: absolute
+            z-index: 3
+            top: 6px
+            right: 6px
+            padding: 4px 8px
+            font-size: 10px
+            font-weight: 600
+            border-radius: 25px
+
+            &.published
+                color: $published_border_color
+                border: 1px solid $published_border_color
+                background-color: $published_background_color
+
+            &.moderation
+                color: $moderation_border_color
+                border: 1px solid $moderation_border_color
+                background-color: $moderation_background_color
+
+    .additional_info
+        display: flex
+        flex-direction: column
+        gap: 16px
+        width: calc(100% - 32px)
+        padding: 0 16px
+
+        .info_item
+            display: flex
+            align-items: center
+            gap: 4px
+            font-size: 16px
+            color: $text_info_color
+            font-weight: 700
+
+            .item_icon
+                width: 16px
+                height: auto
+
+        .info_progress_item
+            display: flex
+            flex-direction: column
+            gap: 8px
+            width: 100%
+
+            .progress_head
+                display: flex
+                justify-content: space-between
+                align-items: center
+                width: 100%
+
+                .info_limit
+                    font-size: 12px
+                    color: $text_info_secondary_color
+                    font-weight: 400
+
+            .progress_bar
+                position: relative
+                display: flex
+                height: 8px
+                background-color: $text_primary_color
+                border-radius: 12px
+                overflow: hidden
+
+                .progress
+                    position: absolute
+                    z-index: 1
+                    left: 0
+                    height: 100%
+                    border-radius: inherit
+                    background: linear-gradient(180deg, #9D70FF 0%, #7460FF 100%)

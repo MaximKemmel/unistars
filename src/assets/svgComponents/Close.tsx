@@ -9,8 +9,8 @@ export const Close: React.FC<ICloseProps> = ({ fill, isBold }) => {
       {isBold ? (
         <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path
-            fill-rule="evenodd"
-            clip-rule="evenodd"
+            fillRule="evenodd"
+            clipRule="evenodd"
             d="M3.75699 2.34326L2.34277 3.75748L6.58541 8.00012L2.34277 12.2428L3.75699 13.657L7.99963 9.41433L12.2423 13.657L13.6565 12.2428L9.41384 8.00012L13.6565 3.75748L12.2423 2.34326L7.99963 6.5859L3.75699 2.34326Z"
             fill={fill ?? "#202327"}
           />

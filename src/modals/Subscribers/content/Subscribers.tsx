@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { UserCard } from "../../../cards/user/UserCard";
 import { Dropdown } from "../../../components/dropdown/Dropdown";
 
+import modalStyles from "../../Modal.module.sass";
 import styles from "../SubscribersModal.module.sass";
 
 import { IDropdownItem } from "../../../types/dropdownItem";
@@ -78,8 +79,8 @@ export const Subscribers: React.FC<ISubscribersProps> = ({ subscribers }) => {
       </div>
       <div className={styles.subscribers_count}>{`Найдено: ${filteredSubscribers.length}`}</div>
       {subscribers.length === 0 ? (
-        <div className={styles.empty_subscribers}>
-          <img src={NothingFound} alt="" />
+        <div className={modalStyles.empty_container}>
+          <img className={modalStyles.empty_image} src={NothingFound} alt="" />
           <div className={styles.empty_info}>
             <div className={styles.empty_title}>Ничего не найдено</div>
             <div className={styles.empty_description}>У вас пока нет подписчиков</div>
@@ -88,11 +89,11 @@ export const Subscribers: React.FC<ISubscribersProps> = ({ subscribers }) => {
       ) : (
         <>
           {filteredSubscribers.length === 0 ? (
-            <div className={styles.empty_subscribers}>
-              <img src={NothingFound} alt="" />
-              <div className={styles.empty_info}>
-                <div className={styles.empty_title}>Ничего не найдено</div>
-                <div className={styles.empty_description}>Введите другие параметры поиска</div>
+            <div className={modalStyles.empty_container}>
+              <img className={modalStyles.empty_image} src={NothingFound} alt="" />
+              <div className={modalStyles.empty_info}>
+                <div className={modalStyles.empty_title}>Ничего не найдено</div>
+                <div className={modalStyles.empty_description}>Введите другие параметры поиска</div>
               </div>
             </div>
           ) : (

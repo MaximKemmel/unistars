@@ -1,20 +1,21 @@
 $background_primary_color: #FFFFFF
 $text_primary_color: #000000
 $text_secondary_color: #939393
+$text_neutral_color: #8496AE
 $text_action_color: #7B61FF
 $border_color: #CBD5E0
 
 .modal_content
     width: 500px
 
-    .students_container
+    .workers_container
         display: flex
         flex-direction: column
         gap: 24px
         width: 100%
         overflow: hidden
 
-        .students_content
+        .workers_content
             display: flex
             flex-wrap: wrap
             gap: 12px
@@ -52,14 +53,33 @@ $border_color: #CBD5E0
                     height: 28px
                     cursor: pointer
 
-            .students_count
+            .workers_count
                 font-size: 14px
                 color: $text_primary_color
 
-            .student_item
+            .worker_item
                 width: 100%
 
-            .students_selector
+                &.bordered
+                    padding: 0 8px
+                    border-radius: 16px
+                    border: 1px solid $border_color
+
+                .popup_item
+                    display: flex
+                    justify-content: space-between
+                    align-items: center
+                    width: 202px
+                    padding: 16px 24px
+                    font-size: 16px
+                    color: $text_primary_color
+                    cursor: pointer
+
+                    img
+                        width: 24px
+                        height: auto
+
+            .workers_selector
                 display: flex
                 align-items: center
                 gap: 12px
@@ -68,11 +88,43 @@ $border_color: #CBD5E0
                 font-size: 16px
                 color: $text_primary_color
 
-            .students_separator
-                height: 0
+            .rights_options
+                margin-top: 12px
+                display: flex
+                flex-direction: column
+                gap: 16px
+
+                .rights_option
+                    display: flex
+                    align-items: center
+                    gap: 6px
+                    width: 100%
+                    font-size: 16px
+                    color: $text_primary_color
+
+                    .checkbox
+                        display: flex
+                        align-items: center
+                        justify-content: center
+                        width: 32px
+                        height: 32px
+
+            form
+                display: flex
+                flex-direction: column
+                gap: 24px
                 width: 100%
-                border-top: none
-                border-top: 1px dashed $border_color
+
+                .form_info
+                    font-size: 16px
+                    color: $text_primary_color
+
+                .role_length
+                    display: flex
+                    align-self: end
+                    margin-top: -20px
+                    font-size: 14px
+                    color: $text_neutral_color
 
     .bottom_actions
         margin-top: -12px

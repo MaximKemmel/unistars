@@ -5,37 +5,37 @@ import { MultiCheckbox } from "../../../components/checkbox/MultiCheckbox";
 
 import globalStyles from "../../../App.module.sass";
 import modalStyles from "../../Modal.module.sass";
-import styles from "../AmbassadorsModal.module.sass";
+import styles from "../WorkersModal.module.sass";
 
 import { CheckboxState } from "../../../enums/checkboxState";
 
 import { Trash as TrashIcon } from "../../../assets/svgComponents/Trash";
 
-interface IEditAmbassadorsProps {
-  ambassadors: any[];
+interface IEditWorkersProps {
+  workers: any[];
   onSave: Function;
 }
 
-export const EditAmbassadors: React.FC<IEditAmbassadorsProps> = ({ ambassadors, onSave }) => {
-  const [currentAmbassadors, setCurrentAmbassadors] = useState(ambassadors);
+export const EditWorkers: React.FC<IEditWorkersProps> = ({ workers, onSave }) => {
+  const [currentWorkers, setCurrentWorkers] = useState(workers);
 
   return (
     <>
-      <div className={styles.ambassadors_container}>
-        <div className={styles.ambassadors_content}>
-          <div className={styles.ambassadors_selector}>
+      <div className={styles.workers_container}>
+        <div className={styles.workers_content}>
+          <div className={styles.workers_selector}>
             <div className={styles.checkbox}>
               <MultiCheckbox
                 checkboxState={
-                  currentAmbassadors.filter((item) => item.isChecked).length === 0
+                  currentWorkers.filter((item) => item.isChecked).length === 0
                     ? CheckboxState.NotChecked
-                    : currentAmbassadors.filter((item) => item.isChecked).length === currentAmbassadors.length
+                    : currentWorkers.filter((item) => item.isChecked).length === currentWorkers.length
                     ? CheckboxState.AllChecked
                     : CheckboxState.AnyChecked
                 }
                 onChangeStatus={(status) =>
-                  setCurrentAmbassadors(
-                    currentAmbassadors.map((tmpItem) => {
+                  setCurrentWorkers(
+                    currentWorkers.map((tmpItem) => {
                       return {
                         ...tmpItem,
                         isChecked: status === CheckboxState.AllChecked,
@@ -47,14 +47,14 @@ export const EditAmbassadors: React.FC<IEditAmbassadorsProps> = ({ ambassadors, 
             </div>
             Выбрать все
           </div>
-          {currentAmbassadors.map((item, index) => (
-            <div className={styles.ambassador_item} key={index}>
+          {currentWorkers.map((item, index) => (
+            <div className={styles.worker_item} key={index}>
               <UserCard
                 userItem={item}
                 isCheckedItem={true}
                 onCheckedChange={(status) =>
-                  setCurrentAmbassadors(
-                    currentAmbassadors.map((tmpItem) => {
+                  setCurrentWorkers(
+                    currentWorkers.map((tmpItem) => {
                       if (tmpItem.id === item.id) {
                         return { ...tmpItem, isChecked: status };
                       } else {
@@ -68,16 +68,14 @@ export const EditAmbassadors: React.FC<IEditAmbassadorsProps> = ({ ambassadors, 
           ))}
         </div>
         <div className={styles.bottom_actions}>
-          <div className={styles.selected_count}>{`${
-            currentAmbassadors.filter((item) => item.isChecked).length
-          } выбрано`}</div>
+          <div className={styles.selected_count}>{`${currentWorkers.filter((item) => item.isChecked).length} выбрано`}</div>
           <button
             className={`${globalStyles.inverted} ${globalStyles.small} ${globalStyles.delete}`}
             type="button"
-            disabled={currentAmbassadors.filter((item) => item.isChecked).length === 0}
+            disabled={currentWorkers.filter((item) => item.isChecked).length === 0}
             onClick={() => onSave()}
           >
-            <TrashIcon isDisabled={currentAmbassadors.filter((item) => item.isChecked).length === 0} />
+            <TrashIcon isDisabled={currentWorkers.filter((item) => item.isChecked).length === 0} />
             Удалить
           </button>
         </div>

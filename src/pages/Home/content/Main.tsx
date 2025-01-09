@@ -6,6 +6,7 @@ import { BookletsModal } from "../../../modals/Booklets/BookletsModal";
 import { SubscribersModal } from "../../../modals/Subscribers/SubscribersModal";
 import { StudentsModal } from "../../..//modals/Students/StudentsModal";
 import { AmbassadorsModal } from "../../..//modals/Ambassadors/AmbassadorsModal";
+import { WorkersModal } from "../../..//modals/Workers/WorkersModal";
 
 import { BookletCard } from "../../../cards/booklet/BookletCard";
 
@@ -89,6 +90,7 @@ export const Main = () => {
         id: index,
         photo: TestAvatar,
         name: "Tom Smith",
+        description: "Ural Federal University",
         isChecked: false,
       };
     });
@@ -100,7 +102,7 @@ export const Main = () => {
         id: index,
         photo: TestAvatar,
         name: "Tom Smith",
-        university: "Ural Federal University",
+        description: "Ural Federal University",
         isChecked: false,
       };
     });
@@ -112,28 +114,41 @@ export const Main = () => {
         id: index + 100,
         photo: TestAvatar,
         name: "Tom Smith",
+        description: "Ural Federal University",
+        isChecked: false,
+      };
+    });
+
+  const students = Array(29)
+    .fill(1)
+    .map((_item, index) => {
+      return {
+        id: index,
+        photo: TestAvatar,
+        name: "Tom Smith",
         university: "Ural Federal University",
         isChecked: false,
       };
-    });    
+    });
 
-  const students = Array(29)
-  .fill(1)
-  .map((_item, index) => {
-    return {
-      id: index,
-      photo: TestAvatar,
-      name: "Tom Smith",
-      university: "Ural Federal University",
-      isChecked: false,
-    };
-  });
+  const workers = Array(29)
+    .fill(1)
+    .map((_item, index) => {
+      return {
+        id: index,
+        photo: TestAvatar,
+        name: "Tom Smith",
+        university: "Ural Federal University",
+        isChecked: false,
+      };
+    });
   const [isAboutModalShow, setIsAboutModalShow] = useState(false);
   const [isGalleryModalShow, setIsGalleryModalShow] = useState(false);
   const [isBookletsModalShow, setIsBookletsModalShow] = useState(false);
   const [isSubscribersModalShow, setIsSubscribersModalShow] = useState(false);
   const [isStudentsModalShow, setIsStudentsModalShow] = useState(false);
   const [isAmbassadorsModalShow, setIsAmbassadorsModalShow] = useState(false);
+  const [isWorkersModalShow, setIsWorkersModalShow] = useState(false);
 
   return (
     <div className={styles.content}>
@@ -162,6 +177,9 @@ export const Main = () => {
                   }
                   if (item.id === 2) {
                     setIsAmbassadorsModalShow(true);
+                  }
+                  if (item.id === 3) {
+                    setIsWorkersModalShow(true);
                   }
                 }}
               >
@@ -406,6 +424,13 @@ export const Main = () => {
         requestedAmbassadors={requestedAmbassadors}
         onClose={() => {
           setIsAmbassadorsModalShow(false);
+        }}
+      />
+      <WorkersModal
+        isShow={isWorkersModalShow}
+        workers={workers}
+        onClose={() => {
+          setIsWorkersModalShow(false);
         }}
       />
     </div>

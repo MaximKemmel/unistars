@@ -7,8 +7,6 @@ import modalStyles from "../../Modal.module.sass";
 import styles from "../AmbassadorsModal.module.sass";
 
 import NothingFound from "../../../assets/svg/nothing-found.svg";
-import { Close as CloseIcon } from "../../../assets/svgComponents/Close";
-import { Check as CheckIcon } from "../../../assets/svgComponents/Check";
 
 interface IAmbassadorsProps {
   ambassadors: any[];
@@ -27,74 +25,65 @@ export const Ambassadors: React.FC<IAmbassadorsProps> = ({ ambassadors, requeste
 
   return (
     <>
-      <div className={styles.ambassadors_content}>
-        {ambassadors.length + requestedAmbassadors.length === 0 ? (
-          <div className={styles.empty_ambassadors}>
-            <img src={NothingFound} alt="" />
-            <div className={styles.empty_info}>
-              <div className={styles.empty_title}>Ничего не найдено</div>
-              <div className={styles.empty_description}>У вас пока нет амбассадоров</div>
+      <div className={styles.ambassadors_container}>
+        <div className={styles.ambassadors_content}>
+          {ambassadors.length + requestedAmbassadors.length === 0 ? (
+            <div className={modalStyles.empty_container}>
+              <img className={modalStyles.empty_image} src={NothingFound} alt="" />
+              <div className={modalStyles.empty_info}>
+                <div className={modalStyles.empty_title}>Ничего не найдено</div>
+                <div className={modalStyles.empty_description}>У вас пока нет амбассадоров</div>
+              </div>
             </div>
-          </div>
-        ) : (
-          <>
-            {currentRequestedAmbassadors.length > 0 ? (
-              <>
-                <div className={styles.head}>
-                  <h4>
-                    Заявки<span>{currentRequestedAmbassadors.length}</span>
-                  </h4>
-                  {currentRequestedAmbassadors.length > 3 ? (
-                    <div className={styles.head_action} onClick={() => setActiveSection(2)}>
-                      Показать все
-                    </div>
-                  ) : null}
-                </div>
-                {currentRequestedAmbassadors
-                  .slice(0, currentRequestedAmbassadors.length > 3 ? 3 : currentRequestedAmbassadors.length)
-                  .map((item, index) => (
-                    <div className={styles.requested_ambassador} key={index}>
-                      <div className={styles.ambassador_item}>
-                        <UserCard userItem={item} />
+          ) : (
+            <>
+              {currentRequestedAmbassadors.length > 0 ? (
+                <>
+                  <div className={styles.head}>
+                    <h4>
+                      Заявки<span>{currentRequestedAmbassadors.length}</span>
+                    </h4>
+                    {currentRequestedAmbassadors.length > 3 ? (
+                      <div className={styles.head_action} onClick={() => setActiveSection(2)}>
+                        Показать все
                       </div>
-                      <div className={styles.ambassador_item_actions}>
-                        <div
-                          className={`${styles.button} ${styles.cancel}`}
-                          onClick={() =>
+                    ) : null}
+                  </div>
+                  {currentRequestedAmbassadors
+                    .slice(0, currentRequestedAmbassadors.length > 3 ? 3 : currentRequestedAmbassadors.length)
+                    .map((item, index) => (
+                      <div className={styles.ambassador_item} key={index}>
+                        <UserCard
+                          userItem={item}
+                          isRequestItem={true}
+                          onCancelRequest={() =>
                             setCurrentRequestedAmbassadors(
                               currentRequestedAmbassadors.filter((ambassador) => ambassador.id !== item.id)
                             )
                           }
-                        >
-                          <CloseIcon fill="#FF2941" />
-                        </div>
-                        <div
-                          className={`${styles.button} ${styles.accept}`}
-                          onClick={() => {
+                          onAcceptRequest={() => {
                             setCurrentAmbassadors([...currentAmbassadors, item]);
                             setCurrentRequestedAmbassadors(
                               currentRequestedAmbassadors.filter((ambassador) => ambassador.id !== item.id)
                             );
                           }}
-                        >
-                          <CheckIcon fill="#FFFFFF" />
-                        </div>
+                        />
                       </div>
-                    </div>
-                  ))}
-                <div className={styles.ambassadors_separator} />
-              </>
-            ) : null}
-            <h4>
-              Амбассодоры<span>{currentAmbassadors.length}</span>
-            </h4>
-            {currentAmbassadors.map((item, index) => (
-              <div className={styles.ambassador_item} key={index}>
-                <UserCard userItem={item} />
-              </div>
-            ))}
-          </>
-        )}
+                    ))}
+                  <div className={styles.ambassadors_separator} />
+                </>
+              ) : null}
+              <h4>
+                Амбассодоры<span>{currentAmbassadors.length}</span>
+              </h4>
+              {currentAmbassadors.map((item, index) => (
+                <div className={styles.ambassador_item} key={index}>
+                  <UserCard userItem={item} />
+                </div>
+              ))}
+            </>
+          )}
+        </div>
       </div>
       {ambassadors.length > 0 ? (
         <div className={modalStyles.actions}>

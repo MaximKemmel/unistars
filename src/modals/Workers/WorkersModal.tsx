@@ -1,24 +1,28 @@
 import { useEffect, useState } from "react";
 
-import { Students } from "./content/Students";
-import { EditStudents } from "./content/EditStudents";
+import { Workers } from "./content/Workers";
+import { EditWorkers } from "./content/EditWorkers";
+import { EditWorkerRights } from "./content/EditWorkerRights";
+import { AddWorker } from "./content/AddWorker";
 
 import modalStyles from "../Modal.module.sass";
-import styles from "./StudentsModal.module.sass";
+import styles from "./WorkersModal.module.sass";
 
 import { Close as CloseIcon } from "../../assets/svgComponents/Close";
 
-interface IStudentsModalProps {
+interface IWorkersModalProps {
   isShow: boolean;
-  students: any[];
+  workers: any[];
   onClose: Function;
 }
 
-export const StudentsModal: React.FC<IStudentsModalProps> = ({ isShow, students, onClose }) => {
+export const WorkersModal: React.FC<IWorkersModalProps> = ({ isShow, workers, onClose }) => {
   const [activeSection, setActiveSection] = useState(0);
   const contentSections = [
-    <Students students={students} setActiveSection={setActiveSection} />,
-    <EditStudents students={students} onSave={() => {}} />,
+    <Workers workers={workers} setActiveSection={setActiveSection} />,
+    <EditWorkers workers={workers} onSave={() => {}} />,
+    <EditWorkerRights worker={workers[0]} />,
+    <AddWorker />,
   ] as JSX.Element[];
 
   useEffect(() => {
@@ -30,7 +34,7 @@ export const StudentsModal: React.FC<IStudentsModalProps> = ({ isShow, students,
       <div className={`${modalStyles.overlay} ${isShow ? modalStyles.active : ""}`} onClick={() => onClose()} />
       <div className={`${modalStyles.modal_content} ${styles.modal_content}`}>
         <div className={modalStyles.head}>
-          <h4>Студенты</h4>
+          <h4>Сотрудники</h4>
           <div className={modalStyles.close} onClick={() => onClose()}>
             <CloseIcon />
           </div>
