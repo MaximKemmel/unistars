@@ -1,4 +1,6 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import validator from "validator";
 
 import globalStyles from "../../../App.module.sass";
@@ -7,7 +9,6 @@ import styles from "../SignIn.module.sass";
 import FormWarningIcon from "../../../assets/svg/form-warning.svg";
 import EyeClosedIcon from "../../../assets/svg/eye-closed.svg";
 import EyeOpenedIcon from "../../../assets/svg/eye-opened.svg";
-import { useNavigate } from "react-router-dom";
 
 interface ISignInFormProps {
   setCurrentStage: React.Dispatch<React.SetStateAction<number>>;
@@ -15,6 +16,7 @@ interface ISignInFormProps {
 
 export const SignInForm: React.FC<ISignInFormProps> = ({ setCurrentStage }) => {
   const navigate = useNavigate();
+  const { t } = useTranslation();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
@@ -22,20 +24,16 @@ export const SignInForm: React.FC<ISignInFormProps> = ({ setCurrentStage }) => {
   const [errorForm, setErrorForm] = useState("");
 
   useEffect(() => {
-    setIsButtonEnabled(
-      email.trim().length !== 0 &&
-        validator.isEmail(email) &&
-        password.trim().length !== 0
-    );
+    setIsButtonEnabled(email.trim().length !== 0 && validator.isEmail(email) && password.trim().length !== 0);
     setErrorForm("");
   }, [email, password]);
 
   const handleOnSubmit = (event) => {
     event.preventDefault();
     if (email !== "test@mail.ru") {
-      setErrorForm("Логин или пароль указаны неправильно");
+      setErrorForm(t("sign_in.sign_in_error"));
     } else {
-      navigate('/home');
+      navigate("/home");
     }
   };
 
@@ -45,7 +43,7 @@ export const SignInForm: React.FC<ISignInFormProps> = ({ setCurrentStage }) => {
       <form onSubmit={handleOnSubmit}>
         <input
           className={errorForm.trim().length !== 0 ? globalStyles.wrong : ""}
-          placeholder={"Введите e-mail"}
+          placeholder={t("sign_in.enter_your_email")}
           type="text"
           required
           onChange={(event) => setEmail(event.target.value.trim())}
@@ -54,14 +52,18 @@ export const SignInForm: React.FC<ISignInFormProps> = ({ setCurrentStage }) => {
         <div className={styles.password_input}>
           <input
             className={errorForm.trim().length !== 0 ? globalStyles.wrong : ""}
-            placeholder={"Введите пароль"}
+            placeholder={t("sign_in.enter_your_password")}
             type={isPasswordVisible ? "text" : "password"}
             required
             onChange={(event) => setPassword(event.target.value.trim())}
             value={password}
             minLength={3}
           />
-          <img src={isPasswordVisible ? EyeClosedIcon : EyeOpenedIcon} alt="" onClick={() => setIsPasswordVisible(!isPasswordVisible)}/>
+          <img
+            src={isPasswordVisible ? EyeClosedIcon : EyeOpenedIcon}
+            alt=""
+            onClick={() => setIsPasswordVisible(!isPasswordVisible)}
+          />
         </div>
         {errorForm !== "" ? (
           <div className={styles.error}>
@@ -70,7 +72,7 @@ export const SignInForm: React.FC<ISignInFormProps> = ({ setCurrentStage }) => {
           </div>
         ) : null}
         <button type="submit" disabled={!isButtonEnabled}>
-          Войти
+          {t("sign_in.sign_in")}
         </button>
         <div className={styles.bottom_info}>
           Логин и пароль можно получить только после отправки

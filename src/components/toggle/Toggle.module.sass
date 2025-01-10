@@ -1,7 +1,7 @@
 $background_primary_color: #FFFFFF
 $background_neutral_color: #F1F4F9
-$text_primary_color: #202327
-$text_neutral_color: #4A5568
+$text_primary_color: #14171A
+$text_neutral_color: #14171A99
 
 .toggle_container
     display: flex
@@ -13,6 +13,12 @@ $text_neutral_color: #4A5568
     background-color: $background_neutral_color
     border-radius: 50px
     user-select: none
+
+    &.settings
+        border-radius: 12px
+
+        .toggle_item
+            border-radius: 12px
 
     .toggle_item
         display: flex

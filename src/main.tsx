@@ -7,6 +7,8 @@ import App from "./App";
 
 import { store } from "./store/store";
 
+import "../src/utils/i18n.js";
+
 const container = document.getElementById("root");
 const root = createRoot(container!);
 

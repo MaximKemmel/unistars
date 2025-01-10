@@ -1,0 +1,24 @@
+{
+  "global": {
+    "settings": "Settings"
+  },
+  "sign_in": {
+    "sign_in": "Sign in",
+    "enter_your_email": "Enter your e-mail",
+    "enter_your_password": "Enter your password",
+    "sign_in_error": "The username or password is incorrect"
+  },
+  "navigation": {
+    "home": "Home",
+    "events": "Events",
+    "advertisements": "Advertisements",
+    "show": "Show",
+    "hide": "Hide",
+    "logout": "Logout"
+  },
+  "settings": {
+    "interface_language": "Interface language",
+    "russian": "Russian",
+    "english": "English"
+  }
+}

@@ -6,9 +6,9 @@ import { Toggle } from "../../components/toggle/Toggle";
 import globalStyles from "../../App.module.sass";
 import modalStyles from "../Modal.module.sass";
 
-import { IDropdownItem } from "../../types/dropdownItem";
-import { IEventType } from "../../types/eventType";
-import { IToggleItem } from "../../types/toggleItem";
+import { IDropdownItem } from "../../types/local/dropdownItem";
+import { IEventType } from "../../types/local/eventType";
+import { IToggleItem } from "../../types/local/toggleItem";
 import { DropdownType } from "../../enums/dropdownType";
 import { eventTypes } from "../../data/eventTypes";
 
@@ -22,12 +22,7 @@ interface IEventModalProps {
   onClose: Function;
 }
 
-export const EventModal: React.FC<IEventModalProps> = ({
-  isShow,
-  eventInfo,
-  onSave,
-  onClose,
-}) => {
+export const EventModal: React.FC<IEventModalProps> = ({ isShow, eventInfo, onSave, onClose }) => {
   const [currentInfo, setCurrentInfo] = useState(eventInfo);
   const [activeComponent, setActiveComponent] = useState(DropdownType.None);
 
@@ -57,15 +52,10 @@ export const EventModal: React.FC<IEventModalProps> = ({
 
   return (
     <div className={`${modalStyles.modal} ${isShow ? modalStyles.active : ""}`}>
-      <div
-        className={`${modalStyles.overlay} ${isShow ? modalStyles.active : ""}`}
-        onClick={() => onClose()}
-      />
+      <div className={`${modalStyles.overlay} ${isShow ? modalStyles.active : ""}`} onClick={() => onClose()} />
       <div className={`${modalStyles.modal_content} ${modalStyles.wide}`}>
         <div className={modalStyles.head}>
-          <h4>
-            {eventInfo.id > -1 ? "Редактирование ивента" : "Создание ивента"}
-          </h4>
+          <h4>{eventInfo.id > -1 ? "Редактирование ивента" : "Создание ивента"}</h4>
           <div className={modalStyles.close} onClick={() => onClose()}>
             <img src={CloseIcon} alt="" />
           </div>
@@ -74,9 +64,7 @@ export const EventModal: React.FC<IEventModalProps> = ({
           <div className={modalStyles.form_content} id="form">
             <div className={modalStyles.part_container}>
               <div className={modalStyles.part_container_title}>Основное</div>
-              <div
-                className={`${modalStyles.part_multi} ${modalStyles.double}`}
-              >
+              <div className={`${modalStyles.part_multi} ${modalStyles.double}`}>
                 <div className={modalStyles.part}>
                   <div className={modalStyles.part_label}>Название ивента</div>
                   <input
@@ -98,9 +86,7 @@ export const EventModal: React.FC<IEventModalProps> = ({
                     <div className={modalStyles.upload}>
                       <img src={UploadImageIcon} alt="" />
                     </div>
-                    <div className={modalStyles.cover_placeholder}>
-                      Выберите обложку для ивента
-                    </div>
+                    <div className={modalStyles.cover_placeholder}>Выберите обложку для ивента</div>
                   </div>
                 </div>
               </div>
@@ -118,9 +104,7 @@ export const EventModal: React.FC<IEventModalProps> = ({
                   value={currentInfo.description}
                 />
               </div>
-              <div
-                className={`${modalStyles.part_multi} ${modalStyles.double}`}
-              >
+              <div className={`${modalStyles.part_multi} ${modalStyles.double}`}>
                 <div className={modalStyles.part}>
                   <div className={modalStyles.part_label}>Тип ивента</div>
                   <Dropdown
@@ -165,8 +149,7 @@ export const EventModal: React.FC<IEventModalProps> = ({
                         return {
                           id: typeItem.id,
                           text: typeItem.type,
-                          is_selected:
-                            currentInfo.event_visibility === typeItem.id,
+                          is_selected: currentInfo.event_visibility === typeItem.id,
                         } as IDropdownItem;
                       }) as IDropdownItem[]),
                     ]}
@@ -184,9 +167,7 @@ export const EventModal: React.FC<IEventModalProps> = ({
             <div className={modalStyles.form_separator} />
             <div className={modalStyles.part_container_multi}>
               <div className={modalStyles.part_container}>
-                <div className={modalStyles.part_container_title}>
-                  Время проведения
-                </div>
+                <div className={modalStyles.part_container_title}>Время проведения</div>
                 <div className={modalStyles.part}>
                   <div className={modalStyles.part_label}>Дата</div>
                   <input
@@ -220,9 +201,7 @@ export const EventModal: React.FC<IEventModalProps> = ({
               </div>
               <div className={modalStyles.form_separator} />
               <div className={modalStyles.part_container}>
-                <div className={modalStyles.part_container_title}>
-                  Место проведения
-                </div>
+                <div className={modalStyles.part_container_title}>Место проведения</div>
                 <div className={modalStyles.part}>
                   <div className={modalStyles.part_label}>Форма ивента</div>
                   <Toggle
@@ -239,9 +218,7 @@ export const EventModal: React.FC<IEventModalProps> = ({
                         } as IToggleItem,
                       ] as IToggleItem[]
                     }
-                    onItemSelect={(item: IToggleItem) =>
-                      setCurrentInfo({ ...currentInfo, event_kind: item.id })
-                    }
+                    onItemSelect={(item: IToggleItem) => setCurrentInfo({ ...currentInfo, event_kind: item.id })}
                   />
                 </div>
                 <div className={modalStyles.part}>
@@ -260,9 +237,7 @@ export const EventModal: React.FC<IEventModalProps> = ({
                   />
                 </div>
                 <div className={modalStyles.part}>
-                  <div className={modalStyles.part_label}>
-                    Ссылка на дополнительную информацию
-                  </div>
+                  <div className={modalStyles.part_label}>Ссылка на дополнительную информацию</div>
                   <input
                     placeholder={"Введите ссылку на сайт или другие источники"}
                     type="text"
@@ -280,10 +255,7 @@ export const EventModal: React.FC<IEventModalProps> = ({
             </div>
           </div>
           <div className={modalStyles.actions}>
-            <button
-              className={`${globalStyles.inverted} ${globalStyles.small}`}
-              type="button"
-            >
+            <button className={`${globalStyles.inverted} ${globalStyles.small}`} type="button">
               <span>Отменить</span>
             </button>
             <button className={globalStyles.small} type="submit">

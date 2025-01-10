@@ -1,4 +1,4 @@
-import { IPeriod } from "../types/period";
+import { IPeriod } from "../types/local/period";
 
 export const periods = [
   {

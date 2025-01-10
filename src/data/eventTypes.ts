@@ -1,4 +1,4 @@
-import { IEventType } from "../types/eventType";
+import { IEventType } from "../types/local/eventType";
 
 export const eventTypes = [
   {

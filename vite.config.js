@@ -9,4 +9,9 @@ export default defineConfig({
     resolve: {
         extensions: [".ts", ".tsx", ".js"],
     },
+    build: {
+        copyPublicDir: false,
+        emptyOutDir: false,
+        outDir: "public",
+    }
 });

@@ -1,0 +1,25 @@
+{
+  "global": {
+    "settings": "Настройки"
+  },
+  "sign_in": {
+    "sign_in": "Войти",
+    "enter_your_email": "Введите e-mail",
+    "enter_your_password": "Введите пароль",
+    "sign_in_error": "Логин или пароль указаны неправильно"
+  },
+  "navigation": {
+    "home": "Главная",
+    "events": "Ивенты",
+    "advertisements": "Реклама",
+    "settings": "Настройки",
+    "show": "Показать",
+    "hide": "Скрыть",
+    "logout": "Выход"
+  },
+  "settings": {
+    "interface_language": "Язык интерфейса",
+    "russian": "Русский",
+    "english": "Английский"
+  }
+}

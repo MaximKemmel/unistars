@@ -14,12 +14,7 @@ interface IUniversityModalProps {
   onClose: Function;
 }
 
-export const UniversityModal: React.FC<IUniversityModalProps> = ({
-  isShow,
-  universityInfo,
-  onSave,
-  onClose,
-}) => {
+export const UniversityModal: React.FC<IUniversityModalProps> = ({ isShow, universityInfo, onSave, onClose }) => {
   const [currentInfo, setCurrentInfo] = useState(universityInfo);
 
   const handleOnSubmit = (event) => {
@@ -29,17 +24,10 @@ export const UniversityModal: React.FC<IUniversityModalProps> = ({
 
   return (
     <div className={`${modalStyles.modal} ${isShow ? modalStyles.active : ""}`}>
-      <div
-        className={`${modalStyles.overlay} ${isShow ? modalStyles.active : ""}`}
-        onClick={() => onClose()}
-      />
+      <div className={`${modalStyles.overlay} ${isShow ? modalStyles.active : ""}`} onClick={() => onClose()} />
       <div className={`${modalStyles.modal_content} ${modalStyles.wide}`}>
         <div className={modalStyles.head}>
-          <h4>
-            {universityInfo
-              ? "Редактирование данных об университете"
-              : "Об университете"}
-          </h4>
+          <h4>{universityInfo ? "Редактирование данных об университете" : "Об университете"}</h4>
           <div className={modalStyles.close} onClick={() => onClose()}>
             <img src={CloseIcon} alt="" />
           </div>
@@ -48,13 +36,9 @@ export const UniversityModal: React.FC<IUniversityModalProps> = ({
           <div className={modalStyles.form_content}>
             <div className={modalStyles.part_container}>
               <div className={modalStyles.part_container_title}>Основное</div>
-              <div
-                className={`${modalStyles.part_multi} ${modalStyles.double}`}
-              >
+              <div className={`${modalStyles.part_multi} ${modalStyles.double}`}>
                 <div className={modalStyles.part}>
-                  <div className={modalStyles.part_label}>
-                    Полное наименование университета
-                  </div>
+                  <div className={modalStyles.part_label}>Полное наименование университета</div>
                   <input
                     placeholder={"Введите заголовок"}
                     type="text"
@@ -87,9 +71,7 @@ export const UniversityModal: React.FC<IUniversityModalProps> = ({
               <div className={modalStyles.part}>
                 <div className={modalStyles.part_label}>Описание</div>
                 <textarea
-                  placeholder={
-                    "Это описание отображается при просмотре основной страницы"
-                  }
+                  placeholder={"Это описание отображается при просмотре основной страницы"}
                   required
                   onChange={(event) =>
                     setCurrentInfo({
@@ -100,9 +82,7 @@ export const UniversityModal: React.FC<IUniversityModalProps> = ({
                   value={currentInfo.description}
                 />
               </div>
-              <div
-                className={`${modalStyles.part_multi} ${modalStyles.triple}`}
-              >
+              <div className={`${modalStyles.part_multi} ${modalStyles.triple}`}>
                 <div className={modalStyles.part}>
                   <div className={modalStyles.part_label}>Страна</div>
                   <input
@@ -137,9 +117,7 @@ export const UniversityModal: React.FC<IUniversityModalProps> = ({
                   <div className={modalStyles.part_label}>Местонахождение</div>
                   <div className={modalStyles.location_selector}>
                     <img src={LocationIcon} alt="" />
-                    <div className={modalStyles.selector_label}>
-                      Определить местоположение
-                    </div>
+                    <div className={modalStyles.selector_label}>Определить местоположение</div>
                   </div>
                 </div>
               </div>
@@ -147,9 +125,7 @@ export const UniversityModal: React.FC<IUniversityModalProps> = ({
             <div className={modalStyles.form_separator} />
             <div className={modalStyles.part_container}>
               <div className={modalStyles.part_container_title}>Контакты</div>
-              <div
-                className={`${modalStyles.part_multi} ${modalStyles.triple}`}
-              >
+              <div className={`${modalStyles.part_multi} ${modalStyles.triple}`}>
                 <div className={modalStyles.part}>
                   <div className={modalStyles.part_label}>Телефон</div>
                   <input
@@ -199,12 +175,8 @@ export const UniversityModal: React.FC<IUniversityModalProps> = ({
             </div>
             <div className={modalStyles.form_separator} />
             <div className={modalStyles.part_container}>
-              <div className={modalStyles.part_container_title}>
-                Ссылки на разделы сайта
-              </div>
-              <div
-                className={`${modalStyles.part_multi} ${modalStyles.double}`}
-              >
+              <div className={modalStyles.part_container_title}>Ссылки на разделы сайта</div>
+              <div className={`${modalStyles.part_multi} ${modalStyles.double}`}>
                 <div className={modalStyles.part}>
                   <div className={modalStyles.part_label}>
                     Поступление
@@ -242,9 +214,7 @@ export const UniversityModal: React.FC<IUniversityModalProps> = ({
                   />
                 </div>
               </div>
-              <div
-                className={`${modalStyles.part_multi} ${modalStyles.double}`}
-              >
+              <div className={`${modalStyles.part_multi} ${modalStyles.double}`}>
                 <div className={modalStyles.part}>
                   <div className={modalStyles.part_label}>
                     Вопросы и ответы
@@ -284,18 +254,18 @@ export const UniversityModal: React.FC<IUniversityModalProps> = ({
               </div>
             </div>
           </div>
-          <div className={modalStyles.actions}>
-            <button
-              className={`${globalStyles.inverted} ${globalStyles.small}`}
-              type="button"
-            >
+        </form>
+        <div className={modalStyles.actions}>
+          <div />
+          <div className={modalStyles.buttons}>
+            <button className={`${globalStyles.inverted} ${globalStyles.small}`} type="button">
               <span>Отменить</span>
             </button>
             <button className={globalStyles.small} type="submit">
               Сохранить изменения
             </button>
           </div>
-        </form>
+        </div>
       </div>
     </div>
   );

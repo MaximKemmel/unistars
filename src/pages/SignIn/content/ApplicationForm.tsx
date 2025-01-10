@@ -12,9 +12,7 @@ interface IApplicationFormProps {
   setCurrentStage: React.Dispatch<React.SetStateAction<number>>;
 }
 
-export const ApplicationForm: React.FC<IApplicationFormProps> = ({
-  setCurrentStage,
-}) => {
+export const ApplicationForm: React.FC<IApplicationFormProps> = ({ setCurrentStage }) => {
   const [email, setEmail] = useState("");
   const [isButtonEnabled, setIsButtonEnabled] = useState(false);
   const [isModalShow, setIsModalShow] = useState(false);
@@ -33,8 +31,7 @@ export const ApplicationForm: React.FC<IApplicationFormProps> = ({
       <img className={styles.form_image} src={ApplicationImage} alt="" />
       <h2>Создание учетной записи</h2>
       <div className={styles.description}>
-        Пожалуйста, введите e-mail, и мы отправим отправим всю необходимую
-        информацию для создания учетной записи.
+        Пожалуйста, введите e-mail, и мы отправим отправим всю необходимую информацию для создания учетной записи.
       </div>
       <form onSubmit={handleOnSubmit}>
         <input
@@ -45,7 +42,7 @@ export const ApplicationForm: React.FC<IApplicationFormProps> = ({
           value={email}
         />
         <button type="submit" disabled={!isButtonEnabled}>
-          Войти
+          Отправить
         </button>
       </form>
       <InfoModal

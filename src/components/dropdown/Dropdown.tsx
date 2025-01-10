@@ -2,10 +2,10 @@ import { useEffect } from "react";
 
 import styles from "./Dropdown.module.sass";
 
-import { IDropdownItem } from "../../types/dropdownItem";
+import { IDropdownItem } from "../../types/local/dropdownItem";
 import { DropdownType } from "../../enums/dropdownType";
 
-import ArrowDownIcon from "../../assets/svg/chevron.svg";
+import { Chevron as ChevronIcon } from "../../assets/svgComponents/Chevron";
 import { Check as CheckIcon } from "../../assets/svgComponents/Check";
 
 interface IDropdownProps {
@@ -50,11 +50,7 @@ export const Dropdown: React.FC<IDropdownProps> = ({
             ? placeholder
             : items.find((item: IDropdownItem) => item.is_selected)?.text}
         </div>
-        <img
-          className={`${styles.arrow} ${activeComponent === dropdownIndex ? styles.active : ""}`}
-          src={ArrowDownIcon}
-          alt=""
-        />
+        <ChevronIcon />
       </div>
       <div className={`${styles.dropdown_container} ${activeComponent === dropdownIndex ? styles.active : ""}`}>
         <div

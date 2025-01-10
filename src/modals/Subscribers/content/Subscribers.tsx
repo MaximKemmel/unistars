@@ -6,10 +6,10 @@ import { Dropdown } from "../../../components/dropdown/Dropdown";
 import modalStyles from "../../Modal.module.sass";
 import styles from "../SubscribersModal.module.sass";
 
-import { IDropdownItem } from "../../../types/dropdownItem";
+import { IDropdownItem } from "../../../types/local/dropdownItem";
 import { DropdownType } from "../../../enums/dropdownType";
 import { periods } from "../../../data/periods";
-import { IPeriod } from "../../../types/period";
+import { IPeriod } from "../../../types/local/period";
 
 import SearchIcon from "../../../assets/svg/search.svg";
 import NothingFound from "../../../assets/svg/nothing-found.svg";

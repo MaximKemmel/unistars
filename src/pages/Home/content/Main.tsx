@@ -18,6 +18,7 @@ import AwardIcon from "../../../assets/svg/award.svg";
 import TestPhoto from "../../../assets/png/sign-in-background.png";
 import TestBooklet from "../../../assets/png/test_booklet.png";
 import TestAvatar from "../../../assets/png/test-avatar.png";
+import { Chevron as ChevronIcon } from "../../../assets/svgComponents/Chevron";
 
 export const Main = () => {
   const socialsInfo = [
@@ -142,6 +143,7 @@ export const Main = () => {
         isChecked: false,
       };
     });
+  const [isAboutInfoFull, setIsAboutInfoFull] = useState(false);
   const [isAboutModalShow, setIsAboutModalShow] = useState(false);
   const [isGalleryModalShow, setIsGalleryModalShow] = useState(false);
   const [isBookletsModalShow, setIsBookletsModalShow] = useState(false);
@@ -190,7 +192,7 @@ export const Main = () => {
           })}
         </div>
       </div>
-      <div className={`${styles.main_about} ${styles.content_container}`}>
+      <div className={`${styles.main_about} ${styles.content_container} ${isAboutInfoFull ? styles.full : ""}`}>
         <div className={styles.content_container_head}>
           <div className={styles.head_title}>
             <h4>Об университете</h4>
@@ -291,6 +293,13 @@ export const Main = () => {
             </button>
           </div>
         )}
+        {aboutInfo && !isAboutInfoFull ? (
+          <div className={styles.overlay}>
+            <div className={styles.overlay_button} onClick={() => setIsAboutInfoFull(true)}>
+              <ChevronIcon fill="#FFFFFF" />
+            </div>
+          </div>
+        ) : null}
       </div>
       <div className={styles.content_container_multi}>
         <div className={`${styles.main_gallery} ${styles.content_container} ${styles.half}`}>

@@ -1,3 +1,5 @@
 import { combineReducers } from "@reduxjs/toolkit";
 
-export const reducers = combineReducers({});
+import { reducer as coreReducer } from "./core/core.slice";
+
+export const reducers = combineReducers({ coreReducer });
