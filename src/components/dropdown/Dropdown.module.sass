@@ -34,21 +34,26 @@ $background_primary_color: #FFFFFF
         &.active
             border-radius: 12px 12px 0 0
 
+            .arrow
+                svg
+                    transform: rotate(180deg)
+
         .arrow
             position: absolute
             right: 15px
             width: 16px
-            height: auto
-            transition: all .20s ease-out
+            height: 16px
 
-            &.active
-                transform: rotate(180deg)
+            svg
+                width: 100%
+                height: 100%
+                transition: all .20s ease-out
 
     .dropdown_container
         position: absolute
         z-index: 5
-        top: 47px
-        right: 0
+        top: 46px
+        left: 0
         display: flex
         flex-direction: column
         width: 100%

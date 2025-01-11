@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 
 import { UserCard } from "../../../cards/user/UserCard";
 import { MultiCheckbox } from "../../../components/checkbox/MultiCheckbox";

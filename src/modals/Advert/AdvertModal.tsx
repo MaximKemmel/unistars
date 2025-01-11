@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import globalStyles from "../../App.module.sass";
 import modalStyles from "../Modal.module.sass";

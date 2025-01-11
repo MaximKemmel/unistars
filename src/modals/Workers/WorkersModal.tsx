@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import { Workers } from "./content/Workers";
 import { EditWorkers } from "./content/EditWorkers";
@@ -20,9 +20,9 @@ export const WorkersModal: React.FC<IWorkersModalProps> = ({ isShow, workers, on
   const [activeSection, setActiveSection] = useState(0);
   const contentSections = [
     <Workers workers={workers} setActiveSection={setActiveSection} />,
-    <EditWorkers workers={workers} onSave={() => {}} />,
-    <EditWorkerRights worker={workers[0]} />,
-    <AddWorker />,
+    <EditWorkers workers={workers} onSave={() => {}} setActiveSection={setActiveSection} />,
+    <EditWorkerRights worker={workers[0]} setActiveSection={setActiveSection} />,
+    <AddWorker setActiveSection={setActiveSection} />,
   ] as JSX.Element[];
 
   useEffect(() => {

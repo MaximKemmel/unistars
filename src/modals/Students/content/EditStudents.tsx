@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 
 import { UserCard } from "../../../cards/user/UserCard";
 import { MultiCheckbox } from "../../../components/checkbox/MultiCheckbox";
@@ -14,9 +14,10 @@ import { Trash as TrashIcon } from "../../../assets/svgComponents/Trash";
 interface IEditStudentsProps {
   students: any[];
   onSave: Function;
+  setActiveSection: React.Dispatch<React.SetStateAction<number>>;
 }
 
-export const EditStudents: React.FC<IEditStudentsProps> = ({ students, onSave }) => {
+export const EditStudents: React.FC<IEditStudentsProps> = ({ students, onSave, setActiveSection }) => {
   const [currentStudents, setCurrentStudents] = useState(students);
 
   return (
@@ -33,7 +34,7 @@ export const EditStudents: React.FC<IEditStudentsProps> = ({ students, onSave })
                     ? CheckboxState.AllChecked
                     : CheckboxState.AnyChecked
                 }
-                onChangeStatus={(status) =>
+                onChangeStatus={(status: CheckboxState) =>
                   setCurrentStudents(
                     currentStudents.map((tmpItem) => {
                       return {
@@ -52,7 +53,7 @@ export const EditStudents: React.FC<IEditStudentsProps> = ({ students, onSave })
               <UserCard
                 userItem={item}
                 isCheckedItem={true}
-                onCheckedChange={(status) =>
+                onCheckedChange={(status: boolean) =>
                   setCurrentStudents(
                     currentStudents.map((tmpItem) => {
                       if (tmpItem.id === item.id) {
@@ -83,7 +84,7 @@ export const EditStudents: React.FC<IEditStudentsProps> = ({ students, onSave })
       <div className={modalStyles.actions}>
         <div />
         <div className={modalStyles.buttons}>
-          <button className={`${globalStyles.small} ${globalStyles.inverted}`} type="button" onClick={() => onSave()}>
+          <button className={`${globalStyles.small} ${globalStyles.inverted}`} type="button" onClick={() => setActiveSection(0)}>
             <span>Отменить</span>
           </button>
           <button className={globalStyles.small} type="button" onClick={() => onSave()}>

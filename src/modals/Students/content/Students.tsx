@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import { UserCard } from "../../../cards/user/UserCard";
 
@@ -49,9 +49,9 @@ export const Students: React.FC<IStudentsProps> = ({ students, setActiveSection 
           {students.length === 0 ? (
             <div className={modalStyles.empty_container}>
               <img className={modalStyles.empty_image} src={NothingFound} alt="" />
-              <div className={styles.empty_info}>
-                <div className={styles.empty_title}>Ничего не найдено</div>
-                <div className={styles.empty_description}>У вас пока нет студентов</div>
+              <div className={modalStyles.empty_info}>
+                <div className={modalStyles.empty_title}>Ничего не найдено</div>
+                <div className={modalStyles.empty_description}>У вас пока нет студентов</div>
               </div>
             </div>
           ) : (
@@ -59,9 +59,9 @@ export const Students: React.FC<IStudentsProps> = ({ students, setActiveSection 
               {filteredStudents.length === 0 ? (
                 <div className={modalStyles.empty_container}>
                   <img className={modalStyles.empty_image} src={NothingFound} alt="" />
-                  <div className={styles.empty_info}>
-                    <div className={styles.empty_title}>Ничего не найдено</div>
-                    <div className={styles.empty_description}>Введите другие параметры поиска</div>
+                  <div className={modalStyles.empty_info}>
+                    <div className={modalStyles.empty_title}>Ничего не найдено</div>
+                    <div className={modalStyles.empty_description}>Введите другие параметры поиска</div>
                   </div>
                 </div>
               ) : (

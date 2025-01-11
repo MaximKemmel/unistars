@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 
 import { UserCard } from "../../../cards/user/UserCard";
 import { MultiCheckbox } from "../../../components/checkbox/MultiCheckbox";
@@ -14,9 +14,10 @@ import { Trash as TrashIcon } from "../../../assets/svgComponents/Trash";
 interface IEditWorkersProps {
   workers: any[];
   onSave: Function;
+  setActiveSection: React.Dispatch<React.SetStateAction<number>>;
 }
 
-export const EditWorkers: React.FC<IEditWorkersProps> = ({ workers, onSave }) => {
+export const EditWorkers: React.FC<IEditWorkersProps> = ({ workers, onSave, setActiveSection }) => {
   const [currentWorkers, setCurrentWorkers] = useState(workers);
 
   return (
@@ -83,7 +84,7 @@ export const EditWorkers: React.FC<IEditWorkersProps> = ({ workers, onSave }) =>
       <div className={modalStyles.actions}>
         <div />
         <div className={modalStyles.buttons}>
-          <button className={`${globalStyles.small} ${globalStyles.inverted}`} type="button" onClick={() => onSave()}>
+          <button className={`${globalStyles.small} ${globalStyles.inverted}`} type="button" onClick={() => setActiveSection(0)}>
             <span>Отменить</span>
           </button>
           <button className={globalStyles.small} type="button" onClick={() => onSave()}>

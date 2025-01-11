@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import { Students } from "./content/Students";
 import { EditStudents } from "./content/EditStudents";
@@ -18,7 +18,7 @@ export const StudentsModal: React.FC<IStudentsModalProps> = ({ isShow, students,
   const [activeSection, setActiveSection] = useState(0);
   const contentSections = [
     <Students students={students} setActiveSection={setActiveSection} />,
-    <EditStudents students={students} onSave={() => {}} />,
+    <EditStudents students={students} onSave={() => {}} setActiveSection={setActiveSection} />,
   ] as JSX.Element[];
 
   useEffect(() => {

@@ -251,6 +251,7 @@ $border_neutral_color: #E2E8F0
             position: relative
             max-height: 320px
             overflow: hidden
+            transition: all .2s ease-out
 
             &.full
                 max-height: 10000px
@@ -266,7 +267,13 @@ $border_neutral_color: #E2E8F0
                 justify-content: center
                 height: 72px
                 width: 100%
-                background: linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, #FFFFFF 100%)
+
+                &.active
+                    background: linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, #FFFFFF 100%)
+
+                    .overlay_button
+                        svg
+                            transform: rotate(360deg)
 
                 .overlay_button
                     display: flex
@@ -277,10 +284,12 @@ $border_neutral_color: #E2E8F0
                     background: linear-gradient(180deg, #9D70FF 0%, #7460FF 100%)
                     border-radius: 12px
                     cursor: pointer
+                    transition: all .2s ease-out
 
                     svg
                         width: 16px
                         height: auto
+                        transform: rotate(180deg)
 
             .empty_info
                 button

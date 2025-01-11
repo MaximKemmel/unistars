@@ -1,12 +1,27 @@
 {
   "global": {
-    "settings": "Settings"
+    "settings": "Settings",
+    "edit": "Edit",
+    "cancel": "Cancel",
+    "save_changes": "Save changes",
+    "not_selected": "Not selected",
+    "delete": "Delete",
+    "selected": "selected"
   },
   "sign_in": {
     "sign_in": "Sign in",
     "enter_your_email": "Enter your e-mail",
     "enter_your_password": "Enter your password",
-    "sign_in_error": "The username or password is incorrect"
+    "sign_in_error": "The username or password is incorrect",
+    "login_dashboard": "Login to the university's dashboard",
+    "sign_up_application":  "Login and password can be obtained only after submitting",
+    "sign_up_application_span": "the application",
+    "back": "Back",
+    "send": "Send",
+    "application_has_been_sent": "The application has been sent",
+    "please_enter_email": "Please enter your e-mail, and we will send you all the necessary information to create an account.",
+    "sign_up": "Sign up",
+    "will_contact_you": "We will contact you to create an account."
   },
   "navigation": {
     "home": "Home",
@@ -20,5 +35,54 @@
     "interface_language": "Interface language",
     "russian": "Russian",
     "english": "English"
+  },
+  "home": {
+    "subscribers": "Subscribers",
+    "students": "Students",
+    "ambassadors": "Ambassadors",
+    "employers": "Employers"
+  },
+  "university": {
+    "about_university": "About university",
+    "main": "Main information",
+    "full_name": "University's full name",
+    "description": "Description",
+    "date_of_foundation": "Date of foundation",
+    "country": "Country",
+    "city": "City",
+    "street": "Street",
+    "house": "House",
+    "corpus": "Corpus",
+    "contacts": "Contacts",
+    "phone": "Phone",
+    "site": "Website",
+    "links_to_sections": "Links to website sections",
+    "admission": "Admission",
+    "career": "Career",
+    "faq": "Q&A",
+    "preparatory_courses": "Preparatory courses",
+    "enter_a_heading": "Enter a heading",
+    "empty_profile": "The profile is still empty. Fill it out so that applicants can learn more about you!",
+    "complete_profile": "Complete profile",
+    "editing_university_data": "Editing university data",
+    "description_displayed": "This description is displayed when viewing the main page.",
+    "choose_your_country": "Choose your country",
+    "choose_your_city": "Choose your city",
+    "location": "Location",
+    "locate": "Locate",
+    "enter_website_address": "Enter website address",
+    "enter_email": "Enter e-mail",
+    "add_admission": "Add a link to the page for applicants from your university's website",
+    "add_career": "Add a link to the careers section from your university's website",
+    "add_faq": "Add a link to the Q&A section from your university's website",
+    "add_courses": "Add a link to the preparatory courses page from your university's website"
+  },
+  "gallery": {
+    "gallery": "Gallery",
+    "upload_more": "Upload more",
+    "see_all": "See all",
+    "no_photos": "There are no photos in your profile yet.",
+    "upload_photos": "Upload photos",
+    "upload_photo": "Upload photo"
   }
 }

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 
 import { UserCard } from "../../../cards/user/UserCard";
 import { Checkbox } from "../../../components/checkbox/Checkbox";
@@ -9,9 +9,10 @@ import styles from "../WorkersModal.module.sass";
 
 interface IEditWorkerRightsProps {
   worker: any;
+  setActiveSection: React.Dispatch<React.SetStateAction<number>>;
 }
 
-export const EditWorkerRights: React.FC<IEditWorkerRightsProps> = ({ worker }) => {
+export const EditWorkerRights: React.FC<IEditWorkerRightsProps> = ({ worker, setActiveSection }) => {
   const [rights, setRights] = useState([
     {
       id: 0,
@@ -70,7 +71,7 @@ export const EditWorkerRights: React.FC<IEditWorkerRightsProps> = ({ worker }) =
       <div className={modalStyles.actions}>
         <div />
         <div className={modalStyles.buttons}>
-          <button className={`${globalStyles.small} ${globalStyles.inverted}`} type="button">
+          <button className={`${globalStyles.small} ${globalStyles.inverted}`} type="button" onClick={() => setActiveSection(1)}>
             <span>Отменить</span>
           </button>
           <button className={globalStyles.small} type="button">

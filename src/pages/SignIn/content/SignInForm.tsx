@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import validator from "validator";
@@ -7,8 +7,7 @@ import globalStyles from "../../../App.module.sass";
 import styles from "../SignIn.module.sass";
 
 import FormWarningIcon from "../../../assets/svg/form-warning.svg";
-import EyeClosedIcon from "../../../assets/svg/eye-closed.svg";
-import EyeOpenedIcon from "../../../assets/svg/eye-opened.svg";
+import { Eye as EyeIcon } from "../../../assets/svgComponents/Eye";
 
 interface ISignInFormProps {
   setCurrentStage: React.Dispatch<React.SetStateAction<number>>;
@@ -28,7 +27,7 @@ export const SignInForm: React.FC<ISignInFormProps> = ({ setCurrentStage }) => {
     setErrorForm("");
   }, [email, password]);
 
-  const handleOnSubmit = (event) => {
+  const handleOnSubmit = (event: any) => {
     event.preventDefault();
     if (email !== "test@mail.ru") {
       setErrorForm(t("sign_in.sign_in_error"));
@@ -39,7 +38,7 @@ export const SignInForm: React.FC<ISignInFormProps> = ({ setCurrentStage }) => {
 
   return (
     <div className={`${styles.form_container} ${styles.sign_in_form}`}>
-      <h2>Вход в личный кабинет университета</h2>
+      <h2>{t("sign_in.login_dashboard")}</h2>
       <form onSubmit={handleOnSubmit}>
         <input
           className={errorForm.trim().length !== 0 ? globalStyles.wrong : ""}
@@ -59,11 +58,9 @@ export const SignInForm: React.FC<ISignInFormProps> = ({ setCurrentStage }) => {
             value={password}
             minLength={3}
           />
-          <img
-            src={isPasswordVisible ? EyeClosedIcon : EyeOpenedIcon}
-            alt=""
-            onClick={() => setIsPasswordVisible(!isPasswordVisible)}
-          />
+          <div className={styles.eye} onClick={() => setIsPasswordVisible(!isPasswordVisible)}>
+            <EyeIcon isOpened={!isPasswordVisible} />
+          </div>
         </div>
         {errorForm !== "" ? (
           <div className={styles.error}>
@@ -75,9 +72,9 @@ export const SignInForm: React.FC<ISignInFormProps> = ({ setCurrentStage }) => {
           {t("sign_in.sign_in")}
         </button>
         <div className={styles.bottom_info}>
-          Логин и пароль можно получить только после отправки
+          {t("sign_in.sign_up_application")}
           <br />
-          <span onClick={() => setCurrentStage(1)}>заявки</span>
+          <span onClick={() => setCurrentStage(1)}>{t("sign_in.sign_up_application_span")}</span>
         </div>
       </form>
     </div>

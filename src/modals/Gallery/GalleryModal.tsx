@@ -1,8 +1,10 @@
 import React, {useEffect, useState} from "react";
+import {useTranslation} from "react-i18next";
 
 import {Checkbox} from "../../components/checkbox/Checkbox";
 
 import globalStyles from "../../App.module.sass";
+import modalStyles from "../Modal.module.sass";
 import styles from "./GalleryModal.module.sass";
 
 import CloseIcon from "../../assets/svg/close.svg";
@@ -18,6 +20,7 @@ interface IGalleryModalProps {
 }
 
 export const GalleryModal: React.FC<IGalleryModalProps> = ({isShow, photos, onUpload, onEdit, onClose}) => {
+  const { t } = useTranslation();
   const [isEditMode, setIsEditMode] = useState(false);
   const [currentPhotos, setCurrentPhotos] = useState(photos);
 
@@ -28,20 +31,20 @@ export const GalleryModal: React.FC<IGalleryModalProps> = ({isShow, photos, onUp
   }, [isEditMode]);
 
   return (
-    <div className={`${styles.modal} ${isShow ? styles.active : ""}`}>
+    <div className={`${modalStyles.modal} ${isShow ? modalStyles.active : ""}`}>
       <div
-        className={`${styles.overlay} ${isShow ? styles.active : ""}`}
+        className={`${modalStyles.overlay} ${isShow ? modalStyles.active : ""}`}
         onClick={() => {
           setIsEditMode(false);
           onClose();
           onEdit();
         }}
       />
-      <div className={styles.modal_content}>
-        <div className={styles.head}>
-          <h4>Галерея</h4>
+      <div className={`${modalStyles.modal_content} ${modalStyles.wide}`}>
+        <div className={modalStyles.head}>
+          <h4>{t("gallery.gallery")}</h4>
           <div
-            className={styles.close}
+            className={modalStyles.close}
             onClick={() => {
               setIsEditMode(false);
               onClose();
@@ -58,8 +61,8 @@ export const GalleryModal: React.FC<IGalleryModalProps> = ({isShow, photos, onUp
                   className={`${styles.gallery_item} ${isEditMode ? styles.edited : ""} ${
                     isEditMode && photo.isChecked ? styles.selected : ""
                   }`}
+                  style={{backgroundImage: `url(https://images.pexels.com/photos/1287145/pexels-photo-1287145.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1)`}}
                 >
-                  <img className={styles.photo} src={photo.url} alt=""/>
                 </div>
                 {isEditMode ? (
                   <div className={styles.checkbox}>
@@ -78,57 +81,58 @@ export const GalleryModal: React.FC<IGalleryModalProps> = ({isShow, photos, onUp
                     />
                   </div>
                 ) : null}
+                {photo.isChecked ? <div className={styles.item_background} /> : null}
               </div>
             ))}
           </div>
-          <div className={styles.gallery_actions}>
-            <div className={styles.actions}>
-              {isEditMode ? (
-                <>
-                  <div className={styles.edited_count}>
-                    {`Выбрано ${currentPhotos.filter((photo) => photo.isChecked).length}`}
-                  </div>
-                  <button
-                    className={`${globalStyles.inverted} ${globalStyles.small} ${globalStyles.delete}`}
-                    type="button"
-                    onClick={() => onUpload()}
-                  >
-                    <TrashIcon/>
-                    Удалить
-                  </button>
-                </>
-              ) : null}
-            </div>
-            <div className={styles.actions}>
-              {isEditMode ? (
-                <>
-                  <button
-                    className={`${globalStyles.inverted} ${globalStyles.small}`}
-                    type="button"
-                    onClick={() => setIsEditMode(false)}
-                  >
-                    <span>Отменить</span>
-                  </button>
-                  <button className={globalStyles.small} type="button" onClick={() => onUpload()}>
-                    Сохранить изменения
-                  </button>
-                </>
-              ) : (
-                <>
-                  <button
-                    className={`${globalStyles.inverted} ${globalStyles.small}`}
-                    type="button"
-                    onClick={() => setIsEditMode(true)}
-                  >
-                    <span>Редактировать</span>
-                  </button>
-                  <button className={globalStyles.small} type="button" onClick={() => onUpload()}>
-                    Загрузить фотографию
-                    <img src={UploadIcon} alt=""/>
-                  </button>
-                </>
-              )}
-            </div>
+        </div>
+        <div className={modalStyles.actions}>
+          <div className={styles.actions}>
+            {isEditMode ? (
+              <>
+                <div className={styles.edited_count}>
+                  {`${currentPhotos.filter((photo) => photo.isChecked).length} ${t("global.selected")}`}
+                </div>
+                <button
+                  className={`${globalStyles.inverted} ${globalStyles.small} ${globalStyles.delete}`}
+                  type="button"
+                  onClick={() => onUpload()}
+                >
+                  <TrashIcon/>
+                  {t("global.delete")}
+                </button>
+              </>
+            ) : null}
+          </div>
+          <div className={styles.actions}>
+            {isEditMode ? (
+              <>
+                <button
+                  className={`${globalStyles.inverted} ${globalStyles.small}`}
+                  type="button"
+                  onClick={() => setIsEditMode(false)}
+                >
+                  <span>{t("global.cancel")}</span>
+                </button>
+                <button className={globalStyles.small} type="button" onClick={() => onUpload()}>
+                  {t("global.save_changes")}
+                </button>
+              </>
+            ) : (
+              <>
+                <button
+                  className={`${globalStyles.inverted} ${globalStyles.small}`}
+                  type="button"
+                  onClick={() => setIsEditMode(true)}
+                >
+                  <span>{t("global.edit")}</span>
+                </button>
+                <button className={globalStyles.small} type="button" onClick={() => onUpload()}>
+                  {t("gallery.upload_photo")}
+                  <img src={UploadIcon} alt=""/>
+                </button>
+              </>
+            )}
           </div>
         </div>
       </div>

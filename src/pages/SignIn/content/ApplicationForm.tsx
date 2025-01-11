@@ -1,4 +1,5 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
+import {useTranslation} from "react-i18next";
 import validator from "validator";
 
 import styles from "../SignIn.module.sass";
@@ -13,6 +14,7 @@ interface IApplicationFormProps {
 }
 
 export const ApplicationForm: React.FC<IApplicationFormProps> = ({ setCurrentStage }) => {
+  const { t } = useTranslation();
   const [email, setEmail] = useState("");
   const [isButtonEnabled, setIsButtonEnabled] = useState(false);
   const [isModalShow, setIsModalShow] = useState(false);
@@ -21,7 +23,7 @@ export const ApplicationForm: React.FC<IApplicationFormProps> = ({ setCurrentSta
     setIsButtonEnabled(email.trim().length !== 0 && validator.isEmail(email));
   }, [email]);
 
-  const handleOnSubmit = (event) => {
+  const handleOnSubmit = (event: any) => {
     event.preventDefault();
     setIsModalShow(true);
   };
@@ -29,9 +31,9 @@ export const ApplicationForm: React.FC<IApplicationFormProps> = ({ setCurrentSta
   return (
     <div className={`${styles.form_container} ${styles.application_form}`}>
       <img className={styles.form_image} src={ApplicationImage} alt="" />
-      <h2>Создание учетной записи</h2>
+      <h1>{t("sign_in.sign_up")}</h1>
       <div className={styles.description}>
-        Пожалуйста, введите e-mail, и мы отправим отправим всю необходимую информацию для создания учетной записи.
+        {t("sign_in.please_enter_email")}
       </div>
       <form onSubmit={handleOnSubmit}>
         <input
@@ -42,13 +44,13 @@ export const ApplicationForm: React.FC<IApplicationFormProps> = ({ setCurrentSta
           value={email}
         />
         <button type="submit" disabled={!isButtonEnabled}>
-          Отправить
+          {t('sign_in.send')}
         </button>
       </form>
       <InfoModal
         isShow={isModalShow}
-        title="Заявка отправлена"
-        message="Мы свяжемся с вами для создания аккаунта"
+        title={t("sign_in.application_has_been_sent")}
+        message={t("sign_in.will_contact_you")}
         image={MessageSuccess}
         onClose={() => {
           setIsModalShow(false);

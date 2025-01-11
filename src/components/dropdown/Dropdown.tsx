@@ -1,12 +1,13 @@
-import { useEffect } from "react";
+import React, {useEffect} from "react";
+import {useTranslation} from "react-i18next";
 
 import styles from "./Dropdown.module.sass";
 
-import { IDropdownItem } from "../../types/local/dropdownItem";
-import { DropdownType } from "../../enums/dropdownType";
+import {IDropdownItem} from "../../types/local/dropdownItem";
+import {DropdownType} from "../../enums/dropdownType";
 
-import { Chevron as ChevronIcon } from "../../assets/svgComponents/Chevron";
-import { Check as CheckIcon } from "../../assets/svgComponents/Check";
+import {Chevron as ChevronIcon} from "../../assets/svgComponents/Chevron";
+import {Check as CheckIcon} from "../../assets/svgComponents/Check";
 
 interface IDropdownProps {
   placeholder: string;
@@ -18,17 +19,19 @@ interface IDropdownProps {
 }
 
 export const Dropdown: React.FC<IDropdownProps> = ({
-  placeholder,
-  dropdownIndex,
-  activeComponent,
-  setActiveComponent,
-  items,
-  onItemSelect,
-}) => {
+                                                     placeholder,
+                                                     dropdownIndex,
+                                                     activeComponent,
+                                                     setActiveComponent,
+                                                     items,
+                                                     onItemSelect,
+                                                   }) => {
+  const {i18n} = useTranslation();
+
   useEffect(() => {
     if (activeComponent === dropdownIndex) {
-      var list = document.getElementById("dropdown_list");
-      list?.scrollTo({ top: 0 });
+      const list = document.getElementById("dropdown_list");
+      list?.scrollTo({top: 0});
     }
   }, [activeComponent]);
 
@@ -39,18 +42,22 @@ export const Dropdown: React.FC<IDropdownProps> = ({
     >
       <div
         className={`${styles.dropdown_button} ${
-          items.filter((itemTmp: IDropdownItem) => itemTmp.id === -1).length > -1 && items[0].is_selected
+          items.filter((itemTmp: IDropdownItem) => itemTmp.id === -1).length > 0 && items[0].is_selected
             ? styles.not_selected
             : ""
         } ${activeComponent === dropdownIndex ? styles.active : ""}`}
         onClick={() => setActiveComponent(activeComponent === dropdownIndex ? DropdownType.None : dropdownIndex)}
       >
         <div className={styles.label}>
-          {items.find((item: IDropdownItem) => item.is_selected)?.id === -1
-            ? placeholder
-            : items.find((item: IDropdownItem) => item.is_selected)?.text}
+          {
+            items.find((item: IDropdownItem) => item.is_selected)?.id === -1
+              ? placeholder
+              : i18n.resolvedLanguage === "ru"
+                ? items.find((item: IDropdownItem) => item.is_selected)?.text
+                : items.find((item: IDropdownItem) => item.is_selected)?.text_eng
+          }
         </div>
-        <ChevronIcon />
+        <div className={styles.arrow}><ChevronIcon/></div>
       </div>
       <div className={`${styles.dropdown_container} ${activeComponent === dropdownIndex ? styles.active : ""}`}>
         <div
@@ -65,8 +72,8 @@ export const Dropdown: React.FC<IDropdownProps> = ({
                 onItemSelect(item);
               }}
             >
-              {item.text}
-              {item.is_selected ? <CheckIcon /> : null}
+              {i18n.resolvedLanguage === "ru" ? item.text : item.text_eng}
+              {item.is_selected ? <CheckIcon/> : null}
             </div>
           ))}
         </div>

@@ -1,9 +1,13 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import globalStyles from "../../../App.module.sass";
 import modalStyles from "../../Modal.module.sass";
 import styles from "../WorkersModal.module.sass";
 
-export const AddWorker = () => {
+interface IAddWorkerProps {
+  setActiveSection: React.Dispatch<React.SetStateAction<number>>;
+}
+
+export const AddWorker: React.FC<IAddWorkerProps> = ({ setActiveSection }) => {
   const [email, setEmail] = useState("");
   const [role, setRole] = useState("");
 
@@ -38,7 +42,7 @@ export const AddWorker = () => {
       <div className={modalStyles.actions}>
         <div />
         <div className={modalStyles.buttons}>
-          <button className={`${globalStyles.small} ${globalStyles.inverted}`} type="button">
+          <button className={`${globalStyles.small} ${globalStyles.inverted}`} type="button" onClick={() => setActiveSection(0)}>
             <span>Отменить</span>
           </button>
           <button className={globalStyles.small} type="button">

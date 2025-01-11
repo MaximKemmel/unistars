@@ -1,46 +1,54 @@
-import { useState } from "react";
+import {useState} from "react";
+import {useTranslation} from "react-i18next";
 
-import { UniversityModal } from "../../../modals/University/UniversityModal";
-import { GalleryModal } from "../../../modals/Gallery/GalleryModal";
-import { BookletsModal } from "../../../modals/Booklets/BookletsModal";
-import { SubscribersModal } from "../../../modals/Subscribers/SubscribersModal";
-import { StudentsModal } from "../../..//modals/Students/StudentsModal";
-import { AmbassadorsModal } from "../../..//modals/Ambassadors/AmbassadorsModal";
-import { WorkersModal } from "../../..//modals/Workers/WorkersModal";
+import {UniversityModal} from "../../../modals/University/UniversityModal";
+import {GalleryModal} from "../../../modals/Gallery/GalleryModal";
+import {BookletsModal} from "../../../modals/Booklets/BookletsModal";
+import {SubscribersModal} from "../../../modals/Subscribers/SubscribersModal";
+import {StudentsModal} from "../../../modals/Students/StudentsModal";
+import {AmbassadorsModal} from "../../../modals/Ambassadors/AmbassadorsModal";
+import {WorkersModal} from "../../../modals/Workers/WorkersModal";
 
-import { BookletCard } from "../../../cards/booklet/BookletCard";
+import {BookletCard} from "../../../cards/booklet/BookletCard";
 
 import globalStyles from "../../../App.module.sass";
 import styles from "../Home.module.sass";
 
+import {countries} from "../../../data/countries";
+import {ICountry} from "../../../types/dto/country";
+import {cities} from "../../../data/cities";
+import {ICity} from "../../../types/dto/city";
+
 import TestImage from "../../../assets/png/test_image.png";
 import AwardIcon from "../../../assets/svg/award.svg";
-import TestPhoto from "../../../assets/png/sign-in-background.png";
+import TestPhoto from "../../../assets/jpg/test_photo.jpg";
 import TestBooklet from "../../../assets/png/test_booklet.png";
 import TestAvatar from "../../../assets/png/test-avatar.png";
-import { Chevron as ChevronIcon } from "../../../assets/svgComponents/Chevron";
+import {Chevron as ChevronIcon} from "../../../assets/svgComponents/Chevron";
 
 export const Main = () => {
+  const {t, i18n} = useTranslation();
+
   const socialsInfo = [
     {
       id: 0,
       value: "2,6k",
-      label: "Подписчиков",
+      label: t("home.subscribers"),
     },
     {
       id: 1,
       value: "768",
-      label: "Студентов",
+      label: t("home.students"),
     },
     {
       id: 2,
       value: "92",
-      label: "Амбассадоров",
+      label: t("home.ambassadors"),
     },
     {
       id: 3,
       value: "92",
-      label: "Сотрудников",
+      label: t("home.employers"),
     },
   ];
 
@@ -49,12 +57,13 @@ export const Main = () => {
     description:
       "Lorem ipsum dolor sit amet consectetur. Ac porttitor et lectus magna mi adipiscing viverra urna. Adipiscing purus lacinia cras augue. Diam amet vitae auctor id facilisis enim volutpat. Vulputate at massa penatibus sed morbi viverra et aliquet fames.",
     birthDate: "05.03.2011",
-    country: "Россия",
-    city: "Москва",
-    street: "Пушкина",
+    country_id: 0,
+    city_id: 0,
+    street: "Streets",
     house: 15,
     korpus: 18,
-    phone: "+7 (999) 999-99-99",
+    phone: "(999) 999-99-99",
+    phone_code: "+7",
     site: "urfu.ru/ru/",
     email: "example@mail.ru",
     postupUrl: "urfu.ru/ru/",
@@ -127,7 +136,7 @@ export const Main = () => {
         id: index,
         photo: TestAvatar,
         name: "Tom Smith",
-        university: "Ural Federal University",
+        description: "Ural Federal University",
         isChecked: false,
       };
     });
@@ -139,10 +148,11 @@ export const Main = () => {
         id: index,
         photo: TestAvatar,
         name: "Tom Smith",
-        university: "Ural Federal University",
+        description: "Ural Federal University",
         isChecked: false,
       };
     });
+
   const [isAboutInfoFull, setIsAboutInfoFull] = useState(false);
   const [isAboutModalShow, setIsAboutModalShow] = useState(false);
   const [isGalleryModalShow, setIsGalleryModalShow] = useState(false);
@@ -157,9 +167,9 @@ export const Main = () => {
       <div className={`${styles.main_header} ${styles.content_container}`}>
         <div className={styles.main_univ_info}>
           <div className={styles.main_logo}>
-            <img src={TestImage} alt="" />
+            <img src={TestImage} alt=""/>
             <div className={styles.main_award}>
-              <img src={AwardIcon} alt="" />
+              <img src={AwardIcon} alt=""/>
             </div>
           </div>
           <h3 className={styles.main_univ_name}>Уральский федеральный университет (УрФУ)</h3>
@@ -195,62 +205,70 @@ export const Main = () => {
       <div className={`${styles.main_about} ${styles.content_container} ${isAboutInfoFull ? styles.full : ""}`}>
         <div className={styles.content_container_head}>
           <div className={styles.head_title}>
-            <h4>Об университете</h4>
+            <h4>{t("university.about_university")}</h4>
           </div>
           {aboutInfo ? (
             <div className={styles.head_action} onClick={() => setIsAboutModalShow(true)}>
-              Редактировать
+              {t("global.edit")}
             </div>
           ) : null}
         </div>
         {aboutInfo ? (
           <div className={styles.main_about_container}>
             <div className={styles.main_about_part}>
-              <div className={styles.part_title}>Основное</div>
+              <div className={styles.part_title}>{t("university.main")}</div>
               <div className={styles.part_container}>
                 <div className={styles.part_item}>
-                  <div className={styles.part_item_label}>Полное наименование университета</div>
+                  <div className={styles.part_item_label}>{t("university.full_name")}</div>
                   <div className={styles.part_item_value}>{aboutInfo.fullName}</div>
                 </div>
                 <div className={styles.part_item}>
-                  <div className={styles.part_item_label}>Описание</div>
+                  <div className={styles.part_item_label}>{t("university.description")}</div>
                   <div className={styles.part_item_value}>{aboutInfo.description}</div>
                 </div>
                 <div className={styles.part_item}>
-                  <div className={styles.part_item_label}>Дата основания</div>
+                  <div className={styles.part_item_label}>{t("university.date_of_foundation")}</div>
                   <div className={styles.part_item_value}>{aboutInfo.birthDate}</div>
                 </div>
                 <div className={styles.part_item}>
-                  <div className={styles.part_item_label}>Страна</div>
-                  <div className={styles.part_item_value}>{aboutInfo.country}</div>
+                  <div className={styles.part_item_label}>{t("university.country")}</div>
+                  <div className={styles.part_item_value}>{
+                    i18n.resolvedLanguage === "ru"
+                    ? countries.find((country: ICountry) => country.id === aboutInfo.country_id)!.name
+                    : countries.find((country: ICountry) => country.id === aboutInfo.country_id)!.nameEnglish
+                  }</div>
                 </div>
                 <div className={styles.part_item}>
-                  <div className={styles.part_item_label}>Город</div>
-                  <div className={styles.part_item_value}>{aboutInfo.city}</div>
+                  <div className={styles.part_item_label}>{t("university.city")}</div>
+                  <div className={styles.part_item_value}>{
+                    i18n.resolvedLanguage === "ru"
+                      ? cities.find((city: ICity) => city.id === aboutInfo.city_id)!.name
+                      : cities.find((city: ICity) => city.id === aboutInfo.city_id)!.nameEnglish
+                  }</div>
                 </div>
                 <div className={styles.part_item_double}>
                   <div className={styles.part_item}>
-                    <div className={styles.part_item_label}>Дом</div>
+                    <div className={styles.part_item_label}>{t("university.house")}</div>
                     <div className={styles.part_item_value}>{aboutInfo.house}</div>
                   </div>
                   <div className={styles.part_item}>
-                    <div className={styles.part_item_label}>Корпус</div>
+                    <div className={styles.part_item_label}>{t("university.corpus")}</div>
                     <div className={styles.part_item_value}>{aboutInfo.korpus}</div>
                   </div>
                 </div>
               </div>
             </div>
-            <div className={styles.main_about_separator} />
+            <div className={styles.main_about_separator}/>
             <div className={styles.main_about_part_multi}>
               <div className={styles.main_about_part}>
-                <div className={styles.part_title}>Контакты</div>
+                <div className={styles.part_title}>{t("university.contacts")}</div>
                 <div className={styles.part_container}>
                   <div className={styles.part_item}>
-                    <div className={styles.part_item_label}>Телефон</div>
-                    <div className={styles.part_item_value}>{aboutInfo.phone}</div>
+                    <div className={styles.part_item_label}>{t("university.phone")}</div>
+                    <div className={styles.part_item_value}>{`${aboutInfo.phone_code} ${aboutInfo.phone}`}</div>
                   </div>
                   <div className={styles.part_item}>
-                    <div className={styles.part_item_label}>Сайт</div>
+                    <div className={styles.part_item_label}>{t("university.site")}</div>
                     <div className={styles.part_item_value}>{aboutInfo.site}</div>
                   </div>
                   <div className={styles.part_item}>
@@ -259,24 +277,24 @@ export const Main = () => {
                   </div>
                 </div>
               </div>
-              <div className={styles.main_part_separator} />
+              <div className={styles.main_part_separator}/>
               <div className={styles.main_about_part}>
-                <div className={styles.part_title}>Ссылки на разделы сайта</div>
+                <div className={styles.part_title}>{t("university.links_to_sections")}</div>
                 <div className={styles.part_container}>
                   <div className={styles.part_item}>
-                    <div className={styles.part_item_label}>Поступление</div>
+                    <div className={styles.part_item_label}>{t("university.admission")}</div>
                     <div className={styles.part_item_value}>{aboutInfo.postupUrl}</div>
                   </div>
                   <div className={styles.part_item}>
-                    <div className={styles.part_item_label}>Карьера</div>
+                    <div className={styles.part_item_label}>{t("university.career")}</div>
                     <div className={styles.part_item_value}>{aboutInfo.careerUrl}</div>
                   </div>
                   <div className={styles.part_item}>
-                    <div className={styles.part_item_label}>Вопросы и ответы</div>
+                    <div className={styles.part_item_label}>{t("university.faq")}</div>
                     <div className={styles.part_item_value}>{aboutInfo.faqUrl}</div>
                   </div>
                   <div className={styles.part_item}>
-                    <div className={styles.part_item_label}>Подготовительные курсы</div>
+                    <div className={styles.part_item_label}>{t("university.preparatory_courses")}</div>
                     <div className={styles.part_item_value}>{aboutInfo.coursesUrl}</div>
                   </div>
                 </div>
@@ -286,17 +304,17 @@ export const Main = () => {
         ) : (
           <div className={styles.empty_info}>
             <div className={styles.empty_message}>
-              В профиле пока пусто. Заполните его, чтобы абитуриенты могли больше узнать о вас!
+              {t("university.empty_profile")}
             </div>
             <button className={globalStyles.small} type="button" onClick={() => setIsAboutModalShow(true)}>
-              Заполнить профиль
+              {t("university.complete_profile")}
             </button>
           </div>
         )}
-        {aboutInfo && !isAboutInfoFull ? (
-          <div className={styles.overlay}>
-            <div className={styles.overlay_button} onClick={() => setIsAboutInfoFull(true)}>
-              <ChevronIcon fill="#FFFFFF" />
+        {aboutInfo ? (
+          <div className={`${styles.overlay} ${!isAboutInfoFull ? styles.active : ""}`}>
+            <div className={styles.overlay_button} onClick={() => setIsAboutInfoFull(!isAboutInfoFull)}>
+              <ChevronIcon fill="#FFFFFF"/>
             </div>
           </div>
         ) : null}
@@ -305,26 +323,26 @@ export const Main = () => {
         <div className={`${styles.main_gallery} ${styles.content_container} ${styles.half}`}>
           <div className={styles.content_container_head}>
             <div className={styles.head_title}>
-              <h4>Галерея</h4>
+              <h4>{t("gallery.gallery")}</h4>
               <div className={styles.count}>{gallery.length}</div>
             </div>
-            {gallery.length > 0 ? <div className={styles.head_action}>Загрузить еще</div> : null}
+            {gallery.length > 0 ? <div className={styles.head_action}>{t("gallery.upload_more")}</div> : null}
           </div>
           {gallery.length > 0 ? (
             <div className={styles.main_gallery_container}>
               {gallery.slice(0, 6).map((_, index) => {
                 return (
                   <div className={styles.main_gallery_item} key={index}>
-                    <img src={TestPhoto} alt="" />
+                    <img src={TestPhoto} alt=""/>
                   </div>
                 );
               })}
             </div>
           ) : (
             <div className={styles.empty_info}>
-              <div className={styles.empty_message}>В вашем профиле пока нет фотографий.</div>
+              <div className={styles.empty_message}>{t("gallery.no_photos")}</div>
               <button className={globalStyles.small} type="button" onClick={() => setIsGalleryModalShow(true)}>
-                Загрузить фотографии
+                {t("gallery.upload_photos")}
               </button>
             </div>
           )}
@@ -334,7 +352,7 @@ export const Main = () => {
               type="button"
               onClick={() => setIsGalleryModalShow(true)}
             >
-              <span>Посмотреть все</span>
+              <span>{t("gallery.see_all")}</span>
             </button>
           ) : null}
         </div>

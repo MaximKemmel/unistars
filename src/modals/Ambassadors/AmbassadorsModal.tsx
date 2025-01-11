@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import { Ambassadors } from "./content/Ambassadors";
 import { EditRequestsAmbassadors } from "./content/EditRequestsAmbassadors";
@@ -29,7 +29,7 @@ export const AmbassadorsModal: React.FC<IAmbassadorsModalProps> = ({
       requestedAmbassadors={requestedAmbassadors}
       setActiveSection={setActiveSection}
     />,
-    <EditAmbassadors ambassadors={ambassadors} onSave={() => {}} />,
+    <EditAmbassadors ambassadors={ambassadors} onSave={() => {}} setActiveSection={setActiveSection} />,
     <EditRequestsAmbassadors
       requestedAmbassadors={requestedAmbassadors}
       onAmbassadorAccepted={() => {}}

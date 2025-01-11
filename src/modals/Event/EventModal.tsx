@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import { Dropdown } from "../../components/dropdown/Dropdown";
 import { Toggle } from "../../components/toggle/Toggle";
@@ -28,15 +28,15 @@ export const EventModal: React.FC<IEventModalProps> = ({ isShow, eventInfo, onSa
 
   useEffect(() => {
     setActiveComponent(DropdownType.None);
-    var formDiv = document.getElementById("form");
+    const formDiv = document.getElementById("form");
     formDiv?.scrollTo({ top: 0, behavior: "smooth" });
   }, [isShow]);
 
   useEffect(() => {
     if (activeComponent !== DropdownType.None) {
-      var activeDropdownDiv = document.getElementById("active_dropdown");
+      const activeDropdownDiv = document.getElementById("active_dropdown");
       if (activeDropdownDiv) {
-        var formDiv = document.getElementById("form");
+        const formDiv = document.getElementById("form");
         formDiv?.scrollTo({
           top: activeDropdownDiv.offsetTop - formDiv?.offsetTop - 45,
           behavior: "smooth",
@@ -45,7 +45,7 @@ export const EventModal: React.FC<IEventModalProps> = ({ isShow, eventInfo, onSa
     }
   }, [activeComponent]);
 
-  const handleOnSubmit = (event) => {
+  const handleOnSubmit = (event: any) => {
     event.preventDefault();
     onSave();
   };
