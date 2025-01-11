@@ -1,6 +1,6 @@
-import { useEffect, useState } from "react";
+import React, {useEffect, useState} from "react";
 
-import { Checkbox } from "../../components/checkbox/Checkbox";
+import {Checkbox} from "../../components/checkbox/Checkbox";
 
 import globalStyles from "../../App.module.sass";
 import styles from "./GalleryModal.module.sass";
@@ -17,7 +17,7 @@ interface IGalleryModalProps {
   onClose: Function;
 }
 
-export const GalleryModal: React.FC<IGalleryModalProps> = ({ isShow, photos, onUpload, onEdit, onClose }) => {
+export const GalleryModal: React.FC<IGalleryModalProps> = ({isShow, photos, onUpload, onEdit, onClose}) => {
   const [isEditMode, setIsEditMode] = useState(false);
   const [currentPhotos, setCurrentPhotos] = useState(photos);
 
@@ -47,7 +47,7 @@ export const GalleryModal: React.FC<IGalleryModalProps> = ({ isShow, photos, onU
               onClose();
             }}
           >
-            <img src={CloseIcon} alt="" />
+            <img src={CloseIcon} alt=""/>
           </div>
         </div>
         <div className={styles.gallery_container}>
@@ -59,16 +59,16 @@ export const GalleryModal: React.FC<IGalleryModalProps> = ({ isShow, photos, onU
                     isEditMode && photo.isChecked ? styles.selected : ""
                   }`}
                 >
-                  <img className={styles.photo} src={photo.url} alt="" />
+                  <img className={styles.photo} src={photo.url} alt=""/>
                 </div>
                 {isEditMode ? (
                   <div className={styles.checkbox}>
                     <Checkbox
                       isChecked={photo.isChecked}
-                      onChangeStatus={(status) => {
-                        var tmpPhotos = currentPhotos.map((tmpPhoto) => {
+                      onChangeStatus={(status: boolean) => {
+                        const tmpPhotos = currentPhotos.map((tmpPhoto) => {
                           if (tmpPhoto.id === photo.id) {
-                            return { ...photo, isChecked: status };
+                            return {...photo, isChecked: status};
                           } else {
                             return tmpPhoto;
                           }
@@ -93,7 +93,7 @@ export const GalleryModal: React.FC<IGalleryModalProps> = ({ isShow, photos, onU
                     type="button"
                     onClick={() => onUpload()}
                   >
-                    <TrashIcon />
+                    <TrashIcon/>
                     Удалить
                   </button>
                 </>
@@ -124,7 +124,7 @@ export const GalleryModal: React.FC<IGalleryModalProps> = ({ isShow, photos, onU
                   </button>
                   <button className={globalStyles.small} type="button" onClick={() => onUpload()}>
                     Загрузить фотографию
-                    <img src={UploadIcon} alt="" />
+                    <img src={UploadIcon} alt=""/>
                   </button>
                 </>
               )}

@@ -14,8 +14,8 @@ $scrollbar_color: #E2E8F0
     src: url("./assets/fonts/SFPro/SF-Pro-Display-Regular.otf")
 
 *
-    padding: 0px
-    margin: 0px
+    padding: 0
+    margin: 0
     font-family: 'Open Sans', serif
     line-height: 1.33
 
@@ -71,11 +71,10 @@ button
         height: 40px
         font-size: 14px
         font-weight: 600
-        padding: 0px 20px
+        padding: 0 20px
 
     &.inverted
-        background: none
-        background-color: $background_primary_color
+        background: $background_primary_color none
         border: 1px solid $border_neutral_color
 
         span

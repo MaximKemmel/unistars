@@ -44,4 +44,4 @@ export const coreSlice = createSlice({
   },
 });
 
-export const { actions, reducer } = coreSlice;
+export const { reducer } = coreSlice;
