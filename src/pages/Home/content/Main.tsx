@@ -22,7 +22,7 @@ import {ICity} from "../../../types/dto/city";
 import TestImage from "../../../assets/png/test_image.png";
 import AwardIcon from "../../../assets/svg/award.svg";
 import TestPhoto from "../../../assets/jpg/test_photo.jpg";
-import TestBooklet from "../../../assets/png/test_booklet.png";
+import TestBooklet from "../../../assets/jpg/test_booklet.jpg";
 import TestAvatar from "../../../assets/png/test-avatar.png";
 import {Chevron as ChevronIcon} from "../../../assets/svgComponents/Chevron";
 
@@ -88,8 +88,8 @@ export const Main = () => {
       return {
         id: index,
         photo: TestBooklet,
-        name: "Название буклета",
-        description: "Описание буклета Описание буклета Описание буклета Описание буклета Описание буклета Описание буклета",
+        name: "Booklet",
+        description: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s"
       };
     });
 
@@ -157,6 +157,8 @@ export const Main = () => {
   const [isAboutModalShow, setIsAboutModalShow] = useState(false);
   const [isGalleryModalShow, setIsGalleryModalShow] = useState(false);
   const [isBookletsModalShow, setIsBookletsModalShow] = useState(false);
+  const [bookletSection, setBookletSection] = useState(0);
+  const [currentBooklet, setCurrentBooklet] = useState({id: -1, name: "", description: ""});
   const [isSubscribersModalShow, setIsSubscribersModalShow] = useState(false);
   const [isStudentsModalShow, setIsStudentsModalShow] = useState(false);
   const [isAmbassadorsModalShow, setIsAmbassadorsModalShow] = useState(false);
@@ -234,8 +236,8 @@ export const Main = () => {
                   <div className={styles.part_item_label}>{t("university.country")}</div>
                   <div className={styles.part_item_value}>{
                     i18n.resolvedLanguage === "ru"
-                    ? countries.find((country: ICountry) => country.id === aboutInfo.country_id)!.name
-                    : countries.find((country: ICountry) => country.id === aboutInfo.country_id)!.nameEnglish
+                      ? countries.find((country: ICountry) => country.id === aboutInfo.country_id)!.name
+                      : countries.find((country: ICountry) => country.id === aboutInfo.country_id)!.nameEnglish
                   }</div>
                 </div>
                 <div className={styles.part_item}>
@@ -359,23 +361,29 @@ export const Main = () => {
         <div className={`${styles.main_booklets} ${styles.content_container} ${styles.half}`}>
           <div className={styles.content_container_head}>
             <div className={styles.head_title}>
-              <h4>Буклеты</h4>
+              <h4>{t("booklets.booklets")}</h4>
               <div className={styles.count}>{booklets.length}</div>
             </div>
-            {booklets.length > 0 ? <div className={styles.head_action}>Создать</div> : null}
+            {booklets.length > 0
+              ? <div className={styles.head_action}
+                     onClick={() => {
+                       setBookletSection(1);
+                       setCurrentBooklet({id: -1, name: "", description: ""});
+                       setIsBookletsModalShow(true);
+                     }}>{t("global.create")}</div>
+              : null}
           </div>
           {booklets.length > 0 ? (
             <div className={styles.main_booklets_container}>
-              {booklets.slice(0, 2).map((_, index) => {
+              {booklets.slice(0, 2).map((booklet, index) => {
                 return (
                   <div className={styles.main_booklet_item} key={index}>
                     <BookletCard
-                      bookletItem={{
-                        id: index,
-                        photo: TestBooklet,
-                        name: "Название буклета",
-                        description:
-                          "Описание буклета Описание буклета Описание буклета Описание буклета Описание буклета Описание буклета",
+                      bookletItem={booklet}
+                      onEdit={() => {
+                        setBookletSection(1);
+                        setCurrentBooklet(booklet);
+                        setIsBookletsModalShow(true);
                       }}
                     />
                   </div>
@@ -384,9 +392,9 @@ export const Main = () => {
             </div>
           ) : (
             <div className={styles.empty_info}>
-              <div className={styles.empty_message}>В вашем профиле пока нет буклетов.</div>
+              <div className={styles.empty_message}>{t("booklets.no_booklets")}</div>
               <button className={globalStyles.small} type="button" onClick={() => setIsBookletsModalShow(true)}>
-                Создать буклет
+                {t("booklets.create_booklet")}
               </button>
             </div>
           )}
@@ -394,9 +402,13 @@ export const Main = () => {
             <button
               className={`${globalStyles.inverted} ${globalStyles.small}`}
               type="button"
-              onClick={() => setIsBookletsModalShow(true)}
+              onClick={() => {
+                setBookletSection(0);
+                setCurrentBooklet({id: -1, name: "", description: ""});
+                setIsBookletsModalShow(true);
+              }}
             >
-              <span>Посмотреть все</span>
+              <span>{t("booklets.see_all")}</span>
             </button>
           ) : null}
         </div>
@@ -430,6 +442,8 @@ export const Main = () => {
         onClose={() => {
           setIsBookletsModalShow(false);
         }}
+        section={bookletSection}
+        booklet={currentBooklet}
       />
       <SubscribersModal
         isShow={isSubscribersModalShow}

@@ -1,3 +1,6 @@
+import React from "react";
+import {useTranslation} from "react-i18next";
+
 import styles from "./AdvertCard.module.sass";
 
 import TimeIcon from "../../assets/svg/time.svg";
@@ -9,6 +12,8 @@ interface IAdvertCardProps {
 }
 
 export const AdvertCard: React.FC<IAdvertCardProps> = ({ advertItem }) => {
+  const { t } = useTranslation();
+
   return (
     <div className={styles.advert_container}>
       <div className={styles.advert_head}>
@@ -19,7 +24,7 @@ export const AdvertCard: React.FC<IAdvertCardProps> = ({ advertItem }) => {
           <div className={styles.advert_description}>{advertItem.description}</div>
         </div>
         <div className={`${styles.advert_status} ${advertItem.state === 0 ? styles.moderation : styles.published}`}>
-          {advertItem.state === 0 ? "Модерация" : "Опубликовано"}
+          {advertItem.state === 0 ? t("advertisements.moderation") : t("advertisements.published")}
         </div>
       </div>
       <div className={styles.additional_info}>
@@ -31,9 +36,9 @@ export const AdvertCard: React.FC<IAdvertCardProps> = ({ advertItem }) => {
           <div className={styles.progress_head}>
             <div className={styles.info_item}>
               <img className={styles.item_icon} src={ViewIcon} alt="" />
-              <div>{`${advertItem.views} показов`}</div>
+              <div>{`${advertItem.views} ${t("advertisements.views")}`}</div>
             </div>
-            <div className={styles.info_limit}>{`${advertItem.viewsLimit} лимит`}</div>
+            <div className={styles.info_limit}>{`${advertItem.viewsLimit} ${t("advertisements.limit")}`}</div>
           </div>
           <div className={styles.progress_bar}>
             <div
@@ -46,9 +51,9 @@ export const AdvertCard: React.FC<IAdvertCardProps> = ({ advertItem }) => {
           <div className={styles.progress_head}>
             <div className={styles.info_item}>
               <img className={styles.item_icon} src={ClickIcon} alt="" />
-              <div>{`${advertItem.clicks} кликов`}</div>
+              <div>{`${advertItem.clicks} ${t("advertisements.clicks")}`}</div>
             </div>
-            <div className={styles.info_limit}>{`${advertItem.clicksLimit} лимит`}</div>
+            <div className={styles.info_limit}>{`${advertItem.clicksLimit} ${t("advertisements.limit")}`}</div>
           </div>
           <div className={styles.progress_bar}>
             <div

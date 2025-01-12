@@ -1,4 +1,5 @@
 import { useState } from "react";
+import {useTranslation} from "react-i18next";
 
 import { AdvertModal } from "../../../modals/Advert/AdvertModal";
 
@@ -11,6 +12,7 @@ import TestPhoto from "../../../assets/png/test-advert.png";
 import PlusIcon from "../../../assets/svg/plus.svg";
 
 export const Adverts = () => {
+  const { t } = useTranslation();
   const [isAdvertModalShow, setIsAdvertModalShow] = useState(false);
 
   const adverts = Array(7)
@@ -36,7 +38,7 @@ export const Adverts = () => {
       <div className={`${styles.adverts} ${styles.content_container}`}>
         <div className={styles.content_container_head}>
           <div className={styles.head_title}>
-            <h4>Реклама</h4>
+            <h4>{t("navigation.advertisements")}</h4>
             <div className={styles.count}>{adverts.length}</div>
           </div>
         </div>
@@ -53,18 +55,17 @@ export const Adverts = () => {
         ) : (
           <div className={styles.empty_info}>
             <div className={styles.empty_message}>
-              У вас пока нет запущенных реклам. Создайте её и привлекайте новых
-              абитуриентов.
+              {t("advertisements.no_advertisements")}
             </div>
             <button className={globalStyles.small} type="button" onClick={() => setIsAdvertModalShow(true)}>
-              Запустить рекламу
+              {t("advertisements.launch_an_ad")}
               <img src={PlusIcon} alt="" />
             </button>
           </div>
         )}
         {adverts.length > 0 ? (
           <button className={globalStyles.small} type="button" onClick={() => setIsAdvertModalShow(true)}>
-            Запустить рекламу
+            {t("advertisements.launch_an_ad")}
             <img src={PlusIcon} alt="" />
           </button>
         ) : null}

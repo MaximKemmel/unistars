@@ -1,111 +1,89 @@
-$inactive_overlay_background_color: #000000
-$overlay_background_color: #00000033
-$modal_background_color: #FFFFFF
-$text_neutral_color: #202327
+$text_primary_color: #14171A
+$text_secondary_neutral_color: #8496AE
 $divider_color: #E2E8F0
 
-.modal,
-.overlay
-    position: fixed
-    z-index: 21
+.booklets_container
+  display: flex
+  width: 100%
+  overflow: hidden
 
-.modal
-    height: 0
-    width: 0
-    top: 50%
-    left: 50%
-    transform: translate(-50%, -50%)
-    overflow: hidden
+  .booklets_content
+    display: flex
+    flex-wrap: wrap
+    gap: 12px
+    width: calc(100% - 64px)
+    padding: 16px 32px
+    overflow-y: auto
 
-    &.active
-        display: block
-        height: 100vh
-        width: 100vw
-        transform: translate(0)
-        top: 0
-        left: 0
+    .booklet_item
+      display: flex
+      width: calc(33% - 8px)
 
-    .overlay
-        background: rgba(0, 0, 0, 0)
-        transition: all .15s ease-out
-        height: 100vh
-        width: 100%
-        top: 0
-        left: 0
+    form
+      display: flex
+      flex-direction: column
+      gap: 24px
+      width: 100%
 
-        &.active
-            background: $overlay_background_color
-
-    .modal_content
+      .form_field
         display: flex
         flex-direction: column
+        gap: 4px
+        width: 100%
+
+        .form_label
+          font-size: 16px
+          color: $text_primary_color
+          font-weight: 600
+
+        textarea
+          height: 100px
+
+      .cover
+        margin-top: -8px
+        display: flex
         align-items: center
-        width: 930px
-        max-height: 80vh
-        top: 50%
-        left: 50%
-        transform: translate(-50%, -50%)
-        position: absolute
-        z-index: 21
-        background-color: $modal_background_color
-        box-shadow: 0px 8px 50px -6px rgba(20, 23, 26, 0.12)
-        border-radius: 16px
+        gap: 16px
+        width: 100%
 
-        .head
-            display: flex
-            align-items: center
-            justify-content: space-between
-            width: calc(100% - 64px)
-            padding: 26px 32px
-            padding-bottom: 10px
-            border-bottom: 1px solid $divider_color
+      .form_button
+        display: flex
+        align-items: center
+        justify-content: center
+        width: 48px
+        height: 48px
+        border-radius: 12px
+        border: 1px solid $divider_color
+        cursor: pointer
 
-            h3
-                color: $text_neutral_color
+        &.filled
+          border: none
+          background: linear-gradient(180deg, #9D70FF 0%, #7460FF 100%)
 
-            .close
-                display: flex
-                justify-content: center
-                align-items: center
-                width: 32px
-                height: 32px
-                cursor: pointer
+        img
+          width: 24px
+          height: auto
 
-                svg
-                    width: 16px
-                    height: auto
+      .form_button_label
+        font-size: 14px
+        color: $text_secondary_neutral_color
+        font-weight: 400
 
-        .booklets_container
-            display: flex
-            flex-direction: column
-            gap: 24px
-            width: 100%
-            overflow: hidden
+      .file
+        display: flex
+        flex-direction: column
+        gap: 8px
 
-            .booklets_content
-                display: flex
-                flex-wrap: wrap
-                gap: 12px
-                width: calc(100% - 64px)
-                padding: 16px 32px
-                overflow-y: auto
+        .file_title
+          font-size: 16px
+          color: $text_primary_color
 
-                .booklet_item
-                    display: flex
-                    width: calc(33% - 10px)
-                    position: absolute
-                    z-index: 5
-                    display: flex
-                    align-items: center
-                    justify-content: center
-                    width: 32px
-                    height: 32px
+        .file_content
+          display: flex
+          align-items: center
+          gap: 16px
+          width: 100%
 
-            .booklets_actions
-                display: flex
-                justify-content: end
-                align-items: center
-                flex-shrink: 0
-                width: calc(100% - 64px)
-                padding: 16px 32px 28px 32px
-                border-top: 1px solid $divider_color
+
+
+

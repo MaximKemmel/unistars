@@ -1,4 +1,5 @@
 import { useState } from "react";
+import {useTranslation} from "react-i18next";
 
 import { EventModal } from "../../../modals/Event/EventModal";
 
@@ -11,6 +12,7 @@ import TestPhoto from "../../../assets/jpg/test-event.jpg";
 import PlusIcon from "../../../assets/svg/plus.svg";
 
 export const Events = () => {
+  const { t } = useTranslation();
   const [isEventModalShow, setIsEventModalShow] = useState(false);
 
   const events = Array(10)
@@ -22,7 +24,7 @@ export const Events = () => {
         date: "01.01.2025",
         time: "22:00",
         name: "Brand New Conference",
-        description: "Описание",
+        description: "Description",
         participants: 234,
         ambassadors: 2,
         event_type: -1,
@@ -36,7 +38,7 @@ export const Events = () => {
       <div className={`${styles.events} ${styles.content_container}`}>
         <div className={styles.content_container_head}>
           <div className={styles.head_title}>
-            <h4>Ивенты</h4>
+            <h4>{t("navigation.events")}</h4>
             <div className={styles.count}>{events.length}</div>
           </div>
         </div>
@@ -52,16 +54,16 @@ export const Events = () => {
           </div>
         ) : (
           <div className={styles.empty_info}>
-            <div className={styles.empty_message}>У вас пока нет ивентов.</div>
+            <div className={styles.empty_message}>{t("events.no_events")}</div>
             <button className={globalStyles.small} type="button" onClick={() => setIsEventModalShow(true)}>
-              Создать ивент
+              {t("events.create_event")}
               <img src={PlusIcon} alt="" />
             </button>
           </div>
         )}
         {events.length > 0 ? (
           <button className={globalStyles.small} type="button" onClick={() => setIsEventModalShow(true)}>
-            Создать ивент
+            {t("events.create_event")}
             <img src={PlusIcon} alt="" />
           </button>
         ) : null}

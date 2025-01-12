@@ -43,7 +43,7 @@ export const Toggle: React.FC<IToggleProps> = ({selectedIndex, items, onItemSele
               className={`${styles.toggle_item} ${selectedIndex === item.id ? styles.active : ""}`}
               onClick={() => onItemSelect!(item)}
             >
-              {item.text}
+              {i18n.resolvedLanguage === "ru" ? item.text : item.text_eng}
             </div>
           ))}
         </>

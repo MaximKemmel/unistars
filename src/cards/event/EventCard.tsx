@@ -1,4 +1,5 @@
-import { useState } from "react";
+import React, { useState } from "react";
+import {useTranslation} from "react-i18next";
 
 import { EventModal } from "../../modals/Event/EventModal";
 
@@ -11,6 +12,7 @@ interface IEventCardProps {
 }
 
 export const EventCard: React.FC<IEventCardProps> = ({ eventItem }) => {
+  const { i18n, t } = useTranslation();
   const [isEventModalShow, setIsEventModalShow] = useState(false);
 
   return (
@@ -22,11 +24,11 @@ export const EventCard: React.FC<IEventCardProps> = ({ eventItem }) => {
         <div className={styles.event_name}>{eventItem.name}</div>
         <div
           className={styles.event_participants}
-        >{`${eventItem.participants} участника • ${eventItem.ambassadors} амбассадора`}</div>
+        >{`${eventItem.participants} ${t("events.participants")} • ${eventItem.ambassadors} ${t("events.ambassadors")}`}</div>
       </div>
       <div className={styles.event_date}>
         {`${new Date(eventItem.date)
-          .toLocaleDateString("ru-RU", {
+          .toLocaleDateString(`${i18n.resolvedLanguage}-${i18n.resolvedLanguage?.toUpperCase()}`, {
             day: "numeric",
             month: "long",
             year: "numeric",

@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import {useTranslation} from "react-i18next";
 
 import globalStyles from "../../App.module.sass";
 import modalStyles from "../Modal.module.sass";
@@ -17,6 +18,7 @@ export const AdvertModal: React.FC<IAdvertModalProps> = ({
   onSave,
   onClose,
 }) => {
+  const { t } = useTranslation();
   const [currentInfo, setCurrentInfo] = useState({
     name: "",
     description: "",
@@ -27,11 +29,11 @@ export const AdvertModal: React.FC<IAdvertModalProps> = ({
   });
 
   useEffect(() => {
-    var formDiv = document.getElementById("form");
+    const formDiv = document.getElementById("form");
     formDiv?.scrollTo({ top: 0, behavior: "smooth" });
   }, [isShow]);
 
-  const handleOnSubmit = (event) => {
+  const handleOnSubmit = (event: any) => {
     event.preventDefault();
     onSave();
   };
@@ -44,7 +46,7 @@ export const AdvertModal: React.FC<IAdvertModalProps> = ({
       />
       <div className={`${modalStyles.modal_content} ${modalStyles.wide}`}>
         <div className={modalStyles.head}>
-          <h4>Создание рекламы</h4>
+          <h4>{t("advertisements.creating_a_advertisement")}</h4>
           <div className={modalStyles.close} onClick={() => onClose()}>
             <CloseIcon />
           </div>
@@ -56,9 +58,9 @@ export const AdvertModal: React.FC<IAdvertModalProps> = ({
                 className={`${modalStyles.part_multi} ${modalStyles.double}`}
               >
                 <div className={modalStyles.part}>
-                  <div className={modalStyles.part_label}>Заголовок</div>
+                  <div className={modalStyles.part_label}>{t("advertisements.heading")}</div>
                   <input
-                    placeholder={"Введите заголовок"}
+                    placeholder={t("advertisements.enter_a_heading")}
                     type="text"
                     required
                     onChange={(event) =>
@@ -75,9 +77,9 @@ export const AdvertModal: React.FC<IAdvertModalProps> = ({
                   >{`${currentInfo.name.length}/16`}</div>
                 </div>
                 <div className={modalStyles.part}>
-                  <div className={modalStyles.part_label}>Подзаголовок</div>
+                  <div className={modalStyles.part_label}>{t("advertisements.subtitle")}</div>
                   <input
-                    placeholder={"Введите подзаголовок"}
+                    placeholder={t("advertisements.enter_a_subtitle")}
                     type="text"
                     required
                     onChange={(event) =>
@@ -98,22 +100,22 @@ export const AdvertModal: React.FC<IAdvertModalProps> = ({
                 className={`${modalStyles.part_multi} ${modalStyles.double}`}
               >
                 <div className={modalStyles.part}>
-                  <div className={modalStyles.part_label}>Обложка баннера</div>
+                  <div className={modalStyles.part_label}>{t("advertisements.banner_cover")}</div>
                   <div className={modalStyles.cover}>
                     <div className={modalStyles.upload}>
                       <img src={UploadImageIcon} alt="" />
                     </div>
                     <div className={modalStyles.cover_placeholder}>
-                      Выберите обложку для баннера
+                      {t("advertisements.choose_cover")}
                     </div>
                   </div>
                 </div>
                 <div className={modalStyles.part}>
                   <div className={modalStyles.part_label}>
-                    Ссылка на баннер *
+                    {`${t("advertisements.link_to_the_banner")} *`}
                   </div>
                   <input
-                    placeholder={"Введите ссылку"}
+                    placeholder={t("advertisements.enter_a_link")}
                     type="text"
                     required
                     onChange={(event) =>
@@ -131,7 +133,7 @@ export const AdvertModal: React.FC<IAdvertModalProps> = ({
               >
                 <div className={modalStyles.part}>
                   <div className={modalStyles.part_label}>
-                    Продолжительность рекламы
+                    {t("advertisements.duration")}
                   </div>
                   <div className={modalStyles.input_multi}>
                     <input
@@ -176,7 +178,7 @@ export const AdvertModal: React.FC<IAdvertModalProps> = ({
                     value={currentInfo.email}
                   />
                   <div className={modalStyles.input_description}>
-                    На эту почту вам напишет менеджер
+                    {t("advertisements.manager_will_write")}
                   </div>
                 </div>
               </div>
@@ -185,7 +187,7 @@ export const AdvertModal: React.FC<IAdvertModalProps> = ({
           <div className={modalStyles.actions}>
             <div />
             <button className={globalStyles.small} type="submit">
-              Создать рекламу
+              {t("advertisements.create_ad")}
             </button>
           </div>
         </form>
