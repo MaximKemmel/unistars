@@ -10,7 +10,7 @@ import modalStyles from "../Modal.module.sass";
 import { IDropdownItem } from "../../types/local/dropdownItem";
 import { IEventType } from "../../types/local/eventType";
 import { IToggleItem } from "../../types/local/toggleItem";
-import { DropdownType } from "../../enums/dropdownType";
+import { DropdownType } from "../../enums/local/dropdownType";
 import { eventTypes } from "../../data/eventTypes";
 
 import CloseIcon from "../../assets/svg/close.svg";

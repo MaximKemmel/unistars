@@ -8,7 +8,7 @@ import globalStyles from "../../../App.module.sass";
 import modalStyles from "../../Modal.module.sass";
 import styles from "../StudentsModal.module.sass";
 
-import { CheckboxState } from "../../../enums/checkboxState";
+import { CheckboxState } from "../../../enums/local/checkboxState";
 
 import { Trash as TrashIcon } from "../../../assets/svgComponents/Trash";
 

@@ -8,7 +8,7 @@ import globalStyles from "../../../App.module.sass";
 import modalStyles from "../../Modal.module.sass";
 import styles from "../AmbassadorsModal.module.sass";
 
-import { CheckboxState } from "../../../enums/checkboxState";
+import { CheckboxState } from "../../../enums/local/checkboxState";
 
 interface IEditRequestsAmbassadorsProps {
   requestedAmbassadors: any[];

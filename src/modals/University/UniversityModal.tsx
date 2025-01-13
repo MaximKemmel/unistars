@@ -6,7 +6,7 @@ import {Dropdown} from "../../components/dropdown/Dropdown";
 import globalStyles from "../../App.module.sass";
 import modalStyles from "../Modal.module.sass";
 
-import {DropdownType} from "../../enums/dropdownType";
+import {DropdownType} from "../../enums/local/dropdownType";
 import {IDropdownItem} from "../../types/local/dropdownItem";
 import {countries} from "../../data/countries";
 import {ICountry} from "../../types/dto/country";

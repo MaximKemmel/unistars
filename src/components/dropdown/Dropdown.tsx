@@ -4,7 +4,7 @@ import { useTranslation } from "react-i18next";
 import styles from "./Dropdown.module.sass";
 
 import { IDropdownItem } from "../../types/local/dropdownItem";
-import { DropdownType } from "../../enums/dropdownType";
+import { DropdownType } from "../../enums/local/dropdownType";
 
 import { Chevron as ChevronIcon } from "../../assets/svgComponents/Chevron";
 import { Check as CheckIcon } from "../../assets/svgComponents/Check";

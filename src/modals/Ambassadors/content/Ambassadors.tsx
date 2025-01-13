@@ -47,7 +47,7 @@ export const Ambassadors: React.FC<IAmbassadorsProps> = ({ ambassadors, requeste
                     </h4>
                     {currentRequestedAmbassadors.length > 3 ? (
                       <div className={styles.head_action} onClick={() => setActiveSection(2)}>
-                        {t("ambassadors.show_all")}
+                        {t("global.show_all")}
                       </div>
                     ) : null}
                   </div>

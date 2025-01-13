@@ -1,6 +1,6 @@
 import styles from "./Checkbox.module.sass";
 
-import { CheckboxState } from "../../enums/checkboxState";
+import { CheckboxState } from "../../enums/local/checkboxState";
 
 import { Check as CheckIcon } from "../../assets/svgComponents/Check";
 import MinusIcon from "../../assets/svg/minus.svg";

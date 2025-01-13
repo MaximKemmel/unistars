@@ -8,7 +8,7 @@ import modalStyles from "../../Modal.module.sass";
 import styles from "../SubscribersModal.module.sass";
 
 import { IDropdownItem } from "../../../types/local/dropdownItem";
-import { DropdownType } from "../../../enums/dropdownType";
+import { DropdownType } from "../../../enums/local/dropdownType";
 import { periods } from "../../../data/periods";
 import { IPeriod } from "../../../types/local/period";
 
