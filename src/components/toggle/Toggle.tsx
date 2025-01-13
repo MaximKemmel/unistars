@@ -1,8 +1,8 @@
-import {useTranslation} from "react-i18next";
+import { useTranslation } from "react-i18next";
 
 import styles from "./Toggle.module.sass";
 
-import {IToggleItem} from "../../types/local/toggleItem";
+import { IToggleItem } from "../../types/local/toggleItem";
 import React from "react";
 
 interface IToggleProps {
@@ -12,15 +12,15 @@ interface IToggleProps {
   isSettings?: boolean;
 }
 
-export const Toggle: React.FC<IToggleProps> = ({selectedIndex, items, onItemSelect, isSettings}) => {
-  const {t, i18n} = useTranslation();
+export const Toggle: React.FC<IToggleProps> = ({ selectedIndex, items, onItemSelect, isSettings }) => {
+  const { t, i18n } = useTranslation();
   const locales = {
-    ru: {title: t("settings.russian")},
-    en: {title: t("settings.english")},
+    ru: { title: t("settings.russian") },
+    en: { title: t("settings.english") },
   };
 
   return (
-    <div className={`${styles.toggle_container} ${isSettings ? styles.settings : ""}`}>
+    <div className={styles.toggle_container}>
       {isSettings ? (
         <>
           {Object.keys(locales).map((locale: string, index: number) => (
