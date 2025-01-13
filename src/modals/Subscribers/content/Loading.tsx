@@ -1,3 +1,6 @@
+import React from "react";
+import {useTranslation} from "react-i18next";
+
 import styles from "../SubscribersModal.module.sass";
 
 import FileIcon from "../../../assets/svg/file.svg";
@@ -10,11 +13,12 @@ interface ILoadingProps {
 }
 
 export const Loading: React.FC<ILoadingProps> = ({ isLoadShow, isLoadingSuccess }) => {
+  const { t } = useTranslation();
+
   return (
     <div className={styles.loading_content}>
       <div className={styles.loading_description}>
-        Абитуриенты заполняют форму с данными о своем образовании, языковых навыках, потребности в общежитии и интересующих
-        направлениях обучения. Эти данные можно выгрузить в формате Excel.
+        {t("subscribers.loading_description")}
       </div>
       {isLoadShow ? (
         <>
@@ -27,11 +31,11 @@ export const Loading: React.FC<ILoadingProps> = ({ isLoadShow, isLoadingSuccess 
             {isLoadingSuccess ? (
               <div className={`${styles.loading_progress} ${styles.success}`}>
                 <img src={CheckIcon} alt="" />
-                Отправлено
+                {t("global.sended")}
               </div>
             ) : (
               <div className={`${styles.loading_progress} ${styles.error}`}>
-                Ошибка
+                {t("global.error")}
                 <CloseIcon fill="#C45F1C" isBold={true} />
               </div>
             )}

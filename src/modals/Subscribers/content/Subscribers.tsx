@@ -1,4 +1,5 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
+import {useTranslation} from "react-i18next";
 
 import { UserCard } from "../../../cards/user/UserCard";
 import { Dropdown } from "../../../components/dropdown/Dropdown";
@@ -20,6 +21,7 @@ interface ISubscribersProps {
 }
 
 export const Subscribers: React.FC<ISubscribersProps> = ({ subscribers }) => {
+  const { t } = useTranslation();
   const [filteredSubscribers, setFilteredSubscribers] = useState(subscribers);
   const [searchValue, setSearchValue] = useState("");
   const [activePeriod, setActivePeriod] = useState(-1);
@@ -39,7 +41,7 @@ export const Subscribers: React.FC<ISubscribersProps> = ({ subscribers }) => {
     <div className={styles.subscribers_content}>
       <div className={modalStyles.search_input}>
         <input
-          placeholder={"Поиск по подписчикам"}
+          placeholder={t("subscribers.subscriber_search")}
           type="text"
           onChange={(event) => setSearchValue(event.target.value)}
           value={searchValue}
@@ -53,20 +55,22 @@ export const Subscribers: React.FC<ISubscribersProps> = ({ subscribers }) => {
       </div>
       <div className={styles.dropdown_input}>
         <Dropdown
-          placeholder="Период времени"
+          placeholder={t("subscribers.time_period")}
           activeComponent={activeComponent}
           setActiveComponent={setActiveComponent}
           dropdownIndex={DropdownType.EventType}
           items={[
             {
               id: -1,
-              text: "Не выбрано",
+              text: t("global.not_selected"),
+              text_eng: t("global.not_selected"),
               is_selected: activePeriod === -1,
             } as IDropdownItem,
             ...(periods.map((periodItem: IPeriod) => {
               return {
                 id: periodItem.id,
                 text: periodItem.period,
+                text_eng: periodItem.period_eng,
                 is_selected: activePeriod === periodItem.id,
               } as IDropdownItem;
             }) as IDropdownItem[]),
@@ -77,13 +81,13 @@ export const Subscribers: React.FC<ISubscribersProps> = ({ subscribers }) => {
           }}
         />
       </div>
-      <div className={styles.subscribers_count}>{`Найдено: ${filteredSubscribers.length}`}</div>
+      <div className={styles.subscribers_count}>{`${t("global.founded")}: ${filteredSubscribers.length}`}</div>
       {subscribers.length === 0 ? (
         <div className={modalStyles.empty_container}>
           <img className={modalStyles.empty_image} src={NothingFound} alt="" />
           <div className={styles.empty_info}>
-            <div className={styles.empty_title}>Ничего не найдено</div>
-            <div className={styles.empty_description}>У вас пока нет подписчиков</div>
+            <div className={styles.empty_title}>{t("global.nothing_was_found")}</div>
+            <div className={styles.empty_description}>{t("subscribers.don_t_have_subscribers")}</div>
           </div>
         </div>
       ) : (
@@ -92,8 +96,8 @@ export const Subscribers: React.FC<ISubscribersProps> = ({ subscribers }) => {
             <div className={modalStyles.empty_container}>
               <img className={modalStyles.empty_image} src={NothingFound} alt="" />
               <div className={modalStyles.empty_info}>
-                <div className={modalStyles.empty_title}>Ничего не найдено</div>
-                <div className={modalStyles.empty_description}>Введите другие параметры поиска</div>
+                <div className={modalStyles.empty_title}>{t("global.nothing_was_found")}</div>
+                <div className={modalStyles.empty_description}>{t("global.enter_other_params")}</div>
               </div>
             </div>
           ) : (

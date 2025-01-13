@@ -1,4 +1,5 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
+import {useTranslation} from "react-i18next";
 
 import { Subscribers } from "./content/Subscribers";
 import { Loading } from "./content/Loading";
@@ -17,6 +18,7 @@ interface ISubscribersModalProps {
 }
 
 export const SubscribersModal: React.FC<ISubscribersModalProps> = ({ isShow, subscribers, onClose }) => {
+  const { t } = useTranslation();
   const [activeSection, setActiveSection] = useState(0);
   const [isLoadShow, setIsLoadShow] = useState(false);
   const [isLoadingSuccess, setIsLoadingSuccess] = useState(false);
@@ -36,7 +38,7 @@ export const SubscribersModal: React.FC<ISubscribersModalProps> = ({ isShow, sub
       <div className={`${modalStyles.overlay} ${isShow ? modalStyles.active : ""}`} onClick={() => onClose()} />
       <div className={`${modalStyles.modal_content} ${styles.modal_content}`}>
         <div className={modalStyles.head}>
-          <h4>{activeSection === 0 ? "Подписчики" : "Выгрузка данных подписчиков"}</h4>
+          <h4>{activeSection === 0 ? t("subscribers.subscribers") : t("subscribers.uploading_subscriber")}</h4>
           <div className={modalStyles.close} onClick={() => onClose()}>
             <CloseIcon />
           </div>
@@ -54,11 +56,11 @@ export const SubscribersModal: React.FC<ISubscribersModalProps> = ({ isShow, sub
                   onClick={() => setActiveSection(1)}
                 >
                   <ExportIcon isDisabled={subscribers.length === 0} />
-                  Выгрузить данные
+                  {t("subscribers.upload_data")}
                 </button>
               ) : (
                 <button className={globalStyles.small} type="button" onClick={() => setIsLoadShow(true)}>
-                  Начать выгрузку
+                  {t("subscribers.start_downloading")}
                 </button>
               )}
             </>
@@ -67,11 +69,11 @@ export const SubscribersModal: React.FC<ISubscribersModalProps> = ({ isShow, sub
               <div />
               {isLoadingSuccess ? (
                 <button className={globalStyles.small} type="button" onClick={() => onClose()}>
-                  Закрыть
+                  {t("global.close")}
                 </button>
               ) : (
                 <button className={globalStyles.small} type="button" onClick={() => setIsLoadingSuccess(true)}>
-                  Попробовать снова
+                  {t("global.try_again")}
                 </button>
               )}
             </>

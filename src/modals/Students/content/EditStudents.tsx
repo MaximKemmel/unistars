@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import {useTranslation} from "react-i18next";
 
 import { UserCard } from "../../../cards/user/UserCard";
 import { MultiCheckbox } from "../../../components/checkbox/MultiCheckbox";
@@ -18,6 +19,7 @@ interface IEditStudentsProps {
 }
 
 export const EditStudents: React.FC<IEditStudentsProps> = ({ students, onSave, setActiveSection }) => {
+  const { t } = useTranslation();
   const [currentStudents, setCurrentStudents] = useState(students);
 
   return (
@@ -46,7 +48,7 @@ export const EditStudents: React.FC<IEditStudentsProps> = ({ students, onSave, s
                 }
               />
             </div>
-            Выбрать все
+            {t("global.select_all")}
           </div>
           {currentStudents.map((item, index) => (
             <div className={styles.student_item} key={index}>
@@ -69,7 +71,7 @@ export const EditStudents: React.FC<IEditStudentsProps> = ({ students, onSave, s
           ))}
         </div>
         <div className={styles.bottom_actions}>
-          <div className={styles.selected_count}>{`${currentStudents.filter((item) => item.isChecked).length} выбрано`}</div>
+          <div className={styles.selected_count}>{`${currentStudents.filter((item) => item.isChecked).length} ${t("global.selected")}`}</div>
           <button
             className={`${globalStyles.inverted} ${globalStyles.small} ${globalStyles.delete}`}
             type="button"
@@ -77,7 +79,7 @@ export const EditStudents: React.FC<IEditStudentsProps> = ({ students, onSave, s
             onClick={() => onSave()}
           >
             <TrashIcon isDisabled={currentStudents.filter((item) => item.isChecked).length === 0} />
-            Удалить
+            {t("global.delete")}
           </button>
         </div>
       </div>
@@ -85,10 +87,10 @@ export const EditStudents: React.FC<IEditStudentsProps> = ({ students, onSave, s
         <div />
         <div className={modalStyles.buttons}>
           <button className={`${globalStyles.small} ${globalStyles.inverted}`} type="button" onClick={() => setActiveSection(0)}>
-            <span>Отменить</span>
+            <span>{t("global.cancel")}</span>
           </button>
           <button className={globalStyles.small} type="button" onClick={() => onSave()}>
-            <span>Сохранить изменения</span>
+            <span>{t("global.save_changes")}</span>
           </button>
         </div>
       </div>

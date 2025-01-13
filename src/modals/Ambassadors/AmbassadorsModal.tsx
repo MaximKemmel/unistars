@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import {useTranslation} from "react-i18next";
 
 import { Ambassadors } from "./content/Ambassadors";
 import { EditRequestsAmbassadors } from "./content/EditRequestsAmbassadors";
@@ -22,6 +23,7 @@ export const AmbassadorsModal: React.FC<IAmbassadorsModalProps> = ({
   requestedAmbassadors,
   onClose,
 }) => {
+  const { t } = useTranslation();
   const [activeSection, setActiveSection] = useState(0);
   const contentSections = [
     <Ambassadors
@@ -36,7 +38,6 @@ export const AmbassadorsModal: React.FC<IAmbassadorsModalProps> = ({
       onAmbassadorCanceled={() => {}}
     />,
   ] as JSX.Element[];
-  const sectionsTitles = ["Амбассадоры", "Амбассадоры", "Заявки на амбассадорство"];
 
   useEffect(() => {
     setActiveSection(0);
@@ -47,7 +48,7 @@ export const AmbassadorsModal: React.FC<IAmbassadorsModalProps> = ({
       <div className={`${modalStyles.overlay} ${isShow ? modalStyles.active : ""}`} onClick={() => onClose()} />
       <div className={`${modalStyles.modal_content} ${styles.modal_content}`}>
         <div className={modalStyles.head}>
-          <h4>{sectionsTitles[activeSection]}</h4>
+          <h4>{activeSection === 2 ? t("ambassadors.requests_for_ambassadorship") : t("ambassadors.ambassadors")}</h4>
           <div className={modalStyles.close} onClick={() => onClose()}>
             <CloseIcon />
           </div>

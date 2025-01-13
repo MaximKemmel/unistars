@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import {useTranslation} from "react-i18next";
 
 import { UserCard } from "../../../cards/user/UserCard";
 
@@ -16,6 +17,7 @@ interface IStudentsProps {
 }
 
 export const Students: React.FC<IStudentsProps> = ({ students, setActiveSection }) => {
+  const { t } = useTranslation();
   const [filteredStudents, setFilteredStudents] = useState(students);
   const [searchValue, setSearchValue] = useState("");
 
@@ -33,7 +35,7 @@ export const Students: React.FC<IStudentsProps> = ({ students, setActiveSection 
         <div className={styles.students_content}>
           <div className={modalStyles.search_input}>
             <input
-              placeholder={"Поиск по студентам"}
+              placeholder={t("students.students_search")}
               type="text"
               onChange={(event) => setSearchValue(event.target.value)}
               value={searchValue}
@@ -45,13 +47,13 @@ export const Students: React.FC<IStudentsProps> = ({ students, setActiveSection 
               </div>
             ) : null}
           </div>
-          <div className={styles.students_count}>{`Найдено: ${filteredStudents.length}`}</div>
+          <div className={styles.students_count}>{`${t("global.founded")}: ${filteredStudents.length}`}</div>
           {students.length === 0 ? (
             <div className={modalStyles.empty_container}>
               <img className={modalStyles.empty_image} src={NothingFound} alt="" />
               <div className={modalStyles.empty_info}>
-                <div className={modalStyles.empty_title}>Ничего не найдено</div>
-                <div className={modalStyles.empty_description}>У вас пока нет студентов</div>
+                <div className={modalStyles.empty_title}>{t("global.nothing_was_found")}</div>
+                <div className={modalStyles.empty_description}>{t("students.don_t_have_students")}</div>
               </div>
             </div>
           ) : (
@@ -60,8 +62,8 @@ export const Students: React.FC<IStudentsProps> = ({ students, setActiveSection 
                 <div className={modalStyles.empty_container}>
                   <img className={modalStyles.empty_image} src={NothingFound} alt="" />
                   <div className={modalStyles.empty_info}>
-                    <div className={modalStyles.empty_title}>Ничего не найдено</div>
-                    <div className={modalStyles.empty_description}>Введите другие параметры поиска</div>
+                    <div className={modalStyles.empty_title}>{t("global.nothing_was_found")}</div>
+                    <div className={modalStyles.empty_description}>{t("global.enter_other_params")}</div>
                   </div>
                 </div>
               ) : (
@@ -85,7 +87,7 @@ export const Students: React.FC<IStudentsProps> = ({ students, setActiveSection 
             type="button"
             onClick={() => setActiveSection(1)}
           >
-            <span>Редактировать</span>
+            <span>{t("global.edit")}</span>
           </button>
         </div>
       ) : null}

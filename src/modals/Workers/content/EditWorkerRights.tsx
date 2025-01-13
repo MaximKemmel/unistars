@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import {useTranslation} from "react-i18next";
 
 import { UserCard } from "../../../cards/user/UserCard";
 import { Checkbox } from "../../../components/checkbox/Checkbox";
@@ -13,25 +14,30 @@ interface IEditWorkerRightsProps {
 }
 
 export const EditWorkerRights: React.FC<IEditWorkerRightsProps> = ({ worker, setActiveSection }) => {
+  const { i18n, t } = useTranslation();
   const [rights, setRights] = useState([
     {
       id: 0,
       text: "Редактирование профиля организации",
+      text_eng: "Editing an organization's profile",
       isChecked: false,
     },
     {
       id: 1,
       text: "Создание и редактирование мероприятий",
+      text_eng: "Creating and editing events",
       isChecked: false,
     },
     {
       id: 2,
       text: "Создание и редактирование статей",
+      text_eng: "Creating and editing articles",
       isChecked: false,
     },
     {
       id: 3,
-      text: "Принимать личные сообщения из списка сотрудников",
+      text: "Принимать личные сообщения из списка сотрудников",
+      text_eng: "Accept private messages from the list of employees",
       isChecked: false,
     },
   ]);
@@ -49,7 +55,7 @@ export const EditWorkerRights: React.FC<IEditWorkerRightsProps> = ({ worker, set
                 <div className={styles.checkbox}>
                   <Checkbox
                     isChecked={item.isChecked}
-                    onChangeStatus={(status) =>
+                    onChangeStatus={(status: boolean) =>
                       setRights(
                         rights.map((tmpItem) => {
                           if (item.id === tmpItem.id) {
@@ -62,7 +68,7 @@ export const EditWorkerRights: React.FC<IEditWorkerRightsProps> = ({ worker, set
                     }
                   />
                 </div>
-                {item.text}
+                {i18n.resolvedLanguage === "ru" ? item.text : item.text_eng}
               </div>
             ))}
           </div>
@@ -72,10 +78,10 @@ export const EditWorkerRights: React.FC<IEditWorkerRightsProps> = ({ worker, set
         <div />
         <div className={modalStyles.buttons}>
           <button className={`${globalStyles.small} ${globalStyles.inverted}`} type="button" onClick={() => setActiveSection(1)}>
-            <span>Отменить</span>
+            <span>{t("global.cancel")}</span>
           </button>
           <button className={globalStyles.small} type="button">
-            <span>Сохранить изменения</span>
+            <span>{t("global.save_changes")}</span>
           </button>
         </div>
       </div>

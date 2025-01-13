@@ -9,7 +9,16 @@
     "selected": "selected",
     "back": "Back",
     "create": "Create",
-    "save": "Save"
+    "save": "Save",
+    "close": "Close",
+    "try_again": "Try again",
+    "sended": "Success",
+    "error": "Error",
+    "founded": "Founded",
+    "nothing_was_found": "Nothing was found",
+    "enter_other_params": "Enter other search parameters",
+    "select_all": "Select all",
+    "show_all": "Show all"
   },
   "sign_in": {
     "sign_in": "Sign in",
@@ -155,5 +164,39 @@
     "duration": "Advertisement's duration",
     "manager_will_write": "Manager will write to this email address",
     "create_ad": "Create ad"
+  },
+  "subscribers": {
+    "subscribers": "Subscribers",
+    "uploading_subscriber": "Uploading subscriber data",
+    "upload_data": "Upload data",
+    "start_downloading": "Start downloading",
+    "loading_description": "Applicants fill out a form with information about their education, language skills, need for a dormitory, and educational interests. This data can be uploaded in Excel format.",
+    "subscriber_search": "Subscribers search",
+    "time_period": "Time period",
+    "don_t_have_subscribers": "You don't have any subscribers yet"
+  },
+  "students": {
+    "students": "Students",
+    "students_search": "Students search",
+    "don_t_have_students": "You don't have any students yet"
+  },
+  "ambassadors": {
+    "ambassadors": "Ambassadors",
+    "requests_for_ambassadorship": "Request for ambassadorship",
+    "don_t_have_ambassadors": "You don't have any ambassadors yet",
+    "reject": "Reject",
+    "approve": "Approve",
+    "recover": "Recover"
+  },
+  "employers": {
+    "employers": "Employers",
+    "employers_search": "Employers search",
+    "don_t_have_employers": "You don't have any employers yet",
+    "rights_settings": "Rights settings",
+    "add_employee": "Add employee",
+    "adding_employee": "Adding employee",
+    "employees_rights_settings": "Employee's rights settings",
+    "adding_description": "Fill out the form to add an employee. You can make an employee of a user who does not have the status of \"Student\" or \"Ambassador\"",
+    "post": "Post"
   }
 }

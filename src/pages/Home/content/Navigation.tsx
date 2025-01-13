@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { SettingsModal } from "../../../modals/Settings/SettingsModal";
@@ -24,7 +24,7 @@ interface INavigationProps {
 
 export const Navigation: React.FC<INavigationProps> = ({ activeNav, setActiveNav, isMinimized, setIsMinimized }) => {
   const navigate = useNavigate();
-  const { t } = useTranslation();
+  const { i18n, t } = useTranslation();
   const [isSettingsModalShow, setIsSettingsModalShow] = useState(false);
 
   const navItems = [
@@ -50,7 +50,7 @@ export const Navigation: React.FC<INavigationProps> = ({ activeNav, setActiveNav
 
   return (
     <>
-      <div className={`${styles.navigation} ${isMinimized ? styles.minimized : ""}`}>
+      <div className={`${styles.navigation} ${isMinimized ? styles.minimized : i18n.resolvedLanguage === "en" ? styles.wide : ""}`}>
         <div className={styles.part}>
           <img className={styles.logo} src={isMinimized ? LogoMinimized : Logo} alt="" />
         </div>

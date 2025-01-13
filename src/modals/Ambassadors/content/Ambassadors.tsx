@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import {useTranslation} from "react-i18next";
 
 import { UserCard } from "../../../cards/user/UserCard";
 
@@ -15,6 +16,7 @@ interface IAmbassadorsProps {
 }
 
 export const Ambassadors: React.FC<IAmbassadorsProps> = ({ ambassadors, requestedAmbassadors, setActiveSection }) => {
+  const { t } = useTranslation();
   const [currentAmbassadors, setCurrentAmbassadors] = useState(ambassadors);
   const [currentRequestedAmbassadors, setCurrentRequestedAmbassadors] = useState(requestedAmbassadors);
 
@@ -31,8 +33,8 @@ export const Ambassadors: React.FC<IAmbassadorsProps> = ({ ambassadors, requeste
             <div className={modalStyles.empty_container}>
               <img className={modalStyles.empty_image} src={NothingFound} alt="" />
               <div className={modalStyles.empty_info}>
-                <div className={modalStyles.empty_title}>Ничего не найдено</div>
-                <div className={modalStyles.empty_description}>У вас пока нет амбассадоров</div>
+                <div className={modalStyles.empty_title}>{t("global.nothing_not_found")}</div>
+                <div className={modalStyles.empty_description}>{t("ambassadors.don_t_have_ambassadors")}</div>
               </div>
             </div>
           ) : (
@@ -45,7 +47,7 @@ export const Ambassadors: React.FC<IAmbassadorsProps> = ({ ambassadors, requeste
                     </h4>
                     {currentRequestedAmbassadors.length > 3 ? (
                       <div className={styles.head_action} onClick={() => setActiveSection(2)}>
-                        Показать все
+                        {t("ambassadors.show_all")}
                       </div>
                     ) : null}
                   </div>
@@ -74,7 +76,7 @@ export const Ambassadors: React.FC<IAmbassadorsProps> = ({ ambassadors, requeste
                 </>
               ) : null}
               <h4>
-                Амбассодоры<span>{currentAmbassadors.length}</span>
+                {t("ambassadors.ambassadors")}<span>{currentAmbassadors.length}</span>
               </h4>
               {currentAmbassadors.map((item, index) => (
                 <div className={styles.ambassador_item} key={index}>
@@ -93,7 +95,7 @@ export const Ambassadors: React.FC<IAmbassadorsProps> = ({ ambassadors, requeste
             type="button"
             onClick={() => setActiveSection(1)}
           >
-            <span>Редактировать</span>
+            <span>{t("global.edit")}</span>
           </button>
         </div>
       ) : null}

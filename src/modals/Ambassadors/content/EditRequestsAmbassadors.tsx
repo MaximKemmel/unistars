@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import {useTranslation} from "react-i18next";
 
 import { UserCard } from "../../../cards/user/UserCard";
 import { MultiCheckbox } from "../../../components/checkbox/MultiCheckbox";
@@ -20,6 +21,7 @@ export const EditRequestsAmbassadors: React.FC<IEditRequestsAmbassadorsProps> = 
   onAmbassadorAccepted,
   onAmbassadorCanceled,
 }) => {
+  const { t } = useTranslation();
   const [currentRequests, setCurrentRequests] = useState(requestedAmbassadors);
 
   return (
@@ -36,7 +38,7 @@ export const EditRequestsAmbassadors: React.FC<IEditRequestsAmbassadorsProps> = 
                     ? CheckboxState.AllChecked
                     : CheckboxState.AnyChecked
                 }
-                onChangeStatus={(status) =>
+                onChangeStatus={(status: CheckboxState) =>
                   setCurrentRequests(
                     currentRequests.map((tmpItem) => {
                       return {
@@ -48,7 +50,7 @@ export const EditRequestsAmbassadors: React.FC<IEditRequestsAmbassadorsProps> = 
                 }
               />
             </div>
-            Выбрать все
+            {t("global.select_all")}
           </div>
           {currentRequests.map((item, index) => (
             <div className={styles.ambassador_item} key={index}>
@@ -56,7 +58,7 @@ export const EditRequestsAmbassadors: React.FC<IEditRequestsAmbassadorsProps> = 
                 userItem={item}
                 isCheckedItem={true}
                 isRequestItem={true}
-                onCheckedChange={(status) =>
+                onCheckedChange={(status: boolean) =>
                   setCurrentRequests(
                     currentRequests.map((tmpItem) => {
                       if (tmpItem.id === item.id) {
@@ -75,7 +77,7 @@ export const EditRequestsAmbassadors: React.FC<IEditRequestsAmbassadorsProps> = 
         </div>
       </div>
       <div className={modalStyles.actions}>
-        <div className={styles.selected_count}>{`${currentRequests.filter((item) => item.isChecked).length} выбрано`}</div>
+        <div className={styles.selected_count}>{`${currentRequests.filter((item) => item.isChecked).length} ${t("global.selected")}`}</div>
         <div className={modalStyles.buttons}>
           <button
             className={`${globalStyles.small} ${globalStyles.inverted}`}
@@ -83,7 +85,7 @@ export const EditRequestsAmbassadors: React.FC<IEditRequestsAmbassadorsProps> = 
             disabled={currentRequests.filter((item) => item.isChecked).length === 0}
             onClick={() => onAmbassadorCanceled(currentRequests.filter((item) => item.isChecked))}
           >
-            <span>Отклонить</span>
+            <span>{t("ambassadors.reject")}</span>
           </button>
           <button
             className={globalStyles.small}
@@ -91,7 +93,7 @@ export const EditRequestsAmbassadors: React.FC<IEditRequestsAmbassadorsProps> = 
             disabled={currentRequests.filter((item) => item.isChecked).length === 0}
             onClick={() => onAmbassadorAccepted(currentRequests.filter((item) => item.isChecked))}
           >
-            <span>Одобрить</span>
+            <span>{t("ambassadors.approve")}</span>
           </button>
         </div>
       </div>

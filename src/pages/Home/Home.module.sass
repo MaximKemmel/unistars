@@ -25,10 +25,15 @@ $border_neutral_color: #E2E8F0
         display: flex
         flex-direction: column
         justify-content: space-between
+        width: 176px
         padding-top: 20px
         padding-bottom: 32px
         flex-shrink: 0
+        overflow: hidden
         transition: all .2s ease-out
+
+        &.wide
+            width: 210px
 
         &.minimized
             width: 64px

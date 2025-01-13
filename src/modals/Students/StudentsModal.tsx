@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import {useTranslation} from "react-i18next";
 
 import { Students } from "./content/Students";
 import { EditStudents } from "./content/EditStudents";
@@ -15,6 +16,7 @@ interface IStudentsModalProps {
 }
 
 export const StudentsModal: React.FC<IStudentsModalProps> = ({ isShow, students, onClose }) => {
+  const { t } = useTranslation();
   const [activeSection, setActiveSection] = useState(0);
   const contentSections = [
     <Students students={students} setActiveSection={setActiveSection} />,
@@ -30,7 +32,7 @@ export const StudentsModal: React.FC<IStudentsModalProps> = ({ isShow, students,
       <div className={`${modalStyles.overlay} ${isShow ? modalStyles.active : ""}`} onClick={() => onClose()} />
       <div className={`${modalStyles.modal_content} ${styles.modal_content}`}>
         <div className={modalStyles.head}>
-          <h4>Студенты</h4>
+          <h4>{t("students.students")}</h4>
           <div className={modalStyles.close} onClick={() => onClose()}>
             <CloseIcon />
           </div>

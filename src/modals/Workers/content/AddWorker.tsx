@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import {useTranslation} from "react-i18next";
+
 import globalStyles from "../../../App.module.sass";
 import modalStyles from "../../Modal.module.sass";
 import styles from "../WorkersModal.module.sass";
@@ -8,6 +10,7 @@ interface IAddWorkerProps {
 }
 
 export const AddWorker: React.FC<IAddWorkerProps> = ({ setActiveSection }) => {
+  const { t } = useTranslation();
   const [email, setEmail] = useState("");
   const [role, setRole] = useState("");
 
@@ -17,18 +20,17 @@ export const AddWorker: React.FC<IAddWorkerProps> = ({ setActiveSection }) => {
         <div className={styles.workers_content}>
           <form>
             <div className={styles.form_info}>
-              Заполните форму, чтобы добавить сотрудника. Сотрудником можно сделать пользователя, который не имеет статусы
-              «Студент» или «Амбассадор»
+              {t("employers.adding_description")}
             </div>
             <input
-              placeholder={"Почта"}
+              placeholder={"E-mail"}
               type="text"
               required
               onChange={(event) => setEmail(event.target.value.trim())}
               value={email}
             />
             <input
-              placeholder={"Должность"}
+              placeholder={t("employers.post")}
               type="text"
               required
               onChange={(event) => setRole(event.target.value.trim())}
@@ -43,10 +45,10 @@ export const AddWorker: React.FC<IAddWorkerProps> = ({ setActiveSection }) => {
         <div />
         <div className={modalStyles.buttons}>
           <button className={`${globalStyles.small} ${globalStyles.inverted}`} type="button" onClick={() => setActiveSection(0)}>
-            <span>Отменить</span>
+            <span>{t("global.cancel")}</span>
           </button>
           <button className={globalStyles.small} type="button">
-            <span>Добавить сотрудника</span>
+            <span>{t("employers.add_employee")}</span>
           </button>
         </div>
       </div>

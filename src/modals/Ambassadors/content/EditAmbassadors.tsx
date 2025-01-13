@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import {useTranslation} from "react-i18next";
 
 import { UserCard } from "../../../cards/user/UserCard";
 import { MultiCheckbox } from "../../../components/checkbox/MultiCheckbox";
@@ -18,6 +19,7 @@ interface IEditAmbassadorsProps {
 }
 
 export const EditAmbassadors: React.FC<IEditAmbassadorsProps> = ({ ambassadors, onSave, setActiveSection }) => {
+  const { t } = useTranslation();
   const [currentAmbassadors, setCurrentAmbassadors] = useState(ambassadors);
 
   return (
@@ -34,7 +36,7 @@ export const EditAmbassadors: React.FC<IEditAmbassadorsProps> = ({ ambassadors, 
                     ? CheckboxState.AllChecked
                     : CheckboxState.AnyChecked
                 }
-                onChangeStatus={(status) =>
+                onChangeStatus={(status: CheckboxState) =>
                   setCurrentAmbassadors(
                     currentAmbassadors.map((tmpItem) => {
                       return {
@@ -46,14 +48,14 @@ export const EditAmbassadors: React.FC<IEditAmbassadorsProps> = ({ ambassadors, 
                 }
               />
             </div>
-            Выбрать все
+            {t("global.select_all")}
           </div>
           {currentAmbassadors.map((item, index) => (
             <div className={styles.ambassador_item} key={index}>
               <UserCard
                 userItem={item}
                 isCheckedItem={true}
-                onCheckedChange={(status) =>
+                onCheckedChange={(status: boolean) =>
                   setCurrentAmbassadors(
                     currentAmbassadors.map((tmpItem) => {
                       if (tmpItem.id === item.id) {
@@ -71,7 +73,7 @@ export const EditAmbassadors: React.FC<IEditAmbassadorsProps> = ({ ambassadors, 
         <div className={styles.bottom_actions}>
           <div className={styles.selected_count}>{`${
             currentAmbassadors.filter((item) => item.isChecked).length
-          } выбрано`}</div>
+          } ${t("global.selected")}`}</div>
           <button
             className={`${globalStyles.inverted} ${globalStyles.small} ${globalStyles.delete}`}
             type="button"
@@ -79,7 +81,7 @@ export const EditAmbassadors: React.FC<IEditAmbassadorsProps> = ({ ambassadors, 
             onClick={() => onSave()}
           >
             <TrashIcon isDisabled={currentAmbassadors.filter((item) => item.isChecked).length === 0} />
-            Удалить
+            {t("global.delete")}
           </button>
         </div>
       </div>
@@ -87,10 +89,10 @@ export const EditAmbassadors: React.FC<IEditAmbassadorsProps> = ({ ambassadors, 
         <div />
         <div className={modalStyles.buttons}>
           <button className={`${globalStyles.small} ${globalStyles.inverted}`} type="button" onClick={() => setActiveSection(0)}>
-            <span>Отменить</span>
+            <span>{t("global.cancel")}</span>
           </button>
           <button className={globalStyles.small} type="button" onClick={() => onSave()}>
-            <span>Сохранить изменения</span>
+            <span>${t("global.save_changes")}</span>
           </button>
         </div>
       </div>

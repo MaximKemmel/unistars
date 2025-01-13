@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import {useTranslation} from "react-i18next";
 
 import { UserCard } from "../../../cards/user/UserCard";
 import { MultiCheckbox } from "../../../components/checkbox/MultiCheckbox";
@@ -18,6 +19,7 @@ interface IEditWorkersProps {
 }
 
 export const EditWorkers: React.FC<IEditWorkersProps> = ({ workers, onSave, setActiveSection }) => {
+  const { t } = useTranslation();
   const [currentWorkers, setCurrentWorkers] = useState(workers);
 
   return (
@@ -34,7 +36,7 @@ export const EditWorkers: React.FC<IEditWorkersProps> = ({ workers, onSave, setA
                     ? CheckboxState.AllChecked
                     : CheckboxState.AnyChecked
                 }
-                onChangeStatus={(status) =>
+                onChangeStatus={(status: CheckboxState) =>
                   setCurrentWorkers(
                     currentWorkers.map((tmpItem) => {
                       return {
@@ -46,14 +48,14 @@ export const EditWorkers: React.FC<IEditWorkersProps> = ({ workers, onSave, setA
                 }
               />
             </div>
-            Выбрать все
+            {t("global.select_all")}
           </div>
           {currentWorkers.map((item, index) => (
             <div className={styles.worker_item} key={index}>
               <UserCard
                 userItem={item}
                 isCheckedItem={true}
-                onCheckedChange={(status) =>
+                onCheckedChange={(status: boolean) =>
                   setCurrentWorkers(
                     currentWorkers.map((tmpItem) => {
                       if (tmpItem.id === item.id) {
@@ -69,7 +71,7 @@ export const EditWorkers: React.FC<IEditWorkersProps> = ({ workers, onSave, setA
           ))}
         </div>
         <div className={styles.bottom_actions}>
-          <div className={styles.selected_count}>{`${currentWorkers.filter((item) => item.isChecked).length} выбрано`}</div>
+          <div className={styles.selected_count}>{`${currentWorkers.filter((item) => item.isChecked).length} ${t("global.selected")}`}</div>
           <button
             className={`${globalStyles.inverted} ${globalStyles.small} ${globalStyles.delete}`}
             type="button"
@@ -77,7 +79,7 @@ export const EditWorkers: React.FC<IEditWorkersProps> = ({ workers, onSave, setA
             onClick={() => onSave()}
           >
             <TrashIcon isDisabled={currentWorkers.filter((item) => item.isChecked).length === 0} />
-            Удалить
+            {t("global.delete")}
           </button>
         </div>
       </div>
@@ -85,10 +87,10 @@ export const EditWorkers: React.FC<IEditWorkersProps> = ({ workers, onSave, setA
         <div />
         <div className={modalStyles.buttons}>
           <button className={`${globalStyles.small} ${globalStyles.inverted}`} type="button" onClick={() => setActiveSection(0)}>
-            <span>Отменить</span>
+            <span>{t("global.cancel")}</span>
           </button>
           <button className={globalStyles.small} type="button" onClick={() => onSave()}>
-            <span>Сохранить изменения</span>
+            <span>{t("global.save_changes")}</span>
           </button>
         </div>
       </div>
