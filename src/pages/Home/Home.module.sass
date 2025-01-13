@@ -1,7 +1,7 @@
 $background_secondary_color: #F5F5F5
 $background_primary_color: #FFFFFF
 $background_primary_inverse_color: #14171A
-$text_primary_color: #000000
+$text_primary_color: #14171A
 $text_secondary_color: #939393
 $text_neutral_color: #202327
 $text_action_alternative_color: #7B61FF
@@ -61,6 +61,7 @@ $border_neutral_color: #E2E8F0
 
         .nav_item_container
             position: relative
+            transition: all .2s ease-out
 
             .nav_item
                 display: flex
@@ -103,7 +104,7 @@ $border_neutral_color: #E2E8F0
                 color: $background_primary_color
                 background-color: $background_primary_inverse_color
                 opacity: 0
-                transition: all .1s ease-out
+                transition: all .2s ease-out
 
         .separator
             width: 100%
@@ -255,7 +256,7 @@ $border_neutral_color: #E2E8F0
 
             &.full
                 max-height: 10000px
-                overflow: visible
+                flex-shrink: 0
 
             .overlay
                 position: absolute

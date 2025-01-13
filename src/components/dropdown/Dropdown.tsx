@@ -1,13 +1,13 @@
-import React, {useEffect} from "react";
-import {useTranslation} from "react-i18next";
+import React, { useEffect } from "react";
+import { useTranslation } from "react-i18next";
 
 import styles from "./Dropdown.module.sass";
 
-import {IDropdownItem} from "../../types/local/dropdownItem";
-import {DropdownType} from "../../enums/dropdownType";
+import { IDropdownItem } from "../../types/local/dropdownItem";
+import { DropdownType } from "../../enums/dropdownType";
 
-import {Chevron as ChevronIcon} from "../../assets/svgComponents/Chevron";
-import {Check as CheckIcon} from "../../assets/svgComponents/Check";
+import { Chevron as ChevronIcon } from "../../assets/svgComponents/Chevron";
+import { Check as CheckIcon } from "../../assets/svgComponents/Check";
 
 interface IDropdownProps {
   placeholder: string;
@@ -19,19 +19,19 @@ interface IDropdownProps {
 }
 
 export const Dropdown: React.FC<IDropdownProps> = ({
-                                                     placeholder,
-                                                     dropdownIndex,
-                                                     activeComponent,
-                                                     setActiveComponent,
-                                                     items,
-                                                     onItemSelect,
-                                                   }) => {
-  const {i18n} = useTranslation();
+  placeholder,
+  dropdownIndex,
+  activeComponent,
+  setActiveComponent,
+  items,
+  onItemSelect,
+}) => {
+  const { i18n } = useTranslation();
 
   useEffect(() => {
     if (activeComponent === dropdownIndex) {
       const list = document.getElementById("dropdown_list");
-      list?.scrollTo({top: 0});
+      list?.scrollTo({ top: 0 });
     }
   }, [activeComponent]);
 
@@ -49,15 +49,15 @@ export const Dropdown: React.FC<IDropdownProps> = ({
         onClick={() => setActiveComponent(activeComponent === dropdownIndex ? DropdownType.None : dropdownIndex)}
       >
         <div className={styles.label}>
-          {
-            items.find((item: IDropdownItem) => item.is_selected)?.id === -1
-              ? placeholder
-              : i18n.resolvedLanguage === "ru"
-                ? items.find((item: IDropdownItem) => item.is_selected)?.text
-                : items.find((item: IDropdownItem) => item.is_selected)?.text_eng
-          }
+          {items.find((item: IDropdownItem) => item.is_selected)?.id === -1
+            ? placeholder
+            : i18n.resolvedLanguage === "ru"
+            ? items.find((item: IDropdownItem) => item.is_selected)?.text
+            : items.find((item: IDropdownItem) => item.is_selected)?.text_eng}
         </div>
-        <div className={styles.arrow}><ChevronIcon/></div>
+        <div className={styles.arrow}>
+          <ChevronIcon />
+        </div>
       </div>
       <div className={`${styles.dropdown_container} ${activeComponent === dropdownIndex ? styles.active : ""}`}>
         <div
@@ -73,7 +73,7 @@ export const Dropdown: React.FC<IDropdownProps> = ({
               }}
             >
               {i18n.resolvedLanguage === "ru" ? item.text : item.text_eng}
-              {item.is_selected ? <CheckIcon/> : null}
+              {item.is_selected ? <CheckIcon /> : null}
             </div>
           ))}
         </div>
