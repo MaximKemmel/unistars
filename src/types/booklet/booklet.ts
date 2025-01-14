@@ -1,11 +1,11 @@
 export interface IBooklet {
   id: number;
+  title: string;
+  description: string;
+  imageUrl: string;
+  bookletFileUrl: string;
   authorId?: number;
   universityId?: number;
-  title?: string;
-  bookletFileUrl?: string;
-  imageUrl?: string;
-  description?: string;
   createdAt?: Date;
   editAt?: Date;
 }

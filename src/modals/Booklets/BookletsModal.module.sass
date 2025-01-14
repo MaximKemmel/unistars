@@ -1,6 +1,9 @@
-$text_primary_color: #14171A
 $text_secondary_neutral_color: #8496AE
 $divider_color: #E2E8F0
+$background_error_color: #FAEAE0
+$text_error_color: #C45F1C
+$background_success_color: #DEEDDE
+$text_success_color: #3F753E
 
 .booklets_container
   display: flex
@@ -33,7 +36,6 @@ $divider_color: #E2E8F0
 
         .form_label
           font-size: 16px
-          color: $text_primary_color
           font-weight: 600
 
         textarea
@@ -46,6 +48,53 @@ $divider_color: #E2E8F0
         gap: 16px
         width: 100%
 
+      .file_info
+        display: flex
+        align-items: center
+        justify-content: space-between
+        gap: 10px
+        width: calc(100% - 66px)
+
+        .file_name
+          display: flex
+          align-items: center
+          gap: 4px
+          flex-grow: 1
+          font-size: 14px
+          overflow: hidden
+
+          img
+            width: 16px
+            height: auto
+
+          .name
+            text-overflow: ellipsis
+            white-space: nowrap
+            overflow: hidden
+
+        .upload_progress
+          display: flex
+          align-items: center
+          gap: 6px
+          padding: 8px 16px
+          font-size: 14px
+          font-weight: 700
+          border-radius: 50px
+          flex-shrink: 0
+
+          img,
+          svg
+            width: 16px
+            height: auto
+
+          &.success
+            background-color: $background_success_color
+            color: $text_success_color
+
+          &.error
+            background-color: $background_error_color
+            color: $text_error_color
+
       .form_button
         display: flex
         align-items: center
@@ -55,6 +104,7 @@ $divider_color: #E2E8F0
         border-radius: 12px
         border: 1px solid $divider_color
         cursor: pointer
+        flex-shrink: 0
 
         &.filled
           border: none
@@ -76,14 +126,9 @@ $divider_color: #E2E8F0
 
         .file_title
           font-size: 16px
-          color: $text_primary_color
 
         .file_content
           display: flex
           align-items: center
           gap: 16px
           width: 100%
-
-
-
-

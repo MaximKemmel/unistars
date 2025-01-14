@@ -2,8 +2,8 @@ import { createSlice } from "@reduxjs/toolkit";
 
 import { getCities, getCountries } from "./core.actions";
 
-import { ICountry } from "../../types/dto/country";
-import { ICity } from "../../types/dto/city";
+import { ICountry } from "../../types/core/country";
+import { ICity } from "../../types/core/city";
 
 interface ICoreState {
   countries: ICountry[];

@@ -1,17 +1,17 @@
-import React, {useEffect, useState} from "react";
-import {useTranslation} from "react-i18next";
+import React, { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 
-import {Dropdown} from "../../components/dropdown/Dropdown";
+import { Dropdown } from "../../components/dropdown/Dropdown";
 
 import globalStyles from "../../App.module.sass";
 import modalStyles from "../Modal.module.sass";
 
-import {DropdownType} from "../../enums/local/dropdownType";
-import {IDropdownItem} from "../../types/local/dropdownItem";
-import {countries} from "../../data/countries";
-import {ICountry} from "../../types/dto/country";
-import {cities} from "../../data/cities";
-import {ICity} from "../../types/dto/city";
+import { DropdownType } from "../../enums/local/dropdownType";
+import { IDropdownItem } from "../../types/local/dropdownItem";
+import { countries } from "../../data/countries";
+import { ICountry } from "../../types/core/country";
+import { cities } from "../../data/cities";
+import { ICity } from "../../types/core/city";
 
 import CloseIcon from "../../assets/svg/close.svg";
 import LocationIcon from "../../assets/svg/location.svg";
@@ -24,8 +24,8 @@ interface IUniversityModalProps {
   onClose: Function;
 }
 
-export const UniversityModal: React.FC<IUniversityModalProps> = ({isShow, universityInfo, onSave, onClose}) => {
-  const {t} = useTranslation();
+export const UniversityModal: React.FC<IUniversityModalProps> = ({ isShow, universityInfo, onSave, onClose }) => {
+  const { t } = useTranslation();
   const [currentInfo, setCurrentInfo] = useState(universityInfo);
   const [activeComponent, setActiveComponent] = useState(DropdownType.None);
 
@@ -33,7 +33,7 @@ export const UniversityModal: React.FC<IUniversityModalProps> = ({isShow, univer
     setCurrentInfo(universityInfo);
     setActiveComponent(DropdownType.None);
     const formDiv = document.getElementById("form");
-    formDiv?.scrollTo({top: 0, behavior: "smooth"});
+    formDiv?.scrollTo({ top: 0, behavior: "smooth" });
   }, [isShow]);
 
   useEffect(() => {
@@ -56,12 +56,12 @@ export const UniversityModal: React.FC<IUniversityModalProps> = ({isShow, univer
 
   return (
     <div className={`${modalStyles.modal} ${isShow ? modalStyles.active : ""}`}>
-      <div className={`${modalStyles.overlay} ${isShow ? modalStyles.active : ""}`} onClick={() => onClose()}/>
+      <div className={`${modalStyles.overlay} ${isShow ? modalStyles.active : ""}`} onClick={() => onClose()} />
       <div className={`${modalStyles.modal_content} ${modalStyles.wide}`}>
         <div className={modalStyles.head}>
           <h4>{universityInfo ? t("university.editing_university_data") : t("university.about_university")}</h4>
           <div className={modalStyles.close} onClick={() => onClose()}>
-            <img src={CloseIcon} alt=""/>
+            <img src={CloseIcon} alt="" />
           </div>
         </div>
         <form onSubmit={handleOnSubmit} className={modalStyles.form}>
@@ -139,7 +139,7 @@ export const UniversityModal: React.FC<IUniversityModalProps> = ({isShow, univer
                       }) as IDropdownItem[]),
                     ]}
                     onItemSelect={(item: IDropdownItem) => {
-                      setCurrentInfo({...currentInfo, country_id: item.id});
+                      setCurrentInfo({ ...currentInfo, country_id: item.id });
                       setActiveComponent(DropdownType.None);
                     }}
                   />
@@ -168,7 +168,7 @@ export const UniversityModal: React.FC<IUniversityModalProps> = ({isShow, univer
                       }) as IDropdownItem[]),
                     ]}
                     onItemSelect={(item: IDropdownItem) => {
-                      setCurrentInfo({...currentInfo, city_id: item.id});
+                      setCurrentInfo({ ...currentInfo, city_id: item.id });
                       setActiveComponent(DropdownType.None);
                     }}
                   />
@@ -176,13 +176,13 @@ export const UniversityModal: React.FC<IUniversityModalProps> = ({isShow, univer
                 <div className={modalStyles.part}>
                   <div className={modalStyles.part_label}>{t("university.location")}</div>
                   <div className={modalStyles.location_selector}>
-                    <img src={LocationIcon} alt=""/>
+                    <img src={LocationIcon} alt="" />
                     <div className={modalStyles.selector_label}>{t("university.locate")}</div>
                   </div>
                 </div>
               </div>
             </div>
-            <div className={modalStyles.form_separator}/>
+            <div className={modalStyles.form_separator} />
             <div className={modalStyles.part_container}>
               <div className={modalStyles.part_container_title}>{t("university.contacts")}</div>
               <div className={`${modalStyles.part_multi} ${modalStyles.triple}`}>
@@ -207,10 +207,10 @@ export const UniversityModal: React.FC<IUniversityModalProps> = ({isShow, univer
                             text: "+373",
                             text_eng: "+373",
                             is_selected: currentInfo.phone_code === "+373",
-                          } as IDropdownItem
+                          } as IDropdownItem,
                         ]}
                         onItemSelect={(item: IDropdownItem) => {
-                          setCurrentInfo({...currentInfo, phone_code: item.text});
+                          setCurrentInfo({ ...currentInfo, phone_code: item.text });
                           setActiveComponent(DropdownType.None);
                         }}
                       />
@@ -263,7 +263,7 @@ export const UniversityModal: React.FC<IUniversityModalProps> = ({isShow, univer
                 </div>
               </div>
             </div>
-            <div className={modalStyles.form_separator}/>
+            <div className={modalStyles.form_separator} />
             <div className={modalStyles.part_container}>
               <div className={modalStyles.part_container_title}>{t("university.links_to_sections")}</div>
               <div className={`${modalStyles.part_multi} ${modalStyles.double}`}>
@@ -271,7 +271,7 @@ export const UniversityModal: React.FC<IUniversityModalProps> = ({isShow, univer
                   <div className={modalStyles.part_label}>
                     {t("university.admission")}
                     <div className={modalStyles.more_info_container}>
-                      <img src={InfoIcon} alt=""/>
+                      <img src={InfoIcon} alt="" />
                       <div className={modalStyles.more_info_content}>
                         <div className={modalStyles.more_info}>
                           <div className={modalStyles.more_info_text}>{t("university.add_admission")}</div>
@@ -296,7 +296,7 @@ export const UniversityModal: React.FC<IUniversityModalProps> = ({isShow, univer
                   <div className={modalStyles.part_label}>
                     {t("university.career")}
                     <div className={modalStyles.more_info_container}>
-                      <img src={InfoIcon} alt=""/>
+                      <img src={InfoIcon} alt="" />
                       <div className={modalStyles.more_info_content}>
                         <div className={modalStyles.more_info}>
                           <div className={modalStyles.more_info_text}>{t("university.add_career")}</div>
@@ -323,7 +323,7 @@ export const UniversityModal: React.FC<IUniversityModalProps> = ({isShow, univer
                   <div className={modalStyles.part_label}>
                     {t("university.faq")}
                     <div className={modalStyles.more_info_container}>
-                      <img src={InfoIcon} alt=""/>
+                      <img src={InfoIcon} alt="" />
                       <div className={modalStyles.more_info_content}>
                         <div className={modalStyles.more_info}>
                           <div className={modalStyles.more_info_text}>{t("university.add_faq")}</div>
@@ -348,7 +348,7 @@ export const UniversityModal: React.FC<IUniversityModalProps> = ({isShow, univer
                   <div className={modalStyles.part_label}>
                     {t("university.preparatory_courses")}
                     <div className={modalStyles.more_info_container}>
-                      <img src={InfoIcon} alt=""/>
+                      <img src={InfoIcon} alt="" />
                       <div className={modalStyles.more_info_content}>
                         <div className={modalStyles.more_info}>
                           <div className={modalStyles.more_info_text}>{t("university.add_courses")}</div>
@@ -374,10 +374,9 @@ export const UniversityModal: React.FC<IUniversityModalProps> = ({isShow, univer
           </div>
         </form>
         <div className={modalStyles.actions}>
-          <div/>
+          <div />
           <div className={modalStyles.buttons}>
-            <button className={`${globalStyles.inverted} ${globalStyles.small}`} type="button"
-                    onClick={() => onClose()}>
+            <button className={`${globalStyles.inverted} ${globalStyles.small}`} type="button" onClick={() => onClose()}>
               <span>{t("global.cancel")}</span>
             </button>
             <button className={globalStyles.small} type="submit">

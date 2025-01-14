@@ -1,15 +1,15 @@
-import {IAmbassadorRequest} from "./ambassadorRequest";
-import {IConfirmedApplicantRequest} from "./confirmedApplicantRequest";
-import {ICountry} from "./country";
-import {ICity} from "./city";
-import {ILanguageOfInstruction} from "./languageOfInstruction";
-import {IAmenity} from "./amenity";
-import {IFileStorage} from "./fileStorage";
-import {IUniversityTypeOfDegree} from "./universityTypeOfDegree";
-import {IConfirmedApplicantId} from "../local/confirmedApplicantId";
-import {IGeoLocation} from "../local/geoLocation";
-import {IAmbassadorId} from "../local/ambassadorId";
-import {statusPartnership} from "../../enums/dto/statusPartnership";
+import { IAmbassadorRequest } from "./ambassadorRequest";
+import { IConfirmedApplicantRequest } from "./confirmedApplicantRequest";
+import { ICountry } from "../core/country";
+import { ICity } from "../core/city";
+import { ILanguageOfInstruction } from "./languageOfInstruction";
+import { IAmenity } from "./amenity";
+import { IFileStorage } from "./fileStorage";
+import { IUniversityTypeOfDegree } from "./universityTypeOfDegree";
+import { IConfirmedApplicantId } from "../local/confirmedApplicantId";
+import { IGeoLocation } from "../local/geoLocation";
+import { IAmbassadorId } from "../local/ambassadorId";
+import { statusPartnership } from "../../enums/dto/statusPartnership";
 
 export interface IUniversity {
   type?: string;
@@ -55,5 +55,5 @@ export interface IUniversity {
   amenities?: IAmenity[];
   standGalleryImages?: IFileStorage[];
   universityTypeOfDegrees?: IUniversityTypeOfDegree[];
-  statusPartnership?: statusPartnership
+  statusPartnership?: statusPartnership;
 }

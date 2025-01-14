@@ -1,4 +1,4 @@
-import { ICountry } from "../types/dto/country";
+import { ICountry } from "../types/core/country";
 
 export const countries = [
   {

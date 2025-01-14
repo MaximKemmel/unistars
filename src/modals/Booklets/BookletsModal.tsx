@@ -1,58 +1,59 @@
-import React, {useEffect, useState} from "react";
-import {useTranslation} from "react-i18next";
+import React, { useEffect } from "react";
+import { useTranslation } from "react-i18next";
 
-import {Booklets} from "./content/Booklets";
-import {AddBooklet} from "./content/AddBooklet";
+import { BookletCard } from "../../cards/booklet/BookletCard";
 
+import globalStyles from "../../App.module.sass";
 import modalStyles from "../Modal.module.sass";
+import styles from "./BookletsModal.module.sass";
 
-import CloseIcon from "../../assets/svg/close.svg";
+import { Close as CloseIcon } from "../../assets/svgComponents/Close";
+import PlusIcon from "../../assets/svg/plus.svg";
 
 interface IBookletsModalProps {
   isShow: boolean;
   booklets: any[];
+  onEdit: Function;
+  onCreate: Function;
   onClose: Function;
-  section: number;
-  booklet: any;
 }
 
-export const BookletsModal: React.FC<IBookletsModalProps> = ({ isShow, booklets, onClose, section, booklet }) => {
+export const BookletsModal: React.FC<IBookletsModalProps> = ({ isShow, booklets, onEdit, onCreate, onClose }) => {
   const { t } = useTranslation();
-  const [activeSection, setActiveSection] = useState(section);
-  const [currentBooklet, setCurrentBooklet] = useState(booklet);
-  const contentSections = [
-    <Booklets booklets={booklets} setActiveSection={setActiveSection} setCurrentBooklet={setCurrentBooklet} />,
-    <AddBooklet booklet={currentBooklet} setActiveSection={setActiveSection} />
-  ] as JSX.Element[];
 
   useEffect(() => {
-    setActiveSection(section);
-    setCurrentBooklet(booklet);
+    const contentDiv = document.getElementById("booklets_content");
+    contentDiv?.scrollTo({ top: 0, behavior: "smooth" });
   }, [isShow]);
 
   return (
     <div className={`${modalStyles.modal} ${isShow ? modalStyles.active : ""}`}>
-      <div
-        className={`${modalStyles.overlay} ${isShow ? modalStyles.active : ""}`}
-        onClick={() => onClose()}
-      />
-      <div className={`${modalStyles.modal_content} ${activeSection === 0 ? modalStyles.wide : ""}`}>
+      <div className={`${modalStyles.overlay} ${isShow ? modalStyles.active : ""}`} onClick={() => onClose()} />
+      <div className={`${modalStyles.modal_content} ${modalStyles.wide}`}>
         <div className={modalStyles.head}>
-          <h4>{
-            activeSection === 0
-            ? t("booklets.booklets")
-            : currentBooklet.id === -1
-              ? t("booklets.creating_a_booklet")
-              : t("booklets.editing_a_booklet")
-          }</h4>
-          <div
-            className={modalStyles.close}
-            onClick={() => onClose()}
-          >
-            <img src={CloseIcon} alt=""/>
+          <h4>{t("booklets.booklets")}</h4>
+          <div className={modalStyles.close} onClick={() => onClose()}>
+            <CloseIcon />
           </div>
         </div>
-        {contentSections[activeSection]}
+        <div className={styles.booklets_container}>
+          <div className={styles.booklets_content} id="booklets_content">
+            {booklets.map((booklet, index) => {
+              return (
+                <div className={styles.booklet_item} key={index}>
+                  <BookletCard bookletItem={booklet} onEdit={() => onEdit(booklet)} />
+                </div>
+              );
+            })}
+          </div>
+        </div>
+        <div className={modalStyles.actions}>
+          <div />
+          <button className={globalStyles.small} type="button" onClick={() => onCreate()}>
+            {t("booklets.create_booklet")}
+            <img src={PlusIcon} alt="" />
+          </button>
+        </div>
       </div>
     </div>
   );
