@@ -1,0 +1,62 @@
+$background_error_color: #FFF0F1
+$background_success_color: #DEEDDE
+$action_alternative_color: #7B61FF
+
+.modal_container
+  position: absolute
+  z-index: 25
+  bottom: -100%
+  right: 20px
+  display: flex
+  align-items: start
+  gap: 8px
+  padding: 16px
+  width: 430px
+  border-radius: 16px
+  overflow: hidden
+  opacity: 0
+  transition: all .2s ease-out
+
+  &.active
+    opacity: 1
+    bottom: 20px
+
+  &.success
+    background-color: $background_success_color
+
+  &.error
+    background-color: $background_error_color
+
+  img
+    display: flex
+    flex-shrink: 0
+    width: 24px
+    height: auto
+
+  .info
+    display: flex
+    flex-direction: column
+    gap: 8px
+    flex-grow: 1
+
+    .message
+      font-size: 16px
+      font-weight: 600
+
+    .restore_button
+      width: max-content
+      background-color: transparent
+      border: 1px solid $action_alternative_color
+
+  .close
+    display: flex
+    justify-content: center
+    align-items: center
+    flex-shrink: 0
+    width: 32px
+    height: 32px
+    cursor: pointer
+
+    svg
+      width: 16px
+      height: auto

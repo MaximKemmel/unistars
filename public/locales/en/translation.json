@@ -18,7 +18,8 @@
     "nothing_was_found": "Nothing was found",
     "enter_other_params": "Enter other search parameters",
     "select_all": "Select all",
-    "show_all": "Show all"
+    "show_all": "Show all",
+    "restore": "Restore"
   },
   "sign_in": {
     "sign_in": "Sign in",
@@ -114,7 +115,9 @@
     "description": "Description",
     "enter_a_description": "Enter the description of the booklet",
     "file": "Booklet's file",
-    "upload_file": "Upload booklet's file"
+    "upload_file": "Upload booklet's file",
+    "delete_title": "Do you really want to delete the selected booklet?",
+    "delete_description": "It will disappear from the booklet list, and users will no longer be able to view it."
   },
   "events": {
     "create_event": "Create event",

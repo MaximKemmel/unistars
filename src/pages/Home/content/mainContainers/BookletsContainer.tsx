@@ -1,23 +1,25 @@
-import { useState } from "react";
-import { useTranslation } from "react-i18next";
+import {useState} from "react";
+import {useTranslation} from "react-i18next";
 
-import { BookletCard } from "../../../../cards/booklet/BookletCard";
-import { BookletsModal } from "../../../../modals/Booklets/BookletsModal";
-import { EditBookletModal } from "../../../../modals/Booklets/EditBookletModal";
-import { ConfirmDeleteModal } from "../../../../modals/ConfirmDelete/ConfirmDeleteModal";
+import {BookletCard} from "../../../../cards/booklet/BookletCard";
+import {BookletsModal} from "../../../../modals/Booklets/BookletsModal";
+import {EditBookletModal} from "../../../../modals/Booklets/EditBookletModal";
+import {ConfirmDeleteModal} from "../../../../modals/ConfirmDelete/ConfirmDeleteModal";
+import {StatusInfoModal} from "../../../../modals/StatusInfo/StatusInfoModal";
 
 import globalStyles from "../../../../App.module.sass";
 import styles from "../../Home.module.sass";
 
-import { IBooklet } from "../../../../types/booklet/booklet";
-import { initBooklet } from "../../../../types/booklet/initBooklet";
+import {IBooklet} from "../../../../types/booklet/booklet";
+import {initBooklet} from "../../../../types/booklet/initBooklet";
 
 export const BookletsContainer = () => {
-  const { t } = useTranslation();
+  const {t} = useTranslation();
   const [currentBooklet, setCurrentBooklet] = useState(initBooklet());
   const [isBookletsModalShow, setIsBookletsModalShow] = useState(false);
   const [isEditBookletModalShow, setIsEditBookletModalShow] = useState(false);
   const [isConfirmDeleteModalShow, setIsConfirmDeleteModalShow] = useState(false);
+  const [isStatusInfoModalShow, setIsStatusInfoModalShow] = useState(false);
 
   const booklets = Array(8)
     .fill(1)
@@ -32,20 +34,15 @@ export const BookletsContainer = () => {
       } as IBooklet;
     });
 
-  const handleOnCreateBooklet = () => {};
-
-  const handleOnEditBooklet = (booklet: IBooklet) => {
-    console.log(booklet.id);
-  };
-
   const handleOnDeleteBooklet = (booklet: IBooklet) => {
     console.log(booklet.id);
     setIsEditBookletModalShow(false);
     setIsConfirmDeleteModalShow(true);
   };
 
-  const handleOnConfrimDeleteBooklet = () => {
+  const handleOnConfirmDeleteBooklet = () => {
     setIsConfirmDeleteModalShow(false);
+    setIsStatusInfoModalShow(true);
   };
 
   return (
@@ -114,8 +111,16 @@ export const BookletsContainer = () => {
       <BookletsModal
         isShow={isBookletsModalShow}
         booklets={booklets}
-        onCreate={handleOnCreateBooklet}
-        onEdit={(booklet) => handleOnEditBooklet(booklet)}
+        onCreate={() => {
+          setIsBookletsModalShow(false);
+          setCurrentBooklet(initBooklet());
+          setIsEditBookletModalShow(true);
+        }}
+        onEdit={(booklet: IBooklet) => {
+          setIsBookletsModalShow(false);
+          setCurrentBooklet(booklet);
+          setIsEditBookletModalShow(true);
+        }}
         onClose={() => setIsBookletsModalShow(false)}
       />
       <EditBookletModal
@@ -127,14 +132,18 @@ export const BookletsContainer = () => {
       <ConfirmDeleteModal
         isShow={isConfirmDeleteModalShow}
         head={t("booklets.deleting_a_booklet")}
-        title={t("booklets.deleting_a_booklet")}
-        message={t("booklets.deleting_a_booklet")}
-        onConfirm={handleOnConfrimDeleteBooklet}
+        title={t("booklets.delete_title")}
+        message={t("booklets.delete_description")}
+        onConfirm={handleOnConfirmDeleteBooklet}
         onClose={() => {
           setIsConfirmDeleteModalShow(false);
           setIsEditBookletModalShow(true);
         }}
       />
+      <StatusInfoModal isShow={isStatusInfoModalShow} message={"Успех"} isSuccess={true}
+                       onClose={() => setIsStatusInfoModalShow(false)} isRestore={true}
+                       onRestore={() => setIsStatusInfoModalShow(false)}/>
+
     </>
   );
 };
