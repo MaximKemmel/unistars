@@ -1,20 +1,20 @@
-import {useState} from "react";
-import {useTranslation} from "react-i18next";
+import { useState } from "react";
+import { useTranslation } from "react-i18next";
 
-import {BookletCard} from "../../../../cards/booklet/BookletCard";
-import {BookletsModal} from "../../../../modals/Booklets/BookletsModal";
-import {EditBookletModal} from "../../../../modals/Booklets/EditBookletModal";
-import {ConfirmDeleteModal} from "../../../../modals/ConfirmDelete/ConfirmDeleteModal";
-import {StatusInfoModal} from "../../../../modals/StatusInfo/StatusInfoModal";
+import { BookletCard } from "../../../../cards/booklet/BookletCard";
+import { BookletsModal } from "../../../../modals/Booklets/BookletsModal";
+import { EditBookletModal } from "../../../../modals/Booklets/EditBookletModal";
+import { ConfirmDeleteModal } from "../../../../modals/ConfirmDelete/ConfirmDeleteModal";
+import { StatusInfoModal } from "../../../../modals/StatusInfo/StatusInfoModal";
 
 import globalStyles from "../../../../App.module.sass";
 import styles from "../../Home.module.sass";
 
-import {IBooklet} from "../../../../types/booklet/booklet";
-import {initBooklet} from "../../../../types/booklet/initBooklet";
+import { IBooklet } from "../../../../types/booklet/booklet";
+import { initBooklet } from "../../../../types/booklet/initBooklet";
 
 export const BookletsContainer = () => {
-  const {t} = useTranslation();
+  const { t } = useTranslation();
   const [currentBooklet, setCurrentBooklet] = useState(initBooklet());
   const [isBookletsModalShow, setIsBookletsModalShow] = useState(false);
   const [isEditBookletModalShow, setIsEditBookletModalShow] = useState(false);
@@ -140,10 +140,14 @@ export const BookletsContainer = () => {
           setIsEditBookletModalShow(true);
         }}
       />
-      <StatusInfoModal isShow={isStatusInfoModalShow} message={"Успех"} isSuccess={true}
-                       onClose={() => setIsStatusInfoModalShow(false)} isRestore={true}
-                       onRestore={() => setIsStatusInfoModalShow(false)}/>
-
+      <StatusInfoModal
+        isShow={isStatusInfoModalShow}
+        message={t("booklets.booklet_was_deleted")}
+        isSuccess={true}
+        onClose={() => setIsStatusInfoModalShow(false)}
+        isRestore={true}
+        onRestore={() => setIsStatusInfoModalShow(false)}
+      />
     </>
   );
 };

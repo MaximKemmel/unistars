@@ -1,49 +1,62 @@
 import React from "react";
-import {useTranslation} from "react-i18next";
+import { useTranslation } from "react-i18next";
 
 import styles from "./AdvertCard.module.sass";
+
+import { IAdvert } from "../../types/advert/advert";
 
 import TimeIcon from "../../assets/svg/time.svg";
 import ViewIcon from "../../assets/svg/view.svg";
 import ClickIcon from "../../assets/svg/click.svg";
 
 interface IAdvertCardProps {
-  advertItem: any;
+  advertItem: IAdvert;
 }
 
+//TODO: Статус рекламы (на модерации, опубликовано)
 export const AdvertCard: React.FC<IAdvertCardProps> = ({ advertItem }) => {
-  const { t } = useTranslation();
+  const { i18n, t } = useTranslation();
+
+  const advertState = 0;
 
   return (
     <div className={styles.advert_container}>
       <div className={styles.advert_head}>
-        <img src={advertItem.photo} alt="" />
+        <img src={advertItem.imageUrl} alt="" />
         <div className={styles.photo_overlay} />
         <div className={styles.advert_info}>
-          <div className={styles.advert_name}>{advertItem.name}</div>
-          <div className={styles.advert_description}>{advertItem.description}</div>
+          <div className={styles.advert_name}>{advertItem.title}</div>
+          <div className={styles.advert_description}>{advertItem.subtitle}</div>
         </div>
-        <div className={`${styles.advert_status} ${advertItem.state === 0 ? styles.moderation : styles.published}`}>
-          {advertItem.state === 0 ? t("advertisements.moderation") : t("advertisements.published")}
+        <div className={`${styles.advert_status} ${advertState === 0 ? styles.moderation : styles.published}`}>
+          {advertState === 0 ? t("advertisements.moderation") : t("advertisements.published")}
         </div>
       </div>
       <div className={styles.additional_info}>
         <div className={styles.info_item}>
           <img className={styles.item_icon} src={TimeIcon} alt="" />
-          {advertItem.endDate}
+          {`${t("advertisements.until")} ${new Date(advertItem.endDate!)
+            .toLocaleDateString(`${i18n.resolvedLanguage}-${i18n.resolvedLanguage?.toUpperCase()}`, {
+              day: "numeric",
+              month: "long",
+              year: "numeric",
+            })
+            .replace(/\s*г\./, "")}`}
         </div>
         <div className={styles.info_progress_item}>
           <div className={styles.progress_head}>
             <div className={styles.info_item}>
               <img className={styles.item_icon} src={ViewIcon} alt="" />
-              <div>{`${advertItem.views} ${t("advertisements.views")}`}</div>
+              <div>{`${advertItem.allShows!} ${t("advertisements.views")}`}</div>
             </div>
-            <div className={styles.info_limit}>{`${advertItem.viewsLimit} ${t("advertisements.limit")}`}</div>
+            <div className={styles.info_limit}>{`${advertItem.showsLimit!} ${t("advertisements.limit")}`}</div>
           </div>
           <div className={styles.progress_bar}>
             <div
               className={styles.progress}
-              style={{ width: `${advertItem.views === 0 ? "0" : (advertItem.views * 100) / advertItem.viewsLimit}%` }}
+              style={{
+                width: `${advertItem.allShows === 0 ? "0" : (advertItem.allShows! * 100) / advertItem.showsLimit!}%`,
+              }}
             />
           </div>
         </div>
@@ -51,14 +64,16 @@ export const AdvertCard: React.FC<IAdvertCardProps> = ({ advertItem }) => {
           <div className={styles.progress_head}>
             <div className={styles.info_item}>
               <img className={styles.item_icon} src={ClickIcon} alt="" />
-              <div>{`${advertItem.clicks} ${t("advertisements.clicks")}`}</div>
+              <div>{`${advertItem.allClicks} ${t("advertisements.clicks")}`}</div>
             </div>
-            <div className={styles.info_limit}>{`${advertItem.clicksLimit} ${t("advertisements.limit")}`}</div>
+            <div className={styles.info_limit}>{`${advertItem.clickLimit} ${t("advertisements.limit")}`}</div>
           </div>
           <div className={styles.progress_bar}>
             <div
               className={styles.progress}
-              style={{ width: `${advertItem.clicks === 0 ? "0" : (advertItem.clicks * 100) / advertItem.clicksLimit}%` }}
+              style={{
+                width: `${advertItem.allClicks === 0 ? "0" : (advertItem.allClicks! * 100) / advertItem.clickLimit!}%`,
+              }}
             />
           </div>
         </div>

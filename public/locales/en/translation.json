@@ -117,7 +117,8 @@
     "file": "Booklet's file",
     "upload_file": "Upload booklet's file",
     "delete_title": "Do you really want to delete the selected booklet?",
-    "delete_description": "It will disappear from the booklet list, and users will no longer be able to view it."
+    "delete_description": "It will disappear from the booklet list, and users will no longer be able to view it.",
+    "booklet_was_deleted": "The booklet was successfully deleted"
   },
   "events": {
     "create_event": "Create event",
@@ -167,7 +168,8 @@
     "enter_a_link": "Enter the link",
     "duration": "Advertisement's duration",
     "manager_will_write": "Manager will write to this email address",
-    "create_ad": "Create ad"
+    "create_ad": "Create ad",
+    "until": "Until"
   },
   "subscribers": {
     "subscribers": "Subscribers",

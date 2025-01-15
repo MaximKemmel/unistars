@@ -49,7 +49,7 @@ export const editBooklet = createAsyncThunk(
 );
 
 export const deleteBooklet = createAsyncThunk("api/deleteBooklet", async ({ id }: { id: number }, { rejectWithValue }) => {
-  const response = await axios.get(`/booklet?id=${id}`);
+  const response = await axios.delete(`/booklet?id=${id}`);
   if (response.status !== 200) {
     throw rejectWithValue("Server error!");
   }

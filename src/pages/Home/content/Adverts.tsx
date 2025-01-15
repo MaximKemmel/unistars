@@ -1,5 +1,5 @@
 import { useState } from "react";
-import {useTranslation} from "react-i18next";
+import { useTranslation } from "react-i18next";
 
 import { AdvertModal } from "../../../modals/Advert/AdvertModal";
 
@@ -8,7 +8,8 @@ import { AdvertCard } from "../../../cards/advert/AdvertCard";
 import globalStyles from "../../../App.module.sass";
 import styles from "../Home.module.sass";
 
-import TestPhoto from "../../../assets/png/test-advert.png";
+import { IAdvert } from "../../../types/advert/advert";
+
 import PlusIcon from "../../../assets/svg/plus.svg";
 
 export const Adverts = () => {
@@ -20,17 +21,20 @@ export const Adverts = () => {
     .map((_item, index) => {
       return {
         id: index,
-        photo: TestPhoto,
-        name: "Study in Russia!",
-        description:
-          "Apply TODAY to get Admission at Kazan Innovative University",
-        state: index === 0 || index % 2 === 0 ? 0 : 1,
-        endDate: "до 30 сентября",
-        views: 767,
-        viewsLimit: 1000,
-        clicks: 35,
-        clicksLimit: 100,
-      };
+        title: "Study in Russia!",
+        subtitle: "Apply TODAY to get Admission at Kazan Innovative University",
+        universityId: -1,
+        description: "",
+        imageUrl: "https://i.pinimg.com/736x/ba/63/41/ba6341ac4261ad63c78dee5a76e6600a.jpg",
+        websiteUrl: "",
+        startDate: new Date(),
+        endDate: new Date(new Date().setDate(new Date().getDate() + 10)),
+        allShows: 767,
+        showsLimit: 1000,
+        allClicks: 35,
+        clickLimit: 100,
+        screenDestination: [],
+      } as IAdvert;
     });
 
   return (
@@ -54,9 +58,7 @@ export const Adverts = () => {
           </div>
         ) : (
           <div className={styles.empty_info}>
-            <div className={styles.empty_message}>
-              {t("advertisements.no_advertisements")}
-            </div>
+            <div className={styles.empty_message}>{t("advertisements.no_advertisements")}</div>
             <button className={globalStyles.small} type="button" onClick={() => setIsAdvertModalShow(true)}>
               {t("advertisements.launch_an_ad")}
               <img src={PlusIcon} alt="" />
