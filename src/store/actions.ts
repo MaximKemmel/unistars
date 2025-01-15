@@ -3,6 +3,7 @@ import { actions as bookletActions } from "./booklet/booklet.slice";
 import * as bookletActionsDb from "./booklet/booklet.actions";
 import { actions as advertActions } from "./advert/advert.slice";
 import * as advertActionsDb from "./advert/advert.actions";
+import * as eventActionsDb from "./event/event.actions";
 
 export const rootActions = {
   ...coreActionsDb,
@@ -10,4 +11,5 @@ export const rootActions = {
   ...bookletActionsDb,
   ...advertActions,
   ...advertActionsDb,
+  ...eventActionsDb,
 };

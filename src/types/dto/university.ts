@@ -2,7 +2,7 @@ import { IAmbassadorRequest } from "./ambassadorRequest";
 import { IConfirmedApplicantRequest } from "./confirmedApplicantRequest";
 import { ICountry } from "../core/country";
 import { ICity } from "../core/city";
-import { ILanguageOfInstruction } from "./languageOfInstruction";
+import { ILanguage } from "../core/language";
 import { IAmenity } from "./amenity";
 import { IFileStorage } from "./fileStorage";
 import { IUniversityTypeOfDegree } from "./universityTypeOfDegree";
@@ -44,7 +44,7 @@ export interface IUniversity {
   userCountries?: ICountry[];
   userCity?: ICity;
   numberEmployees?: number;
-  userLanguages?: ILanguageOfInstruction[];
+  userLanguages?: ILanguage[];
   street?: string; //TODO: 50 символов
   houseNumber?: number; //TODO: 10 символов
   letter?: string; //TODO: 3 символа
