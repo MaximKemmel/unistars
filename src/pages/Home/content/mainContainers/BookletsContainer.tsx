@@ -32,7 +32,7 @@ export const BookletsContainer = () => {
         imageUrl: "https://i.pinimg.com/736x/57/75/d9/5775d9512ce27a0dce0befe2eba1ccf7.jpg",
         bookletFileUrl: "",
       } as IBooklet;
-    });
+    }) as IBooklet[];
 
   const handleOnDeleteBooklet = (booklet: IBooklet) => {
     console.log(booklet.id);
@@ -68,9 +68,9 @@ export const BookletsContainer = () => {
         {booklets.length > 0 ? (
           <>
             <div className={styles.main_booklets_container}>
-              {booklets.slice(0, 2).map((booklet, index) => {
+              {booklets.slice(0, 2).map((booklet: IBooklet) => {
                 return (
-                  <div className={styles.main_booklet_item} key={index}>
+                  <div className={styles.main_booklet_item} key={booklet.id}>
                     <BookletCard
                       bookletItem={booklet}
                       onEdit={() => {

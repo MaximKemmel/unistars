@@ -5,6 +5,7 @@ import { BookletsContainer } from "./mainContainers/BookletsContainer";
 import { UniversityModal } from "../../../modals/University/UniversityModal";
 import { GalleryModal } from "../../../modals/Gallery/GalleryModal";
 import { SubscribersModal } from "../../../modals/Subscribers/SubscribersModal";
+import { SubscribersDownloadModal } from "../../../modals/Subscribers/SubscribersDownload";
 import { StudentsModal } from "../../../modals/Students/StudentsModal";
 import { AmbassadorsModal } from "../../../modals/Ambassadors/AmbassadorsModal";
 import { WorkersModal } from "../../../modals/Workers/WorkersModal";
@@ -79,18 +80,6 @@ export const Main = () => {
       };
     });
 
-  const subscribers = Array(50)
-    .fill(1)
-    .map((_item, index) => {
-      return {
-        id: index,
-        photo: TestAvatar,
-        name: "Tom Smith",
-        description: "Ural Federal University",
-        isChecked: false,
-      };
-    });
-
   const ambassadors = Array(29)
     .fill(1)
     .map((_item, index) => {
@@ -143,6 +132,7 @@ export const Main = () => {
   const [isAboutModalShow, setIsAboutModalShow] = useState(false);
   const [isGalleryModalShow, setIsGalleryModalShow] = useState(false);
   const [isSubscribersModalShow, setIsSubscribersModalShow] = useState(false);
+  const [isSubscribersDownloadModalShow, setIsSubscribersDownloadModalShow] = useState(false);
   const [isStudentsModalShow, setIsStudentsModalShow] = useState(false);
   const [isAmbassadorsModalShow, setIsAmbassadorsModalShow] = useState(false);
   const [isWorkersModalShow, setIsWorkersModalShow] = useState(false);
@@ -366,10 +356,15 @@ export const Main = () => {
       />
       <SubscribersModal
         isShow={isSubscribersModalShow}
-        subscribers={subscribers}
-        onClose={() => {
+        onDownload={() => {
           setIsSubscribersModalShow(false);
+          setIsSubscribersDownloadModalShow(true);
         }}
+        onClose={() => setIsSubscribersModalShow(false)}
+      />
+      <SubscribersDownloadModal
+        isShow={isSubscribersDownloadModalShow}
+        onClose={() => setIsSubscribersDownloadModalShow(false)}
       />
       <StudentsModal
         isShow={isStudentsModalShow}

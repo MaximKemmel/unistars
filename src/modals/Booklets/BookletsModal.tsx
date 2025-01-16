@@ -7,12 +7,14 @@ import globalStyles from "../../App.module.sass";
 import modalStyles from "../Modal.module.sass";
 import styles from "./BookletsModal.module.sass";
 
+import { IBooklet } from "../../types/booklet/booklet";
+
 import { Close as CloseIcon } from "../../assets/svgComponents/Close";
 import PlusIcon from "../../assets/svg/plus.svg";
 
 interface IBookletsModalProps {
   isShow: boolean;
-  booklets: any[];
+  booklets: IBooklet[];
   onEdit: Function;
   onCreate: Function;
   onClose: Function;
@@ -38,9 +40,9 @@ export const BookletsModal: React.FC<IBookletsModalProps> = ({ isShow, booklets,
         </div>
         <div className={styles.booklets_container}>
           <div className={styles.booklets_content} id="booklets_content">
-            {booklets.map((booklet, index) => {
+            {booklets.map((booklet: IBooklet) => {
               return (
-                <div className={styles.booklet_item} key={index}>
+                <div className={styles.booklet_item} key={booklet.id}>
                   <BookletCard bookletItem={booklet} onEdit={() => onEdit(booklet)} />
                 </div>
               );
