@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-import { getAdvertList, postAdvert, deleteAdvert } from "./advert.actions";
+import { getAdvertList, postAdvert } from "./advert.actions";
 
 import { IAdvert } from "../../types/advert/advert";
 import { IApiStatus, initApiStatus } from "../../types/local/apiStatus";
@@ -10,14 +10,12 @@ interface IAdvertState {
   adverts: IAdvert[];
   getStatus: IApiStatus;
   postStatus: IApiStatus;
-  deleteStatus: IApiStatus;
 }
 
 const initialState: IAdvertState = {
   adverts: [] as IAdvert[],
   getStatus: initApiStatus(),
   postStatus: initApiStatus(),
-  deleteStatus: initApiStatus(),
 };
 
 export const advertSlice = createSlice({
@@ -29,9 +27,6 @@ export const advertSlice = createSlice({
     },
     setPostStatus(state, action: PayloadAction<IApiStatus>) {
       state.postStatus = action.payload;
-    },
-    setDeleteStatus(state, action: PayloadAction<IApiStatus>) {
-      state.deleteStatus = action.payload;
     },
   },
   extraReducers: (builder) => {
@@ -65,18 +60,6 @@ export const advertSlice = createSlice({
     });
     builder.addCase(postAdvert.rejected, (state, action) => {
       state.postStatus = { status: ApiStatusType.ERROR, error: action.payload as string };
-    });
-    //#endregion
-
-    //#region Delete advert
-    builder.addCase(deleteAdvert.pending, (state) => {
-      state.deleteStatus = { status: ApiStatusType.IN_PROGRESS };
-    });
-    builder.addCase(deleteAdvert.fulfilled, (state) => {
-      state.deleteStatus = { status: ApiStatusType.SUCCESS };
-    });
-    builder.addCase(deleteAdvert.rejected, (state, action) => {
-      state.deleteStatus = { status: ApiStatusType.ERROR, error: action.payload as string };
     });
     //#endregion
   },

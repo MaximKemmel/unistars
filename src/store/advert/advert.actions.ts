@@ -40,11 +40,3 @@ export const postAdvert = createAsyncThunk(
     return response.data;
   }
 );
-
-export const deleteAdvert = createAsyncThunk("api/deleteAdvert", async ({ id }: { id: number }, { rejectWithValue }) => {
-  const response = await axios.delete(`/advertising?id=${id}`);
-  if (response.status !== 200) {
-    throw rejectWithValue("Server error!");
-  }
-  return response.data;
-});
