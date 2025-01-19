@@ -1,8 +1,11 @@
 import { useState } from "react";
 import {useTranslation} from "react-i18next";
 
+import { Toggle } from "../../components/toggle/Toggle";
+
 import { SignInForm } from "./content/SignInForm";
 import { ApplicationForm } from "./content/ApplicationForm";
+import {ResetPasswordForm} from "./content/ResetPasswordForm";
 
 import styles from "./SignIn.module.sass";
 
@@ -13,6 +16,11 @@ import BackArrowIcon from "../../assets/svg/back-arrow.svg";
 export const SignIn = () => {
   const { t } = useTranslation();
   const [currentStage, setCurrentStage] = useState(0);
+  const stages = [
+    <SignInForm setCurrentStage={setCurrentStage} />,
+    <ApplicationForm setCurrentStage={setCurrentStage} />,
+    <ResetPasswordForm />
+  ] as JSX.Element[];
 
   return (
     <div className={styles.container}>
@@ -21,11 +29,8 @@ export const SignIn = () => {
         <img className={styles.logo} src={Logo} alt="" />
       </div>
       <div className={styles.content}>
-        {currentStage === 0 ? (
-          <SignInForm setCurrentStage={setCurrentStage} />
-        ) : (
-          <ApplicationForm setCurrentStage={setCurrentStage} />
-        )}
+        {stages[currentStage]}
+        <Toggle isSettings={true} isRounded={true}/>
         {currentStage === 1 ? (
           <button className={styles.back_button} type="button" onClick={() => setCurrentStage(0)}>
             <img src={BackArrowIcon} alt="" />

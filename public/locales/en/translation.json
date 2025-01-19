@@ -34,7 +34,12 @@
     "application_has_been_sent": "The request has been sent",
     "please_enter_email": "Please enter your e-mail, and we will send you all the necessary information to create an account.",
     "sign_up": "Sign up",
-    "will_contact_you": "We will contact you to create an account"
+    "will_contact_you": "We will contact you to create an account",
+    "create_a_new_password": "Create a new password",
+    "set_a_new_password": "We care about your safety. Set a new password so that your account is securely protected.",
+    "enter_new_password": "Enter new password",
+    "repeat_new_password": "Repeat new password",
+    "save_and_open_account": "Save and open your account"
   },
   "navigation": {
     "home": "Home",

@@ -19,7 +19,7 @@ import { cities } from "../../../data/cities";
 import { ICity } from "../../../types/core/city";
 
 import TestImage from "../../../assets/png/test_image.png";
-import AwardIcon from "../../../assets/svg/award.svg";
+import VerifiedIcon from "../../../assets/svg/verified.svg";
 import TestPhoto from "../../../assets/jpg/test_photo.jpg";
 import TestAvatar from "../../../assets/png/test-avatar.png";
 import { Chevron as ChevronIcon } from "../../../assets/svgComponents/Chevron";
@@ -143,8 +143,8 @@ export const Main = () => {
         <div className={styles.main_univ_info}>
           <div className={styles.main_logo}>
             <img src={TestImage} alt="" />
-            <div className={styles.main_award}>
-              <img src={AwardIcon} alt="" />
+            <div className={styles.main_verified}>
+              <img src={VerifiedIcon} alt="" />
             </div>
           </div>
           <h3 className={styles.main_univ_name}>Уральский федеральный университет (УрФУ)</h3>

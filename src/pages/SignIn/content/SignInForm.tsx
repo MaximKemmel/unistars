@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import validator from "validator";
 
@@ -14,7 +13,6 @@ interface ISignInFormProps {
 }
 
 export const SignInForm: React.FC<ISignInFormProps> = ({ setCurrentStage }) => {
-  const navigate = useNavigate();
   const { t } = useTranslation();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -32,7 +30,7 @@ export const SignInForm: React.FC<ISignInFormProps> = ({ setCurrentStage }) => {
     if (email !== "test@mail.ru") {
       setErrorForm(t("sign_in.sign_in_error"));
     } else {
-      navigate("/home");
+      setCurrentStage(2);
     }
   };
 

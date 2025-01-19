@@ -54,7 +54,7 @@ export const ApplicationForm: React.FC<IApplicationFormProps> = ({ setCurrentSta
         image={MessageSuccess}
         onClose={() => {
           setIsModalShow(false);
-          setCurrentStage(0);
+          setCurrentStage(2);
         }}
       />
     </div>

@@ -10,28 +10,33 @@ interface IToggleProps {
   items?: IToggleItem[];
   onItemSelect?: Function;
   isSettings?: boolean;
+  isRounded?: boolean;
 }
 
-export const Toggle: React.FC<IToggleProps> = ({ selectedIndex, items, onItemSelect, isSettings }) => {
+export const Toggle: React.FC<IToggleProps> = ({ selectedIndex, items, onItemSelect, isSettings, isRounded }) => {
   const { t, i18n } = useTranslation();
   const locales = {
-    ru: { title: t("settings.russian") },
-    en: { title: t("settings.english") },
+    Ru: { title: t("settings.russian") },
+    En: { title: t("settings.english") },
   };
 
   return (
-    <div className={styles.toggle_container}>
+    <div className={`${styles.toggle_container} ${isRounded ? styles.rounded : ""}`}>
       {isSettings ? (
         <>
           {Object.keys(locales).map((locale: string, index: number) => (
             <div
               key={index}
-              className={`${styles.toggle_item} ${i18n.resolvedLanguage === locale ? styles.active : ""}`}
+              className={`${styles.toggle_item} ${i18n.resolvedLanguage === locale.toLowerCase() ? styles.active : ""}`}
               onClick={() => {
-                i18n.changeLanguage(locale);
+                i18n.changeLanguage(locale.toLowerCase());
               }}
             >
-              {locales[locale].title}
+              {
+                isRounded
+                ? <>{locale}</>
+                : <>{locales[locale].title}</>
+              }
             </div>
           ))}
         </>
