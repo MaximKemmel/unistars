@@ -46,6 +46,12 @@ export const Navigation: React.FC<INavigationProps> = ({ activeNav, setActiveNav
       icon: <AdvertIcon />,
       activeIcon: <AdvertIcon isActive={true} />,
     },
+    {
+      id: 3,
+      text: t("navigation.mail_list"),
+      icon: <AdvertIcon />,
+      activeIcon: <AdvertIcon isActive={true} />,
+    },
   ];
 
   return (

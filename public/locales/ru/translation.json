@@ -45,6 +45,7 @@
     "home": "Главная",
     "events": "Ивенты",
     "advertisements": "Реклама",
+    "mail_list": "Рассылки",
     "show": "Раскрыть",
     "hide": "Скрыть",
     "logout": "Выход"
@@ -175,6 +176,8 @@
     "manager_will_write": "На эту почту вам напишет менеджер",
     "create_ad": "Создать рекламу",
     "until": "До"
+  },
+  "mail_list": {
   },
   "subscribers": {
     "subscribers": "Подписчики",

@@ -45,6 +45,7 @@
     "home": "Home",
     "events": "Events",
     "advertisements": "Advertisements",
+    "mail_list": "Mail list",
     "show": "Show",
     "hide": "Hide",
     "logout": "Logout"
@@ -175,6 +176,8 @@
     "manager_will_write": "Manager will write to this email address",
     "create_ad": "Create ad",
     "until": "Until"
+  },
+  "mail_list": {
   },
   "subscribers": {
     "subscribers": "Subscribers",

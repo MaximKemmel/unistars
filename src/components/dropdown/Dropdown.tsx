@@ -1,5 +1,7 @@
-import React, { useEffect } from "react";
+import React, {useEffect, useRef} from "react";
 import { useTranslation } from "react-i18next";
+
+import useOutsideAlerter from "../../hooks/useOutsideAlerter";
 
 import styles from "./Dropdown.module.sass";
 
@@ -27,6 +29,13 @@ export const Dropdown: React.FC<IDropdownProps> = ({
   onItemSelect,
 }) => {
   const { i18n } = useTranslation();
+  const dropdownRef = useRef<HTMLDivElement>(null);
+
+  useOutsideAlerter(dropdownRef, () => {
+    if (activeComponent === dropdownIndex) {
+      setActiveComponent(DropdownType.None);
+    }
+  });
 
   useEffect(() => {
     if (activeComponent === dropdownIndex) {
@@ -39,6 +48,7 @@ export const Dropdown: React.FC<IDropdownProps> = ({
     <div
       className={`${styles.dropdown} ${activeComponent === dropdownIndex ? styles.active : ""}`}
       id={activeComponent === dropdownIndex ? "active_dropdown" : ""}
+      ref={dropdownRef}
     >
       <div
         className={`${styles.dropdown_button} ${
