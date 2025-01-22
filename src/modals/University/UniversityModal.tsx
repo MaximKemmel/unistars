@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
+import InputMask from "react-input-mask";
 
 import { Dropdown } from "../../components/dropdown/Dropdown";
+import { Calendar } from "../../components/calendar/Calendar";
 
 import globalStyles from "../../App.module.sass";
 import modalStyles from "../Modal.module.sass";
@@ -28,6 +30,7 @@ export const UniversityModal: React.FC<IUniversityModalProps> = ({ isShow, unive
   const { t } = useTranslation();
   const [currentInfo, setCurrentInfo] = useState(universityInfo);
   const [activeComponent, setActiveComponent] = useState(DropdownType.None);
+  const [date, setDate] = useState(currentInfo.birthDate);
 
   useEffect(() => {
     setCurrentInfo(universityInfo);
@@ -48,6 +51,13 @@ export const UniversityModal: React.FC<IUniversityModalProps> = ({ isShow, unive
       }
     }
   }, [activeComponent]);
+
+  useEffect(() => {
+    setCurrentInfo({
+      ...currentInfo,
+      birthDate: date,
+    });
+  }, [date]);
 
   const handleOnSubmit = (event: any) => {
     event.preventDefault();
@@ -86,18 +96,7 @@ export const UniversityModal: React.FC<IUniversityModalProps> = ({ isShow, unive
                 </div>
                 <div className={modalStyles.part}>
                   <div className={modalStyles.part_label}>{t("university.date_of_foundation")}</div>
-                  <input
-                    placeholder={"DD.MM.YYYY"}
-                    type="text"
-                    required
-                    onChange={(event) =>
-                      setCurrentInfo({
-                        ...currentInfo,
-                        birthDate: event.target.value.trim(),
-                      })
-                    }
-                    value={currentInfo.birthDate}
-                  />
+                  <Calendar date={date} setDate={setDate} />
                 </div>
               </div>
               <div className={modalStyles.part}>
@@ -216,17 +215,16 @@ export const UniversityModal: React.FC<IUniversityModalProps> = ({ isShow, unive
                       />
                     </div>
                     <div className={modalStyles.phone_number}>
-                      <input
+                      <InputMask
                         placeholder={"(___) ___-__-__"}
                         type="text"
-                        required
-                        onChange={(event) =>
-                          setCurrentInfo({
-                            ...currentInfo,
-                            phone: event.target.value.trim(),
-                          })
-                        }
+                        mask="(999) 999-99-99"
+                        maskChar={""}
                         value={currentInfo.phone}
+                        onChange={ (event) => setCurrentInfo({
+                          ...currentInfo,
+                          phone: event.target.value.trim(),
+                        })}
                       />
                     </div>
                   </div>

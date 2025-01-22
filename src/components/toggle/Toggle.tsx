@@ -13,7 +13,13 @@ interface IToggleProps {
   isRounded?: boolean;
 }
 
-export const Toggle: React.FC<IToggleProps> = ({ selectedIndex, items, onItemSelect, isSettings, isRounded }) => {
+export const Toggle: React.FC<IToggleProps> = ({
+  selectedIndex,
+  items,
+  onItemSelect,
+  isSettings,
+  isRounded,
+}) => {
   const { t, i18n } = useTranslation();
   const locales = {
     Ru: { title: t("settings.russian") },
@@ -21,7 +27,9 @@ export const Toggle: React.FC<IToggleProps> = ({ selectedIndex, items, onItemSel
   };
 
   return (
-    <div className={`${styles.toggle_container} ${isRounded ? styles.rounded : ""}`}>
+    <div
+      className={`${styles.toggle_container} ${isRounded ? styles.rounded : ""}`}
+    >
       {isSettings ? (
         <>
           {Object.keys(locales).map((locale: string, index: number) => (
@@ -32,11 +40,7 @@ export const Toggle: React.FC<IToggleProps> = ({ selectedIndex, items, onItemSel
                 i18n.changeLanguage(locale.toLowerCase());
               }}
             >
-              {
-                isRounded
-                ? <>{locale}</>
-                : <>{locales[locale].title}</>
-              }
+              {isRounded ? <>{locale}</> : <>{locales[locale].title}</>}
             </div>
           ))}
         </>

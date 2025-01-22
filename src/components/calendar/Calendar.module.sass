@@ -1,0 +1,48 @@
+﻿$placeholder_color: #8496AE
+$text_neutral_color: #202327
+$border_color: #CBD5E0
+$background_primary_color: #FFFFFF
+
+.calendar_container
+  width: 100%
+  position: relative
+
+  .input_field
+    width: 100%
+    position: relative
+
+    input
+      transition: all .15s ease-out
+
+      &.active
+        border-radius: 12px 12px 0 0
+
+    .calendar_button
+      position: absolute
+      z-index: 1
+      right: 12px
+      top: 50%
+      transform: translateY(-50%)
+      width: 16px
+      height: 16px
+      cursor: pointer
+
+      svg
+        width: 100%
+        height: auto
+
+  .calendar
+    position: absolute
+    z-index: 5
+    top: 47px
+    left: 0
+    display: flex
+    flex-direction: column
+    border-radius: 0 0 12px 12px
+    height: 0
+    overflow: hidden
+    background-color: $background_primary_color
+
+    &.active
+      border: 1px solid $border_color
+      height: 260px

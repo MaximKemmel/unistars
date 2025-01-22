@@ -42,27 +42,40 @@ export const Dropdown: React.FC<IDropdownProps> = ({
     >
       <div
         className={`${styles.dropdown_button} ${
-          items.filter((itemTmp: IDropdownItem) => itemTmp.id === -1).length > 0 && items[0].is_selected
+          items.filter((itemTmp: IDropdownItem) => itemTmp.id === -1).length >
+            0 && items[0].is_selected
             ? styles.not_selected
             : ""
         } ${activeComponent === dropdownIndex ? styles.active : ""}`}
-        onClick={() => setActiveComponent(activeComponent === dropdownIndex ? DropdownType.None : dropdownIndex)}
+        onClick={() =>
+          setActiveComponent(
+            activeComponent === dropdownIndex
+              ? DropdownType.None
+              : dropdownIndex,
+          )
+        }
       >
         <div className={styles.label}>
           {items.find((item: IDropdownItem) => item.is_selected)?.id === -1
             ? placeholder
             : i18n.resolvedLanguage === "ru"
-            ? items.find((item: IDropdownItem) => item.is_selected)?.text
-            : items.find((item: IDropdownItem) => item.is_selected)?.text_eng}
+              ? items.find((item: IDropdownItem) => item.is_selected)?.text
+              : items.find((item: IDropdownItem) => item.is_selected)?.text_eng}
         </div>
         <div className={styles.arrow}>
           <ChevronIcon />
         </div>
       </div>
-      <div className={`${styles.dropdown_container} ${activeComponent === dropdownIndex ? styles.active : ""}`}>
+      <div
+        className={`${styles.dropdown_container} ${activeComponent === dropdownIndex ? styles.active : ""}`}
+      >
         <div
           className={styles.dropdown_list}
-          id={activeComponent === dropdownIndex ? "dropdown_list" : `list${dropdownIndex}`}
+          id={
+            activeComponent === dropdownIndex
+              ? "dropdown_list"
+              : `list${dropdownIndex}`
+          }
         >
           {items.map((item: IDropdownItem) => (
             <div

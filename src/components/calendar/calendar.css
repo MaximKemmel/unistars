@@ -1,0 +1,13 @@
+﻿.g-popup__content {
+    box-shadow: none;
+    top: -4px;
+}
+
+.g-date-calendar__button_selected[class] {
+    background-color: #FFFFFF;
+}
+
+.g-date-date-picker {
+    height: 0;
+    overflow: hidden;
+}

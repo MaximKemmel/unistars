@@ -1,3 +1,4 @@
+import React from "react";
 import styles from "./Checkbox.module.sass";
 
 import { CheckboxState } from "../../enums/local/checkboxState";
@@ -10,13 +11,20 @@ interface IMultiCheckboxProps {
   onChangeStatus: Function;
 }
 
-export const MultiCheckbox: React.FC<IMultiCheckboxProps> = ({ checkboxState, onChangeStatus }) => {
+export const MultiCheckbox: React.FC<IMultiCheckboxProps> = ({
+  checkboxState,
+  onChangeStatus,
+}) => {
   return (
     <label className={styles.checkbox}>
       <input
         type="checkbox"
         onChange={() =>
-          onChangeStatus(checkboxState === CheckboxState.AllChecked ? CheckboxState.NotChecked : CheckboxState.AllChecked)
+          onChangeStatus(
+            checkboxState === CheckboxState.AllChecked
+              ? CheckboxState.NotChecked
+              : CheckboxState.AllChecked,
+          )
         }
       />
       <span
