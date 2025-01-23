@@ -236,7 +236,8 @@ $border_neutral_color: #E2E8F0
         .main_gallery,
         .main_booklets,
         .events,
-        .adverts
+        .adverts,
+        .mail_list
             display: flex
             flex-direction: column
             gap: 20px
@@ -418,6 +419,24 @@ $border_neutral_color: #E2E8F0
                     position: relative
                     display: flex
                     width: calc(25% - 15px)
+
+        .mail_list
+            .mail_list_modes
+                width: 325px
+
+            .mail_list_container
+                display: flex
+                flex-wrap: wrap
+                gap: 20px
+
+                .mailing_item
+                    position: relative
+                    display: flex
+                    width: calc(25% - 15px)
+
+            button
+                width: max-content
+                align-self: center
 
 @media (hover: hover)
     .container

@@ -178,6 +178,13 @@
     "until": "Until"
   },
   "mail_list": {
+    "no_standard_mail_list": "You don't have any standard mailing lists yet",
+    "no_automatic_mail_list": "You don't have any automatic mailing lists yet",
+    "create_mail_list": "Create a mail list",
+    "in_process": "In process",
+    "sent": "Sent",
+    "active": "Active",
+    "not_active": "Not active"
   },
   "subscribers": {
     "subscribers": "Subscribers",

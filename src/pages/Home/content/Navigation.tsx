@@ -10,6 +10,7 @@ import LogoMinimized from "../../../assets/svg/logo-minimized.svg";
 import { Home as HomeIcon } from "../../../assets/svgComponents/Home";
 import { Event as EventIcon } from "../../../assets/svgComponents/Event";
 import { Advert as AdvertIcon } from "../../../assets/svgComponents/Advert";
+import { MailList as MailListIcon } from "../../../assets/svgComponents/MailList";
 import SettingsIcon from "../../../assets/svg/settings.svg";
 import LogoutIcon from "../../../assets/svg/logout.svg";
 import CarretLeftIcon from "../../../assets/svg/carret-left.svg";
@@ -49,8 +50,8 @@ export const Navigation: React.FC<INavigationProps> = ({ activeNav, setActiveNav
     {
       id: 3,
       text: t("navigation.mail_list"),
-      icon: <AdvertIcon />,
-      activeIcon: <AdvertIcon isActive={true} />,
+      icon: <MailListIcon />,
+      activeIcon: <MailListIcon isActive={true} />,
     },
   ];
 

@@ -1,0 +1,51 @@
+$border_neutral_color: #E2E8F0
+$text_process_color: #175CD4
+$text_success_color: #039855
+$text_not_active_color: #DC6803
+$text_neutral_description_color: #8496AE
+
+.mailing_container
+  position: relative
+  display: flex
+  flex-direction: column
+  gap: 16px
+  width: calc(100% - 24px)
+  padding: 12px
+  border-radius: 12px
+  border: 1px solid $border_neutral_color
+
+  .mailing_status
+    display: flex
+    align-items: center
+    gap: 4px
+    font-size: 14px
+
+    img
+      width: 16px
+      height: auto
+
+    .mailing_process
+      color: $text_process_color
+
+    .mailing_success,
+    .mailing_active
+      color: $text_success_color
+
+    .mailing_not_active
+      color: $text_not_active_color
+
+  .mailing_body
+    display: flex
+    flex-direction: column
+    gap: 12px
+
+    .mailing_name
+      font-size: 20px
+      font-weight: 700
+
+    .mailing_description
+      font-size: 14px
+      color: $text_neutral_description_color
+      text-overflow: ellipsis
+      white-space: nowrap
+      overflow: hidden

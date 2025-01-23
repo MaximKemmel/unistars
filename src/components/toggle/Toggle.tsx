@@ -53,6 +53,7 @@ export const Toggle: React.FC<IToggleProps> = ({
               onClick={() => onItemSelect!(item)}
             >
               {i18n.resolvedLanguage === "ru" ? item.text : item.text_eng}
+              {item.count != undefined ? <span>{item.count}</span> : null}
             </div>
           ))}
         </>
