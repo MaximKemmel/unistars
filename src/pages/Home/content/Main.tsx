@@ -54,7 +54,7 @@ export const Main = () => {
     fullName: "Уральский федеральный университет",
     description:
       "Lorem ipsum dolor sit amet consectetur. Ac porttitor et lectus magna mi adipiscing viverra urna. Adipiscing purus lacinia cras augue. Diam amet vitae auctor id facilisis enim volutpat. Vulputate at massa penatibus sed morbi viverra et aliquet fames.",
-    birthDate: "05.03.2011",
+    birthDate: new Date("05.03.2011"),
     country_id: 0,
     city_id: 0,
     street: "Streets",
@@ -132,7 +132,8 @@ export const Main = () => {
   const [isAboutModalShow, setIsAboutModalShow] = useState(false);
   const [isGalleryModalShow, setIsGalleryModalShow] = useState(false);
   const [isSubscribersModalShow, setIsSubscribersModalShow] = useState(false);
-  const [isSubscribersDownloadModalShow, setIsSubscribersDownloadModalShow] = useState(false);
+  const [isSubscribersDownloadModalShow, setIsSubscribersDownloadModalShow] =
+    useState(false);
   const [isStudentsModalShow, setIsStudentsModalShow] = useState(false);
   const [isAmbassadorsModalShow, setIsAmbassadorsModalShow] = useState(false);
   const [isWorkersModalShow, setIsWorkersModalShow] = useState(false);
@@ -147,7 +148,9 @@ export const Main = () => {
               <img src={VerifiedIcon} alt="" />
             </div>
           </div>
-          <h3 className={styles.main_univ_name}>Уральский федеральный университет (УрФУ)</h3>
+          <h3 className={styles.main_univ_name}>
+            Уральский федеральный университет (УрФУ)
+          </h3>
         </div>
         <div className={styles.main_socials}>
           {socialsInfo.map((item, index) => {
@@ -177,13 +180,18 @@ export const Main = () => {
           })}
         </div>
       </div>
-      <div className={`${styles.main_about} ${styles.content_container} ${isAboutInfoFull ? styles.full : ""}`}>
+      <div
+        className={`${styles.main_about} ${styles.content_container} ${isAboutInfoFull ? styles.full : ""}`}
+      >
         <div className={styles.content_container_head}>
           <div className={styles.head_title}>
             <h4>{t("university.about_university")}</h4>
           </div>
           {aboutInfo ? (
-            <div className={styles.head_action} onClick={() => setIsAboutModalShow(true)}>
+            <div
+              className={styles.head_action}
+              onClick={() => setIsAboutModalShow(true)}
+            >
               {t("global.edit")}
             </div>
           ) : null}
@@ -194,41 +202,79 @@ export const Main = () => {
               <div className={styles.part_title}>{t("university.main")}</div>
               <div className={styles.part_container}>
                 <div className={styles.part_item}>
-                  <div className={styles.part_item_label}>{t("university.full_name")}</div>
-                  <div className={styles.part_item_value}>{aboutInfo.fullName}</div>
-                </div>
-                <div className={styles.part_item}>
-                  <div className={styles.part_item_label}>{t("university.description")}</div>
-                  <div className={styles.part_item_value}>{aboutInfo.description}</div>
-                </div>
-                <div className={styles.part_item}>
-                  <div className={styles.part_item_label}>{t("university.date_of_foundation")}</div>
-                  <div className={styles.part_item_value}>{aboutInfo.birthDate}</div>
-                </div>
-                <div className={styles.part_item}>
-                  <div className={styles.part_item_label}>{t("university.country")}</div>
+                  <div className={styles.part_item_label}>
+                    {t("university.full_name")}
+                  </div>
                   <div className={styles.part_item_value}>
-                    {i18n.resolvedLanguage === "ru"
-                      ? countries.find((country: ICountry) => country.id === aboutInfo.country_id)!.name
-                      : countries.find((country: ICountry) => country.id === aboutInfo.country_id)!.nameEnglish}
+                    {aboutInfo.fullName}
                   </div>
                 </div>
                 <div className={styles.part_item}>
-                  <div className={styles.part_item_label}>{t("university.city")}</div>
+                  <div className={styles.part_item_label}>
+                    {t("university.description")}
+                  </div>
+                  <div className={styles.part_item_value}>
+                    {aboutInfo.description}
+                  </div>
+                </div>
+                <div className={styles.part_item}>
+                  <div className={styles.part_item_label}>
+                    {t("university.date_of_foundation")}
+                  </div>
+                  <div className={styles.part_item_value}>
+                    {aboutInfo.birthDate.toLocaleDateString("ru-RU", {
+                      day: "2-digit",
+                      month: "2-digit",
+                      year: "numeric",
+                    })}
+                  </div>
+                </div>
+                <div className={styles.part_item}>
+                  <div className={styles.part_item_label}>
+                    {t("university.country")}
+                  </div>
                   <div className={styles.part_item_value}>
                     {i18n.resolvedLanguage === "ru"
-                      ? cities.find((city: ICity) => city.id === aboutInfo.city_id)!.name
-                      : cities.find((city: ICity) => city.id === aboutInfo.city_id)!.nameEnglish}
+                      ? countries.find(
+                          (country: ICountry) =>
+                            country.id === aboutInfo.country_id,
+                        )!.name
+                      : countries.find(
+                          (country: ICountry) =>
+                            country.id === aboutInfo.country_id,
+                        )!.nameEnglish}
+                  </div>
+                </div>
+                <div className={styles.part_item}>
+                  <div className={styles.part_item_label}>
+                    {t("university.city")}
+                  </div>
+                  <div className={styles.part_item_value}>
+                    {i18n.resolvedLanguage === "ru"
+                      ? cities.find(
+                          (city: ICity) => city.id === aboutInfo.city_id,
+                        )!.name
+                      : cities.find(
+                          (city: ICity) => city.id === aboutInfo.city_id,
+                        )!.nameEnglish}
                   </div>
                 </div>
                 <div className={styles.part_item_double}>
                   <div className={styles.part_item}>
-                    <div className={styles.part_item_label}>{t("university.house")}</div>
-                    <div className={styles.part_item_value}>{aboutInfo.house}</div>
+                    <div className={styles.part_item_label}>
+                      {t("university.house")}
+                    </div>
+                    <div className={styles.part_item_value}>
+                      {aboutInfo.house}
+                    </div>
                   </div>
                   <div className={styles.part_item}>
-                    <div className={styles.part_item_label}>{t("university.corpus")}</div>
-                    <div className={styles.part_item_value}>{aboutInfo.korpus}</div>
+                    <div className={styles.part_item_label}>
+                      {t("university.corpus")}
+                    </div>
+                    <div className={styles.part_item_value}>
+                      {aboutInfo.korpus}
+                    </div>
                   </div>
                 </div>
               </div>
@@ -236,41 +282,71 @@ export const Main = () => {
             <div className={styles.main_about_separator} />
             <div className={styles.main_about_part_multi}>
               <div className={styles.main_about_part}>
-                <div className={styles.part_title}>{t("university.contacts")}</div>
+                <div className={styles.part_title}>
+                  {t("university.contacts")}
+                </div>
                 <div className={styles.part_container}>
                   <div className={styles.part_item}>
-                    <div className={styles.part_item_label}>{t("university.phone")}</div>
-                    <div className={styles.part_item_value}>{`${aboutInfo.phone_code} ${aboutInfo.phone}`}</div>
+                    <div className={styles.part_item_label}>
+                      {t("university.phone")}
+                    </div>
+                    <div
+                      className={styles.part_item_value}
+                    >{`${aboutInfo.phone_code} ${aboutInfo.phone}`}</div>
                   </div>
                   <div className={styles.part_item}>
-                    <div className={styles.part_item_label}>{t("university.site")}</div>
-                    <div className={styles.part_item_value}>{aboutInfo.site}</div>
+                    <div className={styles.part_item_label}>
+                      {t("university.site")}
+                    </div>
+                    <div className={styles.part_item_value}>
+                      {aboutInfo.site}
+                    </div>
                   </div>
                   <div className={styles.part_item}>
                     <div className={styles.part_item_label}>E-mail</div>
-                    <div className={styles.part_item_value}>{aboutInfo.email}</div>
+                    <div className={styles.part_item_value}>
+                      {aboutInfo.email}
+                    </div>
                   </div>
                 </div>
               </div>
               <div className={styles.main_part_separator} />
               <div className={styles.main_about_part}>
-                <div className={styles.part_title}>{t("university.links_to_sections")}</div>
+                <div className={styles.part_title}>
+                  {t("university.links_to_sections")}
+                </div>
                 <div className={styles.part_container}>
                   <div className={styles.part_item}>
-                    <div className={styles.part_item_label}>{t("university.admission")}</div>
-                    <div className={styles.part_item_value}>{aboutInfo.postupUrl}</div>
+                    <div className={styles.part_item_label}>
+                      {t("university.admission")}
+                    </div>
+                    <div className={styles.part_item_value}>
+                      {aboutInfo.postupUrl}
+                    </div>
                   </div>
                   <div className={styles.part_item}>
-                    <div className={styles.part_item_label}>{t("university.career")}</div>
-                    <div className={styles.part_item_value}>{aboutInfo.careerUrl}</div>
+                    <div className={styles.part_item_label}>
+                      {t("university.career")}
+                    </div>
+                    <div className={styles.part_item_value}>
+                      {aboutInfo.careerUrl}
+                    </div>
                   </div>
                   <div className={styles.part_item}>
-                    <div className={styles.part_item_label}>{t("university.faq")}</div>
-                    <div className={styles.part_item_value}>{aboutInfo.faqUrl}</div>
+                    <div className={styles.part_item_label}>
+                      {t("university.faq")}
+                    </div>
+                    <div className={styles.part_item_value}>
+                      {aboutInfo.faqUrl}
+                    </div>
                   </div>
                   <div className={styles.part_item}>
-                    <div className={styles.part_item_label}>{t("university.preparatory_courses")}</div>
-                    <div className={styles.part_item_value}>{aboutInfo.coursesUrl}</div>
+                    <div className={styles.part_item_label}>
+                      {t("university.preparatory_courses")}
+                    </div>
+                    <div className={styles.part_item_value}>
+                      {aboutInfo.coursesUrl}
+                    </div>
                   </div>
                 </div>
               </div>
@@ -278,28 +354,45 @@ export const Main = () => {
           </div>
         ) : (
           <div className={styles.empty_info}>
-            <div className={styles.empty_message}>{t("university.empty_profile")}</div>
-            <button className={globalStyles.small} type="button" onClick={() => setIsAboutModalShow(true)}>
+            <div className={styles.empty_message}>
+              {t("university.empty_profile")}
+            </div>
+            <button
+              className={globalStyles.small}
+              type="button"
+              onClick={() => setIsAboutModalShow(true)}
+            >
               {t("university.complete_profile")}
             </button>
           </div>
         )}
         {aboutInfo ? (
-          <div className={`${styles.overlay} ${!isAboutInfoFull ? styles.active : ""}`}>
-            <div className={styles.overlay_button} onClick={() => setIsAboutInfoFull(!isAboutInfoFull)}>
+          <div
+            className={`${styles.overlay} ${!isAboutInfoFull ? styles.active : ""}`}
+          >
+            <div
+              className={styles.overlay_button}
+              onClick={() => setIsAboutInfoFull(!isAboutInfoFull)}
+            >
               <ChevronIcon fill="#FFFFFF" />
             </div>
           </div>
         ) : null}
       </div>
       <div className={styles.content_container_multi}>
-        <div className={`${styles.main_gallery} ${styles.content_container} ${styles.half}`}>
+        <div
+          className={`${styles.main_gallery} ${styles.content_container} ${styles.half}`}
+        >
           <div className={styles.content_container_head}>
             <div className={styles.head_title}>
               <h4>{t("gallery.gallery")}</h4>
               <div className={styles.count}>{gallery.length}</div>
             </div>
-            {gallery.length > 0 ? <div className={styles.head_action}>{t("gallery.upload_more")}</div> : null}
+            {gallery.length > 0 ? (
+              <div className={styles.head_action}>
+                {t("gallery.upload_more")}
+              </div>
+            ) : null}
           </div>
           {gallery.length > 0 ? (
             <>
@@ -317,13 +410,21 @@ export const Main = () => {
                 type="button"
                 onClick={() => setIsGalleryModalShow(true)}
               >
-                <span>{gallery.length > 6 ? t("gallery.see_all") : t("global.edit")}</span>
+                <span>
+                  {gallery.length > 6 ? t("gallery.see_all") : t("global.edit")}
+                </span>
               </button>
             </>
           ) : (
             <div className={styles.empty_info}>
-              <div className={styles.empty_message}>{t("gallery.no_photos")}</div>
-              <button className={globalStyles.small} type="button" onClick={() => setIsGalleryModalShow(true)}>
+              <div className={styles.empty_message}>
+                {t("gallery.no_photos")}
+              </div>
+              <button
+                className={globalStyles.small}
+                type="button"
+                onClick={() => setIsGalleryModalShow(true)}
+              >
                 {t("gallery.upload_photos")}
               </button>
             </div>
