@@ -16,6 +16,7 @@ interface ICalendarProps {
 export const Calendar: React.FC<ICalendarProps> = ({ date, setDate }) => {
   const { i18n } = useTranslation();
   const [isCalendarActive, setIsCalendarActive] = useState(false);
+  const [currentMode, setCurrentMode] = useState(0);
   const daysInMonth = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
   const [strDate, setStrDate] = useState(
     date.toLocaleDateString("ru-RU", {
@@ -37,6 +38,10 @@ export const Calendar: React.FC<ICalendarProps> = ({ date, setDate }) => {
       );
     }
   }, [date]);
+
+  useEffect(() => {
+    setCurrentMode(0);
+  }, [isCalendarActive]);
 
   function getWeekDays() {
     const weekDays = [] as Date[];
@@ -79,8 +84,6 @@ export const Calendar: React.FC<ICalendarProps> = ({ date, setDate }) => {
   }
 
   function checkDatesEquals(dateFirst: Date, dateSecond: Date) {
-    console.log(dateFirst);
-    console.log(dateSecond);
     return (
       dateFirst.getFullYear() === dateSecond.getFullYear() &&
       dateFirst.getDate() === dateSecond.getDate() &&
@@ -112,24 +115,32 @@ export const Calendar: React.FC<ICalendarProps> = ({ date, setDate }) => {
         className={`${styles.calendar} ${isCalendarActive ? styles.active : ""}`}
       >
         <div className={styles.mode_selector}>
-          <div className={styles.selector}>
-            {date
-              .toLocaleDateString(
-                `${i18n.resolvedLanguage}-${i18n.resolvedLanguage?.toUpperCase()}`,
-                {
-                  month: "long",
-                  year: "numeric",
-                },
-              )
-              .replace(/\s*г\./, "")
-              .toLowerCase()
-              .split(" ")
-              .map(function (word) {
-                return word[0].toUpperCase() + word.substring(1);
-              })
-              .join(" ")}
-            <ChevronIcon fill="#14171A" />
-          </div>
+          {currentMode === 0 ? (
+            <div className={styles.selector} onClick={() => setCurrentMode(1)}>
+              {date
+                .toLocaleDateString(
+                  `${i18n.resolvedLanguage}-${i18n.resolvedLanguage?.toUpperCase()}`,
+                  {
+                    month: "long",
+                    year: "numeric",
+                  },
+                )
+                .replace(/\s*г\./, "")
+                .toLowerCase()
+                .split(" ")
+                .map(function (word) {
+                  return word[0].toUpperCase() + word.substring(1);
+                })
+                .join(" ")}
+              <ChevronIcon fill="#14171A" />
+            </div>
+          ) : null}
+          {currentMode === 1 ? (
+            <div className={styles.selector} onClick={() => setCurrentMode(2)}>
+              {date.getFullYear()}
+              <ChevronIcon fill="#14171A" />
+            </div>
+          ) : null}
           <div className={styles.selector_buttons}>
             <div className={`${styles.selector_button} ${styles.prev_button}`}>
               <ChevronIcon fill="#14171A" />
@@ -139,62 +150,99 @@ export const Calendar: React.FC<ICalendarProps> = ({ date, setDate }) => {
             </div>
           </div>
         </div>
-        <div className={styles.day_selector}>
-          <div className={styles.header}>
-            {getWeekDays().map((day: Date, index: number) => (
-              <div
-                className={`${styles.header_item} ${index > 4 ? styles.end_week : ""}`}
-                key={index}
-              >
-                {new Date(day)
-                  .toLocaleDateString(
-                    `${i18n.resolvedLanguage}-${i18n.resolvedLanguage?.toUpperCase()}`,
-                    {
-                      weekday: "short",
-                    },
-                  )
-                  .toLowerCase()
-                  .split(" ")
-                  .map(function (word) {
-                    return word[0].toUpperCase() + word.substring(1);
-                  })
-                  .join(" ")}
-              </div>
-            ))}
-          </div>
-          <div className={styles.days_rows}>
-            {getMonthData(date.getFullYear(), date.getMonth()).map(
-              (week: Date[], rowIndex: number) => (
-                <div className={styles.days_row} key={rowIndex}>
-                  {week.map((tmpDate: Date, dayIndex: number) => (
-                    <div
-                      className={`${styles.day_item} ${dayIndex > 4 ? styles.end_week : 0}`}
-                      onClick={() => setDate(tmpDate)}
-                    >
-                      {tmpDate && tmpDate > new Date(1000, 1, 1) ? (
-                        <>
-                          <h4
-                            className={
-                              checkDatesEquals(new Date(date), tmpDate)
-                                ? styles.active
-                                : ""
-                            }
+        {currentMode === 0 ? (
+          <div className={styles.day_selector}>
+            <div className={styles.header}>
+              {getWeekDays().map((day: Date, index: number) => (
+                <div
+                  className={`${styles.header_item} ${index > 4 ? styles.end_week : ""}`}
+                  key={index}
+                >
+                  {new Date(day)
+                    .toLocaleDateString(
+                      `${i18n.resolvedLanguage}-${i18n.resolvedLanguage?.toUpperCase()}`,
+                      {
+                        weekday: "short",
+                      },
+                    )
+                    .toLowerCase()
+                    .split(" ")
+                    .map(function (word) {
+                      return word[0].toUpperCase() + word.substring(1);
+                    })
+                    .join(" ")}
+                </div>
+              ))}
+            </div>
+            <div className={styles.days_rows}>
+              {getMonthData(date.getFullYear(), date.getMonth()).map(
+                (week: Date[], rowIndex: number) => (
+                  <div className={styles.days_row} key={rowIndex}>
+                    {week.map((tmpDate: Date, dayIndex: number) => (
+                      <>
+                        {tmpDate && tmpDate > new Date(1000, 1, 1) ? (
+                          <div
+                            className={`${styles.day_item} ${dayIndex > 4 ? styles.end_week : 0}`}
+                            onClick={() => setDate(tmpDate)}
                             key={dayIndex}
                           >
-                            {tmpDate.getDate()}
-                          </h4>
-                          {checkDatesEquals(new Date(date), tmpDate) ? (
-                            <div className={styles.marker} />
-                          ) : null}
-                        </>
-                      ) : null}
-                    </div>
-                  ))}
-                </div>
-              ),
-            )}
+                            <h4
+                              className={
+                                checkDatesEquals(new Date(date), tmpDate)
+                                  ? styles.active
+                                  : ""
+                              }
+                            >
+                              {tmpDate.getDate()}
+                            </h4>
+                            {checkDatesEquals(new Date(date), tmpDate) ? (
+                              <div className={styles.marker} />
+                            ) : null}
+                          </div>
+                        ) : (
+                          <div className={styles.empty_day_item} />
+                        )}
+                      </>
+                    ))}
+                  </div>
+                ),
+              )}
+            </div>
           </div>
-        </div>
+        ) : null}
+        {currentMode === 1 ? (
+          <div className={styles.month_selector}>
+            {Array(12)
+              .fill(1)
+              .map((_item, index) => (
+                <div
+                  className={styles.month_item}
+                  key={index}
+                  onClick={() => {
+                    setDate(new Date(Date.UTC(date.getFullYear(), index, 1)));
+                    setCurrentMode(0);
+                  }}
+                >
+                  <h4>
+                    {new Date(Date.UTC(2025, index))
+                      .toLocaleString(
+                        `${i18n.resolvedLanguage}-${i18n.resolvedLanguage?.toUpperCase()}`,
+                        {
+                          month: "short",
+                        },
+                      )
+                      .replace(".", "")
+                      .toLowerCase()
+                      .split(" ")
+                      .map(function (word) {
+                        return word[0].toUpperCase() + word.substring(1);
+                      })
+                      .join(" ")}
+                  </h4>
+                </div>
+              ))}
+          </div>
+        ) : null}
       </div>
     </div>
   );

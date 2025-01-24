@@ -5,14 +5,16 @@ import axios from "../../utils/axios.js";
 import { IAdvert } from "../../types/advert/advert.js";
 
 export const getAdvertList = createAsyncThunk(
-  "api/getAdvetsByUniversity",
+  "api/getAdvertsByUniversity",
   async ({ universityId }: { universityId: number }, { rejectWithValue }) => {
-    const response = await axios.get(`/advertising/get_by_university?universityId=${universityId}`);
+    const response = await axios.get(
+      `/advertising/get_by_university?universityId=${universityId}`,
+    );
     if (response.status !== 200) {
       throw rejectWithValue("Server error!");
     }
     return response.data;
-  }
+  },
 );
 
 export const postAdvert = createAsyncThunk(
@@ -38,5 +40,5 @@ export const postAdvert = createAsyncThunk(
       throw rejectWithValue("Server error!");
     }
     return response.data;
-  }
+  },
 );

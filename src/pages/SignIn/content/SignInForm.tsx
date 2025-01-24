@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import validator from "validator";
 
+import { useActions } from "../../../hooks/useActions";
+
 import globalStyles from "../../../App.module.sass";
 import styles from "../SignIn.module.sass";
 
@@ -14,6 +16,7 @@ interface ISignInFormProps {
 
 export const SignInForm: React.FC<ISignInFormProps> = ({ setCurrentStage }) => {
   const { t } = useTranslation();
+  const { login } = useActions();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
@@ -21,17 +24,20 @@ export const SignInForm: React.FC<ISignInFormProps> = ({ setCurrentStage }) => {
   const [errorForm, setErrorForm] = useState("");
 
   useEffect(() => {
-    setIsButtonEnabled(email.trim().length !== 0 && validator.isEmail(email) && password.trim().length !== 0);
+    setIsButtonEnabled(
+      email.trim().length !== 0 &&
+        validator.isEmail(email) &&
+        password.trim().length !== 0,
+    );
     setErrorForm("");
   }, [email, password]);
 
   const handleOnSubmit = (event: any) => {
     event.preventDefault();
-    if (email !== "test@mail.ru") {
-      setErrorForm(t("sign_in.sign_in_error"));
-    } else {
-      setCurrentStage(2);
-    }
+    login({
+      email: email,
+      password: password,
+    });
   };
 
   return (
@@ -56,7 +62,10 @@ export const SignInForm: React.FC<ISignInFormProps> = ({ setCurrentStage }) => {
             value={password}
             minLength={3}
           />
-          <div className={styles.eye} onClick={() => setIsPasswordVisible(!isPasswordVisible)}>
+          <div
+            className={styles.eye}
+            onClick={() => setIsPasswordVisible(!isPasswordVisible)}
+          >
             <EyeIcon isOpened={!isPasswordVisible} />
           </div>
         </div>
@@ -72,7 +81,9 @@ export const SignInForm: React.FC<ISignInFormProps> = ({ setCurrentStage }) => {
         <div className={styles.bottom_info}>
           {t("sign_in.sign_up_application")}
           <br />
-          <span onClick={() => setCurrentStage(1)}>{t("sign_in.sign_up_application_span")}</span>
+          <span onClick={() => setCurrentStage(1)}>
+            {t("sign_in.sign_up_application_span")}
+          </span>
         </div>
       </form>
     </div>
