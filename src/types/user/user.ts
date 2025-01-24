@@ -1,8 +1,8 @@
-import {ICity} from "../core/city";
-import {ICountry} from "../core/country";
-import {ILanguage} from "../core/language";
-import {IStatus} from "../core/status";
-import {IUniversity} from "../dto/university";
+import { ICity } from "../core/city";
+import { ICountry } from "../core/country";
+import { ILanguage } from "../core/language";
+import { IStatus } from "../core/status";
+import { IUniversity } from "../university/university";
 
 export interface IUser {
   id: number;

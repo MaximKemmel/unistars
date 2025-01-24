@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 
+import { useTypedSelector } from "../../../hooks/useTypedSelector";
+
 import { BookletsContainer } from "./mainContainers/BookletsContainer";
 import { UniversityModal } from "../../../modals/University/UniversityModal";
 import { GalleryModal } from "../../../modals/Gallery/GalleryModal";
@@ -15,10 +17,7 @@ import styles from "../Home.module.sass";
 
 import { countries } from "../../../data/countries";
 import { ICountry } from "../../../types/core/country";
-import { cities } from "../../../data/cities";
-import { ICity } from "../../../types/core/city";
 
-import TestImage from "../../../assets/png/test_image.png";
 import VerifiedIcon from "../../../assets/svg/verified.svg";
 import TestPhoto from "../../../assets/jpg/test_photo.jpg";
 import TestAvatar from "../../../assets/png/test-avatar.png";
@@ -26,6 +25,9 @@ import { Chevron as ChevronIcon } from "../../../assets/svgComponents/Chevron";
 
 export const Main = () => {
   const { t, i18n } = useTranslation();
+  const universityProfile = useTypedSelector(
+    (state) => state.universityReducer.universityProfile,
+  );
 
   const socialsInfo = [
     {
@@ -143,13 +145,18 @@ export const Main = () => {
       <div className={`${styles.main_header} ${styles.content_container}`}>
         <div className={styles.main_univ_info}>
           <div className={styles.main_logo}>
-            <img src={TestImage} alt="" />
-            <div className={styles.main_verified}>
-              <img src={VerifiedIcon} alt="" />
-            </div>
+            {universityProfile.logoUrl != undefined &&
+            universityProfile.logoUrl.trim().length > 0 ? (
+              <img src={universityProfile.logoUrl} alt="" />
+            ) : null}
+            {universityProfile.verified ? (
+              <div className={styles.main_verified}>
+                <img src={VerifiedIcon} alt="" />
+              </div>
+            ) : null}
           </div>
           <h3 className={styles.main_univ_name}>
-            Уральский федеральный университет (УрФУ)
+            {`${universityProfile.name} (${universityProfile.shortName})`}
           </h3>
         </div>
         <div className={styles.main_socials}>
@@ -249,15 +256,13 @@ export const Main = () => {
                   <div className={styles.part_item_label}>
                     {t("university.city")}
                   </div>
-                  <div className={styles.part_item_value}>
-                    {i18n.resolvedLanguage === "ru"
-                      ? cities.find(
-                          (city: ICity) => city.id === aboutInfo.city_id,
-                        )!.name
-                      : cities.find(
-                          (city: ICity) => city.id === aboutInfo.city_id,
-                        )!.nameEnglish}
-                  </div>
+                  {universityProfile.userCity != undefined ? (
+                    <div className={styles.part_item_value}>
+                      {i18n.resolvedLanguage === "ru"
+                        ? universityProfile.userCity.name
+                        : universityProfile.userCity.nameEnglish}
+                    </div>
+                  ) : null}
                 </div>
                 <div className={styles.part_item_double}>
                   <div className={styles.part_item}>

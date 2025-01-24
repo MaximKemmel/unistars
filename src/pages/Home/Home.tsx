@@ -1,4 +1,6 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+
+import { useActions } from "../../hooks/useActions";
 
 import { Navigation } from "./content/Navigation";
 import { Main } from "./content/Main";
@@ -9,9 +11,19 @@ import { MailList } from "./content/MailList";
 import styles from "./Home.module.sass";
 
 export const Home = () => {
+  const { getUniversityProfile } = useActions();
   const [activeSection, setActiveSection] = useState(0);
   const [isMinimized, setIsMinimized] = useState(false);
-  const contentSections = [<Main />, <Events />, <Adverts />, <MailList />] as JSX.Element[];
+  const contentSections = [
+    <Main />,
+    <Events />,
+    <Adverts />,
+    <MailList />,
+  ] as JSX.Element[];
+
+  useEffect(() => {
+    getUniversityProfile();
+  }, []);
 
   return (
     <div className={styles.container}>

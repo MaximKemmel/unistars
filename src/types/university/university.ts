@@ -1,10 +1,10 @@
-import { IAmbassadorRequest } from "./ambassadorRequest";
-import { IConfirmedApplicantRequest } from "./confirmedApplicantRequest";
+import { IAmbassadorRequest } from "../dto/ambassadorRequest";
+import { IConfirmedApplicantRequest } from "../dto/confirmedApplicantRequest";
 import { ICountry } from "../core/country";
 import { ICity } from "../core/city";
 import { ILanguage } from "../core/language";
-import { IAmenity } from "./amenity";
-import { IFileStorage } from "./fileStorage";
+import { IAmenity } from "../dto/amenity";
+import { IFileStorage } from "../dto/fileStorage";
 import { IUniversityTypeOfDegree } from "./universityTypeOfDegree";
 import { IConfirmedApplicantId } from "../local/confirmedApplicantId";
 import { IGeoLocation } from "../local/geoLocation";

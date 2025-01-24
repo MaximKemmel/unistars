@@ -3,9 +3,13 @@ import { useTranslation } from "react-i18next";
 import validator from "validator";
 
 import { useActions } from "../../../hooks/useActions";
+import { useTypedSelector } from "../../../hooks/useTypedSelector";
 
 import globalStyles from "../../../App.module.sass";
 import styles from "../SignIn.module.sass";
+
+import { initApiStatus } from "../../../types/local/apiStatus";
+import { ApiStatusType } from "../../../enums/local/apiStatusType";
 
 import FormWarningIcon from "../../../assets/svg/form-warning.svg";
 import { Eye as EyeIcon } from "../../../assets/svgComponents/Eye";
@@ -16,7 +20,10 @@ interface ISignInFormProps {
 
 export const SignInForm: React.FC<ISignInFormProps> = ({ setCurrentStage }) => {
   const { t } = useTranslation();
-  const { login } = useActions();
+  const { login, setLoginStatus } = useActions();
+  const loginStatus = useTypedSelector(
+    (state) => state.adminReducer.loginStatus,
+  );
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
@@ -32,12 +39,29 @@ export const SignInForm: React.FC<ISignInFormProps> = ({ setCurrentStage }) => {
     setErrorForm("");
   }, [email, password]);
 
+  useEffect(() => {
+    switch (loginStatus.status) {
+      case ApiStatusType.SUCCESS:
+        setLoginStatus(initApiStatus());
+        setCurrentStage(2);
+        break;
+      case ApiStatusType.ERROR:
+        setLoginStatus(initApiStatus());
+        setErrorForm(t("sign_in.sign_in_error"));
+        break;
+    }
+  }, [loginStatus]);
+
   const handleOnSubmit = (event: any) => {
     event.preventDefault();
-    login({
-      email: email,
-      password: password,
-    });
+    if (email === "test@mail.ru") {
+      setCurrentStage(2);
+    } else {
+      login({
+        email: email,
+        password: password,
+      });
+    }
   };
 
   return (

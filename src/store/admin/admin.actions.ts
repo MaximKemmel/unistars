@@ -9,10 +9,8 @@ export const login = createAsyncThunk(
     { rejectWithValue },
   ) => {
     const response = await axios.post("/login", {
-      params: {
-        email: email,
-        password: password,
-      },
+      email: email,
+      password: password,
     });
     if (response.status !== 200) {
       throw rejectWithValue("Server error!");

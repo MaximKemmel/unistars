@@ -1,6 +1,8 @@
 import * as coreActionsDb from "./core/core.actions";
 import { actions as adminActions } from "./admin/admin.slice";
 import * as adminActionsDb from "./admin/admin.actions";
+import { actions as universityActions } from "./university/university.slice";
+import * as universityActionsDb from "./university/university.actions";
 import { actions as bookletActions } from "./booklet/booklet.slice";
 import * as bookletActionsDb from "./booklet/booklet.actions";
 import { actions as advertActions } from "./advert/advert.slice";
@@ -11,6 +13,8 @@ export const rootActions = {
   ...coreActionsDb,
   ...adminActions,
   ...adminActionsDb,
+  ...universityActions,
+  ...universityActionsDb,
   ...bookletActions,
   ...bookletActionsDb,
   ...advertActions,

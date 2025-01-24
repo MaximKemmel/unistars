@@ -4,15 +4,18 @@ import { login } from "./admin.actions";
 
 import { IApiStatus, initApiStatus } from "../../types/local/apiStatus";
 import { ApiStatusType } from "../../enums/local/apiStatusType";
+import { ILoginResponse } from "../../types/loginResponse/loginResponse";
 
 interface IAdminState {
   isAuth: boolean;
   loginStatus: IApiStatus;
+  loginResponse: ILoginResponse;
 }
 
 const initialState: IAdminState = {
   isAuth: false,
   loginStatus: initApiStatus(),
+  loginResponse: { accessToken: "", refreshToken: "" },
 };
 
 export const adminSlice = createSlice({
@@ -30,10 +33,15 @@ export const adminSlice = createSlice({
     });
     builder.addCase(login.fulfilled, (state, action) => {
       state.loginStatus = { status: ApiStatusType.SUCCESS };
-      const accessToken = action.payload.accessToken;
-      const refreshToken = action.payload.refreshToken;
-      console.log(accessToken);
-      console.log(refreshToken);
+      state.loginResponse = action.payload;
+      window.localStorage.setItem(
+        "unistars_token",
+        state.loginResponse.accessToken,
+      );
+      window.localStorage.setItem(
+        "unistars_refresh_token",
+        state.loginResponse.refreshToken,
+      );
       state.isAuth = true;
     });
     builder.addCase(login.rejected, (state, action) => {
