@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 
+import { useActions } from "../../hooks/useActions";
+import { useTypedSelector } from "../../hooks/useTypedSelector";
+
 import globalStyles from "../../App.module.sass";
 import modalStyles from "../Modal.module.sass";
 import styles from "./SubscribersModal.module.sass";
@@ -14,8 +17,14 @@ interface ISubscribersDownloadModalProps {
   onClose: Function;
 }
 
-export const SubscribersDownloadModal: React.FC<ISubscribersDownloadModalProps> = ({ isShow, onClose }) => {
+export const SubscribersDownloadModal: React.FC<
+  ISubscribersDownloadModalProps
+> = ({ isShow, onClose }) => {
   const { t } = useTranslation();
+  const { getSubscribersFile } = useActions();
+  const file = useTypedSelector(
+    (state) => state.subscriberReducer.subscribersFile,
+  );
   const [isLoadShow, setIsLoadShow] = useState(false);
   const [isLoadingSuccess, setIsLoadingSuccess] = useState(false);
 
@@ -24,9 +33,16 @@ export const SubscribersDownloadModal: React.FC<ISubscribersDownloadModalProps> 
     setIsLoadingSuccess(false);
   }, [isShow]);
 
+  useEffect(() => {
+    console.log(file);
+  }, [file]);
+
   return (
     <div className={`${modalStyles.modal} ${isShow ? modalStyles.active : ""}`}>
-      <div className={`${modalStyles.overlay} ${isShow ? modalStyles.active : ""}`} onClick={() => onClose()} />
+      <div
+        className={`${modalStyles.overlay} ${isShow ? modalStyles.active : ""}`}
+        onClick={() => onClose()}
+      />
       <div className={`${modalStyles.modal_content} ${styles.modal_content}`}>
         <div className={modalStyles.head}>
           <h4>{t("subscribers.uploading_subscriber")}</h4>
@@ -36,7 +52,9 @@ export const SubscribersDownloadModal: React.FC<ISubscribersDownloadModalProps> 
         </div>
         <div className={styles.subscribers_container}>
           <div className={styles.loading_content}>
-            <div className={styles.loading_description}>{t("subscribers.loading_description")}</div>
+            <div className={styles.loading_description}>
+              {t("subscribers.loading_description")}
+            </div>
             {isLoadShow ? (
               <>
                 <div className={styles.loading_separator} />
@@ -46,12 +64,16 @@ export const SubscribersDownloadModal: React.FC<ISubscribersDownloadModalProps> 
                     Subscribers.xlsx
                   </div>
                   {isLoadingSuccess ? (
-                    <div className={`${styles.loading_progress} ${styles.success}`}>
+                    <div
+                      className={`${styles.loading_progress} ${styles.success}`}
+                    >
                       <img src={CheckIcon} alt="" />
                       {t("global.sended")}
                     </div>
                   ) : (
-                    <div className={`${styles.loading_progress} ${styles.error}`}>
+                    <div
+                      className={`${styles.loading_progress} ${styles.error}`}
+                    >
                       {t("global.error")}
                       <CloseIcon fill="#C45F1C" isBold={true} />
                     </div>
@@ -65,7 +87,14 @@ export const SubscribersDownloadModal: React.FC<ISubscribersDownloadModalProps> 
           {!isLoadShow ? (
             <>
               <div />
-              <button className={globalStyles.small} type="button" onClick={() => setIsLoadShow(true)}>
+              <button
+                className={globalStyles.small}
+                type="button"
+                onClick={() => {
+                  setIsLoadShow(true);
+                  getSubscribersFile();
+                }}
+              >
                 {t("subscribers.start_downloading")}
               </button>
             </>
@@ -73,11 +102,19 @@ export const SubscribersDownloadModal: React.FC<ISubscribersDownloadModalProps> 
             <>
               <div />
               {isLoadingSuccess ? (
-                <button className={globalStyles.small} type="button" onClick={() => onClose()}>
+                <button
+                  className={globalStyles.small}
+                  type="button"
+                  onClick={() => onClose()}
+                >
                   {t("global.close")}
                 </button>
               ) : (
-                <button className={globalStyles.small} type="button" onClick={() => setIsLoadingSuccess(true)}>
+                <button
+                  className={globalStyles.small}
+                  type="button"
+                  onClick={() => setIsLoadingSuccess(true)}
+                >
                   {t("global.try_again")}
                 </button>
               )}

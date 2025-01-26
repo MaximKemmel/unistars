@@ -4,7 +4,7 @@ import { ICountry } from "../core/country";
 import { ICity } from "../core/city";
 import { ILanguage } from "../core/language";
 import { IAmenity } from "../dto/amenity";
-import { IFileStorage } from "../dto/fileStorage";
+import { IFileStorage } from "./fileStorage";
 import { IUniversityTypeOfDegree } from "./universityTypeOfDegree";
 import { IConfirmedApplicantId } from "../local/confirmedApplicantId";
 import { IGeoLocation } from "../local/geoLocation";

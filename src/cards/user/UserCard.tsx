@@ -35,12 +35,15 @@ export const UserCard: React.FC<IUserCardProps> = ({
     <div className={styles.user_container}>
       {isCheckedItem ? (
         <div className={styles.checkbox}>
-          <Checkbox isChecked={userItem.isChecked} onChangeStatus={(status) => onCheckedChange!(status)} />
+          <Checkbox
+            isChecked={userItem.isChecked}
+            onChangeStatus={(status: boolean) => onCheckedChange!(status)}
+          />
         </div>
       ) : null}
       <div className={styles.user_content}>
         <div className={styles.user_avatar}>
-          <img src={userItem.photo} alt="" />
+          {userItem.photo ? <img src={userItem.photo} alt="" /> : null}
         </div>
         <div className={styles.user_info}>
           <div className={styles.user_name}>{userItem.name}</div>
@@ -49,20 +52,31 @@ export const UserCard: React.FC<IUserCardProps> = ({
       </div>
       {isRequestItem ? (
         <div className={styles.user_actions}>
-          <div className={`${styles.button} ${styles.cancel}`} onClick={() => onCancelRequest!()}>
+          <div
+            className={`${styles.button} ${styles.cancel}`}
+            onClick={() => onCancelRequest!()}
+          >
             <CloseIcon fill="#FF2941" />
           </div>
-          <div className={`${styles.button} ${styles.accept}`} onClick={() => onAcceptRequest!()}>
+          <div
+            className={`${styles.button} ${styles.accept}`}
+            onClick={() => onAcceptRequest!()}
+          >
             <CheckIcon fill="#FFFFFF" />
           </div>
         </div>
       ) : null}
       {isWithMoreItem ? (
         <div className={styles.more_container}>
-          <div className={styles.more_button} onClick={() => setIsMorePopupShow(!isMorePopupShow)}>
+          <div
+            className={styles.more_button}
+            onClick={() => setIsMorePopupShow(!isMorePopupShow)}
+          >
             <img src={MoreIcon} alt="" />
           </div>
-          <div className={`${styles.more_popup} ${isMorePopupShow ? styles.active : ""}`}>
+          <div
+            className={`${styles.more_popup} ${isMorePopupShow ? styles.active : ""}`}
+          >
             {moreItems!.map((item, index) => (
               <div className={styles.popup_item} key={index}>
                 {item}

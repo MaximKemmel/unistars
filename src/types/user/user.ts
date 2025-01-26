@@ -30,4 +30,6 @@ export interface IUser {
   confirmedApplicant: boolean;
   status: IStatus;
   birthday: Date;
+  profession?: string;
+  permissions?: string[];
 }

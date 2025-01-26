@@ -20,23 +20,19 @@ import SearchIcon from "../../assets/svg/search.svg";
 import NothingFound from "../../assets/svg/nothing-found.svg";
 
 interface ISubscribersModalProps {
+  subscribers: IUser[];
   isShow: boolean;
   onDownload: Function;
   onClose: Function;
 }
 
-export const SubscribersModal: React.FC<ISubscribersModalProps> = ({ isShow, onDownload, onClose }) => {
+export const SubscribersModal: React.FC<ISubscribersModalProps> = ({
+  subscribers,
+  isShow,
+  onDownload,
+  onClose,
+}) => {
   const { t } = useTranslation();
-  const subscribers = Array(50)
-    .fill(1)
-    .map((_item, index) => {
-      return {
-        id: index,
-        avatarUrl: "https://lastfm.freetls.fastly.net/i/u/ar0/ee49159caf4857dfba108286f82c2f59.png",
-        fullName: "Tom Smith",
-        description: "Ural Federal University",
-      } as IUser;
-    }) as IUser[];
   const [filteredSubscribers, setFilteredSubscribers] = useState(subscribers);
   const [searchValue, setSearchValue] = useState("");
   const [activePeriod, setActivePeriod] = useState(-1);
@@ -45,6 +41,7 @@ export const SubscribersModal: React.FC<ISubscribersModalProps> = ({ isShow, onD
   useEffect(() => {
     const contentDiv = document.getElementById("subscribers_content");
     contentDiv?.scrollTo({ top: 0, behavior: "smooth" });
+    setFilteredSubscribers(subscribers);
   }, [isShow]);
 
   useEffect(() => {
@@ -52,14 +49,19 @@ export const SubscribersModal: React.FC<ISubscribersModalProps> = ({ isShow, onD
       setFilteredSubscribers(subscribers);
     } else {
       setFilteredSubscribers(
-        subscribers.filter((subscriber: IUser) => subscriber.fullName.toLowerCase().includes(searchValue.toLowerCase()))
+        subscribers.filter((subscriber: IUser) =>
+          subscriber.fullName.toLowerCase().includes(searchValue.toLowerCase()),
+        ),
       );
     }
   }, [searchValue]);
 
   return (
     <div className={`${modalStyles.modal} ${isShow ? modalStyles.active : ""}`}>
-      <div className={`${modalStyles.overlay} ${isShow ? modalStyles.active : ""}`} onClick={() => onClose()} />
+      <div
+        className={`${modalStyles.overlay} ${isShow ? modalStyles.active : ""}`}
+        onClick={() => onClose()}
+      />
       <div className={`${modalStyles.modal_content} ${styles.modal_content}`}>
         <div className={modalStyles.head}>
           <h4>{t("subscribers.subscribers")}</h4>
@@ -76,9 +78,16 @@ export const SubscribersModal: React.FC<ISubscribersModalProps> = ({ isShow, onD
                 onChange={(event) => setSearchValue(event.target.value)}
                 value={searchValue}
               />
-              <img className={modalStyles.search_icon} src={SearchIcon} alt="" />
+              <img
+                className={modalStyles.search_icon}
+                src={SearchIcon}
+                alt=""
+              />
               {searchValue.length > 0 ? (
-                <div className={modalStyles.clear} onClick={() => setSearchValue("")}>
+                <div
+                  className={modalStyles.clear}
+                  onClick={() => setSearchValue("")}
+                >
                   <CloseIcon fill="#68778D" />
                 </div>
               ) : null}
@@ -111,29 +120,50 @@ export const SubscribersModal: React.FC<ISubscribersModalProps> = ({ isShow, onD
                 }}
               />
             </div>
-            <div className={styles.subscribers_count}>{`${t("global.founded")}: ${filteredSubscribers.length}`}</div>
+            <div
+              className={styles.subscribers_count}
+            >{`${t("global.founded")}: ${filteredSubscribers.length}`}</div>
             {subscribers.length === 0 ? (
               <div className={modalStyles.empty_container}>
-                <img className={modalStyles.empty_image} src={NothingFound} alt="" />
+                <img
+                  className={modalStyles.empty_image}
+                  src={NothingFound}
+                  alt=""
+                />
                 <div className={styles.empty_info}>
-                  <div className={styles.empty_title}>{t("global.nothing_was_found")}</div>
-                  <div className={styles.empty_description}>{t("subscribers.don_t_have_subscribers")}</div>
+                  <div className={styles.empty_title}>
+                    {t("global.nothing_was_found")}
+                  </div>
+                  <div className={styles.empty_description}>
+                    {t("subscribers.don_t_have_subscribers")}
+                  </div>
                 </div>
               </div>
             ) : (
               <>
                 {filteredSubscribers.length === 0 ? (
                   <div className={modalStyles.empty_container}>
-                    <img className={modalStyles.empty_image} src={NothingFound} alt="" />
+                    <img
+                      className={modalStyles.empty_image}
+                      src={NothingFound}
+                      alt=""
+                    />
                     <div className={modalStyles.empty_info}>
-                      <div className={modalStyles.empty_title}>{t("global.nothing_was_found")}</div>
-                      <div className={modalStyles.empty_description}>{t("global.enter_other_params")}</div>
+                      <div className={modalStyles.empty_title}>
+                        {t("global.nothing_was_found")}
+                      </div>
+                      <div className={modalStyles.empty_description}>
+                        {t("global.enter_other_params")}
+                      </div>
                     </div>
                   </div>
                 ) : (
                   <>
                     {filteredSubscribers.map((subscriber: IUser) => (
-                      <div className={styles.subscriber_item} key={subscriber.id}>
+                      <div
+                        className={styles.subscriber_item}
+                        key={subscriber.id}
+                      >
                         <UserCard
                           userItem={{
                             name: subscriber.fullName,

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import {useTranslation} from "react-i18next";
+import { useTranslation } from "react-i18next";
 
 import { UserCard } from "../../../cards/user/UserCard";
 
@@ -17,7 +17,10 @@ interface IWorkersProps {
   setActiveSection: React.Dispatch<React.SetStateAction<number>>;
 }
 
-export const Workers: React.FC<IWorkersProps> = ({ workers, setActiveSection }) => {
+export const Workers: React.FC<IWorkersProps> = ({
+  workers,
+  setActiveSection,
+}) => {
   const { t } = useTranslation();
   const [filteredWorkers, setFilteredWorkers] = useState(workers);
   const [searchValue, setSearchValue] = useState("");
@@ -26,7 +29,11 @@ export const Workers: React.FC<IWorkersProps> = ({ workers, setActiveSection }) 
     if (searchValue.length === 0) {
       setFilteredWorkers(workers);
     } else {
-      setFilteredWorkers(workers.filter((worker) => worker.name.toLowerCase().includes(searchValue.toLowerCase())));
+      setFilteredWorkers(
+        workers.filter((worker) =>
+          worker.name.toLowerCase().includes(searchValue.toLowerCase()),
+        ),
+      );
     }
   }, [searchValue]);
 
@@ -43,28 +50,49 @@ export const Workers: React.FC<IWorkersProps> = ({ workers, setActiveSection }) 
             />
             <img className={modalStyles.search_icon} src={SearchIcon} alt="" />
             {searchValue.length > 0 ? (
-              <div className={modalStyles.clear} onClick={() => setSearchValue("")}>
+              <div
+                className={modalStyles.clear}
+                onClick={() => setSearchValue("")}
+              >
                 <CloseIcon fill="#68778D" />
               </div>
             ) : null}
           </div>
-          <div className={styles.workers_count}>{`${t("global.founded")}: ${filteredWorkers.length}`}</div>
+          <div
+            className={styles.workers_count}
+          >{`${t("global.founded")}: ${filteredWorkers.length}`}</div>
           {workers.length === 0 ? (
             <div className={modalStyles.empty_container}>
-              <img className={modalStyles.empty_image} src={NothingFound} alt="" />
-              <div className={styles.empty_info}>
-                <div className={styles.empty_title}>{t("global.nothing_was_found")}</div>
-                <div className={styles.empty_description}>{t("employers.don_t_have_employers")}</div>
+              <img
+                className={modalStyles.empty_image}
+                src={NothingFound}
+                alt=""
+              />
+              <div className={modalStyles.empty_info}>
+                <div className={modalStyles.empty_title}>
+                  {t("global.nothing_was_found")}
+                </div>
+                <div className={modalStyles.empty_description}>
+                  {t("employers.don_t_have_employers")}
+                </div>
               </div>
             </div>
           ) : (
             <>
               {filteredWorkers.length === 0 ? (
                 <div className={modalStyles.empty_container}>
-                  <img className={modalStyles.empty_image} src={NothingFound} alt="" />
+                  <img
+                    className={modalStyles.empty_image}
+                    src={NothingFound}
+                    alt=""
+                  />
                   <div className={styles.empty_info}>
-                    <div className={styles.empty_title}>{t("global.nothing_was_found")}</div>
-                    <div className={styles.empty_description}>{t("global.enter_other_params")}</div>
+                    <div className={styles.empty_title}>
+                      {t("global.nothing_was_found")}
+                    </div>
+                    <div className={styles.empty_description}>
+                      {t("global.enter_other_params")}
+                    </div>
                   </div>
                 </div>
               ) : (
@@ -75,7 +103,10 @@ export const Workers: React.FC<IWorkersProps> = ({ workers, setActiveSection }) 
                         userItem={item}
                         isWithMoreItem={true}
                         moreItems={[
-                          <div className={styles.popup_item} onClick={() => setActiveSection(2)}>
+                          <div
+                            className={styles.popup_item}
+                            onClick={() => setActiveSection(2)}
+                          >
                             {t("employers.rights_settings")}
                             <img src={LockIcon} alt="" />
                           </div>,
@@ -100,7 +131,11 @@ export const Workers: React.FC<IWorkersProps> = ({ workers, setActiveSection }) 
             >
               <span>{t("global.edit")}</span>
             </button>
-            <button className={globalStyles.small} type="button" onClick={() => setActiveSection(3)}>
+            <button
+              className={globalStyles.small}
+              type="button"
+              onClick={() => setActiveSection(3)}
+            >
               {t("employers.add_employee")}
             </button>
           </div>

@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 
+import { useTypedSelector } from "../../../../hooks/useTypedSelector";
+
 import { BookletCard } from "../../../../cards/booklet/BookletCard";
 import { BookletsModal } from "../../../../modals/Booklets/BookletsModal";
 import { EditBookletModal } from "../../../../modals/Booklets/EditBookletModal";
@@ -15,24 +17,13 @@ import { initBooklet } from "../../../../types/booklet/initBooklet";
 
 export const BookletsContainer = () => {
   const { t } = useTranslation();
+  const booklets = useTypedSelector((state) => state.bookletReducer.booklets);
   const [currentBooklet, setCurrentBooklet] = useState(initBooklet());
   const [isBookletsModalShow, setIsBookletsModalShow] = useState(false);
   const [isEditBookletModalShow, setIsEditBookletModalShow] = useState(false);
-  const [isConfirmDeleteModalShow, setIsConfirmDeleteModalShow] = useState(false);
+  const [isConfirmDeleteModalShow, setIsConfirmDeleteModalShow] =
+    useState(false);
   const [isStatusInfoModalShow, setIsStatusInfoModalShow] = useState(false);
-
-  const booklets = Array(8)
-    .fill(1)
-    .map((_item, index) => {
-      return {
-        id: index,
-        title: "Booklet",
-        description:
-          "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s",
-        imageUrl: "https://i.pinimg.com/736x/57/75/d9/5775d9512ce27a0dce0befe2eba1ccf7.jpg",
-        bookletFileUrl: "",
-      } as IBooklet;
-    }) as IBooklet[];
 
   const handleOnDeleteBooklet = (booklet: IBooklet) => {
     console.log(booklet.id);
@@ -47,7 +38,9 @@ export const BookletsContainer = () => {
 
   return (
     <>
-      <div className={`${styles.main_booklets} ${styles.content_container} ${styles.half}`}>
+      <div
+        className={`${styles.main_booklets} ${styles.content_container} ${styles.half}`}
+      >
         <div className={styles.content_container_head}>
           <div className={styles.head_title}>
             <h4>{t("booklets.booklets")}</h4>
@@ -88,13 +81,19 @@ export const BookletsContainer = () => {
                 type="button"
                 onClick={() => setIsBookletsModalShow(true)}
               >
-                <span>{booklets.length > 2 ? t("booklets.see_all") : t("global.edit")}</span>
+                <span>
+                  {booklets.length > 2
+                    ? t("booklets.see_all")
+                    : t("global.edit")}
+                </span>
               </button>
             ) : null}
           </>
         ) : (
           <div className={styles.empty_info}>
-            <div className={styles.empty_message}>{t("booklets.no_booklets")}</div>
+            <div className={styles.empty_message}>
+              {t("booklets.no_booklets")}
+            </div>
             <button
               className={globalStyles.small}
               type="button"

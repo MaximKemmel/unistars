@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-import { getPeriodSubscribersList, getSubscribersList } from "./subscriber.actions";
+import { getSubscribersList, getSubscribersFile } from "./subscriber.actions";
 
 import { IUser } from "../../types/user/user";
 import { IApiStatus, initApiStatus } from "../../types/local/apiStatus";
@@ -8,14 +8,16 @@ import { ApiStatusType } from "../../enums/local/apiStatusType";
 
 interface ISubscriberState {
   allSubscribers: IUser[];
-  periodSubscribers: IUser[];
+  subscribersFile: any[];
   getStatus: IApiStatus;
+  getFileStatus: IApiStatus;
 }
 
 const initialState: ISubscriberState = {
   allSubscribers: [] as IUser[],
-  periodSubscribers: [] as IUser[],
+  subscribersFile: [],
   getStatus: initApiStatus(),
+  getFileStatus: initApiStatus(),
 };
 
 export const subscriberSlice = createSlice({
@@ -38,22 +40,28 @@ export const subscriberSlice = createSlice({
     });
     builder.addCase(getSubscribersList.rejected, (state, action) => {
       state.allSubscribers = [];
-      state.getStatus = { status: ApiStatusType.ERROR, error: action.payload as string };
+      state.getStatus = {
+        status: ApiStatusType.ERROR,
+        error: action.payload as string,
+      };
     });
     //#endregion
 
-    //#region Period subscribers list
-    builder.addCase(getPeriodSubscribersList.pending, (state) => {
-      state.getStatus = { status: ApiStatusType.IN_PROGRESS };
+    //#region Subscribers file
+    builder.addCase(getSubscribersFile.pending, (state) => {
+      state.getFileStatus = { status: ApiStatusType.IN_PROGRESS };
     });
-    builder.addCase(getPeriodSubscribersList.fulfilled, (state, action) => {
-      state.periodSubscribers = [];
-      state.periodSubscribers = action.payload as IUser[];
-      state.getStatus = { status: ApiStatusType.SUCCESS };
+    builder.addCase(getSubscribersFile.fulfilled, (state) => {
+      state.subscribersFile = [];
+      console.log(getSubscribersFile);
+      state.getFileStatus = { status: ApiStatusType.SUCCESS };
     });
-    builder.addCase(getPeriodSubscribersList.rejected, (state, action) => {
-      state.periodSubscribers = [];
-      state.getStatus = { status: ApiStatusType.ERROR, error: action.payload as string };
+    builder.addCase(getSubscribersFile.rejected, (state, action) => {
+      state.subscribersFile = [];
+      state.getFileStatus = {
+        status: ApiStatusType.ERROR,
+        error: action.payload as string,
+      };
     });
     //#endregion
   },
