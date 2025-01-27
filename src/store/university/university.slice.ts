@@ -1,6 +1,9 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-import { getUniversityProfile } from "./university.actions";
+import {
+  getUniversityProfile,
+  editUniversityProfile,
+} from "./university.actions";
 
 import { IUniversity } from "../../types/university/university";
 import { IApiStatus, initApiStatus } from "../../types/local/apiStatus";
@@ -9,11 +12,13 @@ import { ApiStatusType } from "../../enums/local/apiStatusType";
 interface IUniversityState {
   universityProfile: IUniversity;
   getStatus: IApiStatus;
+  editStatus: IApiStatus;
 }
 
 const initialState: IUniversityState = {
   universityProfile: { name: "" },
   getStatus: initApiStatus(),
+  editStatus: initApiStatus(),
 };
 
 export const universitySlice = createSlice({
@@ -22,6 +27,9 @@ export const universitySlice = createSlice({
   reducers: {
     setGetStatus(state, action: PayloadAction<IApiStatus>) {
       state.getStatus = action.payload;
+    },
+    setEditStatus(state, action: PayloadAction<IApiStatus>) {
+      state.editStatus = action.payload;
     },
   },
   extraReducers: (builder) => {
@@ -37,6 +45,21 @@ export const universitySlice = createSlice({
     builder.addCase(getUniversityProfile.rejected, (state, action) => {
       state.universityProfile = { name: "" };
       state.getStatus = {
+        status: ApiStatusType.ERROR,
+        error: action.payload as string,
+      };
+    });
+    //#endregion
+
+    //#region University Profile
+    builder.addCase(editUniversityProfile.pending, (state) => {
+      state.editStatus = { status: ApiStatusType.IN_PROGRESS };
+    });
+    builder.addCase(editUniversityProfile.fulfilled, (state) => {
+      state.editStatus = { status: ApiStatusType.SUCCESS };
+    });
+    builder.addCase(editUniversityProfile.rejected, (state, action) => {
+      state.editStatus = {
         status: ApiStatusType.ERROR,
         error: action.payload as string,
       };

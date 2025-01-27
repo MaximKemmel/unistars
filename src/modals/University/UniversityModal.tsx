@@ -8,12 +8,8 @@ import { Calendar } from "../../components/calendar/Calendar";
 import globalStyles from "../../App.module.sass";
 import modalStyles from "../Modal.module.sass";
 
-import { DropdownType } from "../../enums/local/dropdownType";
+import { IUniversity } from "../../types/university/university";
 import { IDropdownItem } from "../../types/local/dropdownItem";
-import { countries } from "../../data/countries";
-import { ICountry } from "../../types/core/country";
-import { cities } from "../../data/cities";
-import { ICity } from "../../types/core/city";
 
 import CloseIcon from "../../assets/svg/close.svg";
 import LocationIcon from "../../assets/svg/location.svg";
@@ -21,7 +17,7 @@ import InfoIcon from "../../assets/svg/info.svg";
 
 interface IUniversityModalProps {
   isShow: boolean;
-  universityInfo: any;
+  universityInfo: IUniversity;
   onSave: Function;
   onClose: Function;
 }
@@ -33,18 +29,23 @@ export const UniversityModal: React.FC<IUniversityModalProps> = ({
   onClose,
 }) => {
   const { t } = useTranslation();
-  const [currentInfo, setCurrentInfo] = useState(universityInfo);
-  const [activeComponent, setActiveComponent] = useState(DropdownType.None);
-  const [date, setDate] = useState(new Date(currentInfo.foundation));
+  const [currentUniversityProfile, setCurrentUniversityProfile] =
+    useState(universityInfo);
+  const [date, setDate] = useState(
+    new Date(
+      currentUniversityProfile.foundation != null
+        ? currentUniversityProfile.foundation
+        : "01.01.2025",
+    ),
+  );
 
   useEffect(() => {
-    setCurrentInfo(universityInfo);
-    setActiveComponent(DropdownType.None);
+    setCurrentUniversityProfile(universityInfo);
     const formDiv = document.getElementById("form");
     formDiv?.scrollTo({ top: 0, behavior: "smooth" });
   }, [isShow]);
 
-  useEffect(() => {
+  /*useEffect(() => {
     if (activeComponent !== DropdownType.None) {
       const activeDropdownDiv = document.getElementById("active_dropdown");
       if (activeDropdownDiv) {
@@ -55,11 +56,11 @@ export const UniversityModal: React.FC<IUniversityModalProps> = ({
         });
       }
     }
-  }, [activeComponent]);
+  }, [activeComponent]);*/
 
   useEffect(() => {
-    setCurrentInfo({
-      ...currentInfo,
+    setCurrentUniversityProfile({
+      ...currentUniversityProfile,
       foundation: date,
     });
   }, [date]);
@@ -102,14 +103,13 @@ export const UniversityModal: React.FC<IUniversityModalProps> = ({
                   <input
                     placeholder={t("university.enter_a_heading")}
                     type="text"
-                    required
                     onChange={(event) =>
-                      setCurrentInfo({
-                        ...currentInfo,
-                        fullName: event.target.value.trim(),
+                      setCurrentUniversityProfile({
+                        ...currentUniversityProfile,
+                        name: event.target.value.trim(),
                       })
                     }
-                    value={currentInfo.fullName}
+                    value={currentUniversityProfile.name}
                   />
                 </div>
                 <div className={modalStyles.part}>
@@ -125,14 +125,13 @@ export const UniversityModal: React.FC<IUniversityModalProps> = ({
                 </div>
                 <textarea
                   placeholder={t("university.description_displayed")}
-                  required
                   onChange={(event) =>
-                    setCurrentInfo({
-                      ...currentInfo,
+                    setCurrentUniversityProfile({
+                      ...currentUniversityProfile,
                       description: event.target.value.trim(),
                     })
                   }
-                  value={currentInfo.description}
+                  value={currentUniversityProfile.description}
                 />
               </div>
               <div
@@ -142,11 +141,8 @@ export const UniversityModal: React.FC<IUniversityModalProps> = ({
                   <div className={modalStyles.part_label}>
                     {t("university.country")}
                   </div>
-                  <Dropdown
+                  {/*<Dropdown
                     placeholder={t("university.choose_your_country")}
-                    activeComponent={activeComponent}
-                    setActiveComponent={setActiveComponent}
-                    dropdownIndex={DropdownType.Countries}
                     items={[
                       {
                         id: -1,
@@ -167,17 +163,14 @@ export const UniversityModal: React.FC<IUniversityModalProps> = ({
                       setCurrentInfo({ ...currentInfo, country_id: item.id });
                       setActiveComponent(DropdownType.None);
                     }}
-                  />
+                  />*/}
                 </div>
                 <div className={modalStyles.part}>
                   <div className={modalStyles.part_label}>
                     {t("university.city")}
                   </div>
-                  <Dropdown
+                  {/*<Dropdown
                     placeholder={t("university.choose_your_city")}
-                    activeComponent={activeComponent}
-                    setActiveComponent={setActiveComponent}
-                    dropdownIndex={DropdownType.Cities}
                     items={[
                       {
                         id: -1,
@@ -198,7 +191,7 @@ export const UniversityModal: React.FC<IUniversityModalProps> = ({
                       setCurrentInfo({ ...currentInfo, city_id: item.id });
                       setActiveComponent(DropdownType.None);
                     }}
-                  />
+                  />*/}
                 </div>
                 <div className={modalStyles.part}>
                   <div className={modalStyles.part_label}>
@@ -229,29 +222,29 @@ export const UniversityModal: React.FC<IUniversityModalProps> = ({
                     <div className={modalStyles.phone_code}>
                       <Dropdown
                         placeholder={""}
-                        activeComponent={activeComponent}
-                        setActiveComponent={setActiveComponent}
-                        dropdownIndex={DropdownType.PhoneCodes}
                         items={[
                           {
                             id: 0,
                             text: "+7",
                             text_eng: "+7",
-                            is_selected: currentInfo.phone_code === "+7",
+                            is_selected:
+                              currentUniversityProfile.phoneNumberCountryPrefix ===
+                              "+7",
                           } as IDropdownItem,
                           {
                             id: 1,
                             text: "+373",
                             text_eng: "+373",
-                            is_selected: currentInfo.phone_code === "+373",
+                            is_selected:
+                              currentUniversityProfile.phoneNumberCountryPrefix ===
+                              "+373",
                           } as IDropdownItem,
                         ]}
                         onItemSelect={(item: IDropdownItem) => {
-                          setCurrentInfo({
-                            ...currentInfo,
-                            phone_code: item.text,
+                          setCurrentUniversityProfile({
+                            ...currentUniversityProfile,
+                            phoneNumberCountryPrefix: item.text,
                           });
-                          setActiveComponent(DropdownType.None);
                         }}
                       />
                     </div>
@@ -261,11 +254,11 @@ export const UniversityModal: React.FC<IUniversityModalProps> = ({
                         type="text"
                         mask="(999) 999-99-99"
                         maskChar={""}
-                        value={currentInfo.phone}
+                        value={currentUniversityProfile.phoneNumberBody}
                         onChange={(event) =>
-                          setCurrentInfo({
-                            ...currentInfo,
-                            phone: event.target.value.trim(),
+                          setCurrentUniversityProfile({
+                            ...currentUniversityProfile,
+                            phoneNumberBody: event.target.value.trim(),
                           })
                         }
                       />
@@ -279,14 +272,13 @@ export const UniversityModal: React.FC<IUniversityModalProps> = ({
                   <input
                     placeholder={t("university.enter_website_address")}
                     type="text"
-                    required
                     onChange={(event) =>
-                      setCurrentInfo({
-                        ...currentInfo,
-                        site: event.target.value.trim(),
+                      setCurrentUniversityProfile({
+                        ...currentUniversityProfile,
+                        universityLink: event.target.value.trim(),
                       })
                     }
-                    value={currentInfo.site}
+                    value={currentUniversityProfile.universityLink}
                   />
                 </div>
                 <div className={modalStyles.part}>
@@ -294,14 +286,13 @@ export const UniversityModal: React.FC<IUniversityModalProps> = ({
                   <input
                     placeholder={t("university.enter_email")}
                     type="text"
-                    required
                     onChange={(event) =>
-                      setCurrentInfo({
-                        ...currentInfo,
-                        email: event.target.value.trim(),
+                      setCurrentUniversityProfile({
+                        ...currentUniversityProfile,
+                        userEmail: event.target.value.trim(),
                       })
                     }
-                    value={currentInfo.email}
+                    value={currentUniversityProfile.userEmail}
                   />
                 </div>
               </div>
@@ -331,14 +322,13 @@ export const UniversityModal: React.FC<IUniversityModalProps> = ({
                   <input
                     placeholder={t("university.enter_website_address")}
                     type="text"
-                    required
                     onChange={(event) =>
-                      setCurrentInfo({
-                        ...currentInfo,
-                        postupUrl: event.target.value.trim(),
+                      setCurrentUniversityProfile({
+                        ...currentUniversityProfile,
+                        admission: event.target.value.trim(),
                       })
                     }
-                    value={currentInfo.postupUrl}
+                    value={currentUniversityProfile.admission}
                   />
                 </div>
                 <div className={modalStyles.part}>
@@ -358,14 +348,13 @@ export const UniversityModal: React.FC<IUniversityModalProps> = ({
                   <input
                     placeholder={t("university.enter_website_address")}
                     type="text"
-                    required
                     onChange={(event) =>
-                      setCurrentInfo({
-                        ...currentInfo,
-                        careerUrl: event.target.value.trim(),
+                      setCurrentUniversityProfile({
+                        ...currentUniversityProfile,
+                        careers: event.target.value.trim(),
                       })
                     }
-                    value={currentInfo.careerUrl}
+                    value={currentUniversityProfile.careers}
                   />
                 </div>
               </div>
@@ -389,14 +378,13 @@ export const UniversityModal: React.FC<IUniversityModalProps> = ({
                   <input
                     placeholder={t("university.enter_website_address")}
                     type="text"
-                    required
                     onChange={(event) =>
-                      setCurrentInfo({
-                        ...currentInfo,
-                        faqUrl: event.target.value.trim(),
+                      setCurrentUniversityProfile({
+                        ...currentUniversityProfile,
+                        faqLink: event.target.value.trim(),
                       })
                     }
-                    value={currentInfo.faqUrl}
+                    value={currentUniversityProfile.faqLink}
                   />
                 </div>
                 <div className={modalStyles.part}>
@@ -416,14 +404,7 @@ export const UniversityModal: React.FC<IUniversityModalProps> = ({
                   <input
                     placeholder={t("university.enter_website_address")}
                     type="text"
-                    required
-                    onChange={(event) =>
-                      setCurrentInfo({
-                        ...currentInfo,
-                        coursesUrl: event.target.value.trim(),
-                      })
-                    }
-                    value={currentInfo.coursesUrl}
+                    value={""}
                   />
                 </div>
               </div>

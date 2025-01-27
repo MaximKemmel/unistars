@@ -1,4 +1,4 @@
-import React, {useEffect, useRef} from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 
 import useOutsideAlerter from "../../hooks/useOutsideAlerter";
@@ -6,48 +6,42 @@ import useOutsideAlerter from "../../hooks/useOutsideAlerter";
 import styles from "./Dropdown.module.sass";
 
 import { IDropdownItem } from "../../types/local/dropdownItem";
-import { DropdownType } from "../../enums/local/dropdownType";
 
 import { Chevron as ChevronIcon } from "../../assets/svgComponents/Chevron";
 import { Check as CheckIcon } from "../../assets/svgComponents/Check";
 
 interface IDropdownProps {
   placeholder: string;
-  dropdownIndex: number;
-  activeComponent: number;
-  setActiveComponent: React.Dispatch<React.SetStateAction<number>>;
   items: IDropdownItem[];
   onItemSelect: Function;
 }
 
 export const Dropdown: React.FC<IDropdownProps> = ({
   placeholder,
-  dropdownIndex,
-  activeComponent,
-  setActiveComponent,
   items,
   onItemSelect,
 }) => {
   const { i18n } = useTranslation();
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const [isActive, setIsActive] = useState(false);
 
   useOutsideAlerter(dropdownRef, () => {
-    if (activeComponent === dropdownIndex) {
-      setActiveComponent(DropdownType.None);
+    if (isActive) {
+      setIsActive(false);
     }
   });
 
   useEffect(() => {
-    if (activeComponent === dropdownIndex) {
+    if (isActive) {
       const list = document.getElementById("dropdown_list");
       list?.scrollTo({ top: 0 });
     }
-  }, [activeComponent]);
+  }, [isActive]);
 
   return (
     <div
-      className={`${styles.dropdown} ${activeComponent === dropdownIndex ? styles.active : ""}`}
-      id={activeComponent === dropdownIndex ? "active_dropdown" : ""}
+      className={`${styles.dropdown} ${isActive ? styles.active : ""}`}
+      id={isActive ? "active_dropdown" : ""}
       ref={dropdownRef}
     >
       <div
@@ -56,14 +50,8 @@ export const Dropdown: React.FC<IDropdownProps> = ({
             0 && items[0].is_selected
             ? styles.not_selected
             : ""
-        } ${activeComponent === dropdownIndex ? styles.active : ""}`}
-        onClick={() =>
-          setActiveComponent(
-            activeComponent === dropdownIndex
-              ? DropdownType.None
-              : dropdownIndex,
-          )
-        }
+        } ${isActive ? styles.active : ""}`}
+        onClick={() => setIsActive(!isActive)}
       >
         <div className={styles.label}>
           {items.find((item: IDropdownItem) => item.is_selected)?.id === -1
@@ -77,15 +65,11 @@ export const Dropdown: React.FC<IDropdownProps> = ({
         </div>
       </div>
       <div
-        className={`${styles.dropdown_container} ${activeComponent === dropdownIndex ? styles.active : ""}`}
+        className={`${styles.dropdown_container} ${isActive ? styles.active : ""}`}
       >
         <div
           className={styles.dropdown_list}
-          id={
-            activeComponent === dropdownIndex
-              ? "dropdown_list"
-              : `list${dropdownIndex}`
-          }
+          id={isActive ? "dropdown_list" : `list`}
         >
           {items.map((item: IDropdownItem) => (
             <div
