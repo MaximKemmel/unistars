@@ -12,15 +12,16 @@ import { IAmbassadorId } from "../local/ambassadorId";
 import { statusPartnership } from "../../enums/dto/statusPartnership";
 
 export interface IUniversity {
+  name: string;
+  foundation: string;
+  description: string;
+  userCountries: ICountry[];
+  shortDescription?: string;
   type?: string;
   id?: number;
-  name?: string;
   information?: string;
-  foundation?: Date;
-  shortDescription?: string;
   faqLink?: string;
   photo?: string;
-  description?: string;
   shortName?: string;
   logoUrl?: string;
   coverUrl?: string;
@@ -38,10 +39,9 @@ export interface IUniversity {
   subscriberStudentsIds?: number[];
   subscriberUniversitiesIds?: number[];
   userId?: number;
-  userEmail?: string;
+  userEmail: string;
   password?: string;
   userCreatedAt?: Date;
-  userCountries?: ICountry[];
   userCity?: ICity;
   numberEmployees?: number;
   userLanguages?: ILanguage[];

@@ -1,5 +1,7 @@
 import { useState } from "react";
-import {useTranslation} from "react-i18next";
+import { useTranslation } from "react-i18next";
+
+import { useTypedSelector } from "../../../hooks/useTypedSelector";
 
 import { EventModal } from "../../../modals/Event/EventModal";
 
@@ -8,30 +10,15 @@ import { EventCard } from "../../../cards/event/EventCard";
 import globalStyles from "../../../App.module.sass";
 import styles from "../Home.module.sass";
 
-import TestPhoto from "../../../assets/jpg/test-event.jpg";
+import { IEvent } from "../../../types/event/event";
+
 import PlusIcon from "../../../assets/svg/plus.svg";
 
 export const Events = () => {
   const { t } = useTranslation();
   const [isEventModalShow, setIsEventModalShow] = useState(false);
 
-  const events = Array(10)
-    .fill(1)
-    .map((_item, index) => {
-      return {
-        id: index,
-        photo: TestPhoto,
-        date: "01.01.2025",
-        time: "22:00",
-        name: "Brand New Conference",
-        description: "Description",
-        participants: 234,
-        ambassadors: 2,
-        event_type: -1,
-        event_kind: 0,
-        event_visibility: -1,
-      };
-    });
+  const events = useTypedSelector((state) => state.eventReducer.eventList);
 
   return (
     <div className={styles.content}>
@@ -44,7 +31,7 @@ export const Events = () => {
         </div>
         {events.length > 0 ? (
           <div className={styles.events_container}>
-            {events.map((event, index) => {
+            {events.map((event: IEvent, index: number) => {
               return (
                 <div className={styles.event_item} key={index}>
                   <EventCard eventItem={event} />
@@ -55,14 +42,22 @@ export const Events = () => {
         ) : (
           <div className={styles.empty_info}>
             <div className={styles.empty_message}>{t("events.no_events")}</div>
-            <button className={globalStyles.small} type="button" onClick={() => setIsEventModalShow(true)}>
+            <button
+              className={globalStyles.small}
+              type="button"
+              onClick={() => setIsEventModalShow(true)}
+            >
               {t("events.create_event")}
               <img src={PlusIcon} alt="" />
             </button>
           </div>
         )}
         {events.length > 0 ? (
-          <button className={globalStyles.small} type="button" onClick={() => setIsEventModalShow(true)}>
+          <button
+            className={globalStyles.small}
+            type="button"
+            onClick={() => setIsEventModalShow(true)}
+          >
             {t("events.create_event")}
             <img src={PlusIcon} alt="" />
           </button>

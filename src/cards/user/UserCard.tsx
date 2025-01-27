@@ -1,9 +1,10 @@
-import { useState } from "react";
+import React, { useState } from "react";
 
 import { Checkbox } from "../../components/checkbox/Checkbox";
 
 import styles from "./UserCard.module.sass";
 
+import EmptyAvatarImage from "../../assets/png/empty-avatar.png";
 import { Close as CloseIcon } from "../../assets/svgComponents/Close";
 import { Check as CheckIcon } from "../../assets/svgComponents/Check";
 import MoreIcon from "../../assets/svg/more.svg";
@@ -43,7 +44,11 @@ export const UserCard: React.FC<IUserCardProps> = ({
       ) : null}
       <div className={styles.user_content}>
         <div className={styles.user_avatar}>
-          {userItem.photo ? <img src={userItem.photo} alt="" /> : null}
+          {userItem.photo ? (
+            <img src={userItem.photo} alt="" />
+          ) : (
+            <img src={EmptyAvatarImage} alt="" />
+          )}
         </div>
         <div className={styles.user_info}>
           <div className={styles.user_name}>{userItem.name}</div>

@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import InputMask from "react-input-mask";
+//import { format } from "date-fns";
+
+import { useTypedSelector } from "../../hooks/useTypedSelector";
 
 import { Dropdown } from "../../components/dropdown/Dropdown";
 import { Calendar } from "../../components/calendar/Calendar";
@@ -9,6 +12,7 @@ import globalStyles from "../../App.module.sass";
 import modalStyles from "../Modal.module.sass";
 
 import { IUniversity } from "../../types/university/university";
+import { ICity } from "../../types/core/city";
 import { IDropdownItem } from "../../types/local/dropdownItem";
 
 import CloseIcon from "../../assets/svg/close.svg";
@@ -29,6 +33,7 @@ export const UniversityModal: React.FC<IUniversityModalProps> = ({
   onClose,
 }) => {
   const { t } = useTranslation();
+  const cities = useTypedSelector((state) => state.coreReducer.cities);
   const [currentUniversityProfile, setCurrentUniversityProfile] =
     useState(universityInfo);
   const [date, setDate] = useState(
@@ -38,12 +43,21 @@ export const UniversityModal: React.FC<IUniversityModalProps> = ({
         : "01.01.2025",
     ),
   );
+  const [isButtonEnabled, setIsButtonEnabled] = useState(false);
 
   useEffect(() => {
     setCurrentUniversityProfile(universityInfo);
     const formDiv = document.getElementById("form");
     formDiv?.scrollTo({ top: 0, behavior: "smooth" });
   }, [isShow]);
+
+  useEffect(() => {
+    setIsButtonEnabled(
+      currentUniversityProfile.name.trim().length > 0 &&
+        currentUniversityProfile.description.trim().length > 0 &&
+        currentUniversityProfile.foundation.trim().length > 0,
+    );
+  }, [currentUniversityProfile]);
 
   /*useEffect(() => {
     if (activeComponent !== DropdownType.None) {
@@ -59,15 +73,15 @@ export const UniversityModal: React.FC<IUniversityModalProps> = ({
   }, [activeComponent]);*/
 
   useEffect(() => {
-    setCurrentUniversityProfile({
+    /*setCurrentUniversityProfile({
       ...currentUniversityProfile,
-      foundation: date,
-    });
+      foundation: format(date, "yyyy-MM-dd"),
+    });*/
   }, [date]);
 
   const handleOnSubmit = (event: any) => {
     event.preventDefault();
-    onSave();
+    onSave(currentUniversityProfile);
   };
 
   return (
@@ -109,6 +123,7 @@ export const UniversityModal: React.FC<IUniversityModalProps> = ({
                         name: event.target.value.trim(),
                       })
                     }
+                    required
                     value={currentUniversityProfile.name}
                   />
                 </div>
@@ -131,6 +146,7 @@ export const UniversityModal: React.FC<IUniversityModalProps> = ({
                       description: event.target.value.trim(),
                     })
                   }
+                  required
                   value={currentUniversityProfile.description}
                 />
               </div>
@@ -169,29 +185,39 @@ export const UniversityModal: React.FC<IUniversityModalProps> = ({
                   <div className={modalStyles.part_label}>
                     {t("university.city")}
                   </div>
-                  {/*<Dropdown
-                    placeholder={t("university.choose_your_city")}
-                    items={[
-                      {
-                        id: -1,
-                        text: t("global.not_selected"),
-                        text_eng: t("global.not_selected"),
-                        is_selected: currentInfo.city_id === -1,
-                      } as IDropdownItem,
-                      ...(cities.map((city: ICity) => {
-                        return {
-                          id: city.id,
-                          text: city.name,
-                          text_eng: city.nameEnglish,
-                          is_selected: currentInfo.city_id === city.id,
-                        } as IDropdownItem;
-                      }) as IDropdownItem[]),
-                    ]}
-                    onItemSelect={(item: IDropdownItem) => {
-                      setCurrentInfo({ ...currentInfo, city_id: item.id });
-                      setActiveComponent(DropdownType.None);
-                    }}
-                  />*/}
+                  {cities != undefined && Array.isArray(cities) && (
+                    <Dropdown
+                      placeholder={t("university.choose_your_city")}
+                      items={[
+                        {
+                          id: -1,
+                          text: t("global.not_selected"),
+                          text_eng: t("global.not_selected"),
+                          is_selected:
+                            currentUniversityProfile.userCity === null ||
+                            currentUniversityProfile.userCity === undefined,
+                        } as IDropdownItem,
+                        ...(cities.map((city: ICity) => {
+                          return {
+                            id: city.id,
+                            text: city.name,
+                            text_eng: city.nameEnglish,
+                            is_selected:
+                              currentUniversityProfile.userCity != null &&
+                              currentUniversityProfile.userCity.id === city.id,
+                          } as IDropdownItem;
+                        }) as IDropdownItem[]),
+                      ]}
+                      onItemSelect={(item: IDropdownItem) => {
+                        setCurrentUniversityProfile({
+                          ...currentUniversityProfile,
+                          userCity: cities.find(
+                            (city: ICity) => city.id === item.id,
+                          )!,
+                        });
+                      }}
+                    />
+                  )}
                 </div>
                 <div className={modalStyles.part}>
                   <div className={modalStyles.part_label}>
@@ -421,7 +447,11 @@ export const UniversityModal: React.FC<IUniversityModalProps> = ({
             >
               <span>{t("global.cancel")}</span>
             </button>
-            <button className={globalStyles.small} type="submit">
+            <button
+              className={globalStyles.small}
+              type="submit"
+              disabled={!isButtonEnabled}
+            >
               {t("global.save_changes")}
             </button>
           </div>

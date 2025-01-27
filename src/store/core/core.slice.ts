@@ -1,10 +1,10 @@
-import {createSlice} from "@reduxjs/toolkit";
-import {getCities, getCountries} from "./core.actions";
+import { createSlice } from "@reduxjs/toolkit";
+import { getCities, getCountries } from "./core.actions";
 
-import {ApiStatusType} from "../../enums/local/apiStatusType";
-import {IApiStatus, initApiStatus} from "../../types/local/apiStatus";
-import {ICountry} from "../../types/core/country";
-import {ICity} from "../../types/core/city";
+import { ApiStatusType } from "../../enums/local/apiStatusType";
+import { IApiStatus, initApiStatus } from "../../types/local/apiStatus";
+import { ICountry } from "../../types/core/country";
+import { ICity } from "../../types/core/city";
 
 interface ICoreState {
   countries: ICountry[];
@@ -27,34 +27,41 @@ export const coreSlice = createSlice({
   extraReducers: (builder) => {
     //#region Countries
     builder.addCase(getCountries.pending, (state) => {
-      state.getCountriesStatus = {status: ApiStatusType.IN_PROGRESS};
+      state.getCountriesStatus = { status: ApiStatusType.IN_PROGRESS };
     });
     builder.addCase(getCountries.fulfilled, (state, action) => {
       state.countries = [];
       state.countries = action.payload as ICountry[];
-      state.getCountriesStatus = {status: ApiStatusType.SUCCESS};
+      state.getCountriesStatus = { status: ApiStatusType.SUCCESS };
     });
     builder.addCase(getCountries.rejected, (state, action) => {
       state.countries = [];
-      state.getCountriesStatus = {status: ApiStatusType.ERROR, error: action.payload as string};
+      state.getCountriesStatus = {
+        status: ApiStatusType.ERROR,
+        error: action.payload as string,
+      };
     });
     //#endregion
 
     //#region Cities
     builder.addCase(getCities.pending, (state) => {
-      state.getCitiesStatus = {status: ApiStatusType.IN_PROGRESS};
+      state.getCitiesStatus = { status: ApiStatusType.IN_PROGRESS };
     });
     builder.addCase(getCities.fulfilled, (state, action) => {
       state.cities = [];
-      state.cities = action.payload as ICity[];
-      state.getCitiesStatus = {status: ApiStatusType.SUCCESS};
+      const response = action.payload;
+      state.cities = response.dictionary as ICity[];
+      state.getCitiesStatus = { status: ApiStatusType.SUCCESS };
     });
     builder.addCase(getCities.rejected, (state, action) => {
       state.cities = [];
-      state.getCitiesStatus = {status: ApiStatusType.ERROR, error: action.payload as string};
+      state.getCitiesStatus = {
+        status: ApiStatusType.ERROR,
+        error: action.payload as string,
+      };
     });
     //#endregion
   },
 });
 
-export const {reducer} = coreSlice;
+export const { reducer } = coreSlice;

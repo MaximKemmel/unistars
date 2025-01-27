@@ -8,6 +8,7 @@ import { UniversityModal } from "../../../../modals/University/UniversityModal";
 import globalStyles from "../../../../App.module.sass";
 import styles from "../../Home.module.sass";
 
+import { IUniversity } from "../../../../types/university/university";
 import { ICountry } from "../../../../types/core/country";
 
 import { Chevron as ChevronIcon } from "../../../../assets/svgComponents/Chevron";
@@ -255,7 +256,8 @@ export const UniversityInfoContainer = () => {
         onClose={() => {
           setIsAboutModalShow(false);
         }}
-        onSave={() => {
+        onSave={(editedUniversity: IUniversity) => {
+          console.log(editedUniversity);
           setIsAboutModalShow(false);
         }}
       />

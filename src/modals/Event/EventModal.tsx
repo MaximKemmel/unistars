@@ -1,17 +1,18 @@
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 
+import { useTypedSelector } from "../../hooks/useTypedSelector";
+
 import { Dropdown } from "../../components/dropdown/Dropdown";
 import { Toggle } from "../../components/toggle/Toggle";
 
 import globalStyles from "../../App.module.sass";
 import modalStyles from "../Modal.module.sass";
 
+import { IEventType } from "../../types/event/eventType";
 import { IDropdownItem } from "../../types/local/dropdownItem";
-import { IEventType } from "../../types/local/eventType";
 import { IToggleItem } from "../../types/local/toggleItem";
 import { DropdownType } from "../../enums/local/dropdownType";
-import { eventTypes } from "../../data/eventTypes";
 
 import CloseIcon from "../../assets/svg/close.svg";
 import UploadImageIcon from "../../assets/svg/upload-image.svg";
@@ -30,6 +31,7 @@ export const EventModal: React.FC<IEventModalProps> = ({
   onClose,
 }) => {
   const { t } = useTranslation();
+  const eventTypes = useTypedSelector((state) => state.eventReducer.eventTypes);
   const [currentInfo, setCurrentInfo] = useState(eventInfo);
   const [activeComponent, setActiveComponent] = useState(DropdownType.None);
 
@@ -137,61 +139,74 @@ export const EventModal: React.FC<IEventModalProps> = ({
                   <div className={modalStyles.part_label}>
                     {t("events.type")}
                   </div>
-                  <Dropdown
-                    placeholder={t("events.choose_a_type")}
-                    items={[
-                      {
-                        id: -1,
-                        text: t("global.not_selected"),
-                        text_eng: t("global.not_selected"),
-                        is_selected: currentInfo.event_type === -1,
-                      } as IDropdownItem,
-                      ...(eventTypes.map((typeItem: IEventType) => {
-                        return {
-                          id: typeItem.id,
-                          text: typeItem.type,
-                          text_eng: typeItem.type_eng,
-                          is_selected: currentInfo.event_type === typeItem.id,
-                        } as IDropdownItem;
-                      }) as IDropdownItem[]),
-                    ]}
-                    onItemSelect={(item: IDropdownItem) => {
-                      setCurrentInfo({ ...currentInfo, event_type: item.id });
-                      setActiveComponent(DropdownType.None);
-                    }}
-                  />
+                  {eventTypes != undefined && Array.isArray(eventTypes) ? (
+                    <Dropdown
+                      placeholder={t("events.choose_a_type")}
+                      items={[
+                        {
+                          id: -1,
+                          text: t("global.not_selected"),
+                          text_eng: t("global.not_selected"),
+                          is_selected:
+                            currentInfo.eventType === null ||
+                            currentInfo.eventType === undefined,
+                        } as IDropdownItem,
+                        ...(eventTypes.map((eventType: IEventType) => {
+                          return {
+                            id: eventType.id,
+                            text: eventType.name,
+                            text_eng: eventType.nameEnglish,
+                            is_selected:
+                              currentInfo.eventType != null &&
+                              currentInfo.eventType.id === eventType.id,
+                          } as IDropdownItem;
+                        }) as IDropdownItem[]),
+                      ]}
+                      onItemSelect={(item: IDropdownItem) => {
+                        setCurrentInfo({
+                          ...currentInfo,
+                          eventType: eventTypes.find(
+                            (type: IEventType) => type.id === item.id,
+                          )!,
+                        });
+                        setActiveComponent(DropdownType.None);
+                      }}
+                    />
+                  ) : null}
                 </div>
                 <div className={modalStyles.part}>
                   <div className={modalStyles.part_label}>
                     {t("events.visibility")}
                   </div>
-                  <Dropdown
-                    placeholder={t("events.choose_a_visibility")}
-                    items={[
-                      {
-                        id: -1,
-                        text: t("global.not_selected"),
-                        text_eng: t("global.not_selected"),
-                        is_selected: currentInfo.event_visibility === -1,
-                      } as IDropdownItem,
-                      ...(eventTypes.map((typeItem: IEventType) => {
-                        return {
-                          id: typeItem.id,
-                          text: typeItem.type,
-                          text_eng: typeItem.type_eng,
-                          is_selected:
-                            currentInfo.event_visibility === typeItem.id,
-                        } as IDropdownItem;
-                      }) as IDropdownItem[]),
-                    ]}
-                    onItemSelect={(item: IDropdownItem) => {
-                      setCurrentInfo({
-                        ...currentInfo,
-                        event_visibility: item.id,
-                      });
-                      setActiveComponent(DropdownType.None);
-                    }}
-                  />
+                  {eventTypes != undefined && Array.isArray(eventTypes) ? (
+                    <Dropdown
+                      placeholder={t("events.choose_a_visibility")}
+                      items={[
+                        {
+                          id: -1,
+                          text: t("global.not_selected"),
+                          text_eng: t("global.not_selected"),
+                          is_selected: currentInfo.event_visibility === -1,
+                        } as IDropdownItem,
+                        ...(eventTypes.map((eventType: IEventType) => {
+                          return {
+                            id: eventType.id,
+                            text: eventType.name,
+                            text_eng: eventType.nameEnglish,
+                            is_selected:
+                              currentInfo.event_visibility === eventType.id,
+                          } as IDropdownItem;
+                        }) as IDropdownItem[]),
+                      ]}
+                      onItemSelect={(item: IDropdownItem) => {
+                        setCurrentInfo({
+                          ...currentInfo,
+                          event_visibility: item.id,
+                        });
+                        setActiveComponent(DropdownType.None);
+                      }}
+                    />
+                  ) : null}
                 </div>
               </div>
             </div>

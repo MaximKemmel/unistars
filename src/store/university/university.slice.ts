@@ -6,6 +6,7 @@ import {
 } from "./university.actions";
 
 import { IUniversity } from "../../types/university/university";
+import { initUniversity } from "../../types/university/initUniversity";
 import { IApiStatus, initApiStatus } from "../../types/local/apiStatus";
 import { ApiStatusType } from "../../enums/local/apiStatusType";
 
@@ -16,7 +17,7 @@ interface IUniversityState {
 }
 
 const initialState: IUniversityState = {
-  universityProfile: { name: "" },
+  universityProfile: initUniversity(),
   getStatus: initApiStatus(),
   editStatus: initApiStatus(),
 };
@@ -38,12 +39,12 @@ export const universitySlice = createSlice({
       state.getStatus = { status: ApiStatusType.IN_PROGRESS };
     });
     builder.addCase(getUniversityProfile.fulfilled, (state, action) => {
-      state.universityProfile = { name: "" };
+      state.universityProfile = initUniversity();
       state.universityProfile = action.payload as IUniversity;
       state.getStatus = { status: ApiStatusType.SUCCESS };
     });
     builder.addCase(getUniversityProfile.rejected, (state, action) => {
-      state.universityProfile = { name: "" };
+      state.universityProfile = initUniversity();
       state.getStatus = {
         status: ApiStatusType.ERROR,
         error: action.payload as string,

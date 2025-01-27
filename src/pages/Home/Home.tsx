@@ -22,6 +22,9 @@ export const Home = () => {
     clearAmbassadors,
     getEmployeeList,
     getBookletList,
+    getEventList,
+    getEventTypes,
+    getAdvertList,
   } = useActions();
   const universityProfile = useTypedSelector(
     (state) => state.universityReducer.universityProfile,
@@ -44,6 +47,9 @@ export const Home = () => {
       getSubscribersList({ universityId: universityProfile.id });
       getEmployeeList();
       getBookletList({ universityId: universityProfile.id });
+      getEventList();
+      getEventTypes();
+      getAdvertList();
 
       if (
         universityProfile.studentIds != undefined &&

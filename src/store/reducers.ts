@@ -8,6 +8,8 @@ import { reducer as studentReducer } from "./student/student.slice";
 import { reducer as ambassadorReducer } from "./ambassador/ambassador.slice";
 import { reducer as employeeReducer } from "./employee/employee.slice";
 import { reducer as bookletReducer } from "./booklet/booklet.slice";
+import { reducer as eventReducer } from "./event/event.slice";
+import { reducer as advertReducer } from "./advert/advert.slice";
 
 export const reducers = combineReducers({
   coreReducer,
@@ -18,4 +20,6 @@ export const reducers = combineReducers({
   ambassadorReducer,
   employeeReducer,
   bookletReducer,
+  eventReducer,
+  advertReducer,
 });
