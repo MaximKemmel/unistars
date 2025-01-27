@@ -9,7 +9,6 @@ import modalStyles from "../Modal.module.sass";
 import styles from "./SubscribersModal.module.sass";
 
 import { IUser } from "../../types/user/user";
-import { DropdownType } from "../../enums/local/dropdownType";
 import { IDropdownItem } from "../../types/local/dropdownItem";
 import { periods } from "../../data/periods";
 import { IPeriod } from "../../types/local/period";
@@ -36,7 +35,6 @@ export const SubscribersModal: React.FC<ISubscribersModalProps> = ({
   const [filteredSubscribers, setFilteredSubscribers] = useState(subscribers);
   const [searchValue, setSearchValue] = useState("");
   const [activePeriod, setActivePeriod] = useState(-1);
-  const [activeComponent, setActiveComponent] = useState(DropdownType.None);
 
   useEffect(() => {
     const contentDiv = document.getElementById("subscribers_content");
@@ -95,9 +93,6 @@ export const SubscribersModal: React.FC<ISubscribersModalProps> = ({
             <div className={styles.dropdown_input}>
               <Dropdown
                 placeholder={t("subscribers.time_period")}
-                activeComponent={activeComponent}
-                setActiveComponent={setActiveComponent}
-                dropdownIndex={DropdownType.EventType}
                 items={[
                   {
                     id: -1,
@@ -116,7 +111,6 @@ export const SubscribersModal: React.FC<ISubscribersModalProps> = ({
                 ]}
                 onItemSelect={(item: IDropdownItem) => {
                   setActivePeriod(item.id);
-                  setActiveComponent(DropdownType.None);
                 }}
               />
             </div>

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import {useTranslation} from "react-i18next";
+import { useTranslation } from "react-i18next";
 
 import { Dropdown } from "../../components/dropdown/Dropdown";
 import { Toggle } from "../../components/toggle/Toggle";
@@ -23,7 +23,12 @@ interface IEventModalProps {
   onClose: Function;
 }
 
-export const EventModal: React.FC<IEventModalProps> = ({ isShow, eventInfo, onSave, onClose }) => {
+export const EventModal: React.FC<IEventModalProps> = ({
+  isShow,
+  eventInfo,
+  onSave,
+  onClose,
+}) => {
   const { t } = useTranslation();
   const [currentInfo, setCurrentInfo] = useState(eventInfo);
   const [activeComponent, setActiveComponent] = useState(DropdownType.None);
@@ -54,10 +59,17 @@ export const EventModal: React.FC<IEventModalProps> = ({ isShow, eventInfo, onSa
 
   return (
     <div className={`${modalStyles.modal} ${isShow ? modalStyles.active : ""}`}>
-      <div className={`${modalStyles.overlay} ${isShow ? modalStyles.active : ""}`} onClick={() => onClose()} />
+      <div
+        className={`${modalStyles.overlay} ${isShow ? modalStyles.active : ""}`}
+        onClick={() => onClose()}
+      />
       <div className={`${modalStyles.modal_content} ${modalStyles.wide}`}>
         <div className={modalStyles.head}>
-          <h4>{eventInfo.id > -1 ? t("events.editing_a_event") : t("events.creating_a_event")}</h4>
+          <h4>
+            {eventInfo.id > -1
+              ? t("events.editing_a_event")
+              : t("events.creating_a_event")}
+          </h4>
           <div className={modalStyles.close} onClick={() => onClose()}>
             <img src={CloseIcon} alt="" />
           </div>
@@ -65,10 +77,16 @@ export const EventModal: React.FC<IEventModalProps> = ({ isShow, eventInfo, onSa
         <form onSubmit={handleOnSubmit} className={modalStyles.form}>
           <div className={modalStyles.form_content} id="form">
             <div className={modalStyles.part_container}>
-              <div className={modalStyles.part_container_title}>{t("events.main")}</div>
-              <div className={`${modalStyles.part_multi} ${modalStyles.double}`}>
+              <div className={modalStyles.part_container_title}>
+                {t("events.main")}
+              </div>
+              <div
+                className={`${modalStyles.part_multi} ${modalStyles.double}`}
+              >
                 <div className={modalStyles.part}>
-                  <div className={modalStyles.part_label}>{t("events.name")}</div>
+                  <div className={modalStyles.part_label}>
+                    {t("events.name")}
+                  </div>
                   <input
                     placeholder={t("events.enter_a_name")}
                     type="text"
@@ -83,17 +101,23 @@ export const EventModal: React.FC<IEventModalProps> = ({ isShow, eventInfo, onSa
                   />
                 </div>
                 <div className={modalStyles.part}>
-                  <div className={modalStyles.part_label}>{t("events.cover")}</div>
+                  <div className={modalStyles.part_label}>
+                    {t("events.cover")}
+                  </div>
                   <div className={modalStyles.cover}>
                     <div className={modalStyles.upload}>
                       <img src={UploadImageIcon} alt="" />
                     </div>
-                    <div className={modalStyles.cover_placeholder}>{t("events.choose_a_cover")}</div>
+                    <div className={modalStyles.cover_placeholder}>
+                      {t("events.choose_a_cover")}
+                    </div>
                   </div>
                 </div>
               </div>
               <div className={modalStyles.part}>
-                <div className={modalStyles.part_label}>{t("events.description")}</div>
+                <div className={modalStyles.part_label}>
+                  {t("events.description")}
+                </div>
                 <textarea
                   placeholder={t("events.enter_a_description")}
                   required
@@ -106,14 +130,15 @@ export const EventModal: React.FC<IEventModalProps> = ({ isShow, eventInfo, onSa
                   value={currentInfo.description}
                 />
               </div>
-              <div className={`${modalStyles.part_multi} ${modalStyles.double}`}>
+              <div
+                className={`${modalStyles.part_multi} ${modalStyles.double}`}
+              >
                 <div className={modalStyles.part}>
-                  <div className={modalStyles.part_label}>{t("events.type")}</div>
+                  <div className={modalStyles.part_label}>
+                    {t("events.type")}
+                  </div>
                   <Dropdown
                     placeholder={t("events.choose_a_type")}
-                    activeComponent={activeComponent}
-                    setActiveComponent={setActiveComponent}
-                    dropdownIndex={DropdownType.EventType}
                     items={[
                       {
                         id: -1,
@@ -137,12 +162,11 @@ export const EventModal: React.FC<IEventModalProps> = ({ isShow, eventInfo, onSa
                   />
                 </div>
                 <div className={modalStyles.part}>
-                  <div className={modalStyles.part_label}>{t("events.visibility")}</div>
+                  <div className={modalStyles.part_label}>
+                    {t("events.visibility")}
+                  </div>
                   <Dropdown
                     placeholder={t("events.choose_a_visibility")}
-                    activeComponent={activeComponent}
-                    setActiveComponent={setActiveComponent}
-                    dropdownIndex={DropdownType.EventVisibility}
                     items={[
                       {
                         id: -1,
@@ -155,7 +179,8 @@ export const EventModal: React.FC<IEventModalProps> = ({ isShow, eventInfo, onSa
                           id: typeItem.id,
                           text: typeItem.type,
                           text_eng: typeItem.type_eng,
-                          is_selected: currentInfo.event_visibility === typeItem.id,
+                          is_selected:
+                            currentInfo.event_visibility === typeItem.id,
                         } as IDropdownItem;
                       }) as IDropdownItem[]),
                     ]}
@@ -173,9 +198,13 @@ export const EventModal: React.FC<IEventModalProps> = ({ isShow, eventInfo, onSa
             <div className={modalStyles.form_separator} />
             <div className={modalStyles.part_container_multi}>
               <div className={modalStyles.part_container}>
-                <div className={modalStyles.part_container_title}>{t("events.type")}</div>
+                <div className={modalStyles.part_container_title}>
+                  {t("events.type")}
+                </div>
                 <div className={modalStyles.part}>
-                  <div className={modalStyles.part_label}>{t("events.date")}</div>
+                  <div className={modalStyles.part_label}>
+                    {t("events.date")}
+                  </div>
                   <input
                     placeholder={t("events.enter_a_date")}
                     type="text"
@@ -190,7 +219,9 @@ export const EventModal: React.FC<IEventModalProps> = ({ isShow, eventInfo, onSa
                   />
                 </div>
                 <div className={modalStyles.part}>
-                  <div className={modalStyles.part_label}>{t("events.time")}</div>
+                  <div className={modalStyles.part_label}>
+                    {t("events.time")}
+                  </div>
                   <input
                     placeholder={t("events.enter_a_time")}
                     type="text"
@@ -207,9 +238,13 @@ export const EventModal: React.FC<IEventModalProps> = ({ isShow, eventInfo, onSa
               </div>
               <div className={modalStyles.form_separator} />
               <div className={modalStyles.part_container}>
-                <div className={modalStyles.part_container_title}>{t("events.location")}</div>
+                <div className={modalStyles.part_container_title}>
+                  {t("events.location")}
+                </div>
                 <div className={modalStyles.part}>
-                  <div className={modalStyles.part_label}>{t("events.event_format")}</div>
+                  <div className={modalStyles.part_label}>
+                    {t("events.event_format")}
+                  </div>
                   <Toggle
                     selectedIndex={currentInfo.event_kind}
                     items={
@@ -217,20 +252,24 @@ export const EventModal: React.FC<IEventModalProps> = ({ isShow, eventInfo, onSa
                         {
                           id: 0,
                           text: "Офлайн",
-                          text_eng: "Offline"
+                          text_eng: "Offline",
                         } as IToggleItem,
                         {
                           id: 1,
                           text: "Онлайн",
-                          text_eng: "Online"
+                          text_eng: "Online",
                         } as IToggleItem,
                       ] as IToggleItem[]
                     }
-                    onItemSelect={(item: IToggleItem) => setCurrentInfo({ ...currentInfo, event_kind: item.id })}
+                    onItemSelect={(item: IToggleItem) =>
+                      setCurrentInfo({ ...currentInfo, event_kind: item.id })
+                    }
                   />
                 </div>
                 <div className={modalStyles.part}>
-                  <div className={modalStyles.part_label}>{t("events.location")}</div>
+                  <div className={modalStyles.part_label}>
+                    {t("events.location")}
+                  </div>
                   <input
                     placeholder={t("events.enter_location")}
                     type="text"
@@ -245,7 +284,9 @@ export const EventModal: React.FC<IEventModalProps> = ({ isShow, eventInfo, onSa
                   />
                 </div>
                 <div className={modalStyles.part}>
-                  <div className={modalStyles.part_label}>{t("events.additional_info")}</div>
+                  <div className={modalStyles.part_label}>
+                    {t("events.additional_info")}
+                  </div>
                   <input
                     placeholder={t("events.enter_link")}
                     type="text"
@@ -263,7 +304,10 @@ export const EventModal: React.FC<IEventModalProps> = ({ isShow, eventInfo, onSa
             </div>
           </div>
           <div className={modalStyles.actions}>
-            <button className={`${globalStyles.inverted} ${globalStyles.small}`} type="button">
+            <button
+              className={`${globalStyles.inverted} ${globalStyles.small}`}
+              type="button"
+            >
               <span>{t("global.cancel")}</span>
             </button>
             <button className={globalStyles.small} type="submit">
