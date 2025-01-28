@@ -22,25 +22,34 @@ export const AdvertCard: React.FC<IAdvertCardProps> = ({ advertItem }) => {
   return (
     <div className={styles.advert_container}>
       <div className={styles.advert_head}>
-        <img src={advertItem.imageUrl} alt="" />
+        {advertItem.imageUrl.trim().length > 5 ? (
+          <img src={advertItem.imageUrl} alt="" />
+        ) : null}
         <div className={styles.photo_overlay} />
         <div className={styles.advert_info}>
           <div className={styles.advert_name}>{advertItem.title}</div>
           <div className={styles.advert_description}>{advertItem.subtitle}</div>
         </div>
-        <div className={`${styles.advert_status} ${advertState === 0 ? styles.moderation : styles.published}`}>
-          {advertState === 0 ? t("advertisements.moderation") : t("advertisements.published")}
+        <div
+          className={`${styles.advert_status} ${advertState === 0 ? styles.moderation : styles.published}`}
+        >
+          {advertState === 0
+            ? t("advertisements.moderation")
+            : t("advertisements.published")}
         </div>
       </div>
       <div className={styles.additional_info}>
         <div className={styles.info_item}>
           <img className={styles.item_icon} src={TimeIcon} alt="" />
           {`${t("advertisements.until")} ${new Date(advertItem.endDate!)
-            .toLocaleDateString(`${i18n.resolvedLanguage}-${i18n.resolvedLanguage?.toUpperCase()}`, {
-              day: "numeric",
-              month: "long",
-              year: "numeric",
-            })
+            .toLocaleDateString(
+              `${i18n.resolvedLanguage}-${i18n.resolvedLanguage?.toUpperCase()}`,
+              {
+                day: "numeric",
+                month: "long",
+                year: "numeric",
+              },
+            )
             .replace(/\s*г\./, "")}`}
         </div>
         <div className={styles.info_progress_item}>
@@ -49,7 +58,9 @@ export const AdvertCard: React.FC<IAdvertCardProps> = ({ advertItem }) => {
               <img className={styles.item_icon} src={ViewIcon} alt="" />
               <div>{`${advertItem.allShows!} ${t("advertisements.views")}`}</div>
             </div>
-            <div className={styles.info_limit}>{`${advertItem.showsLimit!} ${t("advertisements.limit")}`}</div>
+            <div
+              className={styles.info_limit}
+            >{`${advertItem.showsLimit!} ${t("advertisements.limit")}`}</div>
           </div>
           <div className={styles.progress_bar}>
             <div
@@ -66,7 +77,9 @@ export const AdvertCard: React.FC<IAdvertCardProps> = ({ advertItem }) => {
               <img className={styles.item_icon} src={ClickIcon} alt="" />
               <div>{`${advertItem.allClicks} ${t("advertisements.clicks")}`}</div>
             </div>
-            <div className={styles.info_limit}>{`${advertItem.clickLimit} ${t("advertisements.limit")}`}</div>
+            <div
+              className={styles.info_limit}
+            >{`${advertItem.clickLimit} ${t("advertisements.limit")}`}</div>
           </div>
           <div className={styles.progress_bar}>
             <div

@@ -7,7 +7,7 @@ import { IAdvert } from "../../types/advert/advert.js";
 export const getAdvertList = createAsyncThunk(
   "api/getAdvertsByUniversity",
   async (_, { rejectWithValue }) => {
-    const response = await axios.get(`/advertising/get_list`);
+    const response = await axios.get(`/advertising/get_my`);
     if (response.status !== 200) {
       throw rejectWithValue("Server error!");
     }
