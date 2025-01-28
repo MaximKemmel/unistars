@@ -12,12 +12,11 @@ import { SignIn } from "./pages/SignIn/SignIn";
 import styles from "./App.module.sass";
 
 function App() {
-  const { authMe, getCountries, getCities } = useActions();
+  const { getCountries, getCities } = useActions();
   const countries = useTypedSelector((state) => state.coreReducer.countries);
   const cities = useTypedSelector((state) => state.coreReducer.cities);
 
   useLayoutEffect(() => {
-    authMe();
     if (!Array.isArray(countries) || countries.length === 0) {
       getCountries();
     }
