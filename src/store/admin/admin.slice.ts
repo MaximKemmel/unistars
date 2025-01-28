@@ -8,14 +8,14 @@ import { ILoginResponse } from "../../types/loginResponse/loginResponse";
 
 interface IAdminState {
   isAuth: boolean;
-  loginStatus: IApiStatus;
   loginResponse: ILoginResponse;
+  loginStatus: IApiStatus;
 }
 
 const initialState: IAdminState = {
   isAuth: false,
-  loginStatus: initApiStatus(),
   loginResponse: { accessToken: "", refreshToken: "" },
+  loginStatus: initApiStatus(),
 };
 
 export const adminSlice = createSlice({
@@ -24,6 +24,11 @@ export const adminSlice = createSlice({
   reducers: {
     authMe(state) {
       state.isAuth = window.localStorage.getItem("unistars_token") != null;
+    },
+    logout(state) {
+      window.localStorage.removeItem("unistars_token");
+      window.localStorage.removeItem("unistars_refresh_token");
+      state.isAuth = false;
     },
     setLoginStatus(state, action: PayloadAction<IApiStatus>) {
       state.loginStatus = action.payload;
