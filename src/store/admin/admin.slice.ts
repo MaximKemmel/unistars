@@ -22,6 +22,9 @@ export const adminSlice = createSlice({
   name: "admin",
   initialState,
   reducers: {
+    authMe(state) {
+      state.isAuth = window.localStorage.getItem("unistars_token") != null;
+    },
     setLoginStatus(state, action: PayloadAction<IApiStatus>) {
       state.loginStatus = action.payload;
     },

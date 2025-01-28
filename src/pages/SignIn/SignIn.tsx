@@ -1,11 +1,14 @@
-import { useState } from "react";
-import {useTranslation} from "react-i18next";
+import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
+import { useNavigate } from "react-router-dom";
+
+import { useAuth } from "../../hooks/useAuth";
 
 import { Toggle } from "../../components/toggle/Toggle";
 
 import { SignInForm } from "./content/SignInForm";
 import { ApplicationForm } from "./content/ApplicationForm";
-import {ResetPasswordForm} from "./content/ResetPasswordForm";
+import { ResetPasswordForm } from "./content/ResetPasswordForm";
 
 import styles from "./SignIn.module.sass";
 
@@ -15,12 +18,20 @@ import BackArrowIcon from "../../assets/svg/back-arrow.svg";
 
 export const SignIn = () => {
   const { t } = useTranslation();
+  const navigate = useNavigate();
+  const isAuth = useAuth();
   const [currentStage, setCurrentStage] = useState(0);
   const stages = [
     <SignInForm setCurrentStage={setCurrentStage} />,
     <ApplicationForm setCurrentStage={setCurrentStage} />,
-    <ResetPasswordForm />
+    <ResetPasswordForm />,
   ] as JSX.Element[];
+
+  useEffect(() => {
+    if (isAuth) {
+      navigate("/");
+    }
+  }, []);
 
   return (
     <div className={styles.container}>
@@ -30,9 +41,13 @@ export const SignIn = () => {
       </div>
       <div className={styles.content}>
         {stages[currentStage]}
-        <Toggle isSettings={true} isRounded={true}/>
+        <Toggle isSettings={true} isRounded={true} />
         {currentStage === 1 ? (
-          <button className={styles.back_button} type="button" onClick={() => setCurrentStage(0)}>
+          <button
+            className={styles.back_button}
+            type="button"
+            onClick={() => setCurrentStage(0)}
+          >
             <img src={BackArrowIcon} alt="" />
             <span>{t("sign_in.back")}</span>
           </button>

@@ -21,7 +21,7 @@ export const ResetPasswordForm = () => {
 
   const handleOnSubmit = (event: any) => {
     event.preventDefault();
-    navigate('/home');
+    navigate('/');
   };
 
   return (
