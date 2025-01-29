@@ -199,7 +199,9 @@
   "students": {
     "students": "Students",
     "students_search": "Students search",
-    "don_t_have_students": "You don't have any students yet"
+    "don_t_have_students": "You don't have any students yet",
+    "deleting_students": "Deleting students",
+    "delete_description": "Do you really want to remove the selected users from the list of students?"
   },
   "ambassadors": {
     "ambassadors": "Ambassadors",
@@ -207,7 +209,9 @@
     "don_t_have_ambassadors": "You don't have any ambassadors yet",
     "reject": "Reject",
     "approve": "Approve",
-    "recover": "Recover"
+    "recover": "Recover",
+    "deleting_ambassadors": "Deleting ambassadors",
+    "delete_description": "Do you really want to remove the selected users from the list of ambassadors?"
   },
   "employers": {
     "employers": "Employers",

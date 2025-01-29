@@ -42,7 +42,9 @@ export const ConfirmDeleteModal: React.FC<IConfirmDeleteModalProps> = ({
         </div>
         <div className={modalStyles.delete_container}>
           <div className={modalStyles.delete_title}>{title}</div>
-          <div className={modalStyles.delete_description}>{message}</div>
+          {message.trim().length > 0 ? (
+            <div className={modalStyles.delete_description}>{message}</div>
+          ) : null}
         </div>
         <div className={modalStyles.actions}>
           <div />

@@ -8,7 +8,7 @@ import { MultiCheckbox } from "../../components/checkbox/MultiCheckbox";
 
 import globalStyles from "../../App.module.sass";
 import modalStyles from "../Modal.module.sass";
-import styles from "./AmbassadorsModal.module.sass";
+import styles from "./StudentsModal.module.sass";
 
 import { IUser } from "../../types/user/user";
 import { CheckboxState } from "../../enums/local/checkboxState";
@@ -16,29 +16,29 @@ import { CheckboxState } from "../../enums/local/checkboxState";
 import { Close as CloseIcon } from "../../assets/svgComponents/Close";
 import { Trash as TrashIcon } from "../../assets/svgComponents/Trash";
 
-interface IEditAmbassadorsModalProps {
+interface IEditStudentsModalProps {
   isShow: boolean;
   onDelete: Function;
   onCancel: Function;
   onClose: Function;
 }
 
-export const EditAmbassadorsModal: React.FC<IEditAmbassadorsModalProps> = ({
+export const EditStudentsModal: React.FC<IEditStudentsModalProps> = ({
   isShow,
   onDelete,
   onCancel,
   onClose,
 }) => {
   const { t } = useTranslation();
-  const ambassadors = useTypedSelector(
-    (state) => state.ambassadorReducer.ambassadorList,
+  const students = useTypedSelector(
+    (state) => state.studentReducer.studentList,
   );
-  const [currentAmbassadors, setCurrentAmbassadors] = useState(ambassadors);
+  const [currentStudents, setCurrentStudents] = useState(students);
 
   useEffect(() => {
-    const contentDiv = document.getElementById("edit_ambassadors_content");
+    const contentDiv = document.getElementById("edit_students_content");
     contentDiv?.scrollTo({ top: 0, behavior: "smooth" });
-    setCurrentAmbassadors(ambassadors);
+    setCurrentStudents(students);
   }, [isShow]);
 
   return (
@@ -49,35 +49,32 @@ export const EditAmbassadorsModal: React.FC<IEditAmbassadorsModalProps> = ({
       />
       <div className={`${modalStyles.modal_content} ${styles.modal_content}`}>
         <div className={modalStyles.head}>
-          <h4>{t("ambassadors.ambassadors")}</h4>
+          <h4>{t("students.students")}</h4>
           <div className={modalStyles.close} onClick={() => onClose()}>
             <CloseIcon />
           </div>
         </div>
-        <div className={styles.ambassadors_container}>
-          <div
-            className={styles.ambassadors_content}
-            id="edit_ambassadors_content"
-          >
-            <div className={styles.ambassadors_selector}>
+        <div className={styles.students_container}>
+          <div className={styles.students_content} id="edit_students_content">
+            <div className={styles.students_selector}>
               <div className={styles.checkbox}>
                 <MultiCheckbox
                   checkboxState={
-                    currentAmbassadors.filter(
-                      (ambassador: IUser) => ambassador.isSelected,
+                    currentStudents.filter(
+                      (student: IUser) => student.isSelected,
                     ).length === 0
                       ? CheckboxState.NotChecked
-                      : currentAmbassadors.filter(
-                            (ambassador: IUser) => ambassador.isSelected,
-                          ).length === currentAmbassadors.length
+                      : currentStudents.filter(
+                            (student: IUser) => student.isSelected,
+                          ).length === currentStudents.length
                         ? CheckboxState.AllChecked
                         : CheckboxState.AnyChecked
                   }
                   onChangeStatus={(status: CheckboxState) =>
-                    setCurrentAmbassadors(
-                      currentAmbassadors.map((ambassador: IUser) => {
+                    setCurrentStudents(
+                      currentStudents.map((student: IUser) => {
                         return {
-                          ...ambassador,
+                          ...student,
                           isSelected: status === CheckboxState.AllChecked,
                         };
                       }),
@@ -87,18 +84,18 @@ export const EditAmbassadorsModal: React.FC<IEditAmbassadorsModalProps> = ({
               </div>
               {t("global.select_all")}
             </div>
-            {currentAmbassadors.map((ambassador: IUser, index: number) => (
-              <div className={styles.ambassador_item} key={index}>
+            {currentStudents.map((student: IUser, index: number) => (
+              <div className={styles.student_item} key={index}>
                 <UserCard
-                  userItem={ambassador}
+                  userItem={student}
                   isCheckedItem={true}
                   onCheckedChange={(status: boolean) =>
-                    setCurrentAmbassadors(
-                      currentAmbassadors.map((tmpAmbassador: IUser) => {
-                        if (tmpAmbassador.id === ambassador.id) {
-                          return { ...tmpAmbassador, isSelected: status };
+                    setCurrentStudents(
+                      currentStudents.map((tmpStudent: IUser) => {
+                        if (tmpStudent.id === student.id) {
+                          return { ...tmpStudent, isSelected: status };
                         } else {
-                          return tmpAmbassador;
+                          return tmpStudent;
                         }
                       }),
                     )
@@ -108,32 +105,28 @@ export const EditAmbassadorsModal: React.FC<IEditAmbassadorsModalProps> = ({
             ))}
           </div>
           <div className={styles.bottom_actions}>
-            <div className={styles.selected_count}>{`${
-              currentAmbassadors.filter(
-                (ambassador: IUser) => ambassador.isSelected,
-              ).length
-            } ${t("global.selected")}`}</div>
+            <div
+              className={styles.selected_count}
+            >{`${currentStudents.filter((student: IUser) => student.isSelected).length} ${t("global.selected")}`}</div>
             <button
               className={`${globalStyles.inverted} ${globalStyles.small} ${globalStyles.delete}`}
               type="button"
               disabled={
-                currentAmbassadors.filter(
-                  (ambassador: IUser) => ambassador.isSelected,
-                ).length === 0
+                currentStudents.filter((student: IUser) => student.isSelected)
+                  .length === 0
               }
               onClick={() =>
                 onDelete(
-                  currentAmbassadors.filter(
-                    (ambassador: IUser) => ambassador.isSelected,
+                  currentStudents.filter(
+                    (student: IUser) => student.isSelected,
                   ),
                 )
               }
             >
               <TrashIcon
                 isDisabled={
-                  currentAmbassadors.filter(
-                    (ambassador: IUser) => ambassador.isSelected,
-                  ).length === 0
+                  currentStudents.filter((student: IUser) => student.isSelected)
+                    .length === 0
                 }
               />
               {t("global.delete")}

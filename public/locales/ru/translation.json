@@ -199,7 +199,9 @@
   "students": {
     "students": "Студенты",
     "students_search": "Поиск по студентам",
-    "don_t_have_students": "У вас пока нет студентов"
+    "don_t_have_students": "У вас пока нет студентов",
+    "deleting_students": "Удаление студентов",
+    "delete_description": "Вы действительно хотите удалить выбранных пользователей из списка студентов?"
   },
   "ambassadors": {
     "ambassadors": "Амбассадоры",
@@ -207,7 +209,9 @@
     "don_t_have_ambassadors": "У вас пока нет амбассадоров",
     "reject": "Отклонить",
     "approve": "Одобрить",
-    "recover": "Восстановить"
+    "recover": "Восстановить",
+    "deleting_ambassadors": "Удаление амбассадоров",
+    "delete_description": "Вы действительно хотите удалить выбранных пользователей из списка амбассадоров?"
   },
   "employers": {
     "employers": "Сотрудники",
