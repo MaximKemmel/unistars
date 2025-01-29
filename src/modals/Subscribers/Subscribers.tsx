@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 
+import { useTypedSelector } from "../../hooks/useTypedSelector";
+
 import { UserCard } from "../../cards/user/UserCard";
 import { Dropdown } from "../../components/dropdown/Dropdown";
 
@@ -19,19 +21,20 @@ import SearchIcon from "../../assets/svg/search.svg";
 import NothingFound from "../../assets/svg/nothing-found.svg";
 
 interface ISubscribersModalProps {
-  subscribers: IUser[];
   isShow: boolean;
   onDownload: Function;
   onClose: Function;
 }
 
 export const SubscribersModal: React.FC<ISubscribersModalProps> = ({
-  subscribers,
   isShow,
   onDownload,
   onClose,
 }) => {
   const { t } = useTranslation();
+  const subscribers = useTypedSelector(
+    (state) => state.subscriberReducer.subscriberList,
+  );
   const [filteredSubscribers, setFilteredSubscribers] = useState(subscribers);
   const [searchValue, setSearchValue] = useState("");
   const [activePeriod, setActivePeriod] = useState(-1);
@@ -158,13 +161,7 @@ export const SubscribersModal: React.FC<ISubscribersModalProps> = ({
                         className={styles.subscriber_item}
                         key={subscriber.id}
                       >
-                        <UserCard
-                          userItem={{
-                            name: subscriber.fullName,
-                            description: subscriber.description,
-                            photo: subscriber.avatarUrl,
-                          }}
-                        />
+                        <UserCard userItem={subscriber} />
                       </div>
                     ))}
                   </>

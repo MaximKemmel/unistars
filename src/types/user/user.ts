@@ -32,4 +32,5 @@ export interface IUser {
   birthday: Date;
   profession?: string;
   permissions?: string[];
+  isSelected: boolean;
 }

@@ -7,14 +7,14 @@ import { IApiStatus, initApiStatus } from "../../types/local/apiStatus";
 import { ApiStatusType } from "../../enums/local/apiStatusType";
 
 interface ISubscriberState {
-  allSubscribers: IUser[];
+  subscriberList: IUser[];
   subscribersFile: any[];
   getStatus: IApiStatus;
   getFileStatus: IApiStatus;
 }
 
 const initialState: ISubscriberState = {
-  allSubscribers: [] as IUser[],
+  subscriberList: [] as IUser[],
   subscribersFile: [],
   getStatus: initApiStatus(),
   getFileStatus: initApiStatus(),
@@ -27,6 +27,9 @@ export const subscriberSlice = createSlice({
     setGetStatus(state, action: PayloadAction<IApiStatus>) {
       state.getStatus = action.payload;
     },
+    setGetFileStatus(state, action: PayloadAction<IApiStatus>) {
+      state.getFileStatus = action.payload;
+    },
   },
   extraReducers: (builder) => {
     //#region Subscribers list
@@ -34,12 +37,12 @@ export const subscriberSlice = createSlice({
       state.getStatus = { status: ApiStatusType.IN_PROGRESS };
     });
     builder.addCase(getSubscribersList.fulfilled, (state, action) => {
-      state.allSubscribers = [];
-      state.allSubscribers = action.payload as IUser[];
+      state.subscriberList = [];
+      state.subscriberList = action.payload as IUser[];
       state.getStatus = { status: ApiStatusType.SUCCESS };
     });
     builder.addCase(getSubscribersList.rejected, (state, action) => {
-      state.allSubscribers = [];
+      state.subscriberList = [];
       state.getStatus = {
         status: ApiStatusType.ERROR,
         error: action.payload as string,

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { IAmbassadorId } from "src/types/local/ambassadorId";
+import { IAmbassadorId } from "src/types/ambassador/ambassadorId";
 
 import { useActions } from "../../hooks/useActions";
 import { useTypedSelector } from "../../hooks/useTypedSelector";
@@ -11,6 +11,7 @@ import { Adverts } from "./content/Adverts";
 import { MailList } from "./content/MailList";
 
 import styles from "./Home.module.sass";
+import { IAmbassadorRequest } from "src/types/ambassador/ambassadorRequest";
 
 export const Home = () => {
   const {
@@ -19,6 +20,7 @@ export const Home = () => {
     getStudent,
     clearStudents,
     getAmbassador,
+    getAmbassadorRequest,
     clearAmbassadors,
     getEmployeeList,
     getBookletList,
@@ -69,6 +71,18 @@ export const Home = () => {
         universityProfile.ambassadorIds.forEach(
           (ambassadorId: IAmbassadorId) => {
             getAmbassador({ ambassadorId: ambassadorId.studentId! });
+          },
+        );
+      }
+
+      if (
+        universityProfile.ambassadorRequests != undefined &&
+        Array.isArray(universityProfile.ambassadorRequests)
+      ) {
+        clearAmbassadors();
+        universityProfile.ambassadorRequests.forEach(
+          (ambassadorRequest: IAmbassadorRequest) => {
+            getAmbassadorRequest({ ambassadorId: ambassadorRequest.id! });
           },
         );
       }

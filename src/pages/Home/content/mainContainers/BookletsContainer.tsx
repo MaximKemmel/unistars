@@ -6,8 +6,8 @@ import { useTypedSelector } from "../../../../hooks/useTypedSelector";
 import { BookletCard } from "../../../../cards/booklet/BookletCard";
 import { BookletsModal } from "../../../../modals/Booklets/BookletsModal";
 import { EditBookletModal } from "../../../../modals/Booklets/EditBookletModal";
-import { ConfirmDeleteModal } from "../../../../modals/ConfirmDelete/ConfirmDeleteModal";
-import { StatusInfoModal } from "../../../../modals/StatusInfo/StatusInfoModal";
+import { ConfirmDeleteModal } from "../../../../modals/ConfirmDelete/ConfirmDelete";
+import { StatusInfoModal } from "../../../../modals/StatusInfo/StatusInfo";
 
 import globalStyles from "../../../../App.module.sass";
 import styles from "../../Home.module.sass";
@@ -26,7 +26,7 @@ export const BookletsContainer = () => {
   const [isStatusInfoModalShow, setIsStatusInfoModalShow] = useState(false);
 
   const handleOnDeleteBooklet = (booklet: IBooklet) => {
-    console.log(booklet.id);
+    console.log(booklet);
     setIsEditBookletModalShow(false);
     setIsConfirmDeleteModalShow(true);
   };

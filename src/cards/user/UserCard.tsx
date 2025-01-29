@@ -4,13 +4,15 @@ import { Checkbox } from "../../components/checkbox/Checkbox";
 
 import styles from "./UserCard.module.sass";
 
+import { IUser } from "../../types/user/user";
+
 import EmptyAvatarImage from "../../assets/png/empty-avatar.png";
 import { Close as CloseIcon } from "../../assets/svgComponents/Close";
 import { Check as CheckIcon } from "../../assets/svgComponents/Check";
 import MoreIcon from "../../assets/svg/more.svg";
 
 interface IUserCardProps {
-  userItem: any;
+  userItem: IUser;
   isRequestItem?: boolean;
   isCheckedItem?: boolean;
   isWithMoreItem?: boolean;
@@ -37,21 +39,21 @@ export const UserCard: React.FC<IUserCardProps> = ({
       {isCheckedItem ? (
         <div className={styles.checkbox}>
           <Checkbox
-            isChecked={userItem.isChecked}
+            isChecked={userItem.isSelected}
             onChangeStatus={(status: boolean) => onCheckedChange!(status)}
           />
         </div>
       ) : null}
       <div className={styles.user_content}>
         <div className={styles.user_avatar}>
-          {userItem.photo ? (
-            <img src={userItem.photo} alt="" />
+          {userItem.avatarUrl ? (
+            <img src={userItem.avatarUrl} alt="" />
           ) : (
             <img src={EmptyAvatarImage} alt="" />
           )}
         </div>
         <div className={styles.user_info}>
-          <div className={styles.user_name}>{userItem.name}</div>
+          <div className={styles.user_name}>{userItem.fullName}</div>
           <div className={styles.user_description}>{userItem.description}</div>
         </div>
       </div>

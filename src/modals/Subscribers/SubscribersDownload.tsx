@@ -8,6 +8,9 @@ import globalStyles from "../../App.module.sass";
 import modalStyles from "../Modal.module.sass";
 import styles from "./SubscribersModal.module.sass";
 
+import { ApiStatusType } from "../../enums/local/apiStatusType";
+import { initApiStatus } from "../../types/local/apiStatus";
+
 import { Close as CloseIcon } from "../../assets/svgComponents/Close";
 import FileIcon from "../../assets/svg/file.svg";
 import CheckIcon from "../../assets/svg/circled-check.svg";
@@ -21,16 +24,18 @@ export const SubscribersDownloadModal: React.FC<
   ISubscribersDownloadModalProps
 > = ({ isShow, onClose }) => {
   const { t } = useTranslation();
-  const { getSubscribersFile } = useActions();
+  const { getSubscribersFile, setGetFileStatus } = useActions();
   const file = useTypedSelector(
     (state) => state.subscriberReducer.subscribersFile,
   );
+  const downloadStatus = useTypedSelector(
+    (state) => state.subscriberReducer.getFileStatus,
+  );
   const [isLoadShow, setIsLoadShow] = useState(false);
-  const [isLoadingSuccess, setIsLoadingSuccess] = useState(false);
 
   useEffect(() => {
     setIsLoadShow(false);
-    setIsLoadingSuccess(false);
+    setGetFileStatus(initApiStatus());
   }, [isShow]);
 
   useEffect(() => {
@@ -63,7 +68,7 @@ export const SubscribersDownloadModal: React.FC<
                     <img src={FileIcon} alt="" />
                     Subscribers.xlsx
                   </div>
-                  {isLoadingSuccess ? (
+                  {downloadStatus.status === ApiStatusType.SUCCESS ? (
                     <div
                       className={`${styles.loading_progress} ${styles.success}`}
                     >
@@ -101,7 +106,7 @@ export const SubscribersDownloadModal: React.FC<
           ) : (
             <>
               <div />
-              {isLoadingSuccess ? (
+              {downloadStatus.status === ApiStatusType.SUCCESS ? (
                 <button
                   className={globalStyles.small}
                   type="button"
@@ -113,7 +118,10 @@ export const SubscribersDownloadModal: React.FC<
                 <button
                   className={globalStyles.small}
                   type="button"
-                  onClick={() => setIsLoadingSuccess(true)}
+                  onClick={() => {
+                    setGetFileStatus(initApiStatus());
+                    getSubscribersFile();
+                  }}
                 >
                   {t("global.try_again")}
                 </button>

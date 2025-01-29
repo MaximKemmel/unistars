@@ -1,4 +1,4 @@
-import { IAmbassadorRequest } from "../dto/ambassadorRequest";
+import { IAmbassadorRequest } from "../ambassador/ambassadorRequest";
 import { IConfirmedApplicantRequest } from "../dto/confirmedApplicantRequest";
 import { ICountry } from "../core/country";
 import { ICity } from "../core/city";
@@ -8,7 +8,7 @@ import { IFileStorage } from "./fileStorage";
 import { IUniversityTypeOfDegree } from "./universityTypeOfDegree";
 import { IConfirmedApplicantId } from "../local/confirmedApplicantId";
 import { IGeoLocation } from "../local/geoLocation";
-import { IAmbassadorId } from "../local/ambassadorId";
+import { IAmbassadorId } from "../ambassador/ambassadorId";
 import { statusPartnership } from "../../enums/dto/statusPartnership";
 
 export interface IUniversity {

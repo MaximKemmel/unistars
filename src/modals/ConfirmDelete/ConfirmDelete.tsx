@@ -1,3 +1,5 @@
+import React from "react";
+
 import { useTranslation } from "react-i18next";
 
 import globalStyles from "../../App.module.sass";
@@ -27,7 +29,10 @@ export const ConfirmDeleteModal: React.FC<IConfirmDeleteModalProps> = ({
 
   return (
     <div className={`${modalStyles.modal} ${isShow ? modalStyles.active : ""}`}>
-      <div className={`${modalStyles.overlay} ${isShow ? modalStyles.active : ""}`} onClick={() => onClose()} />
+      <div
+        className={`${modalStyles.overlay} ${isShow ? modalStyles.active : ""}`}
+        onClick={() => onClose()}
+      />
       <div className={modalStyles.modal_content}>
         <div className={modalStyles.head}>
           <h4>{head}</h4>
@@ -42,10 +47,18 @@ export const ConfirmDeleteModal: React.FC<IConfirmDeleteModalProps> = ({
         <div className={modalStyles.actions}>
           <div />
           <div className={styles.actions}>
-            <button className={`${globalStyles.inverted} ${globalStyles.small}`} type="button" onClick={() => onClose()}>
+            <button
+              className={`${globalStyles.inverted} ${globalStyles.small}`}
+              type="button"
+              onClick={() => onClose()}
+            >
               <span>{t("global.back")}</span>
             </button>
-            <button className={`${globalStyles.small} ${globalStyles.delete}`} type="button" onClick={() => onConfirm()}>
+            <button
+              className={`${globalStyles.small} ${globalStyles.delete}`}
+              type="button"
+              onClick={() => onConfirm()}
+            >
               {t("global.delete")}
             </button>
           </div>
