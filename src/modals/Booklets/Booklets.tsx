@@ -1,6 +1,8 @@
 import React, { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 
+import { useTypedSelector } from "../../hooks/useTypedSelector";
+
 import { BookletCard } from "../../cards/booklet/BookletCard";
 
 import globalStyles from "../../App.module.sass";
@@ -14,14 +16,19 @@ import PlusIcon from "../../assets/svg/plus.svg";
 
 interface IBookletsModalProps {
   isShow: boolean;
-  booklets: IBooklet[];
   onEdit: Function;
   onCreate: Function;
   onClose: Function;
 }
 
-export const BookletsModal: React.FC<IBookletsModalProps> = ({ isShow, booklets, onEdit, onCreate, onClose }) => {
+export const BookletsModal: React.FC<IBookletsModalProps> = ({
+  isShow,
+  onEdit,
+  onCreate,
+  onClose,
+}) => {
   const { t } = useTranslation();
+  const booklets = useTypedSelector((state) => state.bookletReducer.booklets);
 
   useEffect(() => {
     const contentDiv = document.getElementById("booklets_content");
@@ -30,7 +37,10 @@ export const BookletsModal: React.FC<IBookletsModalProps> = ({ isShow, booklets,
 
   return (
     <div className={`${modalStyles.modal} ${isShow ? modalStyles.active : ""}`}>
-      <div className={`${modalStyles.overlay} ${isShow ? modalStyles.active : ""}`} onClick={() => onClose()} />
+      <div
+        className={`${modalStyles.overlay} ${isShow ? modalStyles.active : ""}`}
+        onClick={() => onClose()}
+      />
       <div className={`${modalStyles.modal_content} ${modalStyles.wide}`}>
         <div className={modalStyles.head}>
           <h4>{t("booklets.booklets")}</h4>
@@ -43,7 +53,10 @@ export const BookletsModal: React.FC<IBookletsModalProps> = ({ isShow, booklets,
             {booklets.map((booklet: IBooklet) => {
               return (
                 <div className={styles.booklet_item} key={booklet.id}>
-                  <BookletCard bookletItem={booklet} onEdit={() => onEdit(booklet)} />
+                  <BookletCard
+                    bookletItem={booklet}
+                    onEdit={() => onEdit(booklet)}
+                  />
                 </div>
               );
             })}
@@ -51,7 +64,11 @@ export const BookletsModal: React.FC<IBookletsModalProps> = ({ isShow, booklets,
         </div>
         <div className={modalStyles.actions}>
           <div />
-          <button className={globalStyles.small} type="button" onClick={() => onCreate()}>
+          <button
+            className={globalStyles.small}
+            type="button"
+            onClick={() => onCreate()}
+          >
             {t("booklets.create_booklet")}
             <img src={PlusIcon} alt="" />
           </button>

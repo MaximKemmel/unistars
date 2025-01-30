@@ -1,6 +1,11 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-import { getBookletList, postBooklet, editBooklet, deleteBooklet } from "./booklet.actions";
+import {
+  getBookletList,
+  postBooklet,
+  editBooklet,
+  deleteBooklet,
+} from "./booklet.actions";
 
 import { IBooklet } from "../../types/booklet/booklet";
 import { IApiStatus, initApiStatus } from "../../types/local/apiStatus";
@@ -51,7 +56,10 @@ export const bookletSlice = createSlice({
     });
     builder.addCase(getBookletList.rejected, (state, action) => {
       state.booklets = [];
-      state.getStatus = { status: ApiStatusType.ERROR, error: action.payload as string };
+      state.getStatus = {
+        status: ApiStatusType.ERROR,
+        error: action.payload as string,
+      };
     });
     //#endregion
 
@@ -61,7 +69,7 @@ export const bookletSlice = createSlice({
     });
     builder.addCase(postBooklet.fulfilled, (state, action) => {
       const newBooklet = action.payload as IBooklet;
-      if (newBooklet && newBooklet !== undefined) {
+      if (newBooklet) {
         state.booklets.push(newBooklet);
         state.postStatus = { status: ApiStatusType.SUCCESS };
       } else {
@@ -69,7 +77,10 @@ export const bookletSlice = createSlice({
       }
     });
     builder.addCase(postBooklet.rejected, (state, action) => {
-      state.postStatus = { status: ApiStatusType.ERROR, error: action.payload as string };
+      state.postStatus = {
+        status: ApiStatusType.ERROR,
+        error: action.payload as string,
+      };
     });
     //#endregion
 
@@ -79,9 +90,9 @@ export const bookletSlice = createSlice({
     });
     builder.addCase(editBooklet.fulfilled, (state, action) => {
       const updatedBooklet = action.payload as IBooklet;
-      if (updatedBooklet && updatedBooklet !== undefined) {
+      if (updatedBooklet) {
         state.booklets = state.booklets.map((booklet: IBooklet) =>
-          booklet.id === updatedBooklet.id ? updatedBooklet : booklet
+          booklet.id === updatedBooklet.id ? updatedBooklet : booklet,
         );
         state.editStatus = { status: ApiStatusType.SUCCESS };
       } else {
@@ -89,7 +100,10 @@ export const bookletSlice = createSlice({
       }
     });
     builder.addCase(editBooklet.rejected, (state, action) => {
-      state.editStatus = { status: ApiStatusType.ERROR, error: action.payload as string };
+      state.editStatus = {
+        status: ApiStatusType.ERROR,
+        error: action.payload as string,
+      };
     });
     //#endregion
 
@@ -101,7 +115,10 @@ export const bookletSlice = createSlice({
       state.deleteStatus = { status: ApiStatusType.SUCCESS };
     });
     builder.addCase(deleteBooklet.rejected, (state, action) => {
-      state.deleteStatus = { status: ApiStatusType.ERROR, error: action.payload as string };
+      state.deleteStatus = {
+        status: ApiStatusType.ERROR,
+        error: action.payload as string,
+      };
     });
     //#endregion
   },

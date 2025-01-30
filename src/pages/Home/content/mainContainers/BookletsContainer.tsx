@@ -4,8 +4,8 @@ import { useTranslation } from "react-i18next";
 import { useTypedSelector } from "../../../../hooks/useTypedSelector";
 
 import { BookletCard } from "../../../../cards/booklet/BookletCard";
-import { BookletsModal } from "../../../../modals/Booklets/BookletsModal";
-import { EditBookletModal } from "../../../../modals/Booklets/EditBookletModal";
+import { BookletsModal } from "../../../../modals/Booklets/Booklets";
+import { EditBookletModal } from "../../../../modals/Booklets/EditBooklet";
 import { ConfirmDeleteModal } from "../../../../modals/ConfirmDelete/ConfirmDelete";
 import { StatusInfoModal } from "../../../../modals/StatusInfo/StatusInfo";
 
@@ -109,7 +109,6 @@ export const BookletsContainer = () => {
       </div>
       <BookletsModal
         isShow={isBookletsModalShow}
-        booklets={booklets}
         onCreate={() => {
           setIsBookletsModalShow(false);
           setCurrentBooklet(initBooklet());

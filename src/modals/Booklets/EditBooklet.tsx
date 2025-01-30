@@ -21,7 +21,12 @@ interface IEditBookletModalProps {
   onClose: Function;
 }
 
-export const EditBookletModal: React.FC<IEditBookletModalProps> = ({ isShow, booklet, onDelete, onClose }) => {
+export const EditBookletModal: React.FC<IEditBookletModalProps> = ({
+  isShow,
+  booklet,
+  onDelete,
+  onClose,
+}) => {
   const { t } = useTranslation();
   const [currentBooklet, setCurrentBooklet] = useState(booklet);
   const [isImageUploaded, setIsImageUploaded] = useState(false);
@@ -65,10 +70,17 @@ export const EditBookletModal: React.FC<IEditBookletModalProps> = ({ isShow, boo
 
   return (
     <div className={`${modalStyles.modal} ${isShow ? modalStyles.active : ""}`}>
-      <div className={`${modalStyles.overlay} ${isShow ? modalStyles.active : ""}`} onClick={() => onClose()} />
+      <div
+        className={`${modalStyles.overlay} ${isShow ? modalStyles.active : ""}`}
+        onClick={() => onClose()}
+      />
       <div className={modalStyles.modal_content}>
         <div className={modalStyles.head}>
-          <h4>{currentBooklet.id === -1 ? t("booklets.creating_a_booklet") : t("booklets.editing_a_booklet")}</h4>
+          <h4>
+            {currentBooklet.id === -1
+              ? t("booklets.creating_a_booklet")
+              : t("booklets.editing_a_booklet")}
+          </h4>
           <div className={modalStyles.close} onClick={() => onClose()}>
             <CloseIcon />
           </div>
@@ -77,12 +89,19 @@ export const EditBookletModal: React.FC<IEditBookletModalProps> = ({ isShow, boo
           <div className={styles.booklets_content} id="booklets_content">
             <form>
               <div className={styles.form_field}>
-                <div className={styles.form_label}>{t("booklets.heading_and_cover")}</div>
+                <div className={styles.form_label}>
+                  {t("booklets.heading_and_cover")}
+                </div>
                 <input
                   placeholder={t("booklets.enter_a_heading")}
                   type="text"
                   required
-                  onChange={(event) => setCurrentBooklet({ ...currentBooklet, title: event.target.value })}
+                  onChange={(event) =>
+                    setCurrentBooklet({
+                      ...currentBooklet,
+                      title: event.target.value,
+                    })
+                  }
                   value={currentBooklet.title}
                   maxLength={255}
                 />
@@ -96,26 +115,37 @@ export const EditBookletModal: React.FC<IEditBookletModalProps> = ({ isShow, boo
                   onChange={handleOnChangeImage}
                   hidden
                 />
-                <div className={styles.form_button} onClick={() => inputImageRef.current!.click()}>
+                <div
+                  className={styles.form_button}
+                  onClick={() => inputImageRef.current!.click()}
+                >
                   <img src={UploadImageIcon} alt="" />
                 </div>
                 {currentBooklet.imageUrl.trim().length === 0 ? (
-                  <div className={styles.form_button_label}>{t("booklets.choose_a_cover")}</div>
+                  <div className={styles.form_button_label}>
+                    {t("booklets.choose_a_cover")}
+                  </div>
                 ) : (
                   <div className={styles.file_info}>
                     <div className={styles.file_name}>
                       <img src={FileIcon} alt="" />
-                      <div className={styles.name}>{currentBooklet.imageUrl}</div>
+                      <div className={styles.name}>
+                        {currentBooklet.imageUrl}
+                      </div>
                     </div>
                     {isImageUploaded ? (
                       <>
                         {isImageUploadSuccess ? (
-                          <div className={`${styles.upload_progress} ${styles.success}`}>
+                          <div
+                            className={`${styles.upload_progress} ${styles.success}`}
+                          >
                             <img src={CheckIcon} alt="" />
                             {t("global.sended")}
                           </div>
                         ) : (
-                          <div className={`${styles.upload_progress} ${styles.error}`}>
+                          <div
+                            className={`${styles.upload_progress} ${styles.error}`}
+                          >
                             {t("global.error")}
                             <CloseIcon fill="#C45F1C" isBold={true} />
                           </div>
@@ -126,11 +156,18 @@ export const EditBookletModal: React.FC<IEditBookletModalProps> = ({ isShow, boo
                 )}
               </div>
               <div className={styles.form_field}>
-                <div className={styles.form_label}>{t("booklets.description")}</div>
+                <div className={styles.form_label}>
+                  {t("booklets.description")}
+                </div>
                 <textarea
                   placeholder={t("booklets.enter_a_description")}
                   required
-                  onChange={(event) => setCurrentBooklet({ ...currentBooklet, description: event.target.value })}
+                  onChange={(event) =>
+                    setCurrentBooklet({
+                      ...currentBooklet,
+                      description: event.target.value,
+                    })
+                  }
                   value={currentBooklet.description}
                 />
               </div>
@@ -145,27 +182,38 @@ export const EditBookletModal: React.FC<IEditBookletModalProps> = ({ isShow, boo
                     onChange={handleOnChangeFile}
                     hidden
                   />
-                  <div className={`${styles.form_button} ${styles.filled}`} onClick={() => inputFileRef.current!.click()}>
+                  <div
+                    className={`${styles.form_button} ${styles.filled}`}
+                    onClick={() => inputFileRef.current!.click()}
+                  >
                     <img src={UploadFileIcon} alt="" />
                   </div>
 
                   {currentBooklet.bookletFileUrl.trim().length === 0 ? (
-                    <div className={styles.form_button_label}>{t("booklets.upload_file")}</div>
+                    <div className={styles.form_button_label}>
+                      {t("booklets.upload_file")}
+                    </div>
                   ) : (
                     <div className={styles.file_info}>
                       <div className={styles.file_name}>
                         <img src={FileIcon} alt="" />
-                        <div className={styles.name}>{currentBooklet.bookletFileUrl}</div>
+                        <div className={styles.name}>
+                          {currentBooklet.bookletFileUrl}
+                        </div>
                       </div>
                       {isFileUploaded ? (
                         <>
                           {isFileUploadSuccess ? (
-                            <div className={`${styles.upload_progress} ${styles.success}`}>
+                            <div
+                              className={`${styles.upload_progress} ${styles.success}`}
+                            >
                               <img src={CheckIcon} alt="" />
                               {t("global.sended")}
                             </div>
                           ) : (
-                            <div className={`${styles.upload_progress} ${styles.error}`}>
+                            <div
+                              className={`${styles.upload_progress} ${styles.error}`}
+                            >
                               {t("global.error")}
                               <CloseIcon fill="#C45F1C" isBold={true} />
                             </div>
@@ -183,7 +231,11 @@ export const EditBookletModal: React.FC<IEditBookletModalProps> = ({ isShow, boo
           {currentBooklet.id === -1 ? (
             <>
               <div />
-              <button className={globalStyles.small} type="button" onClick={handleOnSaveBooklet}>
+              <button
+                className={globalStyles.small}
+                type="button"
+                onClick={handleOnSaveBooklet}
+              >
                 <span>{t("global.save")}</span>
               </button>
             </>

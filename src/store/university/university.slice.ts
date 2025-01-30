@@ -3,6 +3,7 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import {
   getUniversityProfile,
   editUniversityProfile,
+  uploadToGallery,
 } from "./university.actions";
 
 import { IUniversity } from "../../types/university/university";
@@ -14,12 +15,14 @@ interface IUniversityState {
   universityProfile: IUniversity;
   getStatus: IApiStatus;
   editStatus: IApiStatus;
+  uploadToGalleryStatus: IApiStatus;
 }
 
 const initialState: IUniversityState = {
   universityProfile: initUniversity(),
   getStatus: initApiStatus(),
   editStatus: initApiStatus(),
+  uploadToGalleryStatus: initApiStatus(),
 };
 
 export const universitySlice = createSlice({
@@ -60,6 +63,21 @@ export const universitySlice = createSlice({
       state.editStatus = { status: ApiStatusType.SUCCESS };
     });
     builder.addCase(editUniversityProfile.rejected, (state, action) => {
+      state.editStatus = {
+        status: ApiStatusType.ERROR,
+        error: action.payload as string,
+      };
+    });
+    //#endregion
+
+    //#region Upload to gallery
+    builder.addCase(uploadToGallery.pending, (state) => {
+      state.editStatus = { status: ApiStatusType.IN_PROGRESS };
+    });
+    builder.addCase(uploadToGallery.fulfilled, (state) => {
+      state.editStatus = { status: ApiStatusType.SUCCESS };
+    });
+    builder.addCase(uploadToGallery.rejected, (state, action) => {
       state.editStatus = {
         status: ApiStatusType.ERROR,
         error: action.payload as string,

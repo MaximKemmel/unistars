@@ -52,3 +52,29 @@ export const editUniversityProfile = createAsyncThunk(
     return response.data;
   },
 );
+
+export const uploadToGallery = createAsyncThunk(
+  "uploadToGallery",
+  async (
+    {
+      file,
+      onUploadProgress,
+    }: {
+      file: Blob;
+      onUploadProgress: Function;
+    },
+    { rejectWithValue },
+  ) => {
+    const formData = new FormData();
+    formData.append("file", file);
+    const response = await axios
+      .post("/upload_to_gallery", formData, {
+        onUploadProgress: (data) => onUploadProgress(data),
+      })
+      .then((response) => response.data);
+    if (response.status !== 200) {
+      throw rejectWithValue("Server error!");
+    }
+    return response.data;
+  },
+);
