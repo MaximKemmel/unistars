@@ -6,7 +6,7 @@ import { Checkbox } from "../../components/checkbox/Checkbox";
 
 import globalStyles from "../../App.module.sass";
 import modalStyles from "../Modal.module.sass";
-import styles from "./employersModal.module.sass";
+import styles from "./EmployersModal.module.sass";
 
 import { employeeRights } from "../../data/employeeRights";
 

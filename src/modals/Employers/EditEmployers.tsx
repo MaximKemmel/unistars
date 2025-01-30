@@ -8,7 +8,7 @@ import { MultiCheckbox } from "../../components/checkbox/MultiCheckbox";
 
 import globalStyles from "../../App.module.sass";
 import modalStyles from "../Modal.module.sass";
-import styles from "./employersModal.module.sass";
+import styles from "./EmployersModal.module.sass";
 
 import { IUser } from "../../types/user/user";
 import { CheckboxState } from "../../enums/local/checkboxState";

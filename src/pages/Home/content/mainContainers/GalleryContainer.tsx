@@ -3,7 +3,10 @@ import { useTranslation } from "react-i18next";
 
 import { useTypedSelector } from "../../../../hooks/useTypedSelector";
 
-import { GalleryModal } from "../../../../modals/Gallery/GalleryModal";
+import { GalleryModal } from "../../../../modals/Gallery/Gallery";
+import { EditGalleryModal } from "../../../../modals/Gallery/EditGallery";
+import { ConfirmDeleteModal } from "../../../../modals/ConfirmDelete/ConfirmDelete";
+import { StatusInfoModal } from "../../../../modals/StatusInfo/StatusInfo";
 
 import globalStyles from "../../../../App.module.sass";
 import styles from "../../Home.module.sass";
@@ -16,6 +19,21 @@ export const GalleryContainer = () => {
     (state) => state.universityReducer.universityProfile.standGalleryImages,
   );
   const [isGalleryModalShow, setIsGalleryModalShow] = useState(false);
+  const [isGalleryEditModalShow, setIsGalleryEditModalShow] = useState(false);
+  const [isConfirmDeleteModalShow, setIsConfirmDeleteModalShow] =
+    useState(false);
+  const [isStatusInfoModalShow, setIsStatusInfoModalShow] = useState(false);
+
+  const handleOnDeletePhotos = (photos: IFileStorage[]) => {
+    console.log(photos);
+    setIsGalleryEditModalShow(false);
+    setIsConfirmDeleteModalShow(true);
+  };
+
+  const handleOnConfirmDeletePhotos = () => {
+    setIsConfirmDeleteModalShow(false);
+    setIsStatusInfoModalShow(true);
+  };
 
   return (
     <>
@@ -78,16 +96,40 @@ export const GalleryContainer = () => {
       </div>
       <GalleryModal
         isShow={isGalleryModalShow}
-        photos={gallery!}
+        onEdit={() => {
+          setIsGalleryModalShow(false);
+          setIsGalleryEditModalShow(true);
+        }}
         onClose={() => {
           setIsGalleryModalShow(false);
         }}
-        onUpload={() => {
-          setIsGalleryModalShow(false);
+      />
+      <EditGalleryModal
+        isShow={isGalleryEditModalShow}
+        onDelete={handleOnDeletePhotos}
+        onCancel={() => {
+          setIsGalleryEditModalShow(false);
+          setIsGalleryModalShow(true);
         }}
-        onEdit={() => {
-          setIsGalleryModalShow(false);
+        onClose={() => {
+          setIsGalleryEditModalShow(false);
         }}
+      />
+      <ConfirmDeleteModal
+        isShow={isConfirmDeleteModalShow}
+        head={t("gallery.deleting_photos")}
+        title={t("gallery.delete_title")}
+        message={t("gallery.delete_description")}
+        onConfirm={handleOnConfirmDeletePhotos}
+        onClose={() => setIsConfirmDeleteModalShow(false)}
+      />
+      <StatusInfoModal
+        isShow={isStatusInfoModalShow}
+        message={t("booklets.booklet_was_deleted")}
+        isSuccess={true}
+        onClose={() => setIsStatusInfoModalShow(false)}
+        isRestore={true}
+        onRestore={() => setIsStatusInfoModalShow(false)}
       />
     </>
   );
