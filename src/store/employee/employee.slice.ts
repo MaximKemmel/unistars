@@ -1,6 +1,10 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-import { getEmployeeList } from "./employee.actions";
+import {
+  getEmployeeList,
+  patchEmployee,
+  postEmployee,
+} from "./employee.actions";
 
 import { IUser } from "../../types/user/user";
 import { IApiStatus, initApiStatus } from "../../types/local/apiStatus";
@@ -9,11 +13,15 @@ import { ApiStatusType } from "../../enums/local/apiStatusType";
 interface IEmployeeState {
   employeeList: IUser[];
   getStatus: IApiStatus;
+  postStatus: IApiStatus;
+  patchStatus: IApiStatus;
 }
 
 const initialState: IEmployeeState = {
   employeeList: [] as IUser[],
   getStatus: initApiStatus(),
+  postStatus: initApiStatus(),
+  patchStatus: initApiStatus(),
 };
 
 export const employeeSlice = createSlice({
@@ -22,6 +30,9 @@ export const employeeSlice = createSlice({
   reducers: {
     setGetStatus(state, action: PayloadAction<IApiStatus>) {
       state.getStatus = action.payload;
+    },
+    setPostStatus(state, action: PayloadAction<IApiStatus>) {
+      state.postStatus = action.payload;
     },
   },
   extraReducers: (builder) => {
@@ -37,6 +48,36 @@ export const employeeSlice = createSlice({
     builder.addCase(getEmployeeList.rejected, (state, action) => {
       state.employeeList = [] as IUser[];
       state.getStatus = {
+        status: ApiStatusType.ERROR,
+        error: action.payload as string,
+      };
+    });
+    //#endregion
+
+    //#region Add employee
+    builder.addCase(postEmployee.pending, (state) => {
+      state.postStatus = { status: ApiStatusType.IN_PROGRESS };
+    });
+    builder.addCase(postEmployee.fulfilled, (state) => {
+      state.postStatus = { status: ApiStatusType.SUCCESS };
+    });
+    builder.addCase(postEmployee.rejected, (state, action) => {
+      state.postStatus = {
+        status: ApiStatusType.ERROR,
+        error: action.payload as string,
+      };
+    });
+    //#endregion
+
+    //#region Edit employee
+    builder.addCase(patchEmployee.pending, (state) => {
+      state.patchStatus = { status: ApiStatusType.IN_PROGRESS };
+    });
+    builder.addCase(patchEmployee.fulfilled, (state) => {
+      state.patchStatus = { status: ApiStatusType.SUCCESS };
+    });
+    builder.addCase(patchEmployee.rejected, (state, action) => {
+      state.patchStatus = {
         status: ApiStatusType.ERROR,
         error: action.payload as string,
       };

@@ -14,13 +14,17 @@ import { EditStudentsModal } from "../../../modals/Students/EditStudents";
 import { AmbassadorsModal } from "../../../modals/Ambassadors/Ambassadors";
 import { EditAmbassadorsModal } from "../../../modals/Ambassadors/EditAmbassadors";
 import { EditAmbassadorRequestsModal } from "../../../modals/Ambassadors/EditAmbassadorRequests";
-import { WorkersModal } from "../../../modals/Workers/WorkersModal";
+import { EmployersModal } from "../../../modals/Employers/Employers";
+import { EditEmployersModal } from "../../../modals/Employers/EditEmployers";
+import { EditEmployeeRightsModal } from "../../../modals/Employers/EditEmployeeRights";
+import { AddEmployeeModal } from "../../../modals/Employers/AddEmployee";
 import { ConfirmDeleteModal } from "../../../modals/ConfirmDelete/ConfirmDelete";
 import { StatusInfoModal } from "../../../modals/StatusInfo/StatusInfo";
 
 import styles from "../Home.module.sass";
 
 import { IUser } from "../../../types/user/user";
+import { initEmployee } from "../../../types/employee/initEmployee";
 
 import VerifiedIcon from "../../../assets/svg/verified.svg";
 
@@ -79,7 +83,13 @@ export const Main = () => {
     isAmbassadorRequestsEditModalShow,
     setIsAmbassadorRequestsEditModalShow,
   ] = useState(false);
-  const [isWorkersModalShow, setIsWorkersModalShow] = useState(false);
+  const [isEmployersModalShow, setIsEmployersModalShow] = useState(false);
+  const [editedEmployee, setEditedEmployee] = useState(initEmployee());
+  const [isEditEmployersModalShow, setIsEditEmployersModalShow] =
+    useState(false);
+  const [isEditEmployeeRightsModalShow, setIsEditEmployeeRightsModalShow] =
+    useState(false);
+  const [isAddEmployeeModalShow, setIsAddEmployeeModalShow] = useState(false);
   const [isConfirmDeleteModalShow, setIsConfirmDeleteModalShow] =
     useState(false);
   const [confirmDeleteHead, setConfirmDeleteHead] = useState("");
@@ -111,6 +121,20 @@ export const Main = () => {
   };
 
   const handleOnConfirmDeleteStudents = () => {
+    setIsConfirmDeleteModalShow(false);
+    setIsStatusInfoModalShow(true);
+  };
+
+  const handleOnDeleteEmployers = (employers: IUser[]) => {
+    setDeleteMode("EMPLOYERS");
+    console.log(employers);
+    setIsEditEmployersModalShow(false);
+    setConfirmDeleteHead(t("employers.deleting_employers"));
+    setConfirmDeleteTitle(t("employers.delete_description"));
+    setIsConfirmDeleteModalShow(true);
+  };
+
+  const handleOnConfirmDeleteEmployers = () => {
     setIsConfirmDeleteModalShow(false);
     setIsStatusInfoModalShow(true);
   };
@@ -152,7 +176,7 @@ export const Main = () => {
                       setIsAmbassadorsModalShow(true);
                     }
                     if (item.id === 3) {
-                      setIsWorkersModalShow(true);
+                      setIsEmployersModalShow(true);
                     }
                   }}
                 >
@@ -229,12 +253,54 @@ export const Main = () => {
         isShow={isAmbassadorRequestsEditModalShow}
         onClose={() => setIsAmbassadorRequestsEditModalShow(false)}
       />
-      <WorkersModal
-        isShow={isWorkersModalShow}
-        workers={employees}
-        onClose={() => {
-          setIsWorkersModalShow(false);
+      <EmployersModal
+        isShow={isEmployersModalShow}
+        onEdit={() => {
+          setIsEmployersModalShow(false);
+          setIsEditEmployersModalShow(true);
         }}
+        onAdd={() => {
+          setIsEmployersModalShow(false);
+          setIsAddEmployeeModalShow(true);
+        }}
+        onEditRights={(employee: IUser) => {
+          setEditedEmployee(employee);
+          setIsEmployersModalShow(false);
+          setIsEditEmployeeRightsModalShow(true);
+        }}
+        onClose={() => {
+          setIsEmployersModalShow(false);
+        }}
+      />
+      <EditEmployersModal
+        isShow={isEditEmployersModalShow}
+        onDelete={handleOnDeleteEmployers}
+        onCancel={() => {
+          setIsEditEmployersModalShow(false);
+          setIsEmployersModalShow(true);
+        }}
+        onClose={() => setIsEditEmployersModalShow(false)}
+      />
+      <EditEmployeeRightsModal
+        isShow={isEditEmployeeRightsModalShow}
+        employee={editedEmployee}
+        onSave={() => {
+          setIsEditEmployeeRightsModalShow(false);
+          setIsEmployersModalShow(true);
+        }}
+        onClose={() => setIsEditEmployeeRightsModalShow(false)}
+      />
+      <AddEmployeeModal
+        isShow={isAddEmployeeModalShow}
+        onCancel={() => {
+          setIsAddEmployeeModalShow(false);
+          setIsEmployersModalShow(true);
+        }}
+        onSave={() => {
+          setIsAddEmployeeModalShow(false);
+          setIsEmployersModalShow(true);
+        }}
+        onClose={() => setIsAddEmployeeModalShow(false)}
       />
       <ConfirmDeleteModal
         isShow={isConfirmDeleteModalShow}
@@ -248,6 +314,9 @@ export const Main = () => {
               break;
             case "STUDENTS":
               handleOnConfirmDeleteStudents();
+              break;
+            case "EMPLOYERS":
+              handleOnConfirmDeleteEmployers();
               break;
           }
         }}
