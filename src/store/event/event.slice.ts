@@ -1,6 +1,11 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-import { getEventList, getEventTypes } from "./event.actions";
+import {
+  getEventList,
+  getEventTypes,
+  patchEvent,
+  postEvent,
+} from "./event.actions";
 
 import { IEventType } from "../../types/event/eventType";
 import { IEvent } from "../../types/event/event";
@@ -12,6 +17,8 @@ interface IEventState {
   eventTypes: IEventType[];
   getEventListStatus: IApiStatus;
   getEventTypesStatus: IApiStatus;
+  postEventStatus: IApiStatus;
+  patchEventStatus: IApiStatus;
 }
 
 const initialState: IEventState = {
@@ -19,6 +26,8 @@ const initialState: IEventState = {
   eventTypes: [] as IEventType[],
   getEventListStatus: initApiStatus(),
   getEventTypesStatus: initApiStatus(),
+  postEventStatus: initApiStatus(),
+  patchEventStatus: initApiStatus(),
 };
 
 export const eventSlice = createSlice({
@@ -30,6 +39,12 @@ export const eventSlice = createSlice({
     },
     setGetEventTypesStatus(state, action: PayloadAction<IApiStatus>) {
       state.getEventTypesStatus = action.payload;
+    },
+    setPostEventStatus(state, action: PayloadAction<IApiStatus>) {
+      state.postEventStatus = action.payload;
+    },
+    setPatchEventStatus(state, action: PayloadAction<IApiStatus>) {
+      state.patchEventStatus = action.payload;
     },
   },
   extraReducers: (builder) => {
@@ -64,6 +79,36 @@ export const eventSlice = createSlice({
     builder.addCase(getEventTypes.rejected, (state, action) => {
       state.eventTypes = [];
       state.getEventTypesStatus = {
+        status: ApiStatusType.ERROR,
+        error: action.payload as string,
+      };
+    });
+    //#endregion
+
+    //#region Post event
+    builder.addCase(postEvent.pending, (state) => {
+      state.postEventStatus = { status: ApiStatusType.IN_PROGRESS };
+    });
+    builder.addCase(postEvent.fulfilled, (state) => {
+      state.postEventStatus = { status: ApiStatusType.SUCCESS };
+    });
+    builder.addCase(postEvent.rejected, (state, action) => {
+      state.postEventStatus = {
+        status: ApiStatusType.ERROR,
+        error: action.payload as string,
+      };
+    });
+    //#endregion
+
+    //#region Patch event
+    builder.addCase(patchEvent.pending, (state) => {
+      state.patchEventStatus = { status: ApiStatusType.IN_PROGRESS };
+    });
+    builder.addCase(patchEvent.fulfilled, (state) => {
+      state.patchEventStatus = { status: ApiStatusType.SUCCESS };
+    });
+    builder.addCase(patchEvent.rejected, (state, action) => {
+      state.patchEventStatus = {
         status: ApiStatusType.ERROR,
         error: action.payload as string,
       };
