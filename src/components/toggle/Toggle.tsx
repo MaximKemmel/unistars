@@ -1,16 +1,16 @@
+import React from "react";
 import { useTranslation } from "react-i18next";
 
 import styles from "./Toggle.module.sass";
 
 import { IToggleItem } from "../../types/local/toggleItem";
-import React from "react";
 
 interface IToggleProps {
   selectedIndex?: number;
   items?: IToggleItem[];
   onItemSelect?: Function;
   isSettings?: boolean;
-  isRounded?: boolean;
+  isShorts?: boolean;
 }
 
 export const Toggle: React.FC<IToggleProps> = ({
@@ -18,7 +18,7 @@ export const Toggle: React.FC<IToggleProps> = ({
   items,
   onItemSelect,
   isSettings,
-  isRounded,
+  isShorts,
 }) => {
   const { t, i18n } = useTranslation();
   const locales = {
@@ -27,9 +27,7 @@ export const Toggle: React.FC<IToggleProps> = ({
   };
 
   return (
-    <div
-      className={`${styles.toggle_container} ${isRounded ? styles.rounded : ""}`}
-    >
+    <div className={styles.toggle_container}>
       {isSettings ? (
         <>
           {Object.keys(locales).map((locale: string, index: number) => (
@@ -40,7 +38,7 @@ export const Toggle: React.FC<IToggleProps> = ({
                 i18n.changeLanguage(locale.toLowerCase());
               }}
             >
-              {isRounded ? <>{locale}</> : <>{locales[locale].title}</>}
+              {isShorts ? <>{locale}</> : <>{locales[locale].title}</>}
             </div>
           ))}
         </>
@@ -57,6 +55,15 @@ export const Toggle: React.FC<IToggleProps> = ({
             </div>
           ))}
         </>
+      )}
+      {isSettings ? (
+        <div
+          className={`${styles.plate} ${i18n.resolvedLanguage === "ru" ? styles.left : styles.right}`}
+        />
+      ) : (
+        <div
+          className={`${styles.plate} ${selectedIndex === 0 ? styles.left : styles.right}`}
+        />
       )}
     </div>
   );

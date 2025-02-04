@@ -41,7 +41,9 @@ export const SignIn = () => {
       </div>
       <div className={styles.content}>
         {stages[currentStage]}
-        <Toggle isSettings={true} isRounded={true} />
+        <div className={styles.toggle}>
+          <Toggle isSettings={true} isShorts={true} />
+        </div>
         {currentStage === 1 ? (
           <button
             className={styles.back_button}

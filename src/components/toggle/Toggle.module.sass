@@ -8,19 +8,13 @@ $text_disabled_color: #14171A57
     display: flex
     align-items: center
     justify-content: space-between
+    position: relative
     padding: 4px
     height: 40px
     width: 100%
     background-color: $background_neutral_color
-    border-radius: 12px
+    border-radius: 50px
     user-select: none
-
-    &.rounded
-        width: 108px
-        border-radius: 50px
-
-        .toggle_item
-            border-radius: 50px
 
     .toggle_item
         display: flex
@@ -32,14 +26,28 @@ $text_disabled_color: #14171A57
         font-size: 14px
         color: $text_neutral_color
         font-weight: 400
-        border-radius: 8px
         cursor: pointer
+        z-index: 2
 
         &.active
-            background-color: $background_primary_color
             color: $text_primary_color
             font-weight: 600
-            box-shadow: 0 0 8px rgba(20, 23, 26, 0.08), 0 0 4px rgba(20, 23, 26, 0.04)
 
         span
             color: $text_disabled_color
+
+    .plate
+        position: absolute
+        height: calc(100% - 8px)
+        width: calc(50% - 4px)
+        top: 4px
+        background-color: $background_primary_color
+        box-shadow: 0 0 8px rgba(20, 23, 26, 0.08), 0 0 4px rgba(20, 23, 26, 0.04)
+        border-radius: 50px
+        transition: all .2s ease-out
+
+        &.right
+            left: 50%
+
+        &.left
+            left: 4px

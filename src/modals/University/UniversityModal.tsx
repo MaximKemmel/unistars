@@ -5,6 +5,7 @@ import InputMask from "react-input-mask";
 
 import { useTypedSelector } from "../../hooks/useTypedSelector";
 
+import { Input } from "../../components/input/Input";
 import { Dropdown } from "../../components/dropdown/Dropdown";
 import { Calendar } from "../../components/calendar/Calendar";
 
@@ -114,17 +115,17 @@ export const UniversityModal: React.FC<IUniversityModalProps> = ({
                   <div className={modalStyles.part_label}>
                     {t("university.full_name")}
                   </div>
-                  <input
-                    placeholder={t("university.enter_a_heading")}
-                    type="text"
-                    onChange={(event) =>
+                  <Input
+                    value={currentUniversityProfile.name}
+                    onChange={(value: string) =>
                       setCurrentUniversityProfile({
                         ...currentUniversityProfile,
-                        name: event.target.value.trim(),
+                        name: value,
                       })
                     }
-                    required
-                    value={currentUniversityProfile.name}
+                    placeholder={t("university.enter_a_heading")}
+                    type="text"
+                    isRequired={true}
                   />
                 </div>
                 <div className={modalStyles.part}>
@@ -295,30 +296,30 @@ export const UniversityModal: React.FC<IUniversityModalProps> = ({
                   <div className={modalStyles.part_label}>
                     {t("university.site")}
                   </div>
-                  <input
-                    placeholder={t("university.enter_website_address")}
-                    type="text"
-                    onChange={(event) =>
+                  <Input
+                    value={currentUniversityProfile.universityLink ?? ""}
+                    onChange={(value: string) =>
                       setCurrentUniversityProfile({
                         ...currentUniversityProfile,
-                        universityLink: event.target.value.trim(),
+                        universityLink: value,
                       })
                     }
-                    value={currentUniversityProfile.universityLink}
+                    placeholder={t("university.enter_website_address")}
+                    type="text"
                   />
                 </div>
                 <div className={modalStyles.part}>
                   <div className={modalStyles.part_label}>E-mail</div>
-                  <input
-                    placeholder={t("university.enter_email")}
-                    type="text"
-                    onChange={(event) =>
+                  <Input
+                    value={currentUniversityProfile.userEmail ?? ""}
+                    onChange={(value: string) =>
                       setCurrentUniversityProfile({
                         ...currentUniversityProfile,
-                        userEmail: event.target.value.trim(),
+                        userEmail: value,
                       })
                     }
-                    value={currentUniversityProfile.userEmail}
+                    placeholder={t("university.enter_email")}
+                    type="text"
                   />
                 </div>
               </div>

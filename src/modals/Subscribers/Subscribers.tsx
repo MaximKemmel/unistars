@@ -3,8 +3,10 @@ import { useTranslation } from "react-i18next";
 
 import { useTypedSelector } from "../../hooks/useTypedSelector";
 
-import { UserCard } from "../../cards/user/UserCard";
+import { Input } from "../../components/input/Input";
 import { Dropdown } from "../../components/dropdown/Dropdown";
+
+import { UserCard } from "../../cards/user/UserCard";
 
 import globalStyles from "../../App.module.sass";
 import modalStyles from "../Modal.module.sass";
@@ -17,7 +19,6 @@ import { IPeriod } from "../../types/local/period";
 
 import { Close as CloseIcon } from "../../assets/svgComponents/Close";
 import { Export as ExportIcon } from "../../assets/svgComponents/Export";
-import SearchIcon from "../../assets/svg/search.svg";
 import NothingFound from "../../assets/svg/nothing-found.svg";
 
 interface ISubscribersModalProps {
@@ -73,25 +74,13 @@ export const SubscribersModal: React.FC<ISubscribersModalProps> = ({
         <div className={styles.subscribers_container}>
           <div className={styles.subscribers_content} id="subscribers_content">
             <div className={modalStyles.search_input}>
-              <input
+              <Input
+                value={searchValue}
+                onChange={(value: string) => setSearchValue(value)}
                 placeholder={t("subscribers.subscriber_search")}
                 type="text"
-                onChange={(event) => setSearchValue(event.target.value)}
-                value={searchValue}
+                isSearch={true}
               />
-              <img
-                className={modalStyles.search_icon}
-                src={SearchIcon}
-                alt=""
-              />
-              {searchValue.length > 0 ? (
-                <div
-                  className={modalStyles.clear}
-                  onClick={() => setSearchValue("")}
-                >
-                  <CloseIcon fill="#68778D" />
-                </div>
-              ) : null}
             </div>
             <div className={styles.dropdown_input}>
               <Dropdown

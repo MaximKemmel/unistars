@@ -3,6 +3,8 @@ import { useTranslation } from "react-i18next";
 
 import { useTypedSelector } from "../../hooks/useTypedSelector";
 
+import { Input } from "../../components/input/Input";
+
 import { UserCard } from "../../cards/user/UserCard";
 
 import globalStyles from "../../App.module.sass";
@@ -12,7 +14,6 @@ import styles from "./EmployersModal.module.sass";
 import { IUser } from "../../types/user/user";
 
 import { Close as CloseIcon } from "../../assets/svgComponents/Close";
-import SearchIcon from "../../assets/svg/search.svg";
 import NothingFound from "../../assets/svg/nothing-found.svg";
 import LockIcon from "../../assets/svg/lock.svg";
 
@@ -73,25 +74,13 @@ export const EmployersModal: React.FC<IEmployersModalProps> = ({
         <div className={styles.employers_container}>
           <div className={styles.employers_content} id="employers_content">
             <div className={modalStyles.search_input}>
-              <input
+              <Input
+                value={searchValue}
+                onChange={(value: string) => setSearchValue(value)}
                 placeholder={t("employers.employers_search")}
                 type="text"
-                onChange={(event) => setSearchValue(event.target.value)}
-                value={searchValue}
+                isSearch={true}
               />
-              <img
-                className={modalStyles.search_icon}
-                src={SearchIcon}
-                alt=""
-              />
-              {searchValue.length > 0 ? (
-                <div
-                  className={modalStyles.clear}
-                  onClick={() => setSearchValue("")}
-                >
-                  <CloseIcon fill="#68778D" />
-                </div>
-              ) : null}
             </div>
             <div
               className={styles.employers_count}

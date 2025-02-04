@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
-import {useTranslation} from "react-i18next";
+import { useTranslation } from "react-i18next";
 import validator from "validator";
+
+import { Input } from "../../../components/input/Input";
 
 import styles from "../SignIn.module.sass";
 
@@ -13,7 +15,9 @@ interface IApplicationFormProps {
   setCurrentStage: React.Dispatch<React.SetStateAction<number>>;
 }
 
-export const ApplicationForm: React.FC<IApplicationFormProps> = ({ setCurrentStage }) => {
+export const ApplicationForm: React.FC<IApplicationFormProps> = ({
+  setCurrentStage,
+}) => {
   const { t } = useTranslation();
   const [email, setEmail] = useState("");
   const [isButtonEnabled, setIsButtonEnabled] = useState(false);
@@ -36,15 +40,15 @@ export const ApplicationForm: React.FC<IApplicationFormProps> = ({ setCurrentSta
         {t("sign_in.please_enter_email")}
       </div>
       <form onSubmit={handleOnSubmit}>
-        <input
+        <Input
+          value={email}
+          onChange={(value: string) => setEmail(value.trim())}
           placeholder={"E-mail"}
           type="text"
-          required
-          onChange={(event) => setEmail(event.target.value.trim())}
-          value={email}
+          isRequired={true}
         />
         <button type="submit" disabled={!isButtonEnabled}>
-          {t('sign_in.send')}
+          {t("sign_in.send")}
         </button>
       </form>
       <InfoModal

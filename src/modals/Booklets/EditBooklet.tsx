@@ -1,18 +1,20 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 
+import { Input } from "../../components/input/Input";
+
 import globalStyles from "../../App.module.sass";
 import modalStyles from "../Modal.module.sass";
 import styles from "./BookletsModal.module.sass";
 
 import { IBooklet } from "../../types/booklet/booklet";
 
+import { Close as CloseIcon } from "../../assets/svgComponents/Close";
+import { Trash as TrashIcon } from "../../assets/svgComponents/Trash";
 import UploadImageIcon from "../../assets/svg/upload-image.svg";
 import UploadFileIcon from "../../assets/svg/upload-file.svg";
 import FileIcon from "../../assets/svg/file.svg";
-import { Close as CloseIcon } from "../../assets/svgComponents/Close";
 import CheckIcon from "../../assets/svg/circled-check.svg";
-import { Trash as TrashIcon } from "../../assets/svgComponents/Trash";
 
 interface IEditBookletModalProps {
   isShow: boolean;
@@ -92,17 +94,17 @@ export const EditBookletModal: React.FC<IEditBookletModalProps> = ({
                 <div className={styles.form_label}>
                   {t("booklets.heading_and_cover")}
                 </div>
-                <input
-                  placeholder={t("booklets.enter_a_heading")}
-                  type="text"
-                  required
-                  onChange={(event) =>
+                <Input
+                  value={currentBooklet.title}
+                  onChange={(value: string) =>
                     setCurrentBooklet({
                       ...currentBooklet,
-                      title: event.target.value,
+                      title: value,
                     })
                   }
-                  value={currentBooklet.title}
+                  placeholder={t("booklets.enter_a_heading")}
+                  type="text"
+                  isRequired={true}
                   maxLength={255}
                 />
               </div>

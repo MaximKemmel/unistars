@@ -43,6 +43,10 @@ $error_color: #DD6B20
         margin-left: -60px
         border-radius: 24px 0 0 24px
 
+        .toggle
+            height: 44px
+            width: 108px
+
         .form_container
             display: flex
             flex-grow: 1
@@ -77,26 +81,7 @@ $error_color: #DD6B20
                 gap: 16px
 
                 .password_input
-                    position: relative
                     width: 100%
-
-                    input
-                        width: calc(100% - 62px)
-                        padding-right: 45px
-
-                    .eye
-                        position: absolute
-                        z-index: 1
-                        right: 12px
-                        top: 50%
-                        transform: translateY(-50%)
-                        width: 16px
-                        height: 16px
-                        cursor: pointer
-
-                        svg
-                            width: 100%
-                            height: auto
 
                 .error
                     margin-top: -10px

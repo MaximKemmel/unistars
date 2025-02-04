@@ -3,6 +3,7 @@ import { useTranslation } from "react-i18next";
 
 import { useTypedSelector } from "../../hooks/useTypedSelector";
 
+import { Input } from "../../components/input/Input";
 import { Dropdown } from "../../components/dropdown/Dropdown";
 import { Toggle } from "../../components/toggle/Toggle";
 
@@ -11,12 +12,12 @@ import modalStyles from "../Modal.module.sass";
 
 import { IEvent } from "../../types/event/event";
 import { IEventType } from "../../types/event/eventType";
+import { IEventPrivacy } from "../../types/event/eventPrivacy";
 import { IDropdownItem } from "../../types/local/dropdownItem";
 import { IToggleItem } from "../../types/local/toggleItem";
 
 import CloseIcon from "../../assets/svg/close.svg";
 import UploadImageIcon from "../../assets/svg/upload-image.svg";
-import { IEventPrivacy } from "src/types/event/eventPrivacy";
 
 interface IEventModalProps {
   isShow: boolean;
@@ -106,17 +107,17 @@ export const EventModal: React.FC<IEventModalProps> = ({
                   <div className={modalStyles.part_label}>
                     {t("events.name")}
                   </div>
-                  <input
-                    placeholder={t("events.enter_a_name")}
-                    type="text"
-                    required
-                    onChange={(event) =>
+                  <Input
+                    value={currentInfo.name}
+                    onChange={(value: string) =>
                       setCurrentInfo({
                         ...currentInfo,
-                        name: event.target.value.trim(),
+                        name: value,
                       })
                     }
-                    value={currentInfo.name}
+                    placeholder={t("events.enter_a_name")}
+                    type="text"
+                    isRequired={true}
                   />
                 </div>
                 <div className={modalStyles.part}>
@@ -300,17 +301,17 @@ export const EventModal: React.FC<IEventModalProps> = ({
                     <div className={modalStyles.part_label}>
                       {t("events.additional_info")}
                     </div>
-                    <input
-                      placeholder={t("events.enter_link")}
-                      type="text"
-                      required
-                      onChange={(event) =>
+                    <Input
+                      value={currentInfo.link}
+                      onChange={(value: string) =>
                         setCurrentInfo({
                           ...currentInfo,
-                          link: event.target.value.trim(),
+                          link: value,
                         })
                       }
-                      value={currentInfo.link}
+                      placeholder={t("events.enter_link")}
+                      type="text"
+                      isRequired={true}
                     />
                   </div>
                 ) : (
@@ -318,17 +319,17 @@ export const EventModal: React.FC<IEventModalProps> = ({
                     <div className={modalStyles.part_label}>
                       {t("events.location")}
                     </div>
-                    <input
-                      placeholder={t("events.enter_location")}
-                      type="text"
-                      required
-                      onChange={(event) =>
+                    <Input
+                      value={currentInfo.address}
+                      onChange={(value: string) =>
                         setCurrentInfo({
                           ...currentInfo,
-                          address: event.target.value.trim(),
+                          address: value,
                         })
                       }
-                      value={currentInfo.address}
+                      placeholder={t("events.enter_location")}
+                      type="text"
+                      isRequired={true}
                     />
                   </div>
                 )}
