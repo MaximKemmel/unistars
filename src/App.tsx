@@ -1,8 +1,13 @@
-import { useLayoutEffect } from "react";
-import { Route, Routes } from "react-router-dom";
+import { useEffect, useLayoutEffect } from "react";
+import { Route, Routes, useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
+import { settings } from "@gravity-ui/date-utils";
+import { configure } from "@gravity-ui/uikit";
+import { Lang, ThemeProvider } from "@gravity-ui/uikit";
 
 import { useActions } from "./hooks/useActions";
 import { useTypedSelector } from "./hooks/useTypedSelector";
+import { useAuth } from "./hooks/useAuth";
 
 import { RequireAuth } from "./hoc/RequireAuth";
 
@@ -12,7 +17,10 @@ import { SignIn } from "./pages/SignIn/SignIn";
 import styles from "./App.module.sass";
 
 function App() {
+  const { i18n } = useTranslation();
   const { getCountries, getCities } = useActions();
+  const navigate = useNavigate();
+  const isAuth = useAuth();
   const countries = useTypedSelector((state) => state.coreReducer.countries);
   const cities = useTypedSelector((state) => state.coreReducer.cities);
 
@@ -25,28 +33,41 @@ function App() {
     }
   }, []);
 
+  useEffect(() => {
+    if (isAuth) {
+      navigate("/");
+    }
+  }, [isAuth]);
+
+  useEffect(() => {
+    configure({ lang: i18n.resolvedLanguage as Lang });
+    settings.setLocale(i18n.resolvedLanguage!);
+  }, [i18n.resolvedLanguage]);
+
   return (
-    <section className={styles.wrapper}>
-      <Routes>
-        <Route path="/sign_in" element={<SignIn />} />
-        <Route
-          path="/"
-          element={
-            <RequireAuth>
-              <Home />
-            </RequireAuth>
-          }
-        />
-        <Route
-          path="*"
-          element={
-            <RequireAuth>
-              <Home />
-            </RequireAuth>
-          }
-        />
-      </Routes>
-    </section>
+    <ThemeProvider theme="system">
+      <section className={styles.wrapper}>
+        <Routes>
+          <Route path="/sign_in" element={<SignIn />} />
+          <Route
+            path="/"
+            element={
+              <RequireAuth>
+                <Home />
+              </RequireAuth>
+            }
+          />
+          <Route
+            path="*"
+            element={
+              <RequireAuth>
+                <Home />
+              </RequireAuth>
+            }
+          />
+        </Routes>
+      </section>
+    </ThemeProvider>
   );
 }
 

@@ -1,8 +1,5 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useNavigate } from "react-router-dom";
-
-import { useAuth } from "../../hooks/useAuth";
 
 import { Toggle } from "../../components/toggle/Toggle";
 
@@ -18,20 +15,12 @@ import BackArrowIcon from "../../assets/svg/back-arrow.svg";
 
 export const SignIn = () => {
   const { t } = useTranslation();
-  const navigate = useNavigate();
-  const isAuth = useAuth();
   const [currentStage, setCurrentStage] = useState(0);
   const stages = [
     <SignInForm setCurrentStage={setCurrentStage} />,
     <ApplicationForm setCurrentStage={setCurrentStage} />,
     <ResetPasswordForm />,
   ] as JSX.Element[];
-
-  useEffect(() => {
-    if (isAuth) {
-      navigate("/");
-    }
-  }, []);
 
   return (
     <div className={styles.container}>
