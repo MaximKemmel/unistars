@@ -16,28 +16,36 @@ interface ICalendarProps {
 export const Calendar: React.FC<ICalendarProps> = ({ date, setDate }) => {
   const { i18n } = useTranslation();
   const [isCalendarActive, setIsCalendarActive] = useState(false);
-  const [currentMode, setCurrentMode] = useState(0);
-  const daysInMonth = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+  const [isDateSelected, setIsDateSelected] = useState(false);
+  const [currentDate, setCurrentDate] = useState(
+    date != undefined && !isNaN(+date) ? date : new Date(),
+  );
   const [strDate, setStrDate] = useState(
-    date.toLocaleDateString("ru-RU", {
-      day: "2-digit",
-      month: "2-digit",
-      year: "numeric",
-    }),
+    date != undefined && !isNaN(+date)
+      ? date.toLocaleDateString("ru-RU", {
+          day: "2-digit",
+          month: "2-digit",
+          year: "numeric",
+        })
+      : "",
   );
 
+  const [currentMode, setCurrentMode] = useState(0);
+  const daysInMonth = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+
   useEffect(() => {
-    if (isCalendarActive) {
-      setIsCalendarActive(false);
+    if (isDateSelected) {
       setStrDate(
-        date.toLocaleDateString("ru-RU", {
+        currentDate.toLocaleDateString("ru-RU", {
           day: "2-digit",
           month: "2-digit",
           year: "numeric",
         }),
       );
+      setDate(currentDate);
+      setIsDateSelected(true);
     }
-  }, [date]);
+  }, [currentDate]);
 
   useEffect(() => {
     setCurrentMode(0);
@@ -51,8 +59,8 @@ export const Calendar: React.FC<ICalendarProps> = ({ date, setDate }) => {
     return weekDays;
   }
 
-  function getDayOfWeek(date: Date) {
-    const dayOfWeek = date.getDay();
+  function getDayOfWeek(tmpDate: Date) {
+    const dayOfWeek = tmpDate.getDay();
     if (dayOfWeek === 0) {
       return 6;
     } else {
@@ -102,7 +110,7 @@ export const Calendar: React.FC<ICalendarProps> = ({ date, setDate }) => {
           maskChar={""}
           required
           onChange={(event) => setStrDate(event.target.value.trim())}
-          value={strDate}
+          value={strDate!}
         />
         <div
           className={styles.calendar_button}
@@ -117,7 +125,7 @@ export const Calendar: React.FC<ICalendarProps> = ({ date, setDate }) => {
         <div className={styles.mode_selector}>
           {currentMode === 0 ? (
             <div className={styles.selector} onClick={() => setCurrentMode(1)}>
-              {date
+              {currentDate
                 .toLocaleDateString(
                   `${i18n.resolvedLanguage}-${i18n.resolvedLanguage?.toUpperCase()}`,
                   {
@@ -137,7 +145,7 @@ export const Calendar: React.FC<ICalendarProps> = ({ date, setDate }) => {
           ) : null}
           {currentMode === 1 ? (
             <div className={styles.selector} onClick={() => setCurrentMode(2)}>
-              {date.getFullYear()}
+              {currentDate.getFullYear()}
               <ChevronIcon fill="#14171A" />
             </div>
           ) : null}
@@ -175,38 +183,39 @@ export const Calendar: React.FC<ICalendarProps> = ({ date, setDate }) => {
               ))}
             </div>
             <div className={styles.days_rows}>
-              {getMonthData(date.getFullYear(), date.getMonth()).map(
-                (week: Date[], rowIndex: number) => (
-                  <div className={styles.days_row} key={rowIndex}>
-                    {week.map((tmpDate: Date, dayIndex: number) => (
-                      <>
-                        {tmpDate && tmpDate > new Date(1000, 1, 1) ? (
-                          <div
-                            className={`${styles.day_item} ${dayIndex > 4 ? styles.end_week : 0}`}
-                            onClick={() => setDate(tmpDate)}
-                            key={dayIndex}
+              {getMonthData(
+                currentDate.getFullYear(),
+                currentDate.getMonth(),
+              ).map((week: Date[], rowIndex: number) => (
+                <div className={styles.days_row} key={rowIndex}>
+                  {week.map((tmpDate: Date, dayIndex: number) => (
+                    <>
+                      {tmpDate && tmpDate > new Date(1000, 1, 1) ? (
+                        <div
+                          className={`${styles.day_item} ${dayIndex > 4 ? styles.end_week : 0}`}
+                          onClick={() => setCurrentDate(tmpDate)}
+                          key={dayIndex}
+                        >
+                          <h4
+                            className={
+                              checkDatesEquals(new Date(date), tmpDate)
+                                ? styles.active
+                                : ""
+                            }
                           >
-                            <h4
-                              className={
-                                checkDatesEquals(new Date(date), tmpDate)
-                                  ? styles.active
-                                  : ""
-                              }
-                            >
-                              {tmpDate.getDate()}
-                            </h4>
-                            {checkDatesEquals(new Date(date), tmpDate) ? (
-                              <div className={styles.marker} />
-                            ) : null}
-                          </div>
-                        ) : (
-                          <div className={styles.empty_day_item} />
-                        )}
-                      </>
-                    ))}
-                  </div>
-                ),
-              )}
+                            {tmpDate.getDate()}
+                          </h4>
+                          {checkDatesEquals(new Date(date), tmpDate) ? (
+                            <div className={styles.marker} />
+                          ) : null}
+                        </div>
+                      ) : (
+                        <div className={styles.empty_day_item} />
+                      )}
+                    </>
+                  ))}
+                </div>
+              ))}
             </div>
           </div>
         ) : null}
@@ -219,7 +228,9 @@ export const Calendar: React.FC<ICalendarProps> = ({ date, setDate }) => {
                   className={styles.month_item}
                   key={index}
                   onClick={() => {
-                    setDate(new Date(Date.UTC(date.getFullYear(), index, 1)));
+                    setCurrentDate(
+                      new Date(Date.UTC(currentDate.getFullYear(), index, 1)),
+                    );
                     setCurrentMode(0);
                   }}
                 >

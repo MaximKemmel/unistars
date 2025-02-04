@@ -1,8 +1,7 @@
 ﻿import React, { useEffect } from "react";
 import { DatePicker, DatePickerProps } from "@gravity-ui/date-components";
 
-import "@gravity-ui/uikit/styles/fonts.css";
-import "@gravity-ui/uikit/styles/styles.css";
+import "./Calendar.css";
 
 interface ICalendarProps {
   date: Date;
@@ -17,13 +16,11 @@ export const Calendar: React.FC<ICalendarProps> = ({ date, setDate }) => {
   }, [value]);
 
   return (
-    <div>
-      <DatePicker
-        value={value}
-        onUpdate={setValue}
-        view="normal"
-        format="DD.MM.YYYY"
-      />
-    </div>
+    <DatePicker
+      value={value}
+      onUpdate={setValue}
+      view="normal"
+      format="DD.MM.YYYY"
+    />
   );
 };

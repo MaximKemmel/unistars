@@ -7,7 +7,7 @@ import { useTypedSelector } from "../../hooks/useTypedSelector";
 
 import { Input } from "../../components/input/Input";
 import { Dropdown } from "../../components/dropdown/Dropdown";
-import { Calendar } from "../../components/calendar/_Calendar";
+import { Calendar } from "../../components/calendar/Calendar";
 
 import globalStyles from "../../App.module.sass";
 import modalStyles from "../Modal.module.sass";

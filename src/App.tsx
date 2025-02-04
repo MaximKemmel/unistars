@@ -45,7 +45,7 @@ function App() {
   }, [i18n.resolvedLanguage]);
 
   return (
-    <ThemeProvider theme="system">
+    <ThemeProvider theme="white">
       <section className={styles.wrapper}>
         <Routes>
           <Route path="/sign_in" element={<SignIn />} />

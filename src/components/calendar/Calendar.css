@@ -1,0 +1,35 @@
+.g-date-date-picker {
+    width: 100%;
+}
+
+.g-text-input__content {
+    border-radius: 12px !important;
+    border: 1px solid #14171A24 !important;
+
+    .g-text-input__control {
+        padding: 0 16px;
+        height: 42px;
+        width: calc(100% - 32px);
+        background-color: #FFFFFF;
+        flex-shrink: 0;
+        outline: none;
+        font-size: 16px;
+        color: #14171A;
+    }
+}
+
+/*
+
+
+    padding: 0 16px
+    height: 42px
+    width: calc(100% - 32px)
+    border-radius: 12px
+    background-color: $background_primary_color
+    flex-shrink: 0
+    outline: none
+    border: 1px solid $border_color
+    font-size: 16px
+    color: $text_primary_color
+    transition: all .2s ease-out
+ */
