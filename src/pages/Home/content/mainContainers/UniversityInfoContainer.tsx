@@ -1,6 +1,7 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 
+import { useActions } from "../../../../hooks/useActions";
 import { useTypedSelector } from "../../../../hooks/useTypedSelector";
 
 import { UniversityModal } from "../../../../modals/University/UniversityModal";
@@ -10,16 +11,34 @@ import styles from "../../Home.module.sass";
 
 import { IUniversity } from "../../../../types/university/university";
 import { ICountry } from "../../../../types/core/country";
+import { ApiStatusType } from "../../../../enums/local/apiStatusType";
+import { initApiStatus } from "../../../../types/local/apiStatus";
 
 import { Chevron as ChevronIcon } from "../../../../assets/svgComponents/Chevron";
 
 export const UniversityInfoContainer = () => {
   const { t, i18n } = useTranslation();
+  const { editUniversityProfile, setEditUniversityStatus } = useActions();
   const universityProfile = useTypedSelector(
     (state) => state.universityReducer.universityProfile,
   );
+  const editStatus = useTypedSelector(
+    (state) => state.universityReducer.editStatus,
+  );
   const [isAboutInfoFull, setIsAboutInfoFull] = useState(false);
   const [isAboutModalShow, setIsAboutModalShow] = useState(false);
+
+  useEffect(() => {
+    switch (editStatus.status) {
+      case ApiStatusType.SUCCESS:
+        setEditUniversityStatus(initApiStatus());
+        setIsAboutModalShow(false);
+        break;
+      case ApiStatusType.ERROR:
+        setIsAboutModalShow(false);
+        break;
+    }
+  }, [editStatus]);
 
   return (
     <>
@@ -257,8 +276,7 @@ export const UniversityInfoContainer = () => {
           setIsAboutModalShow(false);
         }}
         onSave={(editedUniversity: IUniversity) => {
-          console.log(editedUniversity);
-          setIsAboutModalShow(false);
+          editUniversityProfile({ university: editedUniversity });
         }}
       />
     </>

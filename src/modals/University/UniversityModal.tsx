@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import InputMask from "react-input-mask";
-//import { format } from "date-fns";
 
 import { useTypedSelector } from "../../hooks/useTypedSelector";
 
@@ -13,12 +11,11 @@ import globalStyles from "../../App.module.sass";
 import modalStyles from "../Modal.module.sass";
 
 import { IUniversity } from "../../types/university/university";
+import { ICountry } from "../../types/core/country";
 import { ICity } from "../../types/core/city";
 import { IDropdownItem } from "../../types/local/dropdownItem";
 
 import CloseIcon from "../../assets/svg/close.svg";
-import LocationIcon from "../../assets/svg/location.svg";
-import InfoIcon from "../../assets/svg/info.svg";
 
 interface IUniversityModalProps {
   isShow: boolean;
@@ -34,6 +31,7 @@ export const UniversityModal: React.FC<IUniversityModalProps> = ({
   onClose,
 }) => {
   const { t } = useTranslation();
+  const countries = useTypedSelector((state) => state.coreReducer.countries);
   const cities = useTypedSelector((state) => state.coreReducer.cities);
   const [currentUniversityProfile, setCurrentUniversityProfile] =
     useState(universityInfo);
@@ -59,26 +57,6 @@ export const UniversityModal: React.FC<IUniversityModalProps> = ({
         currentUniversityProfile.foundation.trim().length > 0,
     );
   }, [currentUniversityProfile]);
-
-  /*useEffect(() => {
-    if (activeComponent !== DropdownType.None) {
-      const activeDropdownDiv = document.getElementById("active_dropdown");
-      if (activeDropdownDiv) {
-        const formDiv = document.getElementById("form");
-        formDiv?.scrollTo({
-          top: activeDropdownDiv.offsetTop - formDiv?.offsetTop - 45,
-          behavior: "smooth",
-        });
-      }
-    }
-  }, [activeComponent]);*/
-
-  useEffect(() => {
-    /*setCurrentUniversityProfile({
-      ...currentUniversityProfile,
-      foundation: format(date, "yyyy-MM-dd"),
-    });*/
-  }, [date]);
 
   const handleOnSubmit = (event: any) => {
     event.preventDefault();
@@ -115,18 +93,20 @@ export const UniversityModal: React.FC<IUniversityModalProps> = ({
                   <div className={modalStyles.part_label}>
                     {t("university.full_name")}
                   </div>
-                  <Input
-                    value={currentUniversityProfile.name}
-                    onChange={(value: string) =>
-                      setCurrentUniversityProfile({
-                        ...currentUniversityProfile,
-                        name: value,
-                      })
-                    }
-                    placeholder={t("university.enter_a_heading")}
-                    type="text"
-                    isRequired={true}
-                  />
+                  <div className={modalStyles.input}>
+                    <Input
+                      value={currentUniversityProfile.name}
+                      onChange={(value: string) =>
+                        setCurrentUniversityProfile({
+                          ...currentUniversityProfile,
+                          name: value,
+                        })
+                      }
+                      placeholder={t("university.enter_a_heading")}
+                      type="text"
+                      isRequired={true}
+                    />
+                  </div>
                 </div>
                 <div className={modalStyles.part}>
                   <div className={modalStyles.part_label}>
@@ -152,35 +132,59 @@ export const UniversityModal: React.FC<IUniversityModalProps> = ({
                 />
               </div>
               <div
-                className={`${modalStyles.part_multi} ${modalStyles.triple}`}
+                className={`${modalStyles.part_multi} ${modalStyles.double}`}
               >
                 <div className={modalStyles.part}>
                   <div className={modalStyles.part_label}>
                     {t("university.country")}
                   </div>
-                  {/*<Dropdown
-                    placeholder={t("university.choose_your_country")}
-                    items={[
-                      {
-                        id: -1,
-                        text: t("global.not_selected"),
-                        text_eng: t("global.not_selected"),
-                        is_selected: currentInfo.country_id === -1,
-                      } as IDropdownItem,
-                      ...(countries.map((country: ICountry) => {
-                        return {
-                          id: country.id,
-                          text: country.name,
-                          text_eng: country.nameEnglish,
-                          is_selected: currentInfo.country_id === country.id,
-                        } as IDropdownItem;
-                      }) as IDropdownItem[]),
-                    ]}
-                    onItemSelect={(item: IDropdownItem) => {
-                      setCurrentInfo({ ...currentInfo, country_id: item.id });
-                      setActiveComponent(DropdownType.None);
-                    }}
-                  />*/}
+                  {
+                    <Dropdown
+                      placeholder={t("university.choose_your_country")}
+                      items={[
+                        {
+                          id: -1,
+                          text: t("global.not_selected"),
+                          text_eng: t("global.not_selected"),
+                          is_selected:
+                            currentUniversityProfile.userCountries ==
+                              undefined ||
+                            !Array.isArray(
+                              currentUniversityProfile.userCountries,
+                            ) ||
+                            currentUniversityProfile.userCountries.length === 0,
+                        } as IDropdownItem,
+                        ...(countries.map((country: ICountry) => {
+                          return {
+                            id: country.id,
+                            text: country.name,
+                            text_eng: country.nameEnglish,
+                            is_selected:
+                              currentUniversityProfile.userCountries !=
+                                undefined &&
+                              Array.isArray(
+                                currentUniversityProfile.userCountries,
+                              ) &&
+                              currentUniversityProfile.userCountries.length >
+                                0 &&
+                              currentUniversityProfile.userCountries[0].id ===
+                                country.id,
+                          } as IDropdownItem;
+                        }) as IDropdownItem[]),
+                      ]}
+                      onItemSelect={(item: IDropdownItem) => {
+                        setCurrentUniversityProfile({
+                          ...currentUniversityProfile,
+                          userCountries:
+                            item.id === -1
+                              ? []
+                              : countries.filter(
+                                  (country: ICountry) => country.id === item.id,
+                                ),
+                        });
+                      }}
+                    />
+                  }
                 </div>
                 <div className={modalStyles.part}>
                   <div className={modalStyles.part_label}>
@@ -220,15 +224,76 @@ export const UniversityModal: React.FC<IUniversityModalProps> = ({
                     />
                   )}
                 </div>
+              </div>
+              <div
+                className={`${modalStyles.part_multi} ${modalStyles.triple}`}
+              >
                 <div className={modalStyles.part}>
                   <div className={modalStyles.part_label}>
-                    {t("university.location")}
+                    {t("university.street")}
                   </div>
-                  <div className={modalStyles.location_selector}>
-                    <img src={LocationIcon} alt="" />
-                    <div className={modalStyles.selector_label}>
-                      {t("university.locate")}
-                    </div>
+                  <div className={modalStyles.input}>
+                    <Input
+                      value={currentUniversityProfile.street ?? ""}
+                      onChange={(value: string) =>
+                        setCurrentUniversityProfile({
+                          ...currentUniversityProfile,
+                          street: value,
+                        })
+                      }
+                      placeholder={t("university.choose_your_street")}
+                      type="text"
+                    />
+                  </div>
+                </div>
+                <div className={modalStyles.part}>
+                  <div className={modalStyles.part_label}>
+                    {t("university.house")}
+                  </div>
+                  <div className={modalStyles.input}>
+                    <Input
+                      value={
+                        currentUniversityProfile.houseNumber != undefined
+                          ? currentUniversityProfile.houseNumber === 0
+                            ? ""
+                            : currentUniversityProfile.houseNumber.toString()
+                          : ""
+                      }
+                      onChange={(value: string) =>
+                        setCurrentUniversityProfile({
+                          ...currentUniversityProfile,
+                          houseNumber:
+                            value.trim().length !== 0 ? Number(value) : 0,
+                        })
+                      }
+                      placeholder={t("university.home_number")}
+                      type="number"
+                    />
+                  </div>
+                </div>
+                <div className={modalStyles.part}>
+                  <div className={modalStyles.part_label}>
+                    {t("university.corpus")}
+                  </div>
+                  <div className={modalStyles.input}>
+                    <Input
+                      value={
+                        currentUniversityProfile.houseNumber != undefined
+                          ? currentUniversityProfile.houseNumber === 0
+                            ? ""
+                            : currentUniversityProfile.houseNumber.toString()
+                          : ""
+                      }
+                      onChange={(value: string) =>
+                        setCurrentUniversityProfile({
+                          ...currentUniversityProfile,
+                          houseNumber:
+                            value.trim().length !== 0 ? Number(value) : 0,
+                        })
+                      }
+                      placeholder={t("university.corpus_number")}
+                      type="text"
+                    />
                   </div>
                 </div>
               </div>
@@ -239,7 +304,7 @@ export const UniversityModal: React.FC<IUniversityModalProps> = ({
                 {t("university.contacts")}
               </div>
               <div
-                className={`${modalStyles.part_multi} ${modalStyles.triple}`}
+                className={`${modalStyles.part_multi} ${modalStyles.double}`}
               >
                 <div className={modalStyles.part}>
                   <div className={modalStyles.part_label}>
@@ -275,164 +340,93 @@ export const UniversityModal: React.FC<IUniversityModalProps> = ({
                         }}
                       />
                     </div>
-                    <div className={modalStyles.phone_number}>
-                      <InputMask
-                        placeholder={"(___) ___-__-__"}
-                        type="text"
-                        mask="(999) 999-99-99"
-                        maskChar={""}
-                        value={currentUniversityProfile.phoneNumberBody}
-                        onChange={(event) =>
+                    <div className={modalStyles.input}>
+                      <Input
+                        value={currentUniversityProfile.phoneNumberBody ?? ""}
+                        onChange={(value: string) =>
                           setCurrentUniversityProfile({
                             ...currentUniversityProfile,
-                            phoneNumberBody: event.target.value.trim(),
+                            phoneNumberBody: value,
                           })
                         }
+                        placeholder={"(___) ___-__-__"}
+                        type="phone"
                       />
                     </div>
                   </div>
                 </div>
                 <div className={modalStyles.part}>
-                  <div className={modalStyles.part_label}>
-                    {t("university.site")}
-                  </div>
-                  <Input
-                    value={currentUniversityProfile.universityLink ?? ""}
-                    onChange={(value: string) =>
-                      setCurrentUniversityProfile({
-                        ...currentUniversityProfile,
-                        universityLink: value,
-                      })
-                    }
-                    placeholder={t("university.enter_website_address")}
-                    type="text"
-                  />
-                </div>
-                <div className={modalStyles.part}>
                   <div className={modalStyles.part_label}>E-mail</div>
-                  <Input
-                    value={currentUniversityProfile.userEmail ?? ""}
-                    onChange={(value: string) =>
-                      setCurrentUniversityProfile({
-                        ...currentUniversityProfile,
-                        userEmail: value,
-                      })
-                    }
-                    placeholder={t("university.enter_email")}
-                    type="text"
-                  />
-                </div>
-              </div>
-            </div>
-            <div className={modalStyles.form_separator} />
-            <div className={modalStyles.part_container}>
-              <div className={modalStyles.part_container_title}>
-                {t("university.links_to_sections")}
-              </div>
-              <div
-                className={`${modalStyles.part_multi} ${modalStyles.double}`}
-              >
-                <div className={modalStyles.part}>
-                  <div className={modalStyles.part_label}>
-                    {t("university.admission")}
-                    <div className={modalStyles.more_info_container}>
-                      <img src={InfoIcon} alt="" />
-                      <div className={modalStyles.more_info_content}>
-                        <div className={modalStyles.more_info}>
-                          <div className={modalStyles.more_info_text}>
-                            {t("university.add_admission")}
-                          </div>
-                        </div>
-                      </div>
-                    </div>
+                  <div className={modalStyles.input}>
+                    <Input
+                      value={currentUniversityProfile.userEmail ?? ""}
+                      onChange={(value: string) =>
+                        setCurrentUniversityProfile({
+                          ...currentUniversityProfile,
+                          userEmail: value,
+                        })
+                      }
+                      placeholder={t("university.enter_email")}
+                      type="text"
+                    />
                   </div>
-                  <input
-                    placeholder={t("university.enter_website_address")}
-                    type="text"
-                    onChange={(event) =>
-                      setCurrentUniversityProfile({
-                        ...currentUniversityProfile,
-                        admission: event.target.value.trim(),
-                      })
-                    }
-                    value={currentUniversityProfile.admission}
-                  />
-                </div>
-                <div className={modalStyles.part}>
-                  <div className={modalStyles.part_label}>
-                    {t("university.career")}
-                    <div className={modalStyles.more_info_container}>
-                      <img src={InfoIcon} alt="" />
-                      <div className={modalStyles.more_info_content}>
-                        <div className={modalStyles.more_info}>
-                          <div className={modalStyles.more_info_text}>
-                            {t("university.add_career")}
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <input
-                    placeholder={t("university.enter_website_address")}
-                    type="text"
-                    onChange={(event) =>
-                      setCurrentUniversityProfile({
-                        ...currentUniversityProfile,
-                        careers: event.target.value.trim(),
-                      })
-                    }
-                    value={currentUniversityProfile.careers}
-                  />
                 </div>
               </div>
               <div
-                className={`${modalStyles.part_multi} ${modalStyles.double}`}
+                className={`${modalStyles.part_multi} ${modalStyles.triple}`}
               >
                 <div className={modalStyles.part}>
                   <div className={modalStyles.part_label}>
-                    {t("university.faq")}
-                    <div className={modalStyles.more_info_container}>
-                      <img src={InfoIcon} alt="" />
-                      <div className={modalStyles.more_info_content}>
-                        <div className={modalStyles.more_info}>
-                          <div className={modalStyles.more_info_text}>
-                            {t("university.add_faq")}
-                          </div>
-                        </div>
-                      </div>
-                    </div>
+                    {t("university.official_site")}
                   </div>
-                  <input
-                    placeholder={t("university.enter_website_address")}
-                    type="text"
-                    onChange={(event) =>
-                      setCurrentUniversityProfile({
-                        ...currentUniversityProfile,
-                        faqLink: event.target.value.trim(),
-                      })
-                    }
-                    value={currentUniversityProfile.faqLink}
-                  />
+                  <div className={modalStyles.input}>
+                    <Input
+                      value={currentUniversityProfile.universityLink ?? ""}
+                      onChange={(value: string) =>
+                        setCurrentUniversityProfile({
+                          ...currentUniversityProfile,
+                          universityLink: value,
+                        })
+                      }
+                      placeholder={t("university.enter_website_address")}
+                      type="text"
+                    />
+                  </div>
+                </div>
+
+                <div className={modalStyles.part}>
+                  <div className={modalStyles.part_label}>Telegram</div>
+                  <div className={modalStyles.input}>
+                    <Input
+                      value={currentUniversityProfile.universityLink ?? ""}
+                      onChange={(value: string) =>
+                        setCurrentUniversityProfile({
+                          ...currentUniversityProfile,
+                          universityLink: value,
+                        })
+                      }
+                      placeholder={t("university.telegram_link")}
+                      type="text"
+                    />
+                  </div>
                 </div>
                 <div className={modalStyles.part}>
                   <div className={modalStyles.part_label}>
-                    {t("university.preparatory_courses")}
-                    <div className={modalStyles.more_info_container}>
-                      <img src={InfoIcon} alt="" />
-                      <div className={modalStyles.more_info_content}>
-                        <div className={modalStyles.more_info}>
-                          <div className={modalStyles.more_info_text}>
-                            {t("university.add_courses")}
-                          </div>
-                        </div>
-                      </div>
-                    </div>
+                    {t("university.vk")}
                   </div>
-                  <input
-                    placeholder={t("university.enter_website_address")}
-                    type="text"
-                    value={""}
-                  />
+                  <div className={modalStyles.input}>
+                    <Input
+                      value={currentUniversityProfile.universityLink ?? ""}
+                      onChange={(value: string) =>
+                        setCurrentUniversityProfile({
+                          ...currentUniversityProfile,
+                          universityLink: value,
+                        })
+                      }
+                      placeholder={t("university.vk_link")}
+                      type="text"
+                    />
+                  </div>
                 </div>
               </div>
             </div>

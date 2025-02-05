@@ -31,7 +31,8 @@ export const coreSlice = createSlice({
     });
     builder.addCase(getCountries.fulfilled, (state, action) => {
       state.countries = [];
-      state.countries = action.payload as ICountry[];
+      const response = action.payload;
+      state.countries = response.dictionary as ICountry[];
       state.getCountriesStatus = { status: ApiStatusType.SUCCESS };
     });
     builder.addCase(getCountries.rejected, (state, action) => {

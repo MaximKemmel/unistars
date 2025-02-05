@@ -29,10 +29,10 @@ export const universitySlice = createSlice({
   name: "university",
   initialState,
   reducers: {
-    setGetStatus(state, action: PayloadAction<IApiStatus>) {
+    setGetUniversityStatus(state, action: PayloadAction<IApiStatus>) {
       state.getStatus = action.payload;
     },
-    setEditStatus(state, action: PayloadAction<IApiStatus>) {
+    setEditUniversityStatus(state, action: PayloadAction<IApiStatus>) {
       state.editStatus = action.payload;
     },
   },

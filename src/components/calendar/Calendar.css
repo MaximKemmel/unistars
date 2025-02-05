@@ -1,5 +1,9 @@
 .g-date-date-picker {
     width: 100%;
+
+    svg *{
+        fill: #14171A99;
+    }
 }
 
 .g-text-input__content {
@@ -8,14 +12,47 @@
 
     .g-text-input__control {
         padding: 0 16px;
-        height: 42px;
-        width: calc(100% - 32px);
+        width: calc(100% - 50px) !important;
         background-color: #FFFFFF;
         flex-shrink: 0;
         outline: none;
         font-size: 16px;
         color: #14171A;
+
+        &::placeholder {
+            color: #14171A57;
+        }
     }
+}
+
+.g-date-calendar__button_selected {
+    background-color: #FFFFFF !important;
+}
+
+.g-text-input_size_l .g-text-input__additional-content {
+    height: 42px !important;
+    width: 42px !important;
+    margin-right: 5px;
+
+    .g-button_size_l {
+        height: 42px !important;
+        width: 42px !important;
+    }
+
+}
+
+.g-date-calendar__button {
+    font-size: 16px !important;
+    font-weight: 600 !important;
+}
+
+.g-date-calendar__weekday {
+    font-size: 16px !important;
+}
+
+.g-date-calendar__mode-label {
+    font-size: 16px !important;
+    font-weight: 600 !important;
 }
 
 /*

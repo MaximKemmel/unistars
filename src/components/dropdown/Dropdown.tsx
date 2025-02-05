@@ -35,6 +35,14 @@ export const Dropdown: React.FC<IDropdownProps> = ({
     if (isActive) {
       const list = document.getElementById("dropdown_list");
       list?.scrollTo({ top: 0 });
+      const activeDropdownDiv = document.getElementById("active_dropdown");
+      if (activeDropdownDiv) {
+        const formDiv = document.getElementById("form");
+        formDiv?.scrollTo({
+          top: activeDropdownDiv.offsetTop - formDiv?.offsetTop - 45,
+          behavior: "smooth",
+        });
+      }
     }
   }, [isActive]);
 
@@ -76,6 +84,7 @@ export const Dropdown: React.FC<IDropdownProps> = ({
               key={item.id}
               className={`${styles.dropdown_item} ${item.is_selected ? styles.active : ""}`}
               onClick={() => {
+                setIsActive(false);
                 onItemSelect(item);
               }}
             >

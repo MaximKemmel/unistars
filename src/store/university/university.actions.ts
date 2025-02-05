@@ -2,7 +2,9 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import { format } from "date-fns";
 
 import axios from "../../utils/axios.js";
+
 import { IUniversity } from "../../types/university/university";
+import { ICountry } from "../../types/core/country";
 
 export const getUniversityProfile = createAsyncThunk(
   "api/getUniversityProfile",
@@ -24,7 +26,6 @@ export const editUniversityProfile = createAsyncThunk(
         university.foundation !== null && university.foundation !== undefined
           ? format(university.foundation, "dd.MM.yyyy")
           : null,
-      faqLink: university.faqLink,
       description: university.description,
       logoUrl: university.logoUrl,
       universityLink: university.universityLink,
@@ -40,11 +41,17 @@ export const editUniversityProfile = createAsyncThunk(
         university.userCity !== null && university.userCity !== undefined
           ? university.userCity.id
           : null,
+      street: university.street,
       houseNumber: university.houseNumber,
       admission: university.admission,
       careers: university.careers,
       phoneNumberBody: university.phoneNumberBody,
       phoneNumberCountryPrefix: university.phoneNumberCountryPrefix,
+      userCountriesIds:
+        university.userCountries != undefined &&
+        Array.isArray(university.userCountries)
+          ? university.userCountries.map((country: ICountry) => country.id)
+          : [],
     });
     if (response.status !== 200) {
       throw rejectWithValue("Server error!");

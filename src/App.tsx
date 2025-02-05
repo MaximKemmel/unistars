@@ -15,6 +15,8 @@ import { Home } from "./pages/Home/Home";
 import { SignIn } from "./pages/SignIn/SignIn";
 
 import styles from "./App.module.sass";
+import "@gravity-ui/uikit/styles/fonts.css";
+import "@gravity-ui/uikit/styles/styles.css";
 
 function App() {
   const { i18n } = useTranslation();
@@ -45,7 +47,7 @@ function App() {
   }, [i18n.resolvedLanguage]);
 
   return (
-    <ThemeProvider theme="white">
+    <ThemeProvider theme="light">
       <section className={styles.wrapper}>
         <Routes>
           <Route path="/sign_in" element={<SignIn />} />
