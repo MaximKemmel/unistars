@@ -73,6 +73,7 @@ export const uploadToGallery = createAsyncThunk(
     { rejectWithValue },
   ) => {
     const formData = new FormData();
+    formData.append("type", "IMAGE");
     formData.append("file", file);
     const response = await axios
       .post("/upload_to_gallery", formData, {

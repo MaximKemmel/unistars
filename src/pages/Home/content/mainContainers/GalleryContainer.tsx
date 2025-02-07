@@ -1,6 +1,7 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 
+import { useActions } from "../../../../hooks/useActions";
 import { useTypedSelector } from "../../../../hooks/useTypedSelector";
 
 import { GalleryModal } from "../../../../modals/Gallery/Gallery";
@@ -15,6 +16,7 @@ import { IFileStorage } from "../../../../types/university/fileStorage";
 
 export const GalleryContainer = () => {
   const { t } = useTranslation();
+  const { uploadToGallery } = useActions();
   const gallery = useTypedSelector(
     (state) => state.universityReducer.universityProfile.standGalleryImages,
   );
@@ -23,6 +25,12 @@ export const GalleryContainer = () => {
   const [isConfirmDeleteModalShow, setIsConfirmDeleteModalShow] =
     useState(false);
   const [isStatusInfoModalShow, setIsStatusInfoModalShow] = useState(false);
+  const inputImageRef = useRef<HTMLInputElement>(null);
+  const [uploadImageProgress, setUploadImageProgress] = useState(-1);
+
+  useEffect(() => {
+    console.log(uploadImageProgress);
+  }, [uploadImageProgress]);
 
   const handleOnDeletePhotos = (photos: IFileStorage[]) => {
     console.log(photos);
@@ -33,6 +41,31 @@ export const GalleryContainer = () => {
   const handleOnConfirmDeletePhotos = () => {
     setIsConfirmDeleteModalShow(false);
     setIsStatusInfoModalShow(true);
+  };
+
+  const handleOnChangeImage = (event) => {
+    try {
+      const file = event.target.files[0];
+      if (
+        file.size < 5242880 &&
+        (file.name.endsWith(".png") ||
+          file.name.endsWith(".jpg") ||
+          file.name.endsWith(".jpeg") ||
+          file.name.endsWith(".bmp"))
+      ) {
+        uploadToGallery({
+          file: file,
+          onUploadProgress: (data) => {
+            setUploadImageProgress(
+              Math.round(100 * (data.loaded / data.total!)),
+            );
+          },
+        });
+      }
+      event.target.value = "";
+    } catch (error) {
+      console.warn(error);
+    }
   };
 
   return (
@@ -94,6 +127,14 @@ export const GalleryContainer = () => {
           </div>
         )}
       </div>
+      <input
+        ref={inputImageRef}
+        type="file"
+        id="file"
+        accept="image/png, image/jpeg"
+        onChange={handleOnChangeImage}
+        hidden
+      />
       <GalleryModal
         isShow={isGalleryModalShow}
         onEdit={() => {
