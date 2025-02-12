@@ -9,13 +9,13 @@ export interface IEvent {
   universityLogoUrl?: string;
   geolocation?: IGeoLocation;
   startDate?: string;
-  address?: string;
-  link?: string;
+  address: string;
+  link: string;
   coverUrl?: string;
   additionalUrl?: string;
   eventModerators?: number[];
   eventSubscribers?: number[];
-  name?: string;
+  name: string;
   description?: string;
   chatId?: number;
   enabledChat?: boolean;
