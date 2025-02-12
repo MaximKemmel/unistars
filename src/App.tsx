@@ -27,7 +27,6 @@ function App() {
   const cities = useTypedSelector((state) => state.coreReducer.cities);
 
   useLayoutEffect(() => {
-    settings.loadLocale("ru");
     if (!Array.isArray(countries) || countries.length === 0) {
       getCountries();
     }

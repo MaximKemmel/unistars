@@ -1,7 +1,8 @@
 import { Suspense } from "react";
 import { createRoot } from "react-dom/client";
-import { BrowserRouter } from "react-router-dom";
+import { Await, BrowserRouter } from "react-router-dom";
 import { Provider } from "react-redux";
+import { settings } from "@gravity-ui/date-utils";
 
 import App from "./App";
 
@@ -16,7 +17,7 @@ root.render(
   <BrowserRouter>
     <Provider store={store}>
       <Suspense fallback="...loading">
-        <App />
+        <Await resolve={settings.loadLocale("ru")} children={<App />} />
       </Suspense>
     </Provider>
   </BrowserRouter>,
