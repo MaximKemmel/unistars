@@ -17,7 +17,7 @@ export const Home = () => {
   const {
     getUniversityProfile,
     getSubscribersList,
-    getStudent,
+    getStudents,
     clearStudents,
     getAmbassador,
     getAmbassadorRequest,
@@ -58,9 +58,7 @@ export const Home = () => {
         Array.isArray(universityProfile.studentIds)
       ) {
         clearStudents();
-        universityProfile.studentIds.forEach((id: number) => {
-          getStudent({ studentId: id });
-        });
+        getStudents();
       }
 
       if (

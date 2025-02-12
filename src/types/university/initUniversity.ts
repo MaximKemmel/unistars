@@ -7,6 +7,7 @@ export function initUniversity(): IUniversity {
     foundation: "",
     userCountries: [],
     userEmail: "",
+    linksSocialNetwork: ["", ""],
   };
 
   return {

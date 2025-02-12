@@ -2,10 +2,10 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 
 import axios from "../../utils/axios.js";
 
-export const getStudent = createAsyncThunk(
-  "api/getStudent",
-  async ({ studentId }: { studentId: number }, { rejectWithValue }) => {
-    const response = await axios.get(`/student_profile?id=${studentId}`);
+export const getStudents = createAsyncThunk(
+  "api/getStudents",
+  async (_, { rejectWithValue }) => {
+    const response = await axios.get(`/university_students?size=10000`);
     if (response.status !== 200) {
       throw rejectWithValue("Server error!");
     }

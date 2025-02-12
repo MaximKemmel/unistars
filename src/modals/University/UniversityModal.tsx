@@ -398,11 +398,16 @@ export const UniversityModal: React.FC<IUniversityModalProps> = ({
                   <div className={modalStyles.part_label}>Telegram</div>
                   <div className={modalStyles.input}>
                     <Input
-                      value={currentUniversityProfile.universityLink ?? ""}
+                      value={currentUniversityProfile.linksSocialNetwork![0]}
                       onChange={(value: string) =>
                         setCurrentUniversityProfile({
                           ...currentUniversityProfile,
-                          universityLink: value,
+                          linksSocialNetwork:
+                            currentUniversityProfile.linksSocialNetwork!.map(
+                              (link: string, index: number) => {
+                                return index === 0 ? value : link;
+                              },
+                            ),
                         })
                       }
                       placeholder={t("university.telegram_link")}
@@ -416,11 +421,16 @@ export const UniversityModal: React.FC<IUniversityModalProps> = ({
                   </div>
                   <div className={modalStyles.input}>
                     <Input
-                      value={currentUniversityProfile.universityLink ?? ""}
+                      value={currentUniversityProfile.linksSocialNetwork![1]}
                       onChange={(value: string) =>
                         setCurrentUniversityProfile({
                           ...currentUniversityProfile,
-                          universityLink: value,
+                          linksSocialNetwork:
+                            currentUniversityProfile.linksSocialNetwork!.map(
+                              (link: string, index: number) => {
+                                return index === 1 ? value : link;
+                              },
+                            ),
                         })
                       }
                       placeholder={t("university.vk_link")}

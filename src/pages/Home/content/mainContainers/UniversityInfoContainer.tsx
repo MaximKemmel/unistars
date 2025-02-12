@@ -177,6 +177,14 @@ export const UniversityInfoContainer = () => {
                     </div>
                   </div>
                   <div className={styles.part_item}>
+                    <div className={styles.part_item_label}>E-mail</div>
+                    <div className={styles.part_item_value}>
+                      {universityProfile.userEmail != undefined
+                        ? universityProfile.userEmail
+                        : ""}
+                    </div>
+                  </div>
+                  <div className={styles.part_item}>
                     <div className={styles.part_item_label}>
                       {t("university.site")}
                     </div>
@@ -187,56 +195,18 @@ export const UniversityInfoContainer = () => {
                     </div>
                   </div>
                   <div className={styles.part_item}>
-                    <div className={styles.part_item_label}>E-mail</div>
+                    <div className={styles.part_item_label}>Telegram</div>
                     <div className={styles.part_item_value}>
-                      {universityProfile.userEmail != undefined
-                        ? universityProfile.userEmail
-                        : ""}
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div className={styles.main_part_separator} />
-              <div className={styles.main_about_part}>
-                <div className={styles.part_title}>
-                  {t("university.links_to_sections")}
-                </div>
-                <div className={styles.part_container}>
-                  <div className={styles.part_item}>
-                    <div className={styles.part_item_label}>
-                      {t("university.admission")}
-                    </div>
-                    <div className={styles.part_item_value}>
-                      {universityProfile.admission != undefined
-                        ? universityProfile.admission
-                        : ""}
+                      {universityProfile.linksSocialNetwork[0]}
                     </div>
                   </div>
                   <div className={styles.part_item}>
                     <div className={styles.part_item_label}>
-                      {t("university.career")}
+                      {t("university.vk")}
                     </div>
                     <div className={styles.part_item_value}>
-                      {universityProfile.careers != undefined
-                        ? universityProfile.careers
-                        : ""}
+                      {universityProfile.linksSocialNetwork[1]}
                     </div>
-                  </div>
-                  <div className={styles.part_item}>
-                    <div className={styles.part_item_label}>
-                      {t("university.faq")}
-                    </div>
-                    <div className={styles.part_item_value}>
-                      {universityProfile.faqLink != undefined
-                        ? universityProfile.faqLink
-                        : ""}
-                    </div>
-                  </div>
-                  <div className={styles.part_item}>
-                    <div className={styles.part_item_label}>
-                      {t("university.preparatory_courses")}
-                    </div>
-                    <div className={styles.part_item_value}></div>
                   </div>
                 </div>
               </div>

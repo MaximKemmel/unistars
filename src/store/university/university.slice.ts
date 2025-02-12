@@ -43,7 +43,29 @@ export const universitySlice = createSlice({
     });
     builder.addCase(getUniversityProfile.fulfilled, (state, action) => {
       state.universityProfile = initUniversity();
-      state.universityProfile = action.payload as IUniversity;
+      let tmpUniversityProfile = action.payload as IUniversity;
+      if (tmpUniversityProfile) {
+        if (
+          tmpUniversityProfile.linksSocialNetwork === undefined ||
+          !Array.isArray(tmpUniversityProfile.linksSocialNetwork) ||
+          tmpUniversityProfile.linksSocialNetwork?.length === 0
+        ) {
+          tmpUniversityProfile = {
+            ...tmpUniversityProfile,
+            linksSocialNetwork: ["", ""],
+          };
+        }
+        if (tmpUniversityProfile.linksSocialNetwork?.length === 1) {
+          tmpUniversityProfile = {
+            ...tmpUniversityProfile,
+            linksSocialNetwork: [
+              tmpUniversityProfile.linksSocialNetwork[0],
+              "",
+            ],
+          };
+        }
+      }
+      state.universityProfile = tmpUniversityProfile;
       state.getStatus = { status: ApiStatusType.SUCCESS };
     });
     builder.addCase(getUniversityProfile.rejected, (state, action) => {

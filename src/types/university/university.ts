@@ -56,4 +56,5 @@ export interface IUniversity {
   standGalleryImages?: IFileStorage[];
   universityTypeOfDegrees?: IUniversityTypeOfDegree[];
   statusPartnership?: statusPartnership;
+  linksSocialNetwork: string[];
 }
