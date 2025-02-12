@@ -37,7 +37,7 @@ export const postEvent = createAsyncThunk(
       link: event.link,
       coverUrl: event.coverUrl,
       privacy: event.privacy,
-      eventTypeId: event.eventType.id,
+      eventTypeId: event.eventType ? event.eventType.id : -1,
       enabledChat: false,
     });
     if (response.status !== 200) {
@@ -59,7 +59,7 @@ export const patchEvent = createAsyncThunk(
       link: event.link,
       coverUrl: event.coverUrl,
       privacy: event.privacy,
-      eventTypeId: event.eventType.id,
+      eventTypeId: event.eventType ? event.eventType.id : -1,
       enabledChat: false,
     });
     if (response.status !== 200) {
