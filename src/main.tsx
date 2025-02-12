@@ -8,16 +8,20 @@ import App from "./App";
 
 import { store } from "./store/store";
 
-import "../src/utils/i18n.js";
+import "./utils/i18n.js";
 
 const container = document.getElementById("root");
 const root = createRoot(container!);
+
+async function initData() {
+  await settings.loadLocale("ru");
+}
 
 root.render(
   <BrowserRouter>
     <Provider store={store}>
       <Suspense fallback="...loading">
-        <Await resolve={settings.loadLocale("ru")} children={<App />} />
+        <Await resolve={initData} children={<App />} />
       </Suspense>
     </Provider>
   </BrowserRouter>,

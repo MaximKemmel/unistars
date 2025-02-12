@@ -1,6 +1,6 @@
 ﻿import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-import { login } from "./admin.actions";
+import { login, refreshToken } from "./admin.actions";
 
 import { IApiStatus, initApiStatus } from "../../types/local/apiStatus";
 import { ApiStatusType } from "../../enums/local/apiStatusType";
@@ -8,14 +8,18 @@ import { ILoginResponse } from "../../types/loginResponse/loginResponse";
 
 interface IAdminState {
   isAuth: boolean;
+  isRefreshed: boolean;
   loginResponse: ILoginResponse;
   loginStatus: IApiStatus;
+  refreshStatus: IApiStatus;
 }
 
 const initialState: IAdminState = {
   isAuth: false,
+  isRefreshed: false,
   loginResponse: { accessToken: "", refreshToken: "" },
   loginStatus: initApiStatus(),
+  refreshStatus: initApiStatus(),
 };
 
 export const adminSlice = createSlice({
@@ -23,7 +27,9 @@ export const adminSlice = createSlice({
   initialState,
   reducers: {
     authMe(state) {
-      state.isAuth = window.localStorage.getItem("unistars_token") != null;
+      state.isAuth =
+        window.localStorage.getItem("unistars_token") != null &&
+        window.localStorage.getItem("unistars_refresh_token") != null;
     },
     logout(state) {
       window.localStorage.removeItem("unistars_token");
@@ -32,6 +38,9 @@ export const adminSlice = createSlice({
     },
     setLoginStatus(state, action: PayloadAction<IApiStatus>) {
       state.loginStatus = action.payload;
+    },
+    setRefreshStatus(state, action: PayloadAction<IApiStatus>) {
+      state.refreshStatus = action.payload;
     },
   },
   extraReducers: (builder) => {
@@ -54,6 +63,28 @@ export const adminSlice = createSlice({
     });
     builder.addCase(login.rejected, (state, action) => {
       state.loginStatus = {
+        status: ApiStatusType.ERROR,
+        error: action.payload as string,
+      };
+    });
+    //#endregion
+
+    //#region Refresh token
+    builder.addCase(refreshToken.pending, (state) => {
+      state.refreshStatus = { status: ApiStatusType.IN_PROGRESS };
+    });
+    builder.addCase(refreshToken.fulfilled, (state, action) => {
+      state.refreshStatus = { status: ApiStatusType.SUCCESS };
+      state.loginResponse = action.payload;
+      window.localStorage.setItem(
+        "unistars_token",
+        state.loginResponse.accessToken,
+      );
+      state.isRefreshed = true;
+      state.isAuth = true;
+    });
+    builder.addCase(refreshToken.rejected, (state, action) => {
+      state.refreshStatus = {
         status: ApiStatusType.ERROR,
         error: action.payload as string,
       };

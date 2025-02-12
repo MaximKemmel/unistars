@@ -40,7 +40,6 @@ instance.interceptors.response.use(
           },
         );
         const loginResponse = response.data;
-        console.log(loginResponse);
         localStorage.setItem("unistars_token", loginResponse.accessToken);
         return instance.request(originalRequest);
       } catch (e) {}
