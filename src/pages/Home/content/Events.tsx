@@ -11,6 +11,7 @@ import globalStyles from "../../../App.module.sass";
 import styles from "../Home.module.sass";
 
 import { IEvent } from "../../../types/event/event";
+import { initEvent } from "../../../types/event/initEvent";
 
 import PlusIcon from "../../../assets/svg/plus.svg";
 
@@ -65,7 +66,7 @@ export const Events = () => {
       </div>
       <EventModal
         isShow={isEventModalShow}
-        eventInfo={{ id: -1 } as IEvent}
+        eventInfo={initEvent()}
         onSave={() => setIsEventModalShow(false)}
         onClose={() => setIsEventModalShow(false)}
       />
