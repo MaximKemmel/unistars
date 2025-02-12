@@ -8,11 +8,9 @@ import App from "./App";
 import { store } from "./store/store";
 
 import "../src/utils/i18n.js";
-import { settings } from "@gravity-ui/date-utils";
 
 const container = document.getElementById("root");
 const root = createRoot(container!);
-await settings.loadLocale("ru");
 
 root.render(
   <BrowserRouter>

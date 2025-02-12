@@ -4,6 +4,8 @@ import { useTranslation } from "react-i18next";
 import { settings } from "@gravity-ui/date-utils";
 import { configure } from "@gravity-ui/uikit";
 import { Lang, ThemeProvider } from "@gravity-ui/uikit";
+import "@gravity-ui/uikit/styles/fonts.css";
+import "@gravity-ui/uikit/styles/styles.css";
 
 import { useActions } from "./hooks/useActions";
 import { useTypedSelector } from "./hooks/useTypedSelector";
@@ -15,8 +17,6 @@ import { Home } from "./pages/Home/Home";
 import { SignIn } from "./pages/SignIn/SignIn";
 
 import styles from "./App.module.sass";
-import "@gravity-ui/uikit/styles/fonts.css";
-import "@gravity-ui/uikit/styles/styles.css";
 
 function App() {
   const { i18n } = useTranslation();
@@ -27,6 +27,7 @@ function App() {
   const cities = useTypedSelector((state) => state.coreReducer.cities);
 
   useLayoutEffect(() => {
+    settings.loadLocale("ru");
     if (!Array.isArray(countries) || countries.length === 0) {
       getCountries();
     }
