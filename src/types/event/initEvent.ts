@@ -6,6 +6,7 @@ export function initEvent(): IEvent {
     name: "",
     link: "",
     address: "",
+    startDate: "",
   };
 
   return {

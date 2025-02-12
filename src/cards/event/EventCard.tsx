@@ -26,7 +26,8 @@ export const EventCard: React.FC<IEventCardProps> = ({ eventItem }) => {
       <div className={styles.event_info}>
         <div className={styles.event_name}>{eventItem.name}</div>
         <div className={styles.event_participants}>
-          {`${eventItem.eventSubscribers.length} ${t("events.participants")} • ${eventItem.eventModerators.length} ${t("events.ambassadors")}`}
+          {`${eventItem.eventSubscribers !== undefined && Array.isArray(eventItem.eventSubscribers) ? eventItem.eventSubscribers.length : 0} ${t("events.participants")} 
+          • ${eventItem.eventModerators !== undefined && Array.isArray(eventItem.eventModerators) ? eventItem.eventModerators.length : 0} ${t("events.ambassadors")}`}
         </div>
       </div>
       <div className={styles.event_date}>

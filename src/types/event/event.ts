@@ -8,7 +8,7 @@ export interface IEvent {
   universityFullName?: string;
   universityLogoUrl?: string;
   geolocation?: IGeoLocation;
-  startDate?: string;
+  startDate: string;
   address: string;
   link: string;
   coverUrl?: string;
