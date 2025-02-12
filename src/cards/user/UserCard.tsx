@@ -39,7 +39,7 @@ export const UserCard: React.FC<IUserCardProps> = ({
       {isCheckedItem ? (
         <div className={styles.checkbox}>
           <Checkbox
-            isChecked={userItem.isSelected}
+            isChecked={userItem.isSelected ?? false}
             onChangeStatus={(status: boolean) => onCheckedChange!(status)}
           />
         </div>

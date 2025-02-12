@@ -65,11 +65,7 @@ export const Events = () => {
       </div>
       <EventModal
         isShow={isEventModalShow}
-        eventInfo={{
-          id: -1,
-          event_type: -1,
-          event_kind: 0,
-        }}
+        eventInfo={{ id: -1 } as IEvent}
         onSave={() => setIsEventModalShow(false)}
         onClose={() => setIsEventModalShow(false)}
       />

@@ -104,13 +104,13 @@ export const AmbassadorsModal: React.FC<IAmbassadorsModalProps> = ({
                             isRequestItem={true}
                             onCancelRequest={() =>
                               acceptAmbassador({
-                                ambassadorId: ambassadorRequest.id,
+                                ambassadorId: ambassadorRequest.id!,
                                 isAccept: false,
                               })
                             }
                             onAcceptRequest={() =>
                               acceptAmbassador({
-                                ambassadorId: ambassadorRequest.id,
+                                ambassadorId: ambassadorRequest.id!,
                                 isAccept: true,
                               })
                             }

@@ -41,13 +41,13 @@ export const EditAmbassadorRequestsModal: React.FC<
 
   function acceptAmbassadors(requests: IUser[]) {
     requests.forEach((ambassador: IUser) =>
-      acceptAmbassador({ ambassadorId: ambassador.id, isAccept: true }),
+      acceptAmbassador({ ambassadorId: ambassador.id!, isAccept: true }),
     );
   }
 
   function cancelAmbassadors(requests: IUser[]) {
     requests.forEach((ambassador: IUser) =>
-      acceptAmbassador({ ambassadorId: ambassador.id, isAccept: false }),
+      acceptAmbassador({ ambassadorId: ambassador.id!, isAccept: false }),
     );
   }
 
@@ -116,13 +116,13 @@ export const EditAmbassadorRequestsModal: React.FC<
                   }
                   onCancelRequest={() =>
                     acceptAmbassador({
-                      ambassadorId: ambassador.id,
+                      ambassadorId: ambassador.id!,
                       isAccept: false,
                     })
                   }
                   onAcceptRequest={() =>
                     acceptAmbassador({
-                      ambassadorId: ambassador.id,
+                      ambassadorId: ambassador.id!,
                       isAccept: true,
                     })
                   }
