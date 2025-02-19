@@ -19,6 +19,8 @@ i18n
       escapeValue: false,
     },
   })
-  .then(() => settings.loadLocale("ru"));
+  .then();
+
+settings.loadLocale("ru").then();
 
 export default i18n;
