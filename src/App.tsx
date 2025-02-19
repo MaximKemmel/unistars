@@ -18,6 +18,8 @@ import { SignIn } from "./pages/SignIn/SignIn";
 
 import styles from "./App.module.sass";
 
+import "./utils/i18n.js";
+
 function App() {
   const { i18n } = useTranslation();
   const { getCountries, getCities } = useActions();

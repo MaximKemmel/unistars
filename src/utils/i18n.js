@@ -2,8 +2,9 @@ import i18n from "i18next";
 import { initReactI18next } from "react-i18next";
 import LanguageDetector from "i18next-browser-languagedetector";
 import Backend from "i18next-http-backend";
+import { settings } from "@gravity-ui/date-utils";
 
-i18n
+await i18n
   .use(Backend)
   .use(LanguageDetector)
   .use(initReactI18next)
@@ -17,7 +18,8 @@ i18n
     interpolation: {
       escapeValue: false,
     },
-  })
-  .then();
+  });
+
+await settings.loadLocale("ru");
 
 export default i18n;
