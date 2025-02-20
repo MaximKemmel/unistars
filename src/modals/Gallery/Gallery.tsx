@@ -15,12 +15,14 @@ import CloseIcon from "../../assets/svg/close.svg";
 interface IGalleryModalProps {
   isShow: boolean;
   onEdit: Function;
+  onUpload: Function;
   onClose: Function;
 }
 
 export const GalleryModal: React.FC<IGalleryModalProps> = ({
   isShow,
   onEdit,
+  onUpload,
   onClose,
 }) => {
   const { t } = useTranslation();
@@ -74,7 +76,11 @@ export const GalleryModal: React.FC<IGalleryModalProps> = ({
                 >
                   <span>{t("global.edit")}</span>
                 </button>
-                <button className={globalStyles.small} type="button">
+                <button
+                  className={globalStyles.small}
+                  type="button"
+                  onClick={() => onUpload()}
+                >
                   {t("gallery.upload_photo")}
                   <img src={UploadIcon} alt="" />
                 </button>

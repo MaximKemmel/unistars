@@ -35,6 +35,9 @@ export const universitySlice = createSlice({
     setEditUniversityStatus(state, action: PayloadAction<IApiStatus>) {
       state.editStatus = action.payload;
     },
+    setUploadToGalleryStatus(state, action: PayloadAction<IApiStatus>) {
+      state.uploadToGalleryStatus = action.payload;
+    },
   },
   extraReducers: (builder) => {
     //#region University Profile
@@ -94,13 +97,13 @@ export const universitySlice = createSlice({
 
     //#region Upload to gallery
     builder.addCase(uploadToGallery.pending, (state) => {
-      state.editStatus = { status: ApiStatusType.IN_PROGRESS };
+      state.uploadToGalleryStatus = { status: ApiStatusType.IN_PROGRESS };
     });
     builder.addCase(uploadToGallery.fulfilled, (state) => {
-      state.editStatus = { status: ApiStatusType.SUCCESS };
+      state.uploadToGalleryStatus = { status: ApiStatusType.SUCCESS };
     });
     builder.addCase(uploadToGallery.rejected, (state, action) => {
-      state.editStatus = {
+      state.uploadToGalleryStatus = {
         status: ApiStatusType.ERROR,
         error: action.payload as string,
       };

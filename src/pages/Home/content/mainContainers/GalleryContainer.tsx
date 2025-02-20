@@ -13,10 +13,13 @@ import globalStyles from "../../../../App.module.sass";
 import styles from "../../Home.module.sass";
 
 import { IFileStorage } from "../../../../types/university/fileStorage";
+import { initApiStatus } from "../../../../types/local/apiStatus";
+import { ApiStatusType } from "../../../../enums/local/apiStatusType";
 
 export const GalleryContainer = () => {
   const { t } = useTranslation();
-  const { uploadToGallery } = useActions();
+  const { uploadToGallery, getUniversityProfile, setUploadToGalleryStatus } =
+    useActions();
   const gallery = useTypedSelector(
     (state) => state.universityReducer.universityProfile.standGalleryImages,
   );
@@ -27,10 +30,28 @@ export const GalleryContainer = () => {
   const [isStatusInfoModalShow, setIsStatusInfoModalShow] = useState(false);
   const inputImageRef = useRef<HTMLInputElement>(null);
   const [uploadImageProgress, setUploadImageProgress] = useState(-1);
+  const uploadImageStatus = useTypedSelector(
+    (state) => state.universityReducer.uploadToGalleryStatus,
+  );
 
   useEffect(() => {
-    console.log(uploadImageProgress);
+    if (uploadImageProgress === 100) {
+      setUploadImageProgress(-1);
+    }
   }, [uploadImageProgress]);
+
+  useEffect(() => {
+    switch (uploadImageStatus.status) {
+      case ApiStatusType.SUCCESS:
+        getUniversityProfile();
+        setUploadToGalleryStatus(initApiStatus());
+        setIsGalleryModalShow(false);
+        break;
+      case ApiStatusType.ERROR:
+        setUploadToGalleryStatus(initApiStatus());
+        break;
+    }
+  }, [uploadImageStatus]);
 
   const handleOnDeletePhotos = (photos: IFileStorage[]) => {
     console.log(photos);
@@ -85,7 +106,12 @@ export const GalleryContainer = () => {
           {gallery != undefined &&
           Array.isArray(gallery) &&
           gallery.length > 0 ? (
-            <div className={styles.head_action}>{t("gallery.upload_more")}</div>
+            <div
+              className={styles.head_action}
+              onClick={() => inputImageRef.current!.click()}
+            >
+              {t("gallery.upload_more")}
+            </div>
           ) : null}
         </div>
         {gallery != undefined &&
@@ -120,7 +146,7 @@ export const GalleryContainer = () => {
             <button
               className={globalStyles.small}
               type="button"
-              onClick={() => setIsGalleryModalShow(true)}
+              onClick={() => inputImageRef.current!.click()}
             >
               {t("gallery.upload_photos")}
             </button>
@@ -140,6 +166,9 @@ export const GalleryContainer = () => {
         onEdit={() => {
           setIsGalleryModalShow(false);
           setIsGalleryEditModalShow(true);
+        }}
+        onUpload={() => {
+          inputImageRef.current!.click();
         }}
         onClose={() => {
           setIsGalleryModalShow(false);

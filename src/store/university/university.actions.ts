@@ -74,12 +74,10 @@ export const uploadToGallery = createAsyncThunk(
   ) => {
     const formData = new FormData();
     formData.append("type", "IMAGE");
-    formData.append("file", file);
-    const response = await axios
-      .post("/upload_to_gallery", formData, {
-        onUploadProgress: (data) => onUploadProgress(data),
-      })
-      .then((response) => response.data);
+    formData.append("files", file);
+    const response = await axios.post("/upload_to_gallery", formData, {
+      onUploadProgress: (data) => onUploadProgress(data),
+    });
     if (response.status !== 200) {
       throw rejectWithValue("Server error!");
     }

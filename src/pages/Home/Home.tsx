@@ -16,6 +16,8 @@ import { IAmbassadorRequest } from "src/types/ambassador/ambassadorRequest";
 export const Home = () => {
   const {
     getUniversityProfile,
+    getCountries,
+    getCities,
     getSubscribersList,
     getStudents,
     clearStudents,
@@ -31,6 +33,8 @@ export const Home = () => {
   const universityProfile = useTypedSelector(
     (state) => state.universityReducer.universityProfile,
   );
+  const countries = useTypedSelector((state) => state.coreReducer.countries);
+  const cities = useTypedSelector((state) => state.coreReducer.cities);
   const [activeSection, setActiveSection] = useState(0);
   const [isMinimized, setIsMinimized] = useState(false);
   const contentSections = [
@@ -52,6 +56,13 @@ export const Home = () => {
       getEventList();
       getEventTypes();
       getAdvertList();
+
+      if (!Array.isArray(countries) || countries.length === 0) {
+        getCountries();
+      }
+      if (!Array.isArray(cities) || cities.length === 0) {
+        getCities();
+      }
 
       if (
         universityProfile.studentIds != undefined &&

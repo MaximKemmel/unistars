@@ -1,4 +1,4 @@
-import { useEffect, useLayoutEffect } from "react";
+import { useEffect } from "react";
 import { Route, Routes, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { settings } from "@gravity-ui/date-utils";
@@ -22,24 +22,13 @@ import "./utils/i18n.js";
 
 function App() {
   const { i18n } = useTranslation();
-  const { getCountries, getCities, refreshToken } = useActions();
+  const { refreshToken } = useActions();
   const navigate = useNavigate();
   const isAuthGlobal = useAuth();
   const isAuth = useTypedSelector((state) => state.adminReducer.isAuth);
   const isRefreshed = useTypedSelector(
     (state) => state.adminReducer.isRefreshed,
   );
-  const countries = useTypedSelector((state) => state.coreReducer.countries);
-  const cities = useTypedSelector((state) => state.coreReducer.cities);
-
-  useLayoutEffect(() => {
-    if (!Array.isArray(countries) || countries.length === 0) {
-      getCountries();
-    }
-    if (!Array.isArray(cities) || cities.length === 0) {
-      getCities();
-    }
-  }, []);
 
   useEffect(() => {
     if (isAuth && !isRefreshed) {
