@@ -167,9 +167,6 @@ export const GalleryContainer = () => {
           setIsGalleryModalShow(false);
           setIsGalleryEditModalShow(true);
         }}
-        onUpload={() => {
-          inputImageRef.current!.click();
-        }}
         onClose={() => {
           setIsGalleryModalShow(false);
         }}

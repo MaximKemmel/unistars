@@ -1,6 +1,7 @@
-﻿import React, { useEffect } from "react";
+﻿import React, { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 
+import { useActions } from "../../hooks/useActions";
 import { useTypedSelector } from "../../hooks/useTypedSelector";
 
 import globalStyles from "../../App.module.sass";
@@ -8,32 +9,68 @@ import modalStyles from "../Modal.module.sass";
 import styles from "./GalleryModal.module.sass";
 
 import { IFileStorage } from "../../types/university/fileStorage";
+import { ApiStatusType } from "../../enums/local/apiStatusType";
 
-import UploadIcon from "../../assets/svg/upload.svg";
+import { Upload as UploadIcon } from "../../assets/svgComponents/Upload";
 import CloseIcon from "../../assets/svg/close.svg";
 
 interface IGalleryModalProps {
   isShow: boolean;
   onEdit: Function;
-  onUpload: Function;
   onClose: Function;
 }
 
 export const GalleryModal: React.FC<IGalleryModalProps> = ({
   isShow,
   onEdit,
-  onUpload,
   onClose,
 }) => {
   const { t } = useTranslation();
+  const { uploadToGallery } = useActions();
   const photos = useTypedSelector(
     (state) => state.universityReducer.universityProfile.standGalleryImages,
   );
+  const inputImageRef = useRef<HTMLInputElement>(null);
+  const [uploadImageProgress, setUploadImageProgress] = useState(-1);
+  const uploadImageStatus = useTypedSelector(
+    (state) => state.universityReducer.uploadToGalleryStatus,
+  );
+
+  useEffect(() => {
+    if (uploadImageProgress === 100) {
+      setUploadImageProgress(-1);
+    }
+  }, [uploadImageProgress]);
 
   useEffect(() => {
     const contentDiv = document.getElementById("gallery_content");
     contentDiv?.scrollTo({ top: 0, behavior: "smooth" });
   }, [isShow]);
+
+  const handleOnChangeImage = (event) => {
+    try {
+      const file = event.target.files[0];
+      if (
+        file.size < 5242880 &&
+        (file.name.endsWith(".png") ||
+          file.name.endsWith(".jpg") ||
+          file.name.endsWith(".jpeg") ||
+          file.name.endsWith(".bmp"))
+      ) {
+        uploadToGallery({
+          file: file,
+          onUploadProgress: (data) => {
+            setUploadImageProgress(
+              Math.round(100 * (data.loaded / data.total!)),
+            );
+          },
+        });
+      }
+      event.target.value = "";
+    } catch (error) {
+      console.warn(error);
+    }
+  };
 
   return (
     <div className={`${modalStyles.modal} ${isShow ? modalStyles.active : ""}`}>
@@ -79,16 +116,31 @@ export const GalleryModal: React.FC<IGalleryModalProps> = ({
                 <button
                   className={globalStyles.small}
                   type="button"
-                  onClick={() => onUpload()}
+                  onClick={() => inputImageRef.current!.click()}
+                  disabled={
+                    uploadImageStatus.status === ApiStatusType.IN_PROGRESS
+                  }
                 >
                   {t("gallery.upload_photo")}
-                  <img src={UploadIcon} alt="" />
+                  <UploadIcon
+                    isDisabled={
+                      uploadImageStatus.status === ApiStatusType.IN_PROGRESS
+                    }
+                  />
                 </button>
               </div>
             </div>
           </>
         ) : null}
       </div>
+      <input
+        ref={inputImageRef}
+        type="file"
+        id="file"
+        accept="image/png, image/jpeg"
+        onChange={handleOnChangeImage}
+        hidden
+      />
     </div>
   );
 };
