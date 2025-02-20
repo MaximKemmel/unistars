@@ -5,5 +5,6 @@ export function useAuth() {
   const isRefreshed = useTypedSelector(
     (state) => state.adminReducer.isRefreshed,
   );
+
   return isAuth && isRefreshed;
 }

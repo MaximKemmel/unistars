@@ -60,6 +60,7 @@ export const adminSlice = createSlice({
         state.loginResponse.refreshToken,
       );
       state.isAuth = true;
+      state.isRefreshed = true;
     });
     builder.addCase(login.rejected, (state, action) => {
       state.loginStatus = {

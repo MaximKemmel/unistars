@@ -22,9 +22,13 @@ import "./utils/i18n.js";
 
 function App() {
   const { i18n } = useTranslation();
-  const { getCountries, getCities } = useActions();
+  const { getCountries, getCities, refreshToken } = useActions();
   const navigate = useNavigate();
-  const isAuth = useAuth();
+  const isAuthGlobal = useAuth();
+  const isAuth = useTypedSelector((state) => state.adminReducer.isAuth);
+  const isRefreshed = useTypedSelector(
+    (state) => state.adminReducer.isRefreshed,
+  );
   const countries = useTypedSelector((state) => state.coreReducer.countries);
   const cities = useTypedSelector((state) => state.coreReducer.cities);
 
@@ -38,10 +42,16 @@ function App() {
   }, []);
 
   useEffect(() => {
-    if (isAuth) {
+    if (isAuth && !isRefreshed) {
+      refreshToken();
+    }
+  }, [isAuth, isRefreshed]);
+
+  useEffect(() => {
+    if (isAuthGlobal) {
       navigate("/");
     }
-  }, [isAuth]);
+  }, [isAuthGlobal]);
 
   useEffect(() => {
     configure({ lang: i18n.resolvedLanguage as Lang });
