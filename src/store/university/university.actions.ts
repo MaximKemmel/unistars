@@ -52,6 +52,7 @@ export const editUniversityProfile = createAsyncThunk(
         Array.isArray(university.userCountries)
           ? university.userCountries.map((country: ICountry) => country.id)
           : [],
+      linksSocialNetwork: university.linksSocialNetwork,
     });
     if (response.status !== 200) {
       throw rejectWithValue("Server error!");

@@ -18,7 +18,11 @@ import { Chevron as ChevronIcon } from "../../../../assets/svgComponents/Chevron
 
 export const UniversityInfoContainer = () => {
   const { t, i18n } = useTranslation();
-  const { editUniversityProfile, setEditUniversityStatus } = useActions();
+  const {
+    getUniversityProfile,
+    editUniversityProfile,
+    setEditUniversityStatus,
+  } = useActions();
   const universityProfile = useTypedSelector(
     (state) => state.universityReducer.universityProfile,
   );
@@ -32,9 +36,11 @@ export const UniversityInfoContainer = () => {
     switch (editStatus.status) {
       case ApiStatusType.SUCCESS:
         setEditUniversityStatus(initApiStatus());
+        getUniversityProfile();
         setIsAboutModalShow(false);
         break;
       case ApiStatusType.ERROR:
+        setEditUniversityStatus(initApiStatus());
         setIsAboutModalShow(false);
         break;
     }
