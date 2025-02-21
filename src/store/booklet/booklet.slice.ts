@@ -5,6 +5,8 @@ import {
   postBooklet,
   editBooklet,
   deleteBooklet,
+  uploadBookletCover,
+  uploadBookletFile,
 } from "./booklet.actions";
 
 import { IBooklet } from "../../types/booklet/booklet";
@@ -13,35 +15,49 @@ import { ApiStatusType } from "../../enums/local/apiStatusType";
 
 interface IBookletState {
   booklets: IBooklet[];
+  bookletCover: string;
+  bookletFile: string;
   getStatus: IApiStatus;
   postStatus: IApiStatus;
   editStatus: IApiStatus;
   deleteStatus: IApiStatus;
+  uploadCoverStatus: IApiStatus;
+  uploadFileStatus: IApiStatus;
 }
 
 const initialState: IBookletState = {
   booklets: [] as IBooklet[],
+  bookletCover: "",
+  bookletFile: "",
   getStatus: initApiStatus(),
   postStatus: initApiStatus(),
   editStatus: initApiStatus(),
   deleteStatus: initApiStatus(),
+  uploadCoverStatus: initApiStatus(),
+  uploadFileStatus: initApiStatus(),
 };
 
 export const bookletSlice = createSlice({
   name: "booklet",
   initialState,
   reducers: {
-    setGetStatus(state, action: PayloadAction<IApiStatus>) {
+    setGetBookletsStatus(state, action: PayloadAction<IApiStatus>) {
       state.getStatus = action.payload;
     },
-    setPostStatus(state, action: PayloadAction<IApiStatus>) {
+    setPostBookletStatus(state, action: PayloadAction<IApiStatus>) {
       state.postStatus = action.payload;
     },
-    setEditStatus(state, action: PayloadAction<IApiStatus>) {
+    setEditBookletStatus(state, action: PayloadAction<IApiStatus>) {
       state.editStatus = action.payload;
     },
-    setDeleteStatus(state, action: PayloadAction<IApiStatus>) {
+    setDeleteBookletStatus(state, action: PayloadAction<IApiStatus>) {
       state.deleteStatus = action.payload;
+    },
+    setUploadCoverStatus(state, action: PayloadAction<IApiStatus>) {
+      state.uploadCoverStatus = action.payload;
+    },
+    setUploadFileStatus(state, action: PayloadAction<IApiStatus>) {
+      state.uploadFileStatus = action.payload;
     },
   },
   extraReducers: (builder) => {
@@ -116,6 +132,38 @@ export const bookletSlice = createSlice({
     });
     builder.addCase(deleteBooklet.rejected, (state, action) => {
       state.deleteStatus = {
+        status: ApiStatusType.ERROR,
+        error: action.payload as string,
+      };
+    });
+    //#endregion
+
+    //#region Upload cover
+    builder.addCase(uploadBookletCover.pending, (state) => {
+      state.uploadCoverStatus = { status: ApiStatusType.IN_PROGRESS };
+    });
+    builder.addCase(uploadBookletCover.fulfilled, (state, action) => {
+      state.uploadCoverStatus = { status: ApiStatusType.SUCCESS };
+      state.bookletCover = action.payload;
+    });
+    builder.addCase(uploadBookletCover.rejected, (state, action) => {
+      state.uploadCoverStatus = {
+        status: ApiStatusType.ERROR,
+        error: action.payload as string,
+      };
+    });
+    //#endregion
+
+    //#region Upload file
+    builder.addCase(uploadBookletFile.pending, (state) => {
+      state.uploadFileStatus = { status: ApiStatusType.IN_PROGRESS };
+    });
+    builder.addCase(uploadBookletFile.fulfilled, (state, action) => {
+      state.uploadFileStatus = { status: ApiStatusType.SUCCESS };
+      state.bookletFile = action.payload;
+    });
+    builder.addCase(uploadBookletFile.rejected, (state, action) => {
+      state.uploadFileStatus = {
         status: ApiStatusType.ERROR,
         error: action.payload as string,
       };

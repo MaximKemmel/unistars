@@ -108,7 +108,11 @@ export const GalleryContainer = () => {
           gallery.length > 0 ? (
             <div
               className={styles.head_action}
-              onClick={() => inputImageRef.current!.click()}
+              onClick={() => {
+                if (uploadImageStatus.status !== ApiStatusType.IN_PROGRESS) {
+                  inputImageRef.current!.click();
+                }
+              }}
             >
               {t("gallery.upload_more")}
             </div>
@@ -146,6 +150,7 @@ export const GalleryContainer = () => {
             <button
               className={globalStyles.small}
               type="button"
+              disabled={uploadImageStatus.status === ApiStatusType.IN_PROGRESS}
               onClick={() => inputImageRef.current!.click()}
             >
               {t("gallery.upload_photos")}

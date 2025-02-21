@@ -1,6 +1,7 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 
+import { useActions } from "../../../../hooks/useActions";
 import { useTypedSelector } from "../../../../hooks/useTypedSelector";
 
 import { BookletCard } from "../../../../cards/booklet/BookletCard";
@@ -14,26 +15,100 @@ import styles from "../../Home.module.sass";
 
 import { IBooklet } from "../../../../types/booklet/booklet";
 import { initBooklet } from "../../../../types/booklet/initBooklet";
+import { ApiStatusType } from "../../../../enums/local/apiStatusType";
+import { initApiStatus } from "../../../../types/local/apiStatus";
 
 export const BookletsContainer = () => {
   const { t } = useTranslation();
+  const {
+    getUniversityProfile,
+    postBooklet,
+    editBooklet,
+    deleteBooklet,
+    setPostBookletStatus,
+    setEditBookletStatus,
+    setDeleteBookletStatus,
+  } = useActions();
   const booklets = useTypedSelector((state) => state.bookletReducer.booklets);
   const [currentBooklet, setCurrentBooklet] = useState(initBooklet());
+  const postStatus = useTypedSelector(
+    (state) => state.bookletReducer.postStatus,
+  );
+  const updateStatus = useTypedSelector(
+    (state) => state.bookletReducer.editStatus,
+  );
+  const deleteStatus = useTypedSelector(
+    (state) => state.bookletReducer.deleteStatus,
+  );
+  const [deletedBooklet, setDeletedBooklet] = useState(initBooklet());
   const [isBookletsModalShow, setIsBookletsModalShow] = useState(false);
   const [isEditBookletModalShow, setIsEditBookletModalShow] = useState(false);
   const [isConfirmDeleteModalShow, setIsConfirmDeleteModalShow] =
     useState(false);
   const [isStatusInfoModalShow, setIsStatusInfoModalShow] = useState(false);
+  const [statusMessage, setStatusMessage] = useState("");
+  const [isStatusSuccess, setIsStatusSuccess] = useState(true);
+  const [isStatusRestore, setIsStatusRestore] = useState(false);
+
+  useEffect(() => {
+    switch (postStatus.status) {
+      case ApiStatusType.SUCCESS:
+        setPostBookletStatus(initApiStatus());
+        getUniversityProfile();
+        setIsEditBookletModalShow(false);
+        setStatusMessage(t("booklets.booklet_was_created"));
+        setIsStatusInfoModalShow(true);
+        setIsStatusSuccess(true);
+        setIsStatusRestore(false);
+        break;
+      case ApiStatusType.ERROR:
+        setPostBookletStatus(initApiStatus());
+        break;
+    }
+  }, [postStatus]);
+
+  useEffect(() => {
+    switch (updateStatus.status) {
+      case ApiStatusType.SUCCESS:
+        setEditBookletStatus(initApiStatus());
+        getUniversityProfile();
+        setIsEditBookletModalShow(false);
+        setStatusMessage(t("booklets.booklet_was_edited"));
+        setIsStatusInfoModalShow(true);
+        setIsStatusSuccess(true);
+        setIsStatusRestore(false);
+        break;
+      case ApiStatusType.ERROR:
+        setEditBookletStatus(initApiStatus());
+        break;
+    }
+  }, [updateStatus]);
+
+  useEffect(() => {
+    switch (deleteStatus.status) {
+      case ApiStatusType.SUCCESS:
+        setDeleteBookletStatus(initApiStatus());
+        getUniversityProfile();
+        setStatusMessage(t("booklets.booklet_was_deleted"));
+        setIsStatusInfoModalShow(true);
+        setIsStatusSuccess(true);
+        setIsStatusRestore(true);
+        break;
+      case ApiStatusType.ERROR:
+        setDeleteBookletStatus(initApiStatus());
+        break;
+    }
+  }, [deleteStatus]);
 
   const handleOnDeleteBooklet = (booklet: IBooklet) => {
-    console.log(booklet);
+    setDeletedBooklet(booklet);
     setIsEditBookletModalShow(false);
     setIsConfirmDeleteModalShow(true);
   };
 
   const handleOnConfirmDeleteBooklet = () => {
     setIsConfirmDeleteModalShow(false);
-    setIsStatusInfoModalShow(true);
+    deleteBooklet({ id: deletedBooklet.id });
   };
 
   return (
@@ -124,6 +199,13 @@ export const BookletsContainer = () => {
       <EditBookletModal
         isShow={isEditBookletModalShow}
         booklet={currentBooklet}
+        onSave={(booklet: IBooklet) => {
+          if (booklet.id === -1) {
+            postBooklet({ booklet: booklet });
+          } else {
+            editBooklet({ booklet: booklet });
+          }
+        }}
         onDelete={handleOnDeleteBooklet}
         onClose={() => setIsEditBookletModalShow(false)}
       />
@@ -140,10 +222,10 @@ export const BookletsContainer = () => {
       />
       <StatusInfoModal
         isShow={isStatusInfoModalShow}
-        message={t("booklets.booklet_was_deleted")}
-        isSuccess={true}
+        message={statusMessage}
+        isSuccess={isStatusSuccess}
         onClose={() => setIsStatusInfoModalShow(false)}
-        isRestore={true}
+        isRestore={isStatusRestore}
         onRestore={() => setIsStatusInfoModalShow(false)}
       />
     </>

@@ -131,7 +131,9 @@
     "upload_file": "Upload booklet's file",
     "delete_title": "Do you really want to delete the selected booklet?",
     "delete_description": "It will disappear from the booklet list, and users will no longer be able to view it.",
-    "booklet_was_deleted": "The booklet was successfully deleted"
+    "booklet_was_deleted": "The booklet was successfully deleted",
+    "booklet_was_edited": "The booklet was successfully edited",
+    "booklet_was_added": "The booklet was successfully created"
   },
   "events": {
     "create_event": "Create event",

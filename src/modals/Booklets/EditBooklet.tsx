@@ -1,6 +1,9 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 
+import { useActions } from "../../hooks/useActions";
+import { useTypedSelector } from "../../hooks/useTypedSelector";
+
 import { Input } from "../../components/input/Input";
 
 import globalStyles from "../../App.module.sass";
@@ -8,6 +11,7 @@ import modalStyles from "../Modal.module.sass";
 import styles from "./BookletsModal.module.sass";
 
 import { IBooklet } from "../../types/booklet/booklet";
+import { ApiStatusType } from "../../enums/local/apiStatusType";
 
 import { Close as CloseIcon } from "../../assets/svgComponents/Close";
 import { Trash as TrashIcon } from "../../assets/svgComponents/Trash";
@@ -19,6 +23,7 @@ import CheckIcon from "../../assets/svg/circled-check.svg";
 interface IEditBookletModalProps {
   isShow: boolean;
   booklet: IBooklet;
+  onSave: Function;
   onDelete: Function;
   onClose: Function;
 }
@@ -26,17 +31,32 @@ interface IEditBookletModalProps {
 export const EditBookletModal: React.FC<IEditBookletModalProps> = ({
   isShow,
   booklet,
+  onSave,
   onDelete,
   onClose,
 }) => {
   const { t } = useTranslation();
+  const { uploadBookletCover, uploadBookletFile } = useActions();
   const [currentBooklet, setCurrentBooklet] = useState(booklet);
-  const [isImageUploaded, setIsImageUploaded] = useState(false);
-  const [isImageUploadSuccess, setIsImageUploadSuccess] = useState(true);
   const inputImageRef = useRef<HTMLInputElement>(null);
-  const [isFileUploaded, setIsFileUploaded] = useState(false);
-  const [isFileUploadSuccess, setIsFileUploadSuccess] = useState(true);
+  const [uploadImageProgress, setUploadImageProgress] = useState(-1);
+  const uploadImageStatus = useTypedSelector(
+    (state) => state.bookletReducer.uploadCoverStatus,
+  );
+  const bookletCover = useTypedSelector(
+    (state) => state.bookletReducer.bookletCover,
+  );
+  const [imageName, setImageName] = useState("");
   const inputFileRef = useRef<HTMLInputElement>(null);
+  const [uploadFileProgress, setUploadFileProgress] = useState(-1);
+  const uploadFileStatus = useTypedSelector(
+    (state) => state.bookletReducer.uploadFileStatus,
+  );
+  const bookletFile = useTypedSelector(
+    (state) => state.bookletReducer.bookletFile,
+  );
+  const [fileName, setFileName] = useState("");
+  const [isButtonEnabled, setIsButtonEnabled] = useState(false);
 
   useEffect(() => {
     const contentDiv = document.getElementById("booklets_content");
@@ -44,14 +64,69 @@ export const EditBookletModal: React.FC<IEditBookletModalProps> = ({
     setCurrentBooklet(booklet);
   }, [isShow]);
 
-  const handleOnSaveBooklet = () => {};
+  useEffect(() => {
+    setIsButtonEnabled(
+      currentBooklet.title.trim().length > 0 &&
+        currentBooklet.description.trim().length > 0 &&
+        currentBooklet.imageUrl.trim().length > 0 &&
+        currentBooklet.bookletFileUrl.trim().length > 0,
+    );
+  }, [currentBooklet]);
+
+  useEffect(() => {
+    if (uploadImageProgress === 100) {
+      setUploadImageProgress(-1);
+    }
+  }, [uploadImageProgress]);
+
+  useEffect(() => {
+    if (uploadFileProgress === 100) {
+      setUploadFileProgress(-1);
+    }
+  }, [uploadFileProgress]);
+
+  useEffect(() => {
+    switch (uploadImageStatus.status) {
+      case ApiStatusType.SUCCESS:
+        setCurrentBooklet({
+          ...currentBooklet,
+          imageUrl: Object.values(bookletCover)[0],
+        });
+        break;
+    }
+  }, [uploadImageStatus]);
+
+  useEffect(() => {
+    switch (uploadFileStatus.status) {
+      case ApiStatusType.SUCCESS:
+        setCurrentBooklet({
+          ...currentBooklet,
+          bookletFileUrl: Object.values(bookletFile)[0],
+        });
+        break;
+    }
+  }, [uploadFileStatus]);
 
   const handleOnChangeImage = (event) => {
     try {
       const file = event.target.files[0];
-      setCurrentBooklet({ ...booklet, imageUrl: file.name });
-      setIsImageUploadSuccess(true);
-      setIsImageUploaded(true);
+      setImageName(file.name);
+      if (
+        file.size < 5242880 &&
+        (file.name.endsWith(".png") ||
+          file.name.endsWith(".jpg") ||
+          file.name.endsWith(".jpeg") ||
+          file.name.endsWith(".bmp"))
+      ) {
+        uploadBookletCover({
+          file: file,
+          onUploadProgress: (data) => {
+            setUploadImageProgress(
+              Math.round(100 * (data.loaded / data.total!)),
+            );
+          },
+        });
+      }
       event.target.value = "";
     } catch (error) {
       console.warn(error);
@@ -61,9 +136,17 @@ export const EditBookletModal: React.FC<IEditBookletModalProps> = ({
   const handleOnChangeFile = (event) => {
     try {
       const file = event.target.files[0];
-      setCurrentBooklet({ ...booklet, bookletFileUrl: file.name });
-      setIsFileUploadSuccess(true);
-      setIsFileUploaded(true);
+      setFileName(file.name);
+      if (file.size < 10000000) {
+        uploadBookletFile({
+          file: file,
+          onUploadProgress: (data) => {
+            setUploadFileProgress(
+              Math.round(100 * (data.loaded / data.total!)),
+            );
+          },
+        });
+      }
       event.target.value = "";
     } catch (error) {
       console.warn(error);
@@ -123,7 +206,8 @@ export const EditBookletModal: React.FC<IEditBookletModalProps> = ({
                 >
                   <img src={UploadImageIcon} alt="" />
                 </div>
-                {currentBooklet.imageUrl.trim().length === 0 ? (
+                {currentBooklet.imageUrl === null ||
+                currentBooklet.imageUrl.trim().length === 0 ? (
                   <div className={styles.form_button_label}>
                     {t("booklets.choose_a_cover")}
                   </div>
@@ -132,12 +216,15 @@ export const EditBookletModal: React.FC<IEditBookletModalProps> = ({
                     <div className={styles.file_name}>
                       <img src={FileIcon} alt="" />
                       <div className={styles.name}>
-                        {currentBooklet.imageUrl}
+                        {imageName.trim().length === 0
+                          ? currentBooklet.imageUrl
+                          : imageName}
                       </div>
                     </div>
-                    {isImageUploaded ? (
+                    {uploadImageStatus.status !== ApiStatusType.NONE &&
+                    uploadImageStatus.status !== ApiStatusType.IN_PROGRESS ? (
                       <>
-                        {isImageUploadSuccess ? (
+                        {uploadImageStatus.status === ApiStatusType.SUCCESS ? (
                           <div
                             className={`${styles.upload_progress} ${styles.success}`}
                           >
@@ -200,12 +287,15 @@ export const EditBookletModal: React.FC<IEditBookletModalProps> = ({
                       <div className={styles.file_name}>
                         <img src={FileIcon} alt="" />
                         <div className={styles.name}>
-                          {currentBooklet.bookletFileUrl}
+                          {fileName.trim().length === 0
+                            ? currentBooklet.bookletFileUrl
+                            : fileName}
                         </div>
                       </div>
-                      {isFileUploaded ? (
+                      {uploadFileStatus.status !== ApiStatusType.NONE &&
+                      uploadFileStatus.status !== ApiStatusType.IN_PROGRESS ? (
                         <>
-                          {isFileUploadSuccess ? (
+                          {uploadFileStatus.status === ApiStatusType.SUCCESS ? (
                             <div
                               className={`${styles.upload_progress} ${styles.success}`}
                             >
@@ -236,7 +326,8 @@ export const EditBookletModal: React.FC<IEditBookletModalProps> = ({
               <button
                 className={globalStyles.small}
                 type="button"
-                onClick={handleOnSaveBooklet}
+                onClick={() => onSave(currentBooklet)}
+                disabled={!isButtonEnabled}
               >
                 <span>{t("global.save")}</span>
               </button>
@@ -250,7 +341,12 @@ export const EditBookletModal: React.FC<IEditBookletModalProps> = ({
               >
                 <TrashIcon />
               </button>
-              <button className={globalStyles.small} type="button">
+              <button
+                className={globalStyles.small}
+                type="button"
+                onClick={() => onSave(currentBooklet)}
+                disabled={!isButtonEnabled}
+              >
                 <span>{t("global.save_changes")}</span>
               </button>
             </>

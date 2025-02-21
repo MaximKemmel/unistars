@@ -42,7 +42,6 @@ export const SignInForm: React.FC<ISignInFormProps> = ({ setCurrentStage }) => {
     switch (loginStatus.status) {
       case ApiStatusType.SUCCESS:
         setLoginStatus(initApiStatus());
-        setCurrentStage(2);
         break;
       case ApiStatusType.ERROR:
         setLoginStatus(initApiStatus());
