@@ -24,7 +24,7 @@ export const editUniversityProfile = createAsyncThunk(
       name: university.name,
       foundation:
         university.foundation !== null && university.foundation !== undefined
-          ? format(university.foundation, "dd.MM.yyyy")
+          ? format(university.foundation, "yyyy-MM-dd")
           : null,
       description: university.description,
       logoUrl: university.logoUrl,

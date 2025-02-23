@@ -1,9 +1,9 @@
 import { IAmbassadorRequest } from "../ambassador/ambassadorRequest";
-import { IConfirmedApplicantRequest } from "../dto/confirmedApplicantRequest";
+import { IConfirmedApplicantRequest } from "./confirmedApplicantRequest";
 import { ICountry } from "../core/country";
 import { ICity } from "../core/city";
 import { ILanguage } from "../core/language";
-import { IAmenity } from "../dto/amenity";
+import { IAmenity } from "./amenity";
 import { IFileStorage } from "./fileStorage";
 import { IUniversityTypeOfDegree } from "./universityTypeOfDegree";
 import { IConfirmedApplicantId } from "../local/confirmedApplicantId";

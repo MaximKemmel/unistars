@@ -45,9 +45,18 @@ export const UniversityModal: React.FC<IUniversityModalProps> = ({
   const [isButtonEnabled, setIsButtonEnabled] = useState(false);
 
   useEffect(() => {
-    setCurrentUniversityProfile(universityInfo);
-    const formDiv = document.getElementById("form");
-    formDiv?.scrollTo({ top: 0, behavior: "smooth" });
+    if (isShow) {
+      setCurrentUniversityProfile(universityInfo);
+      setDate(
+        new Date(
+          currentUniversityProfile.foundation != null
+            ? currentUniversityProfile.foundation
+            : "01.01.0001",
+        ),
+      );
+      const formDiv = document.getElementById("form");
+      formDiv?.scrollTo({ top: 0, behavior: "smooth" });
+    }
   }, [isShow]);
 
   useEffect(() => {
@@ -57,11 +66,6 @@ export const UniversityModal: React.FC<IUniversityModalProps> = ({
         currentUniversityProfile.foundation.trim().length > 0,
     );
   }, [currentUniversityProfile]);
-
-  const handleOnSubmit = (event: any) => {
-    event.preventDefault();
-    onSave(currentUniversityProfile);
-  };
 
   return (
     <div className={`${modalStyles.modal} ${isShow ? modalStyles.active : ""}`}>
@@ -80,7 +84,7 @@ export const UniversityModal: React.FC<IUniversityModalProps> = ({
             <img src={CloseIcon} alt="" />
           </div>
         </div>
-        <form onSubmit={handleOnSubmit} className={modalStyles.form}>
+        <form className={modalStyles.form}>
           <div className={modalStyles.form_content} id="form">
             <div className={modalStyles.part_container}>
               <div className={modalStyles.part_container_title}>
@@ -112,7 +116,7 @@ export const UniversityModal: React.FC<IUniversityModalProps> = ({
                   <div className={modalStyles.part_label}>
                     {t("university.date_of_foundation")}
                   </div>
-                  <Calendar date={date} setDate={setDate} />
+                  {isShow ? <Calendar date={date} setDate={setDate} /> : null}
                 </div>
               </div>
               <div className={modalStyles.part}>
@@ -456,6 +460,7 @@ export const UniversityModal: React.FC<IUniversityModalProps> = ({
               className={globalStyles.small}
               type="submit"
               disabled={!isButtonEnabled}
+              onClick={() => onSave(currentUniversityProfile)}
             >
               {t("global.save_changes")}
             </button>

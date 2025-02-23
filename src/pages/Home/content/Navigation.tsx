@@ -1,5 +1,8 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
+
+import { useActions } from "../../../hooks/useActions";
 
 import { SettingsModal } from "../../../modals/Settings/SettingsModal";
 
@@ -14,7 +17,6 @@ import { MailList as MailListIcon } from "../../../assets/svgComponents/MailList
 import SettingsIcon from "../../../assets/svg/settings.svg";
 import LogoutIcon from "../../../assets/svg/logout.svg";
 import CarretLeftIcon from "../../../assets/svg/carret-left.svg";
-import { useTranslation } from "react-i18next";
 
 interface INavigationProps {
   activeNav: number;
@@ -23,9 +25,15 @@ interface INavigationProps {
   setIsMinimized: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-export const Navigation: React.FC<INavigationProps> = ({ activeNav, setActiveNav, isMinimized, setIsMinimized }) => {
+export const Navigation: React.FC<INavigationProps> = ({
+  activeNav,
+  setActiveNav,
+  isMinimized,
+  setIsMinimized,
+}) => {
   const navigate = useNavigate();
   const { i18n, t } = useTranslation();
+  const { logout } = useActions();
   const [isSettingsModalShow, setIsSettingsModalShow] = useState(false);
 
   const navItems = [
@@ -57,9 +65,15 @@ export const Navigation: React.FC<INavigationProps> = ({ activeNav, setActiveNav
 
   return (
     <>
-      <div className={`${styles.navigation} ${isMinimized ? styles.minimized : i18n.resolvedLanguage === "en" ? styles.wide : ""}`}>
+      <div
+        className={`${styles.navigation} ${isMinimized ? styles.minimized : i18n.resolvedLanguage === "en" ? styles.wide : ""}`}
+      >
         <div className={styles.part}>
-          <img className={styles.logo} src={isMinimized ? LogoMinimized : Logo} alt="" />
+          <img
+            className={styles.logo}
+            src={isMinimized ? LogoMinimized : Logo}
+            alt=""
+          />
         </div>
         <nav>
           {navItems.map((item) => {
@@ -79,14 +93,23 @@ export const Navigation: React.FC<INavigationProps> = ({ activeNav, setActiveNav
         </nav>
         <div className={`${styles.part} ${styles.bottom}`}>
           <div className={styles.nav_item_container}>
-            <div className={styles.nav_item} onClick={() => setIsSettingsModalShow(true)}>
+            <div
+              className={styles.nav_item}
+              onClick={() => setIsSettingsModalShow(true)}
+            >
               <img src={SettingsIcon} alt="" />
               {!isMinimized ? t("global.settings") : ""}
             </div>
             <div className={styles.hidden}>{t("global.settings")}</div>
           </div>
           <div className={styles.nav_item_container}>
-            <div className={`${styles.nav_item} ${styles.logout}`} onClick={() => navigate("/")}>
+            <div
+              className={`${styles.nav_item} ${styles.logout}`}
+              onClick={() => {
+                logout();
+                navigate("/sign_in");
+              }}
+            >
               <img src={LogoutIcon} alt="" />
               {!isMinimized ? t("navigation.logout") : ""}
             </div>
@@ -94,15 +117,27 @@ export const Navigation: React.FC<INavigationProps> = ({ activeNav, setActiveNav
           </div>
           <div className={styles.separator} />
           <div className={styles.nav_item_container}>
-            <div className={`${styles.nav_item} ${styles.minimize}`} onClick={() => setIsMinimized(!isMinimized)}>
-              <img className={isMinimized ? styles.minimized : ""} src={CarretLeftIcon} alt="" />
-              <div className={isMinimized ? styles.hidden : ""}>{!isMinimized ? t("navigation.hide") : ""}</div>
+            <div
+              className={`${styles.nav_item} ${styles.minimize}`}
+              onClick={() => setIsMinimized(!isMinimized)}
+            >
+              <img
+                className={isMinimized ? styles.minimized : ""}
+                src={CarretLeftIcon}
+                alt=""
+              />
+              <div className={isMinimized ? styles.hidden : ""}>
+                {!isMinimized ? t("navigation.hide") : ""}
+              </div>
             </div>
             <div className={styles.hidden}>{t("navigation.show")}</div>
           </div>
         </div>
       </div>
-      <SettingsModal isShow={isSettingsModalShow} onClose={() => setIsSettingsModalShow(false)} />
+      <SettingsModal
+        isShow={isSettingsModalShow}
+        onClose={() => setIsSettingsModalShow(false)}
+      />
     </>
   );
 };
