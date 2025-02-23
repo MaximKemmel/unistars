@@ -12,9 +12,10 @@ import EditIcon from "../../assets/svg/edit.svg";
 
 interface IEventCardProps {
   eventItem: IEvent;
+  onSave: Function;
 }
 
-export const EventCard: React.FC<IEventCardProps> = ({ eventItem }) => {
+export const EventCard: React.FC<IEventCardProps> = ({ eventItem, onSave }) => {
   const { i18n, t } = useTranslation();
   const [isEventModalShow, setIsEventModalShow] = useState(false);
 
@@ -54,7 +55,10 @@ export const EventCard: React.FC<IEventCardProps> = ({ eventItem }) => {
       <EventModal
         isShow={isEventModalShow}
         eventInfo={eventItem}
-        onSave={() => setIsEventModalShow(false)}
+        onSave={(editedEvent: IEvent) => {
+          onSave(editedEvent);
+          setIsEventModalShow(false);
+        }}
         onClose={() => setIsEventModalShow(false)}
       />
     </div>

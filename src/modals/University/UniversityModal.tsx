@@ -39,7 +39,7 @@ export const UniversityModal: React.FC<IUniversityModalProps> = ({
     new Date(
       currentUniversityProfile.foundation != null
         ? currentUniversityProfile.foundation
-        : "01.01.2025",
+        : "01.01.0001",
     ),
   );
   const [isButtonEnabled, setIsButtonEnabled] = useState(false);
@@ -397,7 +397,6 @@ export const UniversityModal: React.FC<IUniversityModalProps> = ({
                     />
                   </div>
                 </div>
-
                 <div className={modalStyles.part}>
                   <div className={modalStyles.part_label}>Telegram</div>
                   <div className={modalStyles.input}>
@@ -458,7 +457,7 @@ export const UniversityModal: React.FC<IUniversityModalProps> = ({
             </button>
             <button
               className={globalStyles.small}
-              type="submit"
+              type="button"
               disabled={!isButtonEnabled}
               onClick={() => onSave(currentUniversityProfile)}
             >

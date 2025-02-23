@@ -1,6 +1,7 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 
+import { useActions } from "../../../hooks/useActions";
 import { useTypedSelector } from "../../../hooks/useTypedSelector";
 
 import { EventModal } from "../../../modals/Event/EventModal";
@@ -12,14 +13,56 @@ import styles from "../Home.module.sass";
 
 import { IEvent } from "../../../types/event/event";
 import { initEvent } from "../../../types/event/initEvent";
+import { ApiStatusType } from "../../../enums/local/apiStatusType";
+import { initApiStatus } from "../../../types/local/apiStatus";
 
 import PlusIcon from "../../../assets/svg/plus.svg";
 
 export const Events = () => {
   const { t } = useTranslation();
+  const {
+    getEventList,
+    postEvent,
+    patchEvent,
+    setPostEventStatus,
+    setPatchEventStatus,
+  } = useActions();
+  const events = useTypedSelector((state) => state.eventReducer.eventList);
+  const postStatus = useTypedSelector(
+    (state) => state.eventReducer.postEventStatus,
+  );
+  const editStatus = useTypedSelector(
+    (state) => state.eventReducer.patchEventStatus,
+  );
   const [isEventModalShow, setIsEventModalShow] = useState(false);
 
-  const events = useTypedSelector((state) => state.eventReducer.eventList);
+  useEffect(() => {
+    switch (postStatus.status) {
+      case ApiStatusType.SUCCESS:
+        setPostEventStatus(initApiStatus());
+        getEventList();
+        setIsEventModalShow(false);
+        break;
+      case ApiStatusType.ERROR:
+        setPostEventStatus(initApiStatus());
+        setIsEventModalShow(false);
+        break;
+    }
+  }, [postStatus]);
+
+  useEffect(() => {
+    switch (editStatus.status) {
+      case ApiStatusType.SUCCESS:
+        setPatchEventStatus(initApiStatus());
+        getEventList();
+        setIsEventModalShow(false);
+        break;
+      case ApiStatusType.ERROR:
+        setPatchEventStatus(initApiStatus());
+        setIsEventModalShow(false);
+        break;
+    }
+  }, [editStatus]);
 
   return (
     <div className={styles.content}>
@@ -35,7 +78,12 @@ export const Events = () => {
             {events.map((event: IEvent, index: number) => {
               return (
                 <div className={styles.event_item} key={index}>
-                  <EventCard eventItem={event} />
+                  <EventCard
+                    eventItem={event}
+                    onSave={(editedEvent: IEvent) =>
+                      patchEvent({ event: editedEvent })
+                    }
+                  />
                 </div>
               );
             })}
@@ -67,7 +115,7 @@ export const Events = () => {
       <EventModal
         isShow={isEventModalShow}
         eventInfo={initEvent()}
-        onSave={() => setIsEventModalShow(false)}
+        onSave={(editedEvent: IEvent) => postEvent({ event: editedEvent })}
         onClose={() => setIsEventModalShow(false)}
       />
     </div>

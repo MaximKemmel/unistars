@@ -68,3 +68,28 @@ export const patchEvent = createAsyncThunk(
     return response.data;
   },
 );
+
+export const uploadEventCover = createAsyncThunk(
+  "uploadEventCover",
+  async (
+    {
+      file,
+      onUploadProgress,
+    }: {
+      file: Blob;
+      onUploadProgress: Function;
+    },
+    { rejectWithValue },
+  ) => {
+    const formData = new FormData();
+    formData.append("type", "IMAGE");
+    formData.append("files", file);
+    const response = await axios.post("/storage", formData, {
+      onUploadProgress: (data) => onUploadProgress(data),
+    });
+    if (response.status !== 200) {
+      throw rejectWithValue("Server error!");
+    }
+    return response.data;
+  },
+);

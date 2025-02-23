@@ -5,6 +5,7 @@ import {
   getEventTypes,
   patchEvent,
   postEvent,
+  uploadEventCover,
 } from "./event.actions";
 
 import { IEventType } from "../../types/event/eventType";
@@ -15,19 +16,23 @@ import { IApiStatus, initApiStatus } from "../../types/local/apiStatus";
 interface IEventState {
   eventList: IEvent[];
   eventTypes: IEventType[];
+  eventCover: string;
   getEventListStatus: IApiStatus;
   getEventTypesStatus: IApiStatus;
   postEventStatus: IApiStatus;
   patchEventStatus: IApiStatus;
+  uploadCoverStatus: IApiStatus;
 }
 
 const initialState: IEventState = {
   eventList: [] as IEvent[],
   eventTypes: [] as IEventType[],
+  eventCover: "",
   getEventListStatus: initApiStatus(),
   getEventTypesStatus: initApiStatus(),
   postEventStatus: initApiStatus(),
   patchEventStatus: initApiStatus(),
+  uploadCoverStatus: initApiStatus(),
 };
 
 export const eventSlice = createSlice({
@@ -45,6 +50,9 @@ export const eventSlice = createSlice({
     },
     setPatchEventStatus(state, action: PayloadAction<IApiStatus>) {
       state.patchEventStatus = action.payload;
+    },
+    setUploadCoverStatus(state, action: PayloadAction<IApiStatus>) {
+      state.uploadCoverStatus = action.payload;
     },
   },
   extraReducers: (builder) => {
@@ -109,6 +117,22 @@ export const eventSlice = createSlice({
     });
     builder.addCase(patchEvent.rejected, (state, action) => {
       state.patchEventStatus = {
+        status: ApiStatusType.ERROR,
+        error: action.payload as string,
+      };
+    });
+    //#endregion
+
+    //#region Upload cover
+    builder.addCase(uploadEventCover.pending, (state) => {
+      state.uploadCoverStatus = { status: ApiStatusType.IN_PROGRESS };
+    });
+    builder.addCase(uploadEventCover.fulfilled, (state, action) => {
+      state.uploadCoverStatus = { status: ApiStatusType.SUCCESS };
+      state.eventCover = action.payload;
+    });
+    builder.addCase(uploadEventCover.rejected, (state, action) => {
+      state.uploadCoverStatus = {
         status: ApiStatusType.ERROR,
         error: action.payload as string,
       };

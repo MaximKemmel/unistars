@@ -59,9 +59,9 @@ export const EditBookletModal: React.FC<IEditBookletModalProps> = ({
   const [isButtonEnabled, setIsButtonEnabled] = useState(false);
 
   useEffect(() => {
+    setCurrentBooklet(booklet);
     const contentDiv = document.getElementById("booklets_content");
     contentDiv?.scrollTo({ top: 0, behavior: "smooth" });
-    setCurrentBooklet(booklet);
   }, [isShow]);
 
   useEffect(() => {

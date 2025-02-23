@@ -1,4 +1,6 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
+
+import useOutsideAlerter from "../../hooks/useOutsideAlerter";
 
 import { Checkbox } from "../../components/checkbox/Checkbox";
 
@@ -33,6 +35,13 @@ export const UserCard: React.FC<IUserCardProps> = ({
   moreItems,
 }) => {
   const [isMorePopupShow, setIsMorePopupShow] = useState(false);
+  const popupRef = useRef<HTMLDivElement>(null);
+
+  useOutsideAlerter(popupRef, () => {
+    if (isMorePopupShow) {
+      setIsMorePopupShow(false);
+    }
+  });
 
   return (
     <div className={styles.user_container}>
@@ -74,7 +83,7 @@ export const UserCard: React.FC<IUserCardProps> = ({
         </div>
       ) : null}
       {isWithMoreItem ? (
-        <div className={styles.more_container}>
+        <div className={styles.more_container} ref={popupRef}>
           <div
             className={styles.more_button}
             onClick={() => setIsMorePopupShow(!isMorePopupShow)}
