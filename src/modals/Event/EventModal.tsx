@@ -11,7 +11,6 @@ import { Calendar } from "../../components/calendar/Calendar";
 
 import globalStyles from "../../App.module.sass";
 import modalStyles from "../Modal.module.sass";
-import styles from "./EventModal.module.sass";
 
 import { IEvent } from "../../types/event/event";
 import { IEventType } from "../../types/event/eventType";
@@ -79,14 +78,16 @@ export const EventModal: React.FC<IEventModalProps> = ({
   ] as IEventPrivacy[];
 
   useEffect(() => {
-    setCurrentEvent(eventInfo);
-    setDate(
-      new Date(
-        currentEvent.startDate != null ? currentEvent.startDate : "01.01.0001",
-      ),
-    );
-    const formDiv = document.getElementById("event_content");
-    formDiv?.scrollTo({ top: 0, behavior: "smooth" });
+    if (isShow) {
+      setCurrentEvent(eventInfo);
+      setDate(
+        new Date(
+          currentEvent.startDate != null
+            ? currentEvent.startDate
+            : "01.01.0001",
+        ),
+      );
+    }
   }, [isShow]);
 
   useEffect(() => {
@@ -157,319 +158,325 @@ export const EventModal: React.FC<IEventModalProps> = ({
             <CloseIcon />
           </div>
         </div>
-        <form className={modalStyles.form} id="event_content">
-          <div className={`${modalStyles.form_content} ${styles.form_content}`}>
-            <div className={modalStyles.part_container}>
-              <div className={modalStyles.part_container_title}>
-                {t("events.main")}
-              </div>
-              <div
-                className={`${modalStyles.part_multi} ${modalStyles.double}`}
-              >
-                <div className={modalStyles.part}>
-                  <div className={modalStyles.part_label}>
-                    {t("events.name")}
-                  </div>
-                  <div className={modalStyles.input}>
-                    <Input
-                      value={currentEvent.name}
-                      onChange={(value: string) =>
-                        setCurrentEvent({
-                          ...currentEvent,
-                          name: value,
-                        })
-                      }
-                      placeholder={t("events.enter_a_name")}
-                      type="text"
-                      isRequired={true}
-                    />
-                  </div>
-                </div>
-                <div className={modalStyles.part}>
-                  <div className={modalStyles.part_label}>
-                    {t("events.cover")}
-                  </div>
-                  <div className={styles.cover}>
-                    <input
-                      ref={inputImageRef}
-                      type="file"
-                      id="file"
-                      accept="image/png, image/jpeg"
-                      onChange={handleOnChangeImage}
-                      hidden
-                    />
-                    <div
-                      className={styles.form_button}
-                      onClick={() => inputImageRef.current!.click()}
-                    >
-                      <img src={UploadImageIcon} alt="" />
-                    </div>
-                    {currentEvent.coverUrl === null ||
-                    currentEvent.coverUrl === undefined ||
-                    currentEvent.coverUrl!.trim().length === 0 ? (
-                      <div className={styles.form_button_label}>
-                        {t("events.choose_a_cover")}
-                      </div>
-                    ) : (
-                      <div className={styles.file_info}>
-                        <div className={styles.file_name}>
-                          <img src={FileIcon} alt="" />
-                          <div className={styles.name}>
-                            {imageName.trim().length === 0
-                              ? currentEvent.coverUrl
-                              : imageName}
-                          </div>
-                        </div>
-                        {uploadImageStatus.status !== ApiStatusType.NONE &&
-                        uploadImageStatus.status !==
-                          ApiStatusType.IN_PROGRESS ? (
-                          <>
-                            {uploadImageStatus.status ===
-                            ApiStatusType.SUCCESS ? (
-                              <div
-                                className={`${styles.upload_progress} ${styles.success}`}
-                              >
-                                <img src={CheckIcon} alt="" />
-                                {t("global.sended")}
-                              </div>
-                            ) : (
-                              <div
-                                className={`${styles.upload_progress} ${styles.error}`}
-                              >
-                                {t("global.error")}
-                                <CloseIcon fill="#C45F1C" isBold={true} />
-                              </div>
-                            )}
-                          </>
-                        ) : null}
-                      </div>
-                    )}
-                  </div>
-                </div>
-              </div>
-              <div className={modalStyles.part}>
-                <div className={modalStyles.part_label}>
-                  {t("events.description")}
-                </div>
-                <textarea
-                  placeholder={t("events.enter_a_description")}
-                  required
-                  onChange={(event) =>
-                    setCurrentEvent({
-                      ...currentEvent,
-                      description: event.target.value.trim(),
-                    })
-                  }
-                  value={currentEvent.description}
-                />
-              </div>
-              <div
-                className={`${modalStyles.part_multi} ${modalStyles.double}`}
-              >
-                <div className={modalStyles.part}>
-                  <div className={modalStyles.part_label}>
-                    {t("events.type")}
-                  </div>
-                  {eventTypes != undefined && Array.isArray(eventTypes) ? (
-                    <Dropdown
-                      placeholder={t("events.choose_a_type")}
-                      items={[
-                        {
-                          id: -1,
-                          text: t("global.not_selected"),
-                          text_eng: t("global.not_selected"),
-                          is_selected:
-                            currentEvent.eventType === null ||
-                            currentEvent.eventType === undefined,
-                        } as IDropdownItem,
-                        ...(eventTypes.map((eventType: IEventType) => {
-                          return {
-                            id: eventType.id,
-                            text: eventType.name,
-                            text_eng: eventType.nameEnglish,
-                            is_selected:
-                              currentEvent.eventType != null &&
-                              currentEvent.eventType.id === eventType.id,
-                          } as IDropdownItem;
-                        }) as IDropdownItem[]),
-                      ]}
-                      onItemSelect={(item: IDropdownItem) => {
-                        setCurrentEvent({
-                          ...currentEvent,
-                          eventType: eventTypes.find(
-                            (type: IEventType) => type.id === item.id,
-                          )!,
-                        });
-                      }}
-                    />
-                  ) : null}
-                </div>
-                <div className={modalStyles.part}>
-                  <div className={modalStyles.part_label}>
-                    {t("events.visibility")}
-                  </div>
-                  {eventTypes != undefined && Array.isArray(eventTypes) ? (
-                    <Dropdown
-                      placeholder={t("events.choose_a_visibility")}
-                      items={[
-                        {
-                          id: -1,
-                          text: t("global.not_selected"),
-                          text_eng: t("global.not_selected"),
-                          is_selected:
-                            currentEvent.privacy == null ||
-                            (Array.isArray(currentEvent.privacy) &&
-                              currentEvent.privacy.length === 0),
-                        } as IDropdownItem,
-                        ...(privacyValues.map((eventPrivacy: IEventPrivacy) => {
-                          return {
-                            id: eventPrivacy.id,
-                            text: eventPrivacy.name,
-                            text_eng: eventPrivacy.nameEnglish,
-                            is_selected:
-                              currentEvent.privacy != null &&
-                              Array.isArray(currentEvent.privacy) &&
-                              ((currentEvent.privacy.length === 1 &&
-                                eventPrivacy.roles.length === 1) ||
-                                (currentEvent.privacy.length > 1 &&
-                                  eventPrivacy.roles.length > 1)),
-                          } as IDropdownItem;
-                        }) as IDropdownItem[]),
-                      ]}
-                      onItemSelect={(item: IDropdownItem) => {
-                        setCurrentEvent({
-                          ...currentEvent,
-                          privacy:
-                            item.id === -1 ? [] : privacyValues[item.id].roles,
-                        });
-                      }}
-                    />
-                  ) : null}
-                </div>
-              </div>
-            </div>
-            <div className={modalStyles.form_separator} />
-            <div className={modalStyles.part_container_multi}>
+        {isShow ? (
+          <form className={modalStyles.form}>
+            <div className={modalStyles.form_content}>
               <div className={modalStyles.part_container}>
                 <div className={modalStyles.part_container_title}>
-                  {t("events.type")}
+                  {t("events.main")}
+                </div>
+                <div
+                  className={`${modalStyles.part_multi} ${modalStyles.double}`}
+                >
+                  <div className={modalStyles.part}>
+                    <div className={modalStyles.part_label}>
+                      {t("events.name")}
+                    </div>
+                    <div className={modalStyles.input}>
+                      <Input
+                        value={currentEvent.name}
+                        onChange={(value: string) =>
+                          setCurrentEvent({
+                            ...currentEvent,
+                            name: value,
+                          })
+                        }
+                        placeholder={t("events.enter_a_name")}
+                        type="text"
+                        isRequired={true}
+                      />
+                    </div>
+                  </div>
+                  <div className={modalStyles.part}>
+                    <div className={modalStyles.part_label}>
+                      {t("events.cover")}
+                    </div>
+                    <div className={modalStyles.cover}>
+                      <input
+                        ref={inputImageRef}
+                        type="file"
+                        id="file"
+                        accept="image/png, image/jpeg"
+                        onChange={handleOnChangeImage}
+                        hidden
+                      />
+                      <div
+                        className={modalStyles.form_button}
+                        onClick={() => inputImageRef.current!.click()}
+                      >
+                        <img src={UploadImageIcon} alt="" />
+                      </div>
+                      {currentEvent.coverUrl === null ||
+                      currentEvent.coverUrl === undefined ||
+                      currentEvent.coverUrl!.trim().length === 0 ? (
+                        <div className={modalStyles.form_button_label}>
+                          {t("events.choose_a_cover")}
+                        </div>
+                      ) : (
+                        <div className={modalStyles.file_info}>
+                          <div className={modalStyles.file_name}>
+                            <img src={FileIcon} alt="" />
+                            <div className={modalStyles.name}>
+                              {imageName.trim().length === 0
+                                ? currentEvent.coverUrl
+                                : imageName}
+                            </div>
+                          </div>
+                          {uploadImageStatus.status !== ApiStatusType.NONE &&
+                          uploadImageStatus.status !==
+                            ApiStatusType.IN_PROGRESS ? (
+                            <>
+                              {uploadImageStatus.status ===
+                              ApiStatusType.SUCCESS ? (
+                                <div
+                                  className={`${modalStyles.upload_progress} ${modalStyles.success}`}
+                                >
+                                  <img src={CheckIcon} alt="" />
+                                  {t("global.sended")}
+                                </div>
+                              ) : (
+                                <div
+                                  className={`${modalStyles.upload_progress} ${modalStyles.error}`}
+                                >
+                                  {t("global.error")}
+                                  <CloseIcon fill="#C45F1C" isBold={true} />
+                                </div>
+                              )}
+                            </>
+                          ) : null}
+                        </div>
+                      )}
+                    </div>
+                  </div>
                 </div>
                 <div className={modalStyles.part}>
                   <div className={modalStyles.part_label}>
-                    {t("events.date")}
+                    {t("events.description")}
                   </div>
-                  {isShow ? <Calendar date={date} setDate={setDate} /> : null}
-                </div>
-                <div className={modalStyles.part}>
-                  <div className={modalStyles.part_label}>
-                    {t("events.time")}
-                  </div>
-                  <input
-                    placeholder={t("events.enter_a_time")}
-                    type="text"
+                  <textarea
+                    placeholder={t("events.enter_a_description")}
                     required
-                    onChange={(event) => console.log(event)}
-                    value={""}
+                    onChange={(event) =>
+                      setCurrentEvent({
+                        ...currentEvent,
+                        description: event.target.value.trim(),
+                      })
+                    }
+                    value={currentEvent.description}
                   />
+                </div>
+                <div
+                  className={`${modalStyles.part_multi} ${modalStyles.double}`}
+                >
+                  <div className={modalStyles.part}>
+                    <div className={modalStyles.part_label}>
+                      {t("events.type")}
+                    </div>
+                    {eventTypes != undefined && Array.isArray(eventTypes) ? (
+                      <Dropdown
+                        placeholder={t("events.choose_a_type")}
+                        items={[
+                          {
+                            id: -1,
+                            text: t("global.not_selected"),
+                            text_eng: t("global.not_selected"),
+                            is_selected:
+                              currentEvent.eventType === null ||
+                              currentEvent.eventType === undefined,
+                          } as IDropdownItem,
+                          ...(eventTypes.map((eventType: IEventType) => {
+                            return {
+                              id: eventType.id,
+                              text: eventType.name,
+                              text_eng: eventType.nameEnglish,
+                              is_selected:
+                                currentEvent.eventType != null &&
+                                currentEvent.eventType.id === eventType.id,
+                            } as IDropdownItem;
+                          }) as IDropdownItem[]),
+                        ]}
+                        onItemSelect={(item: IDropdownItem) => {
+                          setCurrentEvent({
+                            ...currentEvent,
+                            eventType: eventTypes.find(
+                              (type: IEventType) => type.id === item.id,
+                            )!,
+                          });
+                        }}
+                      />
+                    ) : null}
+                  </div>
+                  <div className={modalStyles.part}>
+                    <div className={modalStyles.part_label}>
+                      {t("events.visibility")}
+                    </div>
+                    {eventTypes != undefined && Array.isArray(eventTypes) ? (
+                      <Dropdown
+                        placeholder={t("events.choose_a_visibility")}
+                        items={[
+                          {
+                            id: -1,
+                            text: t("global.not_selected"),
+                            text_eng: t("global.not_selected"),
+                            is_selected:
+                              currentEvent.privacy == null ||
+                              (Array.isArray(currentEvent.privacy) &&
+                                currentEvent.privacy.length === 0),
+                          } as IDropdownItem,
+                          ...(privacyValues.map(
+                            (eventPrivacy: IEventPrivacy) => {
+                              return {
+                                id: eventPrivacy.id,
+                                text: eventPrivacy.name,
+                                text_eng: eventPrivacy.nameEnglish,
+                                is_selected:
+                                  currentEvent.privacy != null &&
+                                  Array.isArray(currentEvent.privacy) &&
+                                  ((currentEvent.privacy.length === 1 &&
+                                    eventPrivacy.roles.length === 1) ||
+                                    (currentEvent.privacy.length > 1 &&
+                                      eventPrivacy.roles.length > 1)),
+                              } as IDropdownItem;
+                            },
+                          ) as IDropdownItem[]),
+                        ]}
+                        onItemSelect={(item: IDropdownItem) => {
+                          setCurrentEvent({
+                            ...currentEvent,
+                            privacy:
+                              item.id === -1
+                                ? []
+                                : privacyValues[item.id].roles,
+                          });
+                        }}
+                      />
+                    ) : null}
+                  </div>
                 </div>
               </div>
               <div className={modalStyles.form_separator} />
-              <div className={modalStyles.part_container}>
-                <div className={modalStyles.part_container_title}>
-                  {t("events.location")}
-                </div>
-                <div className={modalStyles.part}>
-                  <div className={modalStyles.part_label}>
-                    {t("events.event_format")}
+              <div className={modalStyles.part_container_multi}>
+                <div className={modalStyles.part_container}>
+                  <div className={modalStyles.part_container_title}>
+                    {t("events.type")}
                   </div>
-                  <Toggle
-                    selectedIndex={isOnline ? 1 : 0}
-                    items={
-                      [
-                        {
-                          id: 0,
-                          text: "Офлайн",
-                          text_eng: "Offline",
-                        } as IToggleItem,
-                        {
-                          id: 1,
-                          text: "Онлайн",
-                          text_eng: "Online",
-                        } as IToggleItem,
-                      ] as IToggleItem[]
-                    }
-                    onItemSelect={(item: IToggleItem) =>
-                      setIsOnline(item.id === 1)
-                    }
-                  />
-                </div>
-                {isOnline ? (
                   <div className={modalStyles.part}>
                     <div className={modalStyles.part_label}>
-                      {t("events.additional_info")}
+                      {t("events.date")}
                     </div>
-                    <div className={modalStyles.input}>
-                      <Input
-                        value={currentEvent.link}
-                        onChange={(value: string) =>
-                          setCurrentEvent({
-                            ...currentEvent,
-                            link: value,
-                          })
-                        }
-                        placeholder={t("events.enter_link")}
-                        type="text"
-                        isRequired={true}
-                      />
-                    </div>
+                    {isShow ? <Calendar date={date} setDate={setDate} /> : null}
                   </div>
-                ) : (
                   <div className={modalStyles.part}>
                     <div className={modalStyles.part_label}>
-                      {t("events.location")}
+                      {t("events.time")}
                     </div>
-                    <div className={modalStyles.input}>
-                      <Input
-                        value={currentEvent.address}
-                        onChange={(value: string) =>
-                          setCurrentEvent({
-                            ...currentEvent,
-                            address: value,
-                          })
-                        }
-                        placeholder={t("events.enter_location")}
-                        type="text"
-                        isRequired={true}
-                      />
-                    </div>
+                    <input
+                      placeholder={t("events.enter_a_time")}
+                      type="text"
+                      required
+                      onChange={(event) => console.log(event)}
+                      value={""}
+                    />
                   </div>
-                )}
+                </div>
+                <div className={modalStyles.form_separator} />
+                <div className={modalStyles.part_container}>
+                  <div className={modalStyles.part_container_title}>
+                    {t("events.location")}
+                  </div>
+                  <div className={modalStyles.part}>
+                    <div className={modalStyles.part_label}>
+                      {t("events.event_format")}
+                    </div>
+                    <Toggle
+                      selectedIndex={isOnline ? 1 : 0}
+                      items={
+                        [
+                          {
+                            id: 0,
+                            text: "Офлайн",
+                            text_eng: "Offline",
+                          } as IToggleItem,
+                          {
+                            id: 1,
+                            text: "Онлайн",
+                            text_eng: "Online",
+                          } as IToggleItem,
+                        ] as IToggleItem[]
+                      }
+                      onItemSelect={(item: IToggleItem) =>
+                        setIsOnline(item.id === 1)
+                      }
+                    />
+                  </div>
+                  {isOnline ? (
+                    <div className={modalStyles.part}>
+                      <div className={modalStyles.part_label}>
+                        {t("events.additional_info")}
+                      </div>
+                      <div className={modalStyles.input}>
+                        <Input
+                          value={currentEvent.link}
+                          onChange={(value: string) =>
+                            setCurrentEvent({
+                              ...currentEvent,
+                              link: value,
+                            })
+                          }
+                          placeholder={t("events.enter_link")}
+                          type="text"
+                          isRequired={true}
+                        />
+                      </div>
+                    </div>
+                  ) : (
+                    <div className={modalStyles.part}>
+                      <div className={modalStyles.part_label}>
+                        {t("events.location")}
+                      </div>
+                      <div className={modalStyles.input}>
+                        <Input
+                          value={currentEvent.address}
+                          onChange={(value: string) =>
+                            setCurrentEvent({
+                              ...currentEvent,
+                              address: value,
+                            })
+                          }
+                          placeholder={t("events.enter_location")}
+                          type="text"
+                          isRequired={true}
+                        />
+                      </div>
+                    </div>
+                  )}
+                </div>
               </div>
             </div>
-          </div>
-          <div className={modalStyles.actions}>
-            <div />
-            <div className={modalStyles.buttons}>
-              <button
-                className={`${globalStyles.inverted} ${globalStyles.small}`}
-                type="button"
-                onClick={() => onClose()}
-              >
-                <span>{t("global.cancel")}</span>
-              </button>
-              <button
-                className={globalStyles.small}
-                type="button"
-                onClick={() => {
-                  console.log(currentEvent);
-                  onSave(currentEvent);
-                }}
-              >
-                {t("global.save_changes")}
-              </button>
+            <div className={modalStyles.actions}>
+              <div />
+              <div className={modalStyles.buttons}>
+                <button
+                  className={`${globalStyles.inverted} ${globalStyles.small}`}
+                  type="button"
+                  onClick={() => onClose()}
+                >
+                  <span>{t("global.cancel")}</span>
+                </button>
+                <button
+                  className={globalStyles.small}
+                  type="button"
+                  onClick={() => {
+                    console.log(currentEvent);
+                    onSave(currentEvent);
+                  }}
+                >
+                  {t("global.save_changes")}
+                </button>
+              </div>
             </div>
-          </div>
-        </form>
+          </form>
+        ) : null}
       </div>
     </div>
   );

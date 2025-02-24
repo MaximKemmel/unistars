@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { useTranslation } from "react-i18next";
 
 import { useTypedSelector } from "../../hooks/useTypedSelector";
@@ -30,11 +30,6 @@ export const BookletsModal: React.FC<IBookletsModalProps> = ({
   const { t } = useTranslation();
   const booklets = useTypedSelector((state) => state.bookletReducer.booklets);
 
-  useEffect(() => {
-    const contentDiv = document.getElementById("booklets_content");
-    contentDiv?.scrollTo({ top: 0, behavior: "smooth" });
-  }, [isShow]);
-
   return (
     <div className={`${modalStyles.modal} ${isShow ? modalStyles.active : ""}`}>
       <div
@@ -48,20 +43,22 @@ export const BookletsModal: React.FC<IBookletsModalProps> = ({
             <CloseIcon />
           </div>
         </div>
-        <div className={styles.booklets_container}>
-          <div className={styles.booklets_content} id="booklets_content">
-            {booklets.map((booklet: IBooklet) => {
-              return (
-                <div className={styles.booklet_item} key={booklet.id}>
-                  <BookletCard
-                    bookletItem={booklet}
-                    onEdit={() => onEdit(booklet)}
-                  />
-                </div>
-              );
-            })}
+        {isShow ? (
+          <div className={styles.booklets_container}>
+            <div className={styles.booklets_content}>
+              {booklets.map((booklet: IBooklet) => {
+                return (
+                  <div className={styles.booklet_item} key={booklet.id}>
+                    <BookletCard
+                      bookletItem={booklet}
+                      onEdit={() => onEdit(booklet)}
+                    />
+                  </div>
+                );
+              })}
+            </div>
           </div>
-        </div>
+        ) : null}
         <div className={modalStyles.actions}>
           <div />
           <button

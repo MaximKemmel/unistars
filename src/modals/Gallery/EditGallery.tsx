@@ -34,8 +34,6 @@ export const EditGalleryModal: React.FC<IEditGalleryModalProps> = ({
   const [currentPhotos, setCurrentPhotos] = useState(photos);
 
   useEffect(() => {
-    const contentDiv = document.getElementById("edit_gallery_content");
-    contentDiv?.scrollTo({ top: 0, behavior: "smooth" });
     setCurrentPhotos(photos);
   }, [isShow]);
 
@@ -54,10 +52,12 @@ export const EditGalleryModal: React.FC<IEditGalleryModalProps> = ({
             <img src={CloseIcon} alt="" />
           </div>
         </div>
-        {currentPhotos !== undefined && Array.isArray(currentPhotos) ? (
+        {isShow &&
+        currentPhotos !== undefined &&
+        Array.isArray(currentPhotos) ? (
           <>
             <div className={styles.gallery_container}>
-              <div className={styles.gallery_content} id="edit_gallery_content">
+              <div className={styles.gallery_content}>
                 {currentPhotos.map((photo: IFileStorage, index: number) => (
                   <div className={styles.gallery_item_container} key={index}>
                     <div

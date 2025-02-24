@@ -42,11 +42,6 @@ export const GalleryModal: React.FC<IGalleryModalProps> = ({
     }
   }, [uploadImageProgress]);
 
-  useEffect(() => {
-    const contentDiv = document.getElementById("gallery_content");
-    contentDiv?.scrollTo({ top: 0, behavior: "smooth" });
-  }, [isShow]);
-
   const handleOnChangeImage = (event) => {
     try {
       const file = event.target.files[0];
@@ -87,7 +82,7 @@ export const GalleryModal: React.FC<IGalleryModalProps> = ({
             <img src={CloseIcon} alt="" />
           </div>
         </div>
-        {photos !== undefined && Array.isArray(photos) ? (
+        {isShow && photos !== undefined && Array.isArray(photos) ? (
           <>
             <div className={styles.gallery_container}>
               <div className={styles.gallery_content} id="edit_gallery_content">
