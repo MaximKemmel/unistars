@@ -31,3 +31,16 @@ export const refreshToken = createAsyncThunk(
     return response.data;
   },
 );
+
+export const requestUniversity = createAsyncThunk(
+  "api/requestUniversity",
+  async ({ email }: { email: string }, { rejectWithValue }) => {
+    const response = await axios.post("/request_new_university ", {
+      email: email,
+    });
+    if (response.status !== 200) {
+      throw rejectWithValue("Server error!");
+    }
+    return response.data;
+  },
+);

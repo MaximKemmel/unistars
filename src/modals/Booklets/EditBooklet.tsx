@@ -5,6 +5,7 @@ import { useActions } from "../../hooks/useActions";
 import { useTypedSelector } from "../../hooks/useTypedSelector";
 
 import { Input } from "../../components/input/Input";
+import { Textarea } from "../../components/textarea/Textarea";
 
 import globalStyles from "../../App.module.sass";
 import modalStyles from "../Modal.module.sass";
@@ -252,17 +253,19 @@ export const EditBookletModal: React.FC<IEditBookletModalProps> = ({
                   <div className={modalStyles.part_label}>
                     {t("booklets.description")}
                   </div>
-                  <textarea
-                    placeholder={t("booklets.enter_a_description")}
-                    required
-                    onChange={(event) =>
-                      setCurrentBooklet({
-                        ...currentBooklet,
-                        description: event.target.value,
-                      })
-                    }
-                    value={currentBooklet.description}
-                  />
+                  <div className={modalStyles.input}>
+                    <Textarea
+                      value={currentBooklet.description}
+                      onChange={(value: string) =>
+                        setCurrentBooklet({
+                          ...currentBooklet,
+                          description: value,
+                        })
+                      }
+                      placeholder={t("booklets.enter_a_description")}
+                      isRequired={true}
+                    />
+                  </div>
                 </div>
                 <div className={modalStyles.part}>
                   <div className={modalStyles.part_label}>

@@ -10,6 +10,10 @@ import { InfoModal } from "../../../modals/Info/InfoModal";
 
 import ApplicationImage from "../../../assets/svg/application.svg";
 import MessageSuccess from "../../../assets/svg/message-success.svg";
+import { useActions } from "src/hooks/useActions";
+import { useTypedSelector } from "src/hooks/useTypedSelector";
+import { ApiStatusType } from "src/enums/local/apiStatusType";
+import { initApiStatus } from "src/types/local/apiStatus";
 
 interface IApplicationFormProps {
   setCurrentStage: React.Dispatch<React.SetStateAction<number>>;
@@ -19,6 +23,10 @@ export const ApplicationForm: React.FC<IApplicationFormProps> = ({
   setCurrentStage,
 }) => {
   const { t } = useTranslation();
+  const { requestUniversity, setRequestStatus } = useActions();
+  const requestStatus = useTypedSelector(
+    (state) => state.adminReducer.requestStatus,
+  );
   const [email, setEmail] = useState("");
   const [isButtonEnabled, setIsButtonEnabled] = useState(false);
   const [isModalShow, setIsModalShow] = useState(false);
@@ -27,9 +35,21 @@ export const ApplicationForm: React.FC<IApplicationFormProps> = ({
     setIsButtonEnabled(email.trim().length !== 0 && validator.isEmail(email));
   }, [email]);
 
+  useEffect(() => {
+    switch (requestStatus.status) {
+      case ApiStatusType.SUCCESS:
+        setRequestStatus(initApiStatus());
+        setIsModalShow(true);
+        break;
+      case ApiStatusType.ERROR:
+        setRequestStatus(initApiStatus());
+        break;
+    }
+  }, [requestStatus]);
+
   const handleOnSubmit = (event: any) => {
     event.preventDefault();
-    setIsModalShow(true);
+    requestUniversity({ email: email });
   };
 
   return (
@@ -58,7 +78,7 @@ export const ApplicationForm: React.FC<IApplicationFormProps> = ({
         image={MessageSuccess}
         onClose={() => {
           setIsModalShow(false);
-          setCurrentStage(2);
+          setCurrentStage(0);
         }}
       />
     </div>

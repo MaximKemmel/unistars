@@ -4,6 +4,7 @@ import { useTranslation } from "react-i18next";
 import { useTypedSelector } from "../../hooks/useTypedSelector";
 
 import { Input } from "../../components/input/Input";
+import { Textarea } from "../../components/textarea/Textarea";
 import { Dropdown } from "../../components/dropdown/Dropdown";
 import { Calendar } from "../../components/calendar/Calendar";
 
@@ -122,17 +123,19 @@ export const UniversityModal: React.FC<IUniversityModalProps> = ({
                   <div className={modalStyles.part_label}>
                     {t("university.description")}
                   </div>
-                  <textarea
-                    placeholder={t("university.description_displayed")}
-                    onChange={(event) =>
-                      setCurrentUniversityProfile({
-                        ...currentUniversityProfile,
-                        description: event.target.value.trim(),
-                      })
-                    }
-                    required
-                    value={currentUniversityProfile.description}
-                  />
+                  <div className={modalStyles.input}>
+                    <Textarea
+                      value={currentUniversityProfile.description}
+                      onChange={(value: string) =>
+                        setCurrentUniversityProfile({
+                          ...currentUniversityProfile,
+                          description: value,
+                        })
+                      }
+                      placeholder={t("university.description_displayed")}
+                      isRequired={true}
+                    />
+                  </div>
                 </div>
                 <div
                   className={`${modalStyles.part_multi} ${modalStyles.double}`}

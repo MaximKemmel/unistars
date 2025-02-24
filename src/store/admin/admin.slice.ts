@@ -1,6 +1,6 @@
 ﻿import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-import { login, refreshToken } from "./admin.actions";
+import { login, refreshToken, requestUniversity } from "./admin.actions";
 
 import { IApiStatus, initApiStatus } from "../../types/local/apiStatus";
 import { ApiStatusType } from "../../enums/local/apiStatusType";
@@ -12,6 +12,7 @@ interface IAdminState {
   loginResponse: ILoginResponse;
   loginStatus: IApiStatus;
   refreshStatus: IApiStatus;
+  requestStatus: IApiStatus;
 }
 
 const initialState: IAdminState = {
@@ -20,6 +21,7 @@ const initialState: IAdminState = {
   loginResponse: { accessToken: "", refreshToken: "" },
   loginStatus: initApiStatus(),
   refreshStatus: initApiStatus(),
+  requestStatus: initApiStatus(),
 };
 
 export const adminSlice = createSlice({
@@ -41,6 +43,9 @@ export const adminSlice = createSlice({
     },
     setRefreshStatus(state, action: PayloadAction<IApiStatus>) {
       state.refreshStatus = action.payload;
+    },
+    setRequestStatus(state, action: PayloadAction<IApiStatus>) {
+      state.requestStatus = action.payload;
     },
   },
   extraReducers: (builder) => {
@@ -86,6 +91,21 @@ export const adminSlice = createSlice({
     });
     builder.addCase(refreshToken.rejected, (state, action) => {
       state.refreshStatus = {
+        status: ApiStatusType.ERROR,
+        error: action.payload as string,
+      };
+    });
+    //#endregion
+
+    //#region Request university
+    builder.addCase(requestUniversity.pending, (state) => {
+      state.requestStatus = { status: ApiStatusType.IN_PROGRESS };
+    });
+    builder.addCase(requestUniversity.fulfilled, (state) => {
+      state.requestStatus = { status: ApiStatusType.SUCCESS };
+    });
+    builder.addCase(requestUniversity.rejected, (state, action) => {
+      state.requestStatus = {
         status: ApiStatusType.ERROR,
         error: action.payload as string,
       };

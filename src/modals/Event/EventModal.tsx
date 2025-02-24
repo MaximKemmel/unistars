@@ -5,6 +5,7 @@ import { useActions } from "../../hooks/useActions";
 import { useTypedSelector } from "../../hooks/useTypedSelector";
 
 import { Input } from "../../components/input/Input";
+import { Textarea } from "../../components/textarea/Textarea";
 import { Dropdown } from "../../components/dropdown/Dropdown";
 import { Toggle } from "../../components/toggle/Toggle";
 import { Calendar } from "../../components/calendar/Calendar";
@@ -23,6 +24,7 @@ import { Close as CloseIcon } from "../../assets/svgComponents/Close";
 import UploadImageIcon from "../../assets/svg/upload-image.svg";
 import FileIcon from "../../assets/svg/file.svg";
 import CheckIcon from "../../assets/svg/circled-check.svg";
+import { format } from "date-fns";
 
 interface IEventModalProps {
   isShow: boolean;
@@ -92,9 +94,9 @@ export const EventModal: React.FC<IEventModalProps> = ({
 
   useEffect(() => {
     if (isOnline) {
-      setCurrentEvent({ ...currentEvent, address: "" });
+      setCurrentEvent({ ...currentEvent, address: eventInfo.address });
     } else {
-      setCurrentEvent({ ...currentEvent, link: "" });
+      setCurrentEvent({ ...currentEvent, link: eventInfo.link });
     }
   }, [isOnline]);
 
@@ -253,17 +255,19 @@ export const EventModal: React.FC<IEventModalProps> = ({
                   <div className={modalStyles.part_label}>
                     {t("events.description")}
                   </div>
-                  <textarea
-                    placeholder={t("events.enter_a_description")}
-                    required
-                    onChange={(event) =>
-                      setCurrentEvent({
-                        ...currentEvent,
-                        description: event.target.value.trim(),
-                      })
-                    }
-                    value={currentEvent.description}
-                  />
+                  <div className={modalStyles.input}>
+                    <Textarea
+                      value={currentEvent.description!}
+                      onChange={(value: string) =>
+                        setCurrentEvent({
+                          ...currentEvent,
+                          description: value,
+                        })
+                      }
+                      placeholder={t("events.enter_a_description")}
+                      isRequired={true}
+                    />
+                  </div>
                 </div>
                 <div
                   className={`${modalStyles.part_multi} ${modalStyles.double}`}
@@ -370,13 +374,13 @@ export const EventModal: React.FC<IEventModalProps> = ({
                     <div className={modalStyles.part_label}>
                       {t("events.time")}
                     </div>
-                    <input
-                      placeholder={t("events.enter_a_time")}
-                      type="text"
-                      required
-                      onChange={(event) => console.log(event)}
-                      value={""}
-                    />
+                    {isShow ? (
+                      <Calendar
+                        date={date}
+                        setDate={setDate}
+                        isTimePicker={true}
+                      />
+                    ) : null}
                   </div>
                 </div>
                 <div className={modalStyles.form_separator} />
@@ -467,8 +471,13 @@ export const EventModal: React.FC<IEventModalProps> = ({
                   className={globalStyles.small}
                   type="button"
                   onClick={() => {
-                    console.log(currentEvent);
-                    onSave(currentEvent);
+                    onSave({
+                      ...currentEvent,
+                      startDate: format(
+                        currentEvent.startDate,
+                        "yyyy-MM-ddTHH:mm:00",
+                      ),
+                    });
                   }}
                 >
                   {t("global.save_changes")}

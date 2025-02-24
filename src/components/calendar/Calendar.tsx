@@ -7,9 +7,14 @@ import "./Calendar.css";
 interface ICalendarProps {
   date: Date;
   setDate: React.Dispatch<React.SetStateAction<Date>>;
+  isTimePicker?: boolean;
 }
 
-export const Calendar: React.FC<ICalendarProps> = ({ date, setDate }) => {
+export const Calendar: React.FC<ICalendarProps> = ({
+  date,
+  setDate,
+  isTimePicker,
+}) => {
   const [value, setValue] = React.useState<DatePickerProps["value"]>(
     date.getFullYear() > 1 ? dateTimeParse(date) : null,
   );
@@ -24,7 +29,7 @@ export const Calendar: React.FC<ICalendarProps> = ({ date, setDate }) => {
       value={value}
       onUpdate={setValue}
       view="normal"
-      format="DD.MM.YYYY"
+      format={isTimePicker ? "HH:mm" : "DD.MM.YYYY"}
       size="xl"
       /*onOpenChange={() => {
         const picker = document.getElementById("date_picker");

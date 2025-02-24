@@ -1,0 +1,38 @@
+﻿$background_primary_color: #FFFFFF
+$text_primary_color: #14171A
+$placeholder_color: #14171A57
+$border_focus_color: #0066FF
+$border_color: #14171A24
+$border_error_color: #D92D20
+$scrollbar_color: #E2E8F0
+
+.textarea_container
+  position: relative
+
+  textarea
+    padding: 12px 16px
+    resize: none
+    height: 300px
+    width: calc(100% - 32px)
+    border-radius: 12px
+    background-color: $background_primary_color
+    flex-shrink: 0
+    outline: none
+    border: 1px solid $border_color
+    font-size: 16px
+    color: $text_primary_color
+    transition: all .2s ease-out
+
+    &::placeholder
+      font-weight: 400
+      color: $placeholder_color
+
+    &:focus
+      border: 1px solid $border_focus_color
+
+  &.wrong
+    input
+      border: 1px solid $border_error_color
+
+      &:focus
+        border: 1px solid $border_error_color

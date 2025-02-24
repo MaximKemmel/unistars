@@ -54,19 +54,3 @@
     font-size: 16px !important;
     font-weight: 600 !important;
 }
-
-/*
-
-
-    padding: 0 16px
-    height: 42px
-    width: calc(100% - 32px)
-    border-radius: 12px
-    background-color: $background_primary_color
-    flex-shrink: 0
-    outline: none
-    border: 1px solid $border_color
-    font-size: 16px
-    color: $text_primary_color
-    transition: all .2s ease-out
- */
