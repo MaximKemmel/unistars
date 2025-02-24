@@ -47,8 +47,8 @@ export const postEvent = createAsyncThunk(
   },
 );
 
-export const patchEvent = createAsyncThunk(
-  "api/patchEvent",
+export const editEvent = createAsyncThunk(
+  "api/editEvent",
   async ({ event }: { event: IEvent }, { rejectWithValue }) => {
     const response = await axios.patch("/edit_event", {
       id: event.id,
@@ -62,6 +62,17 @@ export const patchEvent = createAsyncThunk(
       eventTypeId: event.eventType ? event.eventType.id : -1,
       enabledChat: false,
     });
+    if (response.status !== 200) {
+      throw rejectWithValue("Server error!");
+    }
+    return response.data;
+  },
+);
+
+export const deleteEvent = createAsyncThunk(
+  "api/deleteEvent",
+  async ({ id }: { id: number }, { rejectWithValue }) => {
+    const response = await axios.delete(`/event?id=${id}`);
     if (response.status !== 200) {
       throw rejectWithValue("Server error!");
     }

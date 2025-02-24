@@ -2,18 +2,20 @@ import React, { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import validator from "validator";
 
+import { useActions } from "../../../hooks/useActions";
+import { useTypedSelector } from "../../../hooks/useTypedSelector";
+
 import { Input } from "../../../components/input/Input";
 
 import styles from "../SignIn.module.sass";
 
 import { InfoModal } from "../../../modals/Info/InfoModal";
 
+import { ApiStatusType } from "../../../enums/local/apiStatusType";
+import { initApiStatus } from "../../../types/local/apiStatus";
+
 import ApplicationImage from "../../../assets/svg/application.svg";
 import MessageSuccess from "../../../assets/svg/message-success.svg";
-import { useActions } from "src/hooks/useActions";
-import { useTypedSelector } from "src/hooks/useTypedSelector";
-import { ApiStatusType } from "src/enums/local/apiStatusType";
-import { initApiStatus } from "src/types/local/apiStatus";
 
 interface IApplicationFormProps {
   setCurrentStage: React.Dispatch<React.SetStateAction<number>>;

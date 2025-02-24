@@ -1,8 +1,6 @@
-import React, { useState } from "react";
+import React from "react";
 import { useTranslation } from "react-i18next";
 import { format } from "date-fns";
-
-import { EventModal } from "../../modals/Event/EventModal";
 
 import styles from "./EventCard.module.sass";
 
@@ -12,12 +10,11 @@ import EditIcon from "../../assets/svg/edit.svg";
 
 interface IEventCardProps {
   eventItem: IEvent;
-  onSave: Function;
+  onEdit: Function;
 }
 
-export const EventCard: React.FC<IEventCardProps> = ({ eventItem, onSave }) => {
+export const EventCard: React.FC<IEventCardProps> = ({ eventItem, onEdit }) => {
   const { i18n, t } = useTranslation();
-  const [isEventModalShow, setIsEventModalShow] = useState(false);
 
   return (
     <div className={styles.event_container}>
@@ -46,21 +43,9 @@ export const EventCard: React.FC<IEventCardProps> = ({ eventItem, onSave }) => {
             "",
           )} | ${format(new Date(eventItem.startDate), "HH:mm")}`}
       </div>
-      <div
-        className={styles.event_edit}
-        onClick={() => setIsEventModalShow(true)}
-      >
+      <div className={styles.event_edit} onClick={() => onEdit()}>
         <img src={EditIcon} alt="" />
       </div>
-      <EventModal
-        isShow={isEventModalShow}
-        eventInfo={eventItem}
-        onSave={(editedEvent: IEvent) => {
-          onSave(editedEvent);
-          setIsEventModalShow(false);
-        }}
-        onClose={() => setIsEventModalShow(false)}
-      />
     </div>
   );
 };

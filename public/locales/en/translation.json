@@ -162,7 +162,12 @@
     "enter_location": "Enter location of the event",
     "event_format": "Format of the event",
     "additional_info": "Link to additional information",
-    "enter_link": "Enter a link to the website or other sources"
+    "enter_link": "Enter a link to the website or other sources",
+    "delete_title": "Do you really want to delete the selected event?",
+    "delete_description": "It will disappear from the event list, and users will no longer be able to view it.",
+    "event_was_deleted": "The event was successfully deleted",
+    "event_was_edited": "The event was successfully edited",
+    "event_was_added": "The event was successfully created"
   },
   "advertisements": {
     "launch_an_ad": "Launch an ad",

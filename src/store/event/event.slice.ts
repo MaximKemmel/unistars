@@ -3,8 +3,9 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import {
   getEventList,
   getEventTypes,
-  patchEvent,
+  editEvent,
   postEvent,
+  deleteEvent,
   uploadEventCover,
 } from "./event.actions";
 
@@ -19,8 +20,9 @@ interface IEventState {
   eventCover: string;
   getEventListStatus: IApiStatus;
   getEventTypesStatus: IApiStatus;
-  postEventStatus: IApiStatus;
-  patchEventStatus: IApiStatus;
+  postStatus: IApiStatus;
+  editStatus: IApiStatus;
+  deleteStatus: IApiStatus;
   uploadCoverStatus: IApiStatus;
 }
 
@@ -30,8 +32,9 @@ const initialState: IEventState = {
   eventCover: "",
   getEventListStatus: initApiStatus(),
   getEventTypesStatus: initApiStatus(),
-  postEventStatus: initApiStatus(),
-  patchEventStatus: initApiStatus(),
+  postStatus: initApiStatus(),
+  editStatus: initApiStatus(),
+  deleteStatus: initApiStatus(),
   uploadCoverStatus: initApiStatus(),
 };
 
@@ -46,10 +49,13 @@ export const eventSlice = createSlice({
       state.getEventTypesStatus = action.payload;
     },
     setPostEventStatus(state, action: PayloadAction<IApiStatus>) {
-      state.postEventStatus = action.payload;
+      state.postStatus = action.payload;
     },
     setPatchEventStatus(state, action: PayloadAction<IApiStatus>) {
-      state.patchEventStatus = action.payload;
+      state.editStatus = action.payload;
+    },
+    setDeleteEventStatus(state, action: PayloadAction<IApiStatus>) {
+      state.deleteStatus = action.payload;
     },
     setUploadCoverStatus(state, action: PayloadAction<IApiStatus>) {
       state.uploadCoverStatus = action.payload;
@@ -95,13 +101,13 @@ export const eventSlice = createSlice({
 
     //#region Post event
     builder.addCase(postEvent.pending, (state) => {
-      state.postEventStatus = { status: ApiStatusType.IN_PROGRESS };
+      state.postStatus = { status: ApiStatusType.IN_PROGRESS };
     });
     builder.addCase(postEvent.fulfilled, (state) => {
-      state.postEventStatus = { status: ApiStatusType.SUCCESS };
+      state.postStatus = { status: ApiStatusType.SUCCESS };
     });
     builder.addCase(postEvent.rejected, (state, action) => {
-      state.postEventStatus = {
+      state.postStatus = {
         status: ApiStatusType.ERROR,
         error: action.payload as string,
       };
@@ -109,14 +115,29 @@ export const eventSlice = createSlice({
     //#endregion
 
     //#region Patch event
-    builder.addCase(patchEvent.pending, (state) => {
-      state.patchEventStatus = { status: ApiStatusType.IN_PROGRESS };
+    builder.addCase(editEvent.pending, (state) => {
+      state.editStatus = { status: ApiStatusType.IN_PROGRESS };
     });
-    builder.addCase(patchEvent.fulfilled, (state) => {
-      state.patchEventStatus = { status: ApiStatusType.SUCCESS };
+    builder.addCase(editEvent.fulfilled, (state) => {
+      state.editStatus = { status: ApiStatusType.SUCCESS };
     });
-    builder.addCase(patchEvent.rejected, (state, action) => {
-      state.patchEventStatus = {
+    builder.addCase(editEvent.rejected, (state, action) => {
+      state.editStatus = {
+        status: ApiStatusType.ERROR,
+        error: action.payload as string,
+      };
+    });
+    //#endregion
+
+    //#region Delete event
+    builder.addCase(deleteEvent.pending, (state) => {
+      state.deleteStatus = { status: ApiStatusType.IN_PROGRESS };
+    });
+    builder.addCase(deleteEvent.fulfilled, (state) => {
+      state.deleteStatus = { status: ApiStatusType.SUCCESS };
+    });
+    builder.addCase(deleteEvent.rejected, (state, action) => {
+      state.deleteStatus = {
         status: ApiStatusType.ERROR,
         error: action.payload as string,
       };

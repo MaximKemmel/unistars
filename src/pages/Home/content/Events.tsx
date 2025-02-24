@@ -5,6 +5,8 @@ import { useActions } from "../../../hooks/useActions";
 import { useTypedSelector } from "../../../hooks/useTypedSelector";
 
 import { EventModal } from "../../../modals/Event/EventModal";
+import { ConfirmDeleteModal } from "../../../modals/ConfirmDelete/ConfirmDelete";
+import { StatusInfoModal } from "../../../modals/StatusInfo/StatusInfo";
 
 import { EventCard } from "../../../cards/event/EventCard";
 
@@ -23,18 +25,27 @@ export const Events = () => {
   const {
     getEventList,
     postEvent,
-    patchEvent,
+    editEvent,
+    deleteEvent,
     setPostEventStatus,
     setPatchEventStatus,
+    setDeleteEventStatus,
   } = useActions();
   const events = useTypedSelector((state) => state.eventReducer.eventList);
-  const postStatus = useTypedSelector(
-    (state) => state.eventReducer.postEventStatus,
+  const postStatus = useTypedSelector((state) => state.eventReducer.postStatus);
+  const editStatus = useTypedSelector((state) => state.eventReducer.editStatus);
+  const deleteStatus = useTypedSelector(
+    (state) => state.eventReducer.deleteStatus,
   );
-  const editStatus = useTypedSelector(
-    (state) => state.eventReducer.patchEventStatus,
-  );
+  const [deletedEvent, setDeletedEvent] = useState(initEvent());
+  const [currentEvent, setCurrentEvent] = useState(initEvent());
   const [isEventModalShow, setIsEventModalShow] = useState(false);
+  const [isConfirmDeleteModalShow, setIsConfirmDeleteModalShow] =
+    useState(false);
+  const [isStatusInfoModalShow, setIsStatusInfoModalShow] = useState(false);
+  const [statusMessage, setStatusMessage] = useState("");
+  const [isStatusSuccess, setIsStatusSuccess] = useState(true);
+  const [isStatusRestore, setIsStatusRestore] = useState(false);
 
   useEffect(() => {
     switch (postStatus.status) {
@@ -42,6 +53,10 @@ export const Events = () => {
         setPostEventStatus(initApiStatus());
         getEventList();
         setIsEventModalShow(false);
+        setStatusMessage(t("events.event_was_created"));
+        setIsStatusInfoModalShow(true);
+        setIsStatusSuccess(true);
+        setIsStatusRestore(false);
         break;
       case ApiStatusType.ERROR:
         setPostEventStatus(initApiStatus());
@@ -56,6 +71,10 @@ export const Events = () => {
         setPatchEventStatus(initApiStatus());
         getEventList();
         setIsEventModalShow(false);
+        setStatusMessage(t("events.even_was_edited"));
+        setIsStatusInfoModalShow(true);
+        setIsStatusSuccess(true);
+        setIsStatusRestore(false);
         break;
       case ApiStatusType.ERROR:
         setPatchEventStatus(initApiStatus());
@@ -63,6 +82,33 @@ export const Events = () => {
         break;
     }
   }, [editStatus]);
+
+  useEffect(() => {
+    switch (deleteStatus.status) {
+      case ApiStatusType.SUCCESS:
+        setDeleteEventStatus(initApiStatus());
+        getEventList();
+        setStatusMessage(t("events.event_was_deleted"));
+        setIsStatusInfoModalShow(true);
+        setIsStatusSuccess(true);
+        setIsStatusRestore(true);
+        break;
+      case ApiStatusType.ERROR:
+        setDeleteEventStatus(initApiStatus());
+        break;
+    }
+  }, [deleteStatus]);
+
+  const handleOnDeleteEvent = (event: IEvent) => {
+    setDeletedEvent(event);
+    setIsEventModalShow(false);
+    setIsConfirmDeleteModalShow(true);
+  };
+
+  const handleOnConfirmDeleteBooklet = () => {
+    setIsConfirmDeleteModalShow(false);
+    deleteEvent({ id: deletedEvent.id });
+  };
 
   return (
     <div className={styles.content}>
@@ -80,9 +126,10 @@ export const Events = () => {
                 <div className={styles.event_item} key={index}>
                   <EventCard
                     eventItem={event}
-                    onSave={(editedEvent: IEvent) =>
-                      patchEvent({ event: editedEvent })
-                    }
+                    onEdit={() => {
+                      setCurrentEvent(event);
+                      setIsEventModalShow(true);
+                    }}
                   />
                 </div>
               );
@@ -114,9 +161,35 @@ export const Events = () => {
       </div>
       <EventModal
         isShow={isEventModalShow}
-        eventInfo={initEvent()}
-        onSave={(editedEvent: IEvent) => postEvent({ event: editedEvent })}
+        eventInfo={currentEvent}
+        onSave={(editedEvent: IEvent) => {
+          if (editedEvent.id === -1) {
+            postEvent({ event: editedEvent });
+          } else {
+            editEvent({ event: editedEvent });
+          }
+        }}
+        onDelete={handleOnDeleteEvent}
         onClose={() => setIsEventModalShow(false)}
+      />
+      <ConfirmDeleteModal
+        isShow={isConfirmDeleteModalShow}
+        head={t("events.deleting_a_event")}
+        title={t("events.delete_title")}
+        message={t("events.delete_description")}
+        onConfirm={handleOnConfirmDeleteBooklet}
+        onClose={() => {
+          setIsConfirmDeleteModalShow(false);
+          setIsEventModalShow(true);
+        }}
+      />
+      <StatusInfoModal
+        isShow={isStatusInfoModalShow}
+        message={statusMessage}
+        isSuccess={isStatusSuccess}
+        onClose={() => setIsStatusInfoModalShow(false)}
+        isRestore={isStatusRestore}
+        onRestore={() => setIsStatusInfoModalShow(false)}
       />
     </div>
   );

@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { format } from "date-fns";
 
 import { useActions } from "../../hooks/useActions";
 import { useTypedSelector } from "../../hooks/useTypedSelector";
@@ -24,12 +25,13 @@ import { Close as CloseIcon } from "../../assets/svgComponents/Close";
 import UploadImageIcon from "../../assets/svg/upload-image.svg";
 import FileIcon from "../../assets/svg/file.svg";
 import CheckIcon from "../../assets/svg/circled-check.svg";
-import { format } from "date-fns";
+import { Trash as TrashIcon } from "../../assets/svgComponents/Trash";
 
 interface IEventModalProps {
   isShow: boolean;
   eventInfo: IEvent;
   onSave: Function;
+  onDelete: Function;
   onClose: Function;
 }
 
@@ -37,6 +39,7 @@ export const EventModal: React.FC<IEventModalProps> = ({
   isShow,
   eventInfo,
   onSave,
+  onDelete,
   onClose,
 }) => {
   const { t } = useTranslation();
@@ -458,7 +461,18 @@ export const EventModal: React.FC<IEventModalProps> = ({
               </div>
             </div>
             <div className={modalStyles.actions}>
-              <div />
+              {eventInfo.id !== -1 ? (
+                <button
+                  className={`${globalStyles.small} ${globalStyles.inverted} ${globalStyles.delete} ${globalStyles.square}`}
+                  type="button"
+                  onClick={() => onDelete(currentEvent)}
+                >
+                  <TrashIcon />
+                </button>
+              ) : (
+                <div />
+              )}
+
               <div className={modalStyles.buttons}>
                 <button
                   className={`${globalStyles.inverted} ${globalStyles.small}`}

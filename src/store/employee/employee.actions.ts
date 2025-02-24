@@ -30,8 +30,8 @@ export const postEmployee = createAsyncThunk(
   },
 );
 
-export const patchEmployee = createAsyncThunk(
-  "api/patchEmployee",
+export const editEmployee = createAsyncThunk(
+  "api/editEmployee",
   async ({ employee }: { employee: IUser }, { rejectWithValue }) => {
     const response = await axios.patch("/employee", {
       id: employee.id,

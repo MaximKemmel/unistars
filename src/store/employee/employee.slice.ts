@@ -2,7 +2,7 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 import {
   getEmployeeList,
-  patchEmployee,
+  editEmployee,
   postEmployee,
 } from "./employee.actions";
 
@@ -14,14 +14,14 @@ interface IEmployeeState {
   employeeList: IUser[];
   getStatus: IApiStatus;
   postStatus: IApiStatus;
-  patchStatus: IApiStatus;
+  editStatus: IApiStatus;
 }
 
 const initialState: IEmployeeState = {
   employeeList: [] as IUser[],
   getStatus: initApiStatus(),
   postStatus: initApiStatus(),
-  patchStatus: initApiStatus(),
+  editStatus: initApiStatus(),
 };
 
 export const employeeSlice = createSlice({
@@ -70,14 +70,14 @@ export const employeeSlice = createSlice({
     //#endregion
 
     //#region Edit employee
-    builder.addCase(patchEmployee.pending, (state) => {
-      state.patchStatus = { status: ApiStatusType.IN_PROGRESS };
+    builder.addCase(editEmployee.pending, (state) => {
+      state.editStatus = { status: ApiStatusType.IN_PROGRESS };
     });
-    builder.addCase(patchEmployee.fulfilled, (state) => {
-      state.patchStatus = { status: ApiStatusType.SUCCESS };
+    builder.addCase(editEmployee.fulfilled, (state) => {
+      state.editStatus = { status: ApiStatusType.SUCCESS };
     });
-    builder.addCase(patchEmployee.rejected, (state, action) => {
-      state.patchStatus = {
+    builder.addCase(editEmployee.rejected, (state, action) => {
+      state.editStatus = {
         status: ApiStatusType.ERROR,
         error: action.payload as string,
       };
