@@ -53,7 +53,7 @@ export const Events = () => {
         setPostEventStatus(initApiStatus());
         getEventList();
         setIsEventModalShow(false);
-        setStatusMessage(t("events.event_was_created"));
+        setStatusMessage(t("events.event_was_added"));
         setIsStatusInfoModalShow(true);
         setIsStatusSuccess(true);
         setIsStatusRestore(false);
@@ -141,7 +141,10 @@ export const Events = () => {
             <button
               className={globalStyles.small}
               type="button"
-              onClick={() => setIsEventModalShow(true)}
+              onClick={() => {
+                setCurrentEvent(initEvent());
+                setIsEventModalShow(true);
+              }}
             >
               {t("events.create_event")}
               <img src={PlusIcon} alt="" />
@@ -152,7 +155,10 @@ export const Events = () => {
           <button
             className={globalStyles.small}
             type="button"
-            onClick={() => setIsEventModalShow(true)}
+            onClick={() => {
+              setCurrentEvent(initEvent());
+              setIsEventModalShow(true);
+            }}
           >
             {t("events.create_event")}
             <img src={PlusIcon} alt="" />

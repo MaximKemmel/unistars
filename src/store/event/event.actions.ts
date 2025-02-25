@@ -7,7 +7,11 @@ import { IEvent } from "../../types/event/event";
 export const getEventList = createAsyncThunk(
   "api/getEventList",
   async (_, { rejectWithValue }) => {
-    const response = await axios.get("/get_university_events");
+    const response = await axios.get("/get_university_events", {
+      params: {
+        size: 1000,
+      },
+    });
     if (response.status !== 200) {
       throw rejectWithValue("Server error!");
     }
@@ -72,7 +76,7 @@ export const editEvent = createAsyncThunk(
 export const deleteEvent = createAsyncThunk(
   "api/deleteEvent",
   async ({ id }: { id: number }, { rejectWithValue }) => {
-    const response = await axios.delete(`/event?id=${id}`);
+    const response = await axios.delete(`/delete_event?id=${id}`);
     if (response.status !== 200) {
       throw rejectWithValue("Server error!");
     }

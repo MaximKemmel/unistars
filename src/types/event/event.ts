@@ -16,7 +16,7 @@ export interface IEvent {
   eventModerators?: number[];
   eventSubscribers?: number[];
   name: string;
-  description?: string;
+  description: string;
   chatId?: number;
   enabledChat?: boolean;
   editAccessUsers?: number[];

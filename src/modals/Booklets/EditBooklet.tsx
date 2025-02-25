@@ -60,7 +60,7 @@ export const EditBookletModal: React.FC<IEditBookletModalProps> = ({
 
   useEffect(() => {
     setCurrentBooklet(booklet);
-  }, [isShow]);
+  }, [booklet]);
 
   useEffect(() => {
     setIsButtonEnabled(

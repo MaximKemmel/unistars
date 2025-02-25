@@ -14,6 +14,8 @@ import { Calendar } from "../../components/calendar/Calendar";
 import globalStyles from "../../App.module.sass";
 import modalStyles from "../Modal.module.sass";
 
+import { privacyValues } from "../../data/privacyValues";
+
 import { IEvent } from "../../types/event/event";
 import { IEventType } from "../../types/event/eventType";
 import { IEventPrivacy } from "../../types/event/eventPrivacy";
@@ -61,39 +63,16 @@ export const EventModal: React.FC<IEventModalProps> = ({
       currentEvent.startDate != null ? currentEvent.startDate : "01.01.0001",
     ),
   );
-  const privacyValues = [
-    {
-      id: 0,
-      name: "Всем пользователям приложения",
-      nameEnglish: "All users in the app",
-      roles: [
-        "AMBASSADOR",
-        "APPLICANT",
-        "ALL_CONFIRMED_APPLICANT",
-        "ALL_STUDENT",
-        "SUBSCRIBER",
-      ],
-    },
-    {
-      id: 1,
-      name: "Только вашим подписчикам",
-      nameEnglish: "Only to your subscribers",
-      roles: ["SUBSCRIBER"],
-    },
-  ] as IEventPrivacy[];
+  const [isButtonEnabled, setIsButtonEnabled] = useState(false);
 
   useEffect(() => {
-    if (isShow) {
-      setCurrentEvent(eventInfo);
-      setDate(
-        new Date(
-          currentEvent.startDate != null
-            ? currentEvent.startDate
-            : "01.01.0001",
-        ),
-      );
-    }
-  }, [isShow]);
+    setDate(
+      new Date(
+        eventInfo.startDate != null ? eventInfo.startDate : "01.01.0001",
+      ),
+    );
+    setCurrentEvent(eventInfo);
+  }, [eventInfo]);
 
   useEffect(() => {
     if (isOnline) {
@@ -119,6 +98,18 @@ export const EventModal: React.FC<IEventModalProps> = ({
         break;
     }
   }, [uploadImageStatus]);
+
+  useEffect(() => {
+    setIsButtonEnabled(
+      currentEvent.id === -1
+        ? currentEvent.name.trim().length > 0 &&
+            currentEvent.description.trim().length > 0 &&
+            date.getFullYear() > 1
+        : currentEvent.description.trim().length > 0 &&
+            currentEvent.startDate !== null &&
+            date.getTime() > new Date().getTime(),
+    );
+  }, [currentEvent, date]);
 
   const handleOnChangeImage = (event) => {
     try {
@@ -213,7 +204,7 @@ export const EventModal: React.FC<IEventModalProps> = ({
                       </div>
                       {currentEvent.coverUrl === null ||
                       currentEvent.coverUrl === undefined ||
-                      currentEvent.coverUrl!.trim().length === 0 ? (
+                      currentEvent.coverUrl!.trim().length < 5 ? (
                         <div className={modalStyles.form_button_label}>
                           {t("events.choose_a_cover")}
                         </div>
@@ -260,7 +251,7 @@ export const EventModal: React.FC<IEventModalProps> = ({
                   </div>
                   <div className={modalStyles.input}>
                     <Textarea
-                      value={currentEvent.description!}
+                      value={currentEvent.description}
                       onChange={(value: string) =>
                         setCurrentEvent({
                           ...currentEvent,
@@ -371,19 +362,17 @@ export const EventModal: React.FC<IEventModalProps> = ({
                     <div className={modalStyles.part_label}>
                       {t("events.date")}
                     </div>
-                    {isShow ? <Calendar date={date} setDate={setDate} /> : null}
+                    <Calendar date={date} setDate={setDate} />
                   </div>
                   <div className={modalStyles.part}>
                     <div className={modalStyles.part_label}>
                       {t("events.time")}
                     </div>
-                    {isShow ? (
-                      <Calendar
-                        date={date}
-                        setDate={setDate}
-                        isTimePicker={true}
-                      />
-                    ) : null}
+                    <Calendar
+                      date={date}
+                      setDate={setDate}
+                      isTimePicker={true}
+                    />
                   </div>
                 </div>
                 <div className={modalStyles.form_separator} />
@@ -485,14 +474,16 @@ export const EventModal: React.FC<IEventModalProps> = ({
                   className={globalStyles.small}
                   type="button"
                   onClick={() => {
+                    console.log(date);
                     onSave({
                       ...currentEvent,
-                      startDate: format(
-                        currentEvent.startDate,
-                        "yyyy-MM-ddTHH:mm:00",
+                      startDate: format(date, "yyyy-MM-dd HH:mm:ss").replace(
+                        " ",
+                        "T",
                       ),
                     });
                   }}
+                  disabled={!isButtonEnabled}
                 >
                   {t("global.save_changes")}
                 </button>

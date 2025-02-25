@@ -142,6 +142,7 @@
     "ambassadors": "ambassadors",
     "creating_a_event": "Creating an event",
     "editing_a_event": "Editing an event",
+    "deleting_a_event": "Deleting event",
     "main": "Main information",
     "name": "Event name",
     "enter_a_name": "Enter the event's name",

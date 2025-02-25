@@ -1,5 +1,5 @@
-﻿import React, { useEffect } from "react";
-import { DatePicker, DatePickerProps } from "@gravity-ui/date-components";
+﻿import React from "react";
+import { DatePicker } from "@gravity-ui/date-components";
 import { dateTimeParse } from "@gravity-ui/date-utils";
 
 import "./Calendar.css";
@@ -15,19 +15,15 @@ export const Calendar: React.FC<ICalendarProps> = ({
   setDate,
   isTimePicker,
 }) => {
-  const [value, setValue] = React.useState<DatePickerProps["value"]>(
-    date.getFullYear() > 1 ? dateTimeParse(date) : null,
-  );
-
-  useEffect(() => {
-    setDate(date);
-  }, [value]);
-
   return (
     <DatePicker
       id="date_picker"
-      value={value}
-      onUpdate={setValue}
+      value={date.getFullYear() > 1 ? dateTimeParse(date) : null}
+      onUpdate={(value) => {
+        if (value !== null && value !== undefined) {
+          setDate(value!.toDate());
+        }
+      }}
       view="normal"
       format={isTimePicker ? "HH:mm" : "DD.MM.YYYY"}
       size="xl"
