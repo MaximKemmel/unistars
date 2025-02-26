@@ -24,4 +24,5 @@ export interface IAdvert {
   editAt?: Date;
   deletedAt?: Date;
   closed?: boolean;
+  state?: number;
 }

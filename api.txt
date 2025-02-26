@@ -445,7 +445,8 @@
           in: query
           required: true
           schema:
-            $ref: '#/components/schemas/Pageable'
+            $ref: '#/components/schemas/
+            '
         responses:
           "200":
             description: OK

@@ -7,6 +7,8 @@ $published_background_color: #EEF6EE
 $published_border_color: #5BA85A
 $moderation_background_color: #EDF4FC
 $moderation_border_color: #007AFF
+$rejected_background_color: #FFF0F1
+$rejected_border_color: #C5071D
 
 .advert_container
     position: relative
@@ -82,6 +84,11 @@ $moderation_border_color: #007AFF
                 color: $moderation_border_color
                 border: 1px solid $moderation_border_color
                 background-color: $moderation_background_color
+
+            &.rejected
+                color: $rejected_border_color
+                border: 1px solid $rejected_border_color
+                background-color: $rejected_background_color
 
     .additional_info
         display: flex

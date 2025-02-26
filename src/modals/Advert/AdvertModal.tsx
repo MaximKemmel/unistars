@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
+import validator from "validator";
 
 import { useActions } from "../../hooks/useActions";
 import { useTypedSelector } from "../../hooks/useTypedSelector";
@@ -77,6 +78,8 @@ export const AdvertModal: React.FC<IAdvertModalProps> = ({
         currentAdvert.subtitle.trim().length > 0 &&
         currentAdvert.imageUrl.trim().length > 0 &&
         currentAdvert.email!.trim().length > 0 &&
+        currentAdvert.websiteUrl!.trim().length > 0 &&
+        validator.isEmail(currentAdvert.email!) &&
         startDate.getFullYear() > 2010 &&
         endDate.getFullYear() > 2010,
     );

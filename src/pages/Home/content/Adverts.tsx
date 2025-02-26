@@ -20,8 +20,15 @@ import PlusIcon from "../../../assets/svg/plus.svg";
 
 export const Adverts = () => {
   const { t } = useTranslation();
-  const { getAdvertList, postAdvert, setPostAdvertStatus } = useActions();
+  const {
+    getAdvertList,
+    getAdvertRequestList,
+    postAdvert,
+    setGetAdvertsStatus,
+    setPostAdvertStatus,
+  } = useActions();
   const adverts = useTypedSelector((state) => state.advertReducer.adverts);
+  const getStatus = useTypedSelector((state) => state.advertReducer.getStatus);
   const postStatus = useTypedSelector(
     (state) => state.advertReducer.postStatus,
   );
@@ -31,12 +38,21 @@ export const Adverts = () => {
   const [isStatusSuccess, setIsStatusSuccess] = useState(true);
 
   useEffect(() => {
+    switch (getStatus.status) {
+      case ApiStatusType.SUCCESS:
+        setGetAdvertsStatus(initApiStatus());
+        getAdvertRequestList();
+        break;
+    }
+  }, [getStatus]);
+
+  useEffect(() => {
     switch (postStatus.status) {
       case ApiStatusType.SUCCESS:
         setPostAdvertStatus(initApiStatus());
         getAdvertList();
         setIsAdvertModalShow(false);
-        setStatusMessage(t("advertisement.advert_was_added"));
+        setStatusMessage(t("advertisements.advert_was_added"));
         setIsStatusInfoModalShow(true);
         setIsStatusSuccess(true);
         break;

@@ -13,16 +13,15 @@ interface IAdvertCardProps {
   advertItem: IAdvert;
 }
 
-//TODO: Статус рекламы (на модерации, опубликовано)
 export const AdvertCard: React.FC<IAdvertCardProps> = ({ advertItem }) => {
   const { i18n, t } = useTranslation();
-
-  const advertState = 0;
 
   return (
     <div className={styles.advert_container}>
       <div className={styles.advert_head}>
-        {advertItem.imageUrl.trim().length > 5 ? (
+        {advertItem.imageUrl !== null &&
+        advertItem.imageUrl !== undefined &&
+        advertItem.imageUrl.trim().length > 10 ? (
           <img src={advertItem.imageUrl} alt="" />
         ) : null}
         <div className={styles.photo_overlay} />
@@ -31,11 +30,13 @@ export const AdvertCard: React.FC<IAdvertCardProps> = ({ advertItem }) => {
           <div className={styles.advert_description}>{advertItem.subtitle}</div>
         </div>
         <div
-          className={`${styles.advert_status} ${advertState === 0 ? styles.moderation : styles.published}`}
+          className={`${styles.advert_status} ${advertItem.state === 2 ? styles.published : advertItem.state === 1 ? styles.moderation : styles.rejected}`}
         >
-          {advertState === 0
-            ? t("advertisements.moderation")
-            : t("advertisements.published")}
+          {advertItem.state === 2
+            ? t("advertisements.published")
+            : advertItem.state === 1
+              ? t("advertisements.moderation")
+              : t("advertisements.rejected")}
         </div>
       </div>
       <div className={styles.additional_info}>
@@ -56,11 +57,11 @@ export const AdvertCard: React.FC<IAdvertCardProps> = ({ advertItem }) => {
           <div className={styles.progress_head}>
             <div className={styles.info_item}>
               <img className={styles.item_icon} src={ViewIcon} alt="" />
-              <div>{`${advertItem.allShows!} ${t("advertisements.views")}`}</div>
+              <div>{`${advertItem.allShows ?? "0"} ${t("advertisements.views")}`}</div>
             </div>
             <div
               className={styles.info_limit}
-            >{`${advertItem.showsLimit!} ${t("advertisements.limit")}`}</div>
+            >{`${advertItem.showsLimit ?? "0"} ${t("advertisements.limit")}`}</div>
           </div>
           <div className={styles.progress_bar}>
             <div
@@ -75,11 +76,11 @@ export const AdvertCard: React.FC<IAdvertCardProps> = ({ advertItem }) => {
           <div className={styles.progress_head}>
             <div className={styles.info_item}>
               <img className={styles.item_icon} src={ClickIcon} alt="" />
-              <div>{`${advertItem.allClicks} ${t("advertisements.clicks")}`}</div>
+              <div>{`${advertItem.allClicks ?? "0"} ${t("advertisements.clicks")}`}</div>
             </div>
             <div
               className={styles.info_limit}
-            >{`${advertItem.clickLimit} ${t("advertisements.limit")}`}</div>
+            >{`${advertItem.clickLimit ?? "0"} ${t("advertisements.limit")}`}</div>
           </div>
           <div className={styles.progress_bar}>
             <div

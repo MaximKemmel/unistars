@@ -15,19 +15,29 @@ export const getAdvertList = createAsyncThunk(
   },
 );
 
+export const getAdvertRequestList = createAsyncThunk(
+  "api/getAdvertRequestList",
+  async (_, { rejectWithValue }) => {
+    const response = await axios.get(`/my_request_advertising`);
+    if (response.status !== 200) {
+      throw rejectWithValue("Server error!");
+    }
+    return response.data;
+  },
+);
+
 export const postAdvert = createAsyncThunk(
   "api/postAdvert",
   async ({ advert }: { advert: IAdvert }, { rejectWithValue }) => {
-    const response = await axios.post("/advertising", {
-      universityId: advert.universityId,
+    const response = await axios.post("/request_advertising", {
       title: advert.title,
       subtitle: advert.subtitle,
-      description: advert.description,
+      description: "There is not that field",
       imageUrl: advert.imageUrl,
-      advertisingBannerSize: advert.advertisingBannerSize,
+      websiteUrl: advert.websiteUrl,
+      communicationEmail: advert.email,
       startDate: advert.startDate,
       endDate: advert.endDate,
-      screenDestination: advert.screenDestination,
     });
     if (response.status !== 200) {
       throw rejectWithValue("Server error!");
