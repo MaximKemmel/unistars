@@ -1,9 +1,11 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 
+import { useActions } from "../../../hooks/useActions";
 import { useTypedSelector } from "../../../hooks/useTypedSelector";
 
 import { AdvertModal } from "../../../modals/Advert/AdvertModal";
+import { StatusInfoModal } from "../../../modals/StatusInfo/StatusInfo";
 
 import { AdvertCard } from "../../../cards/advert/AdvertCard";
 
@@ -11,13 +13,39 @@ import globalStyles from "../../../App.module.sass";
 import styles from "../Home.module.sass";
 
 import { IAdvert } from "../../../types/advert/advert";
+import { ApiStatusType } from "../../../enums/local/apiStatusType";
+import { initApiStatus } from "../../../types/local/apiStatus";
 
 import PlusIcon from "../../../assets/svg/plus.svg";
 
 export const Adverts = () => {
   const { t } = useTranslation();
+  const { getAdvertList, postAdvert, setPostAdvertStatus } = useActions();
   const adverts = useTypedSelector((state) => state.advertReducer.adverts);
+  const postStatus = useTypedSelector(
+    (state) => state.advertReducer.postStatus,
+  );
   const [isAdvertModalShow, setIsAdvertModalShow] = useState(false);
+  const [isStatusInfoModalShow, setIsStatusInfoModalShow] = useState(false);
+  const [statusMessage, setStatusMessage] = useState("");
+  const [isStatusSuccess, setIsStatusSuccess] = useState(true);
+
+  useEffect(() => {
+    switch (postStatus.status) {
+      case ApiStatusType.SUCCESS:
+        setPostAdvertStatus(initApiStatus());
+        getAdvertList();
+        setIsAdvertModalShow(false);
+        setStatusMessage(t("advertisement.advert_was_added"));
+        setIsStatusInfoModalShow(true);
+        setIsStatusSuccess(true);
+        break;
+      case ApiStatusType.ERROR:
+        setPostAdvertStatus(initApiStatus());
+        setIsAdvertModalShow(false);
+        break;
+    }
+  }, [postStatus]);
 
   return (
     <div className={styles.content}>
@@ -66,8 +94,16 @@ export const Adverts = () => {
       </div>
       <AdvertModal
         isShow={isAdvertModalShow}
-        onSave={() => setIsAdvertModalShow(false)}
+        onSave={(editedAdvert: IAdvert) => postAdvert({ advert: editedAdvert })}
         onClose={() => setIsAdvertModalShow(false)}
+      />
+      <StatusInfoModal
+        isShow={isStatusInfoModalShow}
+        message={statusMessage}
+        isSuccess={isStatusSuccess}
+        onClose={() => setIsStatusInfoModalShow(false)}
+        isRestore={false}
+        onRestore={() => setIsStatusInfoModalShow(false)}
       />
     </div>
   );

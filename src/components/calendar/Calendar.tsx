@@ -8,22 +8,28 @@ interface ICalendarProps {
   date: Date;
   setDate: React.Dispatch<React.SetStateAction<Date>>;
   isTimePicker?: boolean;
+  minDate?: Date;
+  maxDate?: Date;
 }
 
 export const Calendar: React.FC<ICalendarProps> = ({
   date,
   setDate,
   isTimePicker,
+  minDate,
+  maxDate,
 }) => {
   return (
     <DatePicker
       id="date_picker"
-      value={date.getFullYear() > 1 ? dateTimeParse(date) : null}
+      value={date.getFullYear() > 2001 ? dateTimeParse(date) : null}
       onUpdate={(value) => {
         if (value !== null && value !== undefined) {
           setDate(value!.toDate());
         }
       }}
+      minValue={dateTimeParse(minDate ?? new Date("01.01.1900"))}
+      maxValue={dateTimeParse(maxDate ?? new Date("01.01.2900"))}
       view="normal"
       format={isTimePicker ? "HH:mm" : "DD.MM.YYYY"}
       size="xl"

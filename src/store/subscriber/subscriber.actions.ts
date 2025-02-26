@@ -10,8 +10,8 @@ export const getSubscribersList = createAsyncThunk(
       `/subscribers?universityId=${universityId}`,
       {
         params: {
-          afterDate: "01.01.2020",
-          beforeDate: format(new Date(), "dd.MM.yyyy"),
+          afterDate: "2020-01-01",
+          beforeDate: format(new Date(), "yyyy-MM-dd"),
         },
       },
     );
@@ -28,8 +28,8 @@ export const getSubscribersFile = createAsyncThunk(
     await axios
       .get("/download_subscribers", {
         params: {
-          afterDate: "01.01.2020",
-          beforeDate: format(new Date(), "dd.MM.yyyy"),
+          afterDate: "2020-01-01",
+          beforeDate: format(new Date(), "yyyy-MM-dd"),
         },
       })
       .then((response) => {

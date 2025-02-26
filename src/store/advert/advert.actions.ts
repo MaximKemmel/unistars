@@ -24,15 +24,35 @@ export const postAdvert = createAsyncThunk(
       subtitle: advert.subtitle,
       description: advert.description,
       imageUrl: advert.imageUrl,
-      websiteUrl: advert.websiteUrl,
-      screenDestination: advert.screenDestination,
-      bannerSize: advert.bannerSize,
-      clickLimit: advert.clickLimit,
-      clickLimitByUser: advert.clickLimitByUser,
-      showsLimit: advert.showsLimit,
-      showsLimitByUser: advert.showsLimitByUser,
+      advertisingBannerSize: advert.advertisingBannerSize,
       startDate: advert.startDate,
       endDate: advert.endDate,
+      screenDestination: advert.screenDestination,
+    });
+    if (response.status !== 200) {
+      throw rejectWithValue("Server error!");
+    }
+    return response.data;
+  },
+);
+
+export const uploadAdvertCover = createAsyncThunk(
+  "uploadAdvertCover",
+  async (
+    {
+      file,
+      onUploadProgress,
+    }: {
+      file: Blob;
+      onUploadProgress: Function;
+    },
+    { rejectWithValue },
+  ) => {
+    const formData = new FormData();
+    formData.append("type", "IMAGE");
+    formData.append("files", file);
+    const response = await axios.post("/storage", formData, {
+      onUploadProgress: (data) => onUploadProgress(data),
     });
     if (response.status !== 200) {
       throw rejectWithValue("Server error!");

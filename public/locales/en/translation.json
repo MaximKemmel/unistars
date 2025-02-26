@@ -190,7 +190,8 @@
     "duration": "Advertisement's duration",
     "manager_will_write": "Manager will write to this email address",
     "create_ad": "Create ad",
-    "until": "Until"
+    "until": "Until",
+    "advert_was_added": "The advertisement was successfully created"
   },
   "mail_list": {
     "no_standard_mail_list": "You don't have any standard mailing lists yet",

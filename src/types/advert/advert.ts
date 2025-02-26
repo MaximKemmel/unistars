@@ -2,10 +2,12 @@ export interface IAdvert {
   id?: number;
   universityId: number;
   title: string;
+  email?: string;
   subtitle: string;
   description: string;
   imageUrl: string;
-  screenDestination: string[];
+  screenDestination?: string[];
+  advertisingBannerSize?: string;
   websiteUrl?: string;
   bannerSize?: string;
   clickLimit?: number;

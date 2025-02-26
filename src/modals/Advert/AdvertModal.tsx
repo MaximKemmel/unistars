@@ -1,13 +1,17 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 
+import { useActions } from "../../hooks/useActions";
+import { useTypedSelector } from "../../hooks/useTypedSelector";
+
 import { Input } from "../../components/input/Input";
+import { Calendar } from "../../components/calendar/Calendar";
 
 import globalStyles from "../../App.module.sass";
 import modalStyles from "../Modal.module.sass";
-import styles from "./Advert.module.sass";
 
 import { initAdvert } from "../../types/advert/initAdvert";
+import { ApiStatusType } from "../../enums/local/apiStatusType";
 
 import { Close as CloseIcon } from "../../assets/svgComponents/Close";
 import UploadImageIcon from "../../assets/svg/upload-image.svg";
@@ -20,35 +24,84 @@ interface IAdvertModalProps {
   onClose: Function;
 }
 
-//TODO: Календари для дат, отсутствует свойство для e-mail
 export const AdvertModal: React.FC<IAdvertModalProps> = ({
   isShow,
   onSave,
   onClose,
 }) => {
   const { t } = useTranslation();
+  const { uploadAdvertCover } = useActions();
   const [currentAdvert, setCurrentAdvert] = useState(initAdvert());
-  const [isImageUploaded, setIsImageUploaded] = useState(false);
-  const [isImageUploadSuccess, setIsImageUploadSuccess] = useState(true);
+  const universityInfo = useTypedSelector(
+    (state) => state.universityReducer.universityProfile,
+  );
   const inputImageRef = useRef<HTMLInputElement>(null);
+  const [uploadImageProgress, setUploadImageProgress] = useState(-1);
+  const uploadImageStatus = useTypedSelector(
+    (state) => state.advertReducer.uploadCoverStatus,
+  );
+  const advertCover = useTypedSelector(
+    (state) => state.advertReducer.advertCover,
+  );
+  const [imageName, setImageName] = useState("");
+  const [startDate, setStartDate] = useState(new Date("01.01.1900"));
+  const [endDate, setEndDate] = useState(new Date("01.01.1900"));
+  const [isButtonEnabled, setIsButtonEnabled] = useState(false);
 
   useEffect(() => {
-    const formDiv = document.getElementById("form");
-    formDiv?.scrollTo({ top: 0, behavior: "smooth" });
     setCurrentAdvert(initAdvert());
+    setStartDate(new Date("01.01.1900"));
+    setEndDate(new Date("01.01.1900"));
   }, [isShow]);
 
-  const handleOnSubmit = (event: any) => {
-    event.preventDefault();
-    onSave();
-  };
+  useEffect(() => {
+    if (uploadImageProgress === 100) {
+      setUploadImageProgress(-1);
+    }
+  }, [uploadImageProgress]);
+
+  useEffect(() => {
+    switch (uploadImageStatus.status) {
+      case ApiStatusType.SUCCESS:
+        setCurrentAdvert({
+          ...currentAdvert,
+          imageUrl: Object.values(advertCover)[0],
+        });
+        break;
+    }
+  }, [uploadImageStatus]);
+
+  useEffect(() => {
+    setIsButtonEnabled(
+      currentAdvert.title.trim().length > 0 &&
+        currentAdvert.subtitle.trim().length > 0 &&
+        currentAdvert.imageUrl.trim().length > 0 &&
+        currentAdvert.email!.trim().length > 0 &&
+        startDate.getFullYear() > 2010 &&
+        endDate.getFullYear() > 2010,
+    );
+  }, [currentAdvert, startDate, endDate]);
 
   const handleOnChangeImage = (event) => {
     try {
       const file = event.target.files[0];
-      setCurrentAdvert({ ...currentAdvert, imageUrl: file.name });
-      setIsImageUploadSuccess(true);
-      setIsImageUploaded(true);
+      setImageName(file.name);
+      if (
+        file.size < 5242880 &&
+        (file.name.endsWith(".png") ||
+          file.name.endsWith(".jpg") ||
+          file.name.endsWith(".jpeg") ||
+          file.name.endsWith(".bmp"))
+      ) {
+        uploadAdvertCover({
+          file: file,
+          onUploadProgress: (data) => {
+            setUploadImageProgress(
+              Math.round(100 * (data.loaded / data.total!)),
+            );
+          },
+        });
+      }
       event.target.value = "";
     } catch (error) {
       console.warn(error);
@@ -68,7 +121,7 @@ export const AdvertModal: React.FC<IAdvertModalProps> = ({
             <CloseIcon />
           </div>
         </div>
-        <form onSubmit={handleOnSubmit} className={modalStyles.form}>
+        <form className={modalStyles.form}>
           <div className={modalStyles.form_content} id="form">
             <div className={modalStyles.part_container}>
               <div
@@ -78,19 +131,21 @@ export const AdvertModal: React.FC<IAdvertModalProps> = ({
                   <div className={modalStyles.part_label}>
                     {t("advertisements.heading")}
                   </div>
-                  <Input
-                    value={currentAdvert.title}
-                    onChange={(value: string) =>
-                      setCurrentAdvert({
-                        ...currentAdvert,
-                        title: value,
-                      })
-                    }
-                    placeholder={t("advertisements.enter_a_heading")}
-                    type="text"
-                    isRequired={true}
-                    maxLength={16}
-                  />
+                  <div className={modalStyles.input}>
+                    <Input
+                      value={currentAdvert.title}
+                      onChange={(value: string) =>
+                        setCurrentAdvert({
+                          ...currentAdvert,
+                          title: value,
+                        })
+                      }
+                      placeholder={t("advertisements.enter_a_heading")}
+                      type="text"
+                      isRequired={true}
+                      maxLength={16}
+                    />
+                  </div>
                   <div
                     className={modalStyles.input_length}
                   >{`${currentAdvert.title.length}/16`}</div>
@@ -99,18 +154,20 @@ export const AdvertModal: React.FC<IAdvertModalProps> = ({
                   <div className={modalStyles.part_label}>
                     {t("advertisements.subtitle")}
                   </div>
-                  <Input
-                    value={currentAdvert.subtitle}
-                    onChange={(value: string) =>
-                      setCurrentAdvert({
-                        ...currentAdvert,
-                        subtitle: value,
-                      })
-                    }
-                    placeholder={t("advertisements.enter_a_subtitle")}
-                    type="text"
-                    maxLength={56}
-                  />
+                  <div className={modalStyles.input}>
+                    <Input
+                      value={currentAdvert.subtitle}
+                      onChange={(value: string) =>
+                        setCurrentAdvert({
+                          ...currentAdvert,
+                          subtitle: value,
+                        })
+                      }
+                      placeholder={t("advertisements.enter_a_subtitle")}
+                      type="text"
+                      maxLength={56}
+                    />
+                  </div>
                   <div
                     className={modalStyles.input_length}
                   >{`${currentAdvert.subtitle.length}/56`}</div>
@@ -123,7 +180,7 @@ export const AdvertModal: React.FC<IAdvertModalProps> = ({
                   <div className={modalStyles.part_label}>
                     {t("advertisements.banner_cover")}
                   </div>
-                  <div className={styles.cover}>
+                  <div className={modalStyles.cover}>
                     <input
                       ref={inputImageRef}
                       type="file"
@@ -133,35 +190,40 @@ export const AdvertModal: React.FC<IAdvertModalProps> = ({
                       hidden
                     />
                     <div
-                      className={styles.form_button}
+                      className={modalStyles.form_button}
                       onClick={() => inputImageRef.current!.click()}
                     >
                       <img src={UploadImageIcon} alt="" />
                     </div>
-                    {currentAdvert.imageUrl.trim().length === 0 ? (
-                      <div className={styles.form_button_label}>
+                    {currentAdvert.imageUrl.trim().length < 5 ? (
+                      <div className={modalStyles.form_button_label}>
                         {t("advertisements.choose_cover")}
                       </div>
                     ) : (
-                      <div className={styles.file_info}>
-                        <div className={styles.file_name}>
+                      <div className={modalStyles.file_info}>
+                        <div className={modalStyles.file_name}>
                           <img src={FileIcon} alt="" />
-                          <div className={styles.name}>
-                            {currentAdvert.imageUrl}
+                          <div className={modalStyles.name}>
+                            {imageName.trim().length === 0
+                              ? currentAdvert.imageUrl
+                              : imageName}
                           </div>
                         </div>
-                        {isImageUploaded ? (
+                        {uploadImageStatus.status !== ApiStatusType.NONE &&
+                        uploadImageStatus.status !==
+                          ApiStatusType.IN_PROGRESS ? (
                           <>
-                            {isImageUploadSuccess ? (
+                            {uploadImageStatus.status ===
+                            ApiStatusType.SUCCESS ? (
                               <div
-                                className={`${styles.upload_progress} ${styles.success}`}
+                                className={`${modalStyles.upload_progress} ${modalStyles.success}`}
                               >
                                 <img src={CheckIcon} alt="" />
                                 {t("global.sended")}
                               </div>
                             ) : (
                               <div
-                                className={`${styles.upload_progress} ${styles.error}`}
+                                className={`${modalStyles.upload_progress} ${modalStyles.error}`}
                               >
                                 {t("global.error")}
                                 <CloseIcon fill="#C45F1C" isBold={true} />
@@ -177,17 +239,19 @@ export const AdvertModal: React.FC<IAdvertModalProps> = ({
                   <div
                     className={modalStyles.part_label}
                   >{`${t("advertisements.link_to_the_banner")} *`}</div>
-                  <Input
-                    value={currentAdvert.websiteUrl ?? ""}
-                    onChange={(value: string) =>
-                      setCurrentAdvert({
-                        ...currentAdvert,
-                        websiteUrl: value,
-                      })
-                    }
-                    placeholder={t("advertisements.enter_a_link")}
-                    type="text"
-                  />
+                  <div className={modalStyles.input}>
+                    <Input
+                      value={currentAdvert.websiteUrl ?? ""}
+                      onChange={(value: string) =>
+                        setCurrentAdvert({
+                          ...currentAdvert,
+                          websiteUrl: value,
+                        })
+                      }
+                      placeholder={t("advertisements.enter_a_link")}
+                      type="text"
+                    />
+                  </div>
                 </div>
               </div>
               <div
@@ -198,46 +262,38 @@ export const AdvertModal: React.FC<IAdvertModalProps> = ({
                     {t("advertisements.duration")}
                   </div>
                   <div className={modalStyles.input_multi}>
-                    <input
-                      placeholder={"DD.MM.YYYY"}
-                      type="text"
-                      required
-                      onChange={(_event) =>
-                        setCurrentAdvert({
-                          ...currentAdvert,
-                          startDate: new Date(),
-                        })
+                    <Calendar
+                      date={startDate}
+                      setDate={setStartDate}
+                      maxDate={
+                        endDate.getFullYear() === 1900
+                          ? new Date("01.01.2100")
+                          : endDate
                       }
-                      value={currentAdvert.startDate?.toDateString()}
                     />
                     <div className={modalStyles.separator}>-</div>
-                    <input
-                      placeholder={"DD.MM.YYYY"}
-                      type="text"
-                      required
-                      onChange={(_event) =>
-                        setCurrentAdvert({
-                          ...currentAdvert,
-                          endDate: new Date(),
-                        })
-                      }
-                      value={currentAdvert.endDate?.toDateString()}
+                    <Calendar
+                      date={endDate}
+                      setDate={setEndDate}
+                      minDate={startDate}
                     />
                   </div>
                 </div>
                 <div className={modalStyles.part}>
                   <div className={modalStyles.part_label}>E-mail</div>
-                  <Input
-                    value={currentAdvert.subtitle}
-                    onChange={(value: string) =>
-                      setCurrentAdvert({
-                        ...currentAdvert,
-                        subtitle: value,
-                      })
-                    }
-                    placeholder={"example@mail.ru"}
-                    type="text"
-                  />
+                  <div className={modalStyles.input}>
+                    <Input
+                      value={currentAdvert.email ?? ""}
+                      onChange={(value: string) =>
+                        setCurrentAdvert({
+                          ...currentAdvert,
+                          email: value,
+                        })
+                      }
+                      placeholder={"example@mail.ru"}
+                      type="text"
+                    />
+                  </div>
                   <div className={modalStyles.input_description}>
                     {t("advertisements.manager_will_write")}
                   </div>
@@ -248,7 +304,19 @@ export const AdvertModal: React.FC<IAdvertModalProps> = ({
         </form>
         <div className={modalStyles.actions}>
           <div />
-          <button className={globalStyles.small} type="submit">
+          <button
+            className={globalStyles.small}
+            type="button"
+            onClick={() =>
+              onSave({
+                ...currentAdvert,
+                startDate: startDate,
+                endDate: endDate,
+                universityId: universityInfo.id,
+              })
+            }
+            disabled={!isButtonEnabled}
+          >
             {t("advertisements.create_ad")}
           </button>
         </div>
