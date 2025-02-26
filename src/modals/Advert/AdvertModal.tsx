@@ -124,187 +124,189 @@ export const AdvertModal: React.FC<IAdvertModalProps> = ({
             <CloseIcon />
           </div>
         </div>
-        <form className={modalStyles.form}>
-          <div className={modalStyles.form_content} id="form">
-            <div className={modalStyles.part_container}>
-              <div
-                className={`${modalStyles.part_multi} ${modalStyles.double}`}
-              >
-                <div className={modalStyles.part}>
-                  <div className={modalStyles.part_label}>
-                    {t("advertisements.heading")}
-                  </div>
-                  <div className={modalStyles.input}>
-                    <Input
-                      value={currentAdvert.title}
-                      onChange={(value: string) =>
-                        setCurrentAdvert({
-                          ...currentAdvert,
-                          title: value,
-                        })
-                      }
-                      placeholder={t("advertisements.enter_a_heading")}
-                      type="text"
-                      isRequired={true}
-                      maxLength={16}
-                    />
-                  </div>
-                  <div
-                    className={modalStyles.input_length}
-                  >{`${currentAdvert.title.length}/16`}</div>
-                </div>
-                <div className={modalStyles.part}>
-                  <div className={modalStyles.part_label}>
-                    {t("advertisements.subtitle")}
-                  </div>
-                  <div className={modalStyles.input}>
-                    <Input
-                      value={currentAdvert.subtitle}
-                      onChange={(value: string) =>
-                        setCurrentAdvert({
-                          ...currentAdvert,
-                          subtitle: value,
-                        })
-                      }
-                      placeholder={t("advertisements.enter_a_subtitle")}
-                      type="text"
-                      maxLength={56}
-                    />
-                  </div>
-                  <div
-                    className={modalStyles.input_length}
-                  >{`${currentAdvert.subtitle.length}/56`}</div>
-                </div>
-              </div>
-              <div
-                className={`${modalStyles.part_multi} ${modalStyles.double}`}
-              >
-                <div className={modalStyles.part}>
-                  <div className={modalStyles.part_label}>
-                    {t("advertisements.banner_cover")}
-                  </div>
-                  <div className={modalStyles.cover}>
-                    <input
-                      ref={inputImageRef}
-                      type="file"
-                      id="file"
-                      accept="image/png, image/jpeg"
-                      onChange={handleOnChangeImage}
-                      hidden
-                    />
-                    <div
-                      className={modalStyles.form_button}
-                      onClick={() => inputImageRef.current!.click()}
-                    >
-                      <img src={UploadImageIcon} alt="" />
+        {isShow ? (
+          <form className={modalStyles.form}>
+            <div className={modalStyles.form_content} id="form">
+              <div className={modalStyles.part_container}>
+                <div
+                  className={`${modalStyles.part_multi} ${modalStyles.double}`}
+                >
+                  <div className={modalStyles.part}>
+                    <div className={modalStyles.part_label}>
+                      {t("advertisements.heading")}
                     </div>
-                    {currentAdvert.imageUrl.trim().length < 5 ? (
-                      <div className={modalStyles.form_button_label}>
-                        {t("advertisements.choose_cover")}
+                    <div className={modalStyles.input}>
+                      <Input
+                        value={currentAdvert.title}
+                        onChange={(value: string) =>
+                          setCurrentAdvert({
+                            ...currentAdvert,
+                            title: value,
+                          })
+                        }
+                        placeholder={t("advertisements.enter_a_heading")}
+                        type="text"
+                        isRequired={true}
+                        maxLength={16}
+                      />
+                    </div>
+                    <div
+                      className={modalStyles.input_length}
+                    >{`${currentAdvert.title.length}/16`}</div>
+                  </div>
+                  <div className={modalStyles.part}>
+                    <div className={modalStyles.part_label}>
+                      {t("advertisements.subtitle")}
+                    </div>
+                    <div className={modalStyles.input}>
+                      <Input
+                        value={currentAdvert.subtitle}
+                        onChange={(value: string) =>
+                          setCurrentAdvert({
+                            ...currentAdvert,
+                            subtitle: value,
+                          })
+                        }
+                        placeholder={t("advertisements.enter_a_subtitle")}
+                        type="text"
+                        maxLength={56}
+                      />
+                    </div>
+                    <div
+                      className={modalStyles.input_length}
+                    >{`${currentAdvert.subtitle.length}/56`}</div>
+                  </div>
+                </div>
+                <div
+                  className={`${modalStyles.part_multi} ${modalStyles.double}`}
+                >
+                  <div className={modalStyles.part}>
+                    <div className={modalStyles.part_label}>
+                      {t("advertisements.banner_cover")}
+                    </div>
+                    <div className={modalStyles.cover}>
+                      <input
+                        ref={inputImageRef}
+                        type="file"
+                        id="file"
+                        accept="image/png, image/jpeg"
+                        onChange={handleOnChangeImage}
+                        hidden
+                      />
+                      <div
+                        className={modalStyles.form_button}
+                        onClick={() => inputImageRef.current!.click()}
+                      >
+                        <img src={UploadImageIcon} alt="" />
                       </div>
-                    ) : (
-                      <div className={modalStyles.file_info}>
-                        <div className={modalStyles.file_name}>
-                          <img src={FileIcon} alt="" />
-                          <div className={modalStyles.name}>
-                            {imageName.trim().length === 0
-                              ? currentAdvert.imageUrl
-                              : imageName}
-                          </div>
+                      {currentAdvert.imageUrl.trim().length < 5 ? (
+                        <div className={modalStyles.form_button_label}>
+                          {t("advertisements.choose_cover")}
                         </div>
-                        {uploadImageStatus.status !== ApiStatusType.NONE &&
-                        uploadImageStatus.status !==
-                          ApiStatusType.IN_PROGRESS ? (
-                          <>
-                            {uploadImageStatus.status ===
-                            ApiStatusType.SUCCESS ? (
-                              <div
-                                className={`${modalStyles.upload_progress} ${modalStyles.success}`}
-                              >
-                                <img src={CheckIcon} alt="" />
-                                {t("global.sended")}
-                              </div>
-                            ) : (
-                              <div
-                                className={`${modalStyles.upload_progress} ${modalStyles.error}`}
-                              >
-                                {t("global.error")}
-                                <CloseIcon fill="#C45F1C" isBold={true} />
-                              </div>
-                            )}
-                          </>
-                        ) : null}
-                      </div>
-                    )}
+                      ) : (
+                        <div className={modalStyles.file_info}>
+                          <div className={modalStyles.file_name}>
+                            <img src={FileIcon} alt="" />
+                            <div className={modalStyles.name}>
+                              {imageName.trim().length === 0
+                                ? currentAdvert.imageUrl
+                                : imageName}
+                            </div>
+                          </div>
+                          {uploadImageStatus.status !== ApiStatusType.NONE &&
+                          uploadImageStatus.status !==
+                            ApiStatusType.IN_PROGRESS ? (
+                            <>
+                              {uploadImageStatus.status ===
+                              ApiStatusType.SUCCESS ? (
+                                <div
+                                  className={`${modalStyles.upload_progress} ${modalStyles.success}`}
+                                >
+                                  <img src={CheckIcon} alt="" />
+                                  {t("global.sended")}
+                                </div>
+                              ) : (
+                                <div
+                                  className={`${modalStyles.upload_progress} ${modalStyles.error}`}
+                                >
+                                  {t("global.error")}
+                                  <CloseIcon fill="#C45F1C" isBold={true} />
+                                </div>
+                              )}
+                            </>
+                          ) : null}
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                  <div className={modalStyles.part}>
+                    <div
+                      className={modalStyles.part_label}
+                    >{`${t("advertisements.link_to_the_banner")} *`}</div>
+                    <div className={modalStyles.input}>
+                      <Input
+                        value={currentAdvert.websiteUrl ?? ""}
+                        onChange={(value: string) =>
+                          setCurrentAdvert({
+                            ...currentAdvert,
+                            websiteUrl: value,
+                          })
+                        }
+                        placeholder={t("advertisements.enter_a_link")}
+                        type="text"
+                      />
+                    </div>
                   </div>
                 </div>
-                <div className={modalStyles.part}>
-                  <div
-                    className={modalStyles.part_label}
-                  >{`${t("advertisements.link_to_the_banner")} *`}</div>
-                  <div className={modalStyles.input}>
-                    <Input
-                      value={currentAdvert.websiteUrl ?? ""}
-                      onChange={(value: string) =>
-                        setCurrentAdvert({
-                          ...currentAdvert,
-                          websiteUrl: value,
-                        })
-                      }
-                      placeholder={t("advertisements.enter_a_link")}
-                      type="text"
-                    />
+                <div
+                  className={`${modalStyles.part_multi} ${modalStyles.double}`}
+                >
+                  <div className={modalStyles.part}>
+                    <div className={modalStyles.part_label}>
+                      {t("advertisements.duration")}
+                    </div>
+                    <div className={modalStyles.input_multi}>
+                      <Calendar
+                        date={startDate}
+                        setDate={setStartDate}
+                        maxDate={
+                          endDate.getFullYear() === 1900
+                            ? new Date("01.01.2100")
+                            : endDate
+                        }
+                      />
+                      <div className={modalStyles.separator}>-</div>
+                      <Calendar
+                        date={endDate}
+                        setDate={setEndDate}
+                        minDate={startDate}
+                      />
+                    </div>
                   </div>
-                </div>
-              </div>
-              <div
-                className={`${modalStyles.part_multi} ${modalStyles.double}`}
-              >
-                <div className={modalStyles.part}>
-                  <div className={modalStyles.part_label}>
-                    {t("advertisements.duration")}
-                  </div>
-                  <div className={modalStyles.input_multi}>
-                    <Calendar
-                      date={startDate}
-                      setDate={setStartDate}
-                      maxDate={
-                        endDate.getFullYear() === 1900
-                          ? new Date("01.01.2100")
-                          : endDate
-                      }
-                    />
-                    <div className={modalStyles.separator}>-</div>
-                    <Calendar
-                      date={endDate}
-                      setDate={setEndDate}
-                      minDate={startDate}
-                    />
-                  </div>
-                </div>
-                <div className={modalStyles.part}>
-                  <div className={modalStyles.part_label}>E-mail</div>
-                  <div className={modalStyles.input}>
-                    <Input
-                      value={currentAdvert.email ?? ""}
-                      onChange={(value: string) =>
-                        setCurrentAdvert({
-                          ...currentAdvert,
-                          email: value,
-                        })
-                      }
-                      placeholder={"example@mail.ru"}
-                      type="text"
-                    />
-                  </div>
-                  <div className={modalStyles.input_description}>
-                    {t("advertisements.manager_will_write")}
+                  <div className={modalStyles.part}>
+                    <div className={modalStyles.part_label}>E-mail</div>
+                    <div className={modalStyles.input}>
+                      <Input
+                        value={currentAdvert.email ?? ""}
+                        onChange={(value: string) =>
+                          setCurrentAdvert({
+                            ...currentAdvert,
+                            email: value,
+                          })
+                        }
+                        placeholder={"example@mail.ru"}
+                        type="text"
+                      />
+                    </div>
+                    <div className={modalStyles.input_description}>
+                      {t("advertisements.manager_will_write")}
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
-        </form>
+          </form>
+        ) : null}
         <div className={modalStyles.actions}>
           <div />
           <button
