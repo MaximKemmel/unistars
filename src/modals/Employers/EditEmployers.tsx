@@ -93,7 +93,7 @@ export const EditEmployersModal: React.FC<IEditEmployersModalProps> = ({
                     setCurrentEmployers(
                       currentEmployers.map((tmpEmployee: IUser) => {
                         if (tmpEmployee.id === employee.id) {
-                          return { ...tmpEmployee, isChecked: status };
+                          return { ...tmpEmployee, isSelected: status };
                         } else {
                           return tmpEmployee;
                         }

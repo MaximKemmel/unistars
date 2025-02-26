@@ -31,7 +31,7 @@ export const employeeSlice = createSlice({
     setGetStatus(state, action: PayloadAction<IApiStatus>) {
       state.getStatus = action.payload;
     },
-    setPostStatus(state, action: PayloadAction<IApiStatus>) {
+    setPostEmployeeStatus(state, action: PayloadAction<IApiStatus>) {
       state.postStatus = action.payload;
     },
   },

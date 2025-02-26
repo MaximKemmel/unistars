@@ -1,5 +1,8 @@
-﻿import React, { useState } from "react";
+﻿import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
+import validator from "validator";
+
+import { Input } from "../../components/input/Input";
 
 import globalStyles from "../../App.module.sass";
 import modalStyles from "../Modal.module.sass";
@@ -24,6 +27,15 @@ export const AddEmployeeModal: React.FC<IAddEmployeeModalProps> = ({
 }) => {
   const { t } = useTranslation();
   const [currentEmployee, setCurrentEmployee] = useState(initEmployee());
+  const [isButtonEnabled, setIsButtonEnabled] = useState(false);
+
+  useEffect(() => {
+    setIsButtonEnabled(
+      currentEmployee.email.trim().length > 0 &&
+        validator.isEmail(currentEmployee.email.trim()) &&
+        currentEmployee.profession!.trim().length > 0,
+    );
+  }, [currentEmployee]);
 
   return (
     <div className={`${modalStyles.modal} ${isShow ? modalStyles.active : ""}`}>
@@ -31,50 +43,56 @@ export const AddEmployeeModal: React.FC<IAddEmployeeModalProps> = ({
         className={`${modalStyles.overlay} ${isShow ? modalStyles.active : ""}`}
         onClick={() => onClose()}
       />
-      <div className={`${modalStyles.modal_content} ${styles.modal_content}`}>
+      <div className={modalStyles.modal_content}>
         <div className={modalStyles.head}>
           <h4>{t("employers.adding_employee")}</h4>
           <div className={modalStyles.close} onClick={() => onClose()}>
             <CloseIcon />
           </div>
         </div>
-        <div className={styles.employers_container}>
-          <div className={styles.employers_content}>
-            <form>
-              <div className={styles.form_info}>
+        <form className={modalStyles.form}>
+          <div className={modalStyles.form_content}>
+            <div className={modalStyles.part_container}>
+              <div className={styles.description}>
                 {t("employers.adding_description")}
               </div>
-              <input
-                placeholder={"E-mail"}
-                type="text"
-                required
-                onChange={(event) =>
-                  setCurrentEmployee({
-                    ...currentEmployee,
-                    email: event.target.value.trim(),
-                  })
-                }
-                value={currentEmployee.email}
-              />
-              <input
-                placeholder={t("employers.post")}
-                type="text"
-                required
-                onChange={(event) =>
-                  setCurrentEmployee({
-                    ...currentEmployee,
-                    profession: event.target.value.trim(),
-                  })
-                }
-                value={currentEmployee.profession}
-                maxLength={56}
-              />
-              <div
-                className={styles.role_length}
-              >{`${currentEmployee.profession == undefined ? 0 : currentEmployee.profession.length}/56`}</div>
-            </form>
+              <div className={modalStyles.part}>
+                <div className={modalStyles.input}>
+                  <Input
+                    value={currentEmployee.email}
+                    onChange={(value: string) =>
+                      setCurrentEmployee({
+                        ...currentEmployee,
+                        email: value.trim(),
+                      })
+                    }
+                    placeholder={"E-mail"}
+                    type="text"
+                    isRequired={true}
+                  />
+                </div>
+                <div className={modalStyles.input}>
+                  <Input
+                    value={currentEmployee.profession ?? ""}
+                    onChange={(value: string) =>
+                      setCurrentEmployee({
+                        ...currentEmployee,
+                        profession: value.trim(),
+                      })
+                    }
+                    placeholder={t("employers.post")}
+                    type="text"
+                    isRequired={true}
+                    maxLength={56}
+                  />
+                </div>
+                <div
+                  className={styles.role_length}
+                >{`${currentEmployee.profession == undefined ? 0 : currentEmployee.profession.length}/56`}</div>
+              </div>
+            </div>
           </div>
-        </div>
+        </form>
         <div className={modalStyles.actions}>
           <div />
           <div className={modalStyles.buttons}>
@@ -89,6 +107,7 @@ export const AddEmployeeModal: React.FC<IAddEmployeeModalProps> = ({
               className={globalStyles.small}
               type="button"
               onClick={() => onSave(currentEmployee)}
+              disabled={!isButtonEnabled}
             >
               <span>{t("employers.add_employee")}</span>
             </button>
