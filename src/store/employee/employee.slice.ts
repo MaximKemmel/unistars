@@ -4,6 +4,7 @@ import {
   getEmployeeList,
   editEmployee,
   postEmployee,
+  deleteEmployers,
 } from "./employee.actions";
 
 import { IUser } from "../../types/user/user";
@@ -15,6 +16,7 @@ interface IEmployeeState {
   getStatus: IApiStatus;
   postStatus: IApiStatus;
   editStatus: IApiStatus;
+  deleteStatus: IApiStatus;
 }
 
 const initialState: IEmployeeState = {
@@ -22,6 +24,7 @@ const initialState: IEmployeeState = {
   getStatus: initApiStatus(),
   postStatus: initApiStatus(),
   editStatus: initApiStatus(),
+  deleteStatus: initApiStatus(),
 };
 
 export const employeeSlice = createSlice({
@@ -33,6 +36,12 @@ export const employeeSlice = createSlice({
     },
     setPostEmployeeStatus(state, action: PayloadAction<IApiStatus>) {
       state.postStatus = action.payload;
+    },
+    setEditEmployeeStatus(state, action: PayloadAction<IApiStatus>) {
+      state.editStatus = action.payload;
+    },
+    setDeleteEmployersStatus(state, action: PayloadAction<IApiStatus>) {
+      state.deleteStatus = action.payload;
     },
   },
   extraReducers: (builder) => {
@@ -78,6 +87,21 @@ export const employeeSlice = createSlice({
     });
     builder.addCase(editEmployee.rejected, (state, action) => {
       state.editStatus = {
+        status: ApiStatusType.ERROR,
+        error: action.payload as string,
+      };
+    });
+    //#endregion
+
+    //#region Delete employers
+    builder.addCase(deleteEmployers.pending, (state) => {
+      state.deleteStatus = { status: ApiStatusType.IN_PROGRESS };
+    });
+    builder.addCase(deleteEmployers.fulfilled, (state) => {
+      state.deleteStatus = { status: ApiStatusType.SUCCESS };
+    });
+    builder.addCase(deleteEmployers.rejected, (state, action) => {
+      state.deleteStatus = {
         status: ApiStatusType.ERROR,
         error: action.payload as string,
       };

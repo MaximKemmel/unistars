@@ -44,3 +44,18 @@ export const editEmployee = createAsyncThunk(
     return response.data;
   },
 );
+
+export const deleteEmployers = createAsyncThunk(
+  "api/deleteEmployers",
+  async ({ employers }: { employers: number[] }, { rejectWithValue }) => {
+    const response = await axios.delete("/employee", {
+      params: {
+        ids: employers,
+      },
+    });
+    if (response.status !== 200) {
+      throw rejectWithValue("Server error!");
+    }
+    return response.data;
+  },
+);

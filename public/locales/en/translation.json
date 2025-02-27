@@ -241,6 +241,9 @@
     "adding_description": "Fill out the form to add an employee. You can make an employee of a user who does not have the status of \"Student\" or \"Ambassador\"",
     "post": "Post",
     "deleting_employers": "Deleting employers",
-    "delete_description": "Do you really want to remove the selected users from the list of employers?"
+    "delete_description": "Do you really want to remove the selected users from the list of employers?",
+    "employers_was_deleted": "Employers was successfully deleted",
+    "employee_was_added": "The employee was successfully added",
+    "employee_was_edited": "The employee was successfully edited"
   }
 }

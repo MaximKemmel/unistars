@@ -1,4 +1,4 @@
-﻿import React, { useEffect } from "react";
+﻿import React from "react";
 import { useTranslation } from "react-i18next";
 
 import { useActions } from "../../hooks/useActions";
@@ -37,11 +37,6 @@ export const AmbassadorsModal: React.FC<IAmbassadorsModalProps> = ({
     (state) => state.ambassadorReducer.ambassadorRequestList,
   );
 
-  useEffect(() => {
-    const contentDiv = document.getElementById("ambassadors_content");
-    contentDiv?.scrollTo({ top: 0, behavior: "smooth" });
-  }, [isShow]);
-
   return (
     <div className={`${modalStyles.modal} ${isShow ? modalStyles.active : ""}`}>
       <div
@@ -55,84 +50,86 @@ export const AmbassadorsModal: React.FC<IAmbassadorsModalProps> = ({
             <CloseIcon />
           </div>
         </div>
-        <div className={styles.ambassadors_container}>
-          <div className={styles.ambassadors_content} id="ambassadors_content">
-            {ambassadors.length + ambassadorRequests.length === 0 ? (
-              <div className={modalStyles.empty_container}>
-                <img
-                  className={modalStyles.empty_image}
-                  src={NothingFound}
-                  alt=""
-                />
-                <div className={modalStyles.empty_info}>
-                  <div className={modalStyles.empty_title}>
-                    {t("global.nothing_was_found")}
-                  </div>
-                  <div className={modalStyles.empty_description}>
-                    {t("ambassadors.don_t_have_ambassadors")}
+        {isShow ? (
+          <div className={styles.ambassadors_container}>
+            <div className={styles.ambassadors_content}>
+              {ambassadors.length + ambassadorRequests.length === 0 ? (
+                <div className={modalStyles.empty_container}>
+                  <img
+                    className={modalStyles.empty_image}
+                    src={NothingFound}
+                    alt=""
+                  />
+                  <div className={modalStyles.empty_info}>
+                    <div className={modalStyles.empty_title}>
+                      {t("global.nothing_was_found")}
+                    </div>
+                    <div className={modalStyles.empty_description}>
+                      {t("ambassadors.don_t_have_ambassadors")}
+                    </div>
                   </div>
                 </div>
-              </div>
-            ) : (
-              <>
-                {ambassadorRequests.length > 0 ? (
-                  <>
-                    <div className={styles.head}>
-                      <h4>
-                        Заявки<span>{ambassadorRequests.length}</span>
-                      </h4>
-                      {ambassadorRequests.length > 3 ? (
-                        <div
-                          className={styles.head_action}
-                          onClick={() => onAmbassadorRequestsEdit()}
-                        >
-                          {t("global.show_all")}
-                        </div>
-                      ) : null}
+              ) : (
+                <>
+                  {ambassadorRequests.length > 0 ? (
+                    <>
+                      <div className={styles.head}>
+                        <h4>
+                          Заявки<span>{ambassadorRequests.length}</span>
+                        </h4>
+                        {ambassadorRequests.length > 3 ? (
+                          <div
+                            className={styles.head_action}
+                            onClick={() => onAmbassadorRequestsEdit()}
+                          >
+                            {t("global.show_all")}
+                          </div>
+                        ) : null}
+                      </div>
+                      {ambassadorRequests
+                        .slice(
+                          0,
+                          ambassadorRequests.length > 3
+                            ? 3
+                            : ambassadorRequests.length,
+                        )
+                        .map((ambassadorRequest: IUser, index: number) => (
+                          <div className={styles.ambassador_item} key={index}>
+                            <UserCard
+                              userItem={ambassadorRequest}
+                              isRequestItem={true}
+                              onCancelRequest={() =>
+                                acceptAmbassador({
+                                  ambassadorId: ambassadorRequest.id!,
+                                  isAccept: false,
+                                })
+                              }
+                              onAcceptRequest={() =>
+                                acceptAmbassador({
+                                  ambassadorId: ambassadorRequest.id!,
+                                  isAccept: true,
+                                })
+                              }
+                            />
+                          </div>
+                        ))}
+                      <div className={styles.ambassadors_separator} />
+                    </>
+                  ) : null}
+                  <h4>
+                    {t("ambassadors.ambassadors")}
+                    <span>{ambassadors.length}</span>
+                  </h4>
+                  {ambassadors.map((ambassador: IUser, index: number) => (
+                    <div className={styles.ambassador_item} key={index}>
+                      <UserCard userItem={ambassador} />
                     </div>
-                    {ambassadorRequests
-                      .slice(
-                        0,
-                        ambassadorRequests.length > 3
-                          ? 3
-                          : ambassadorRequests.length,
-                      )
-                      .map((ambassadorRequest: IUser, index: number) => (
-                        <div className={styles.ambassador_item} key={index}>
-                          <UserCard
-                            userItem={ambassadorRequest}
-                            isRequestItem={true}
-                            onCancelRequest={() =>
-                              acceptAmbassador({
-                                ambassadorId: ambassadorRequest.id!,
-                                isAccept: false,
-                              })
-                            }
-                            onAcceptRequest={() =>
-                              acceptAmbassador({
-                                ambassadorId: ambassadorRequest.id!,
-                                isAccept: true,
-                              })
-                            }
-                          />
-                        </div>
-                      ))}
-                    <div className={styles.ambassadors_separator} />
-                  </>
-                ) : null}
-                <h4>
-                  {t("ambassadors.ambassadors")}
-                  <span>{ambassadors.length}</span>
-                </h4>
-                {ambassadors.map((ambassador: IUser, index: number) => (
-                  <div className={styles.ambassador_item} key={index}>
-                    <UserCard userItem={ambassador} />
-                  </div>
-                ))}
-              </>
-            )}
+                  ))}
+                </>
+              )}
+            </div>
           </div>
-        </div>
+        ) : null}
         {ambassadors.length > 0 ? (
           <div className={modalStyles.actions}>
             <div />

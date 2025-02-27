@@ -20,14 +20,28 @@ import { initApiStatus } from "../../../../types/local/apiStatus";
 
 export const EmployersContainer = () => {
   const { t } = useTranslation();
-  const { getEmployeeList, postEmployee, setPostEmployeeStatus } = useActions();
+  const {
+    getEmployeeList,
+    postEmployee,
+    editEmployee,
+    deleteEmployers,
+    setPostEmployeeStatus,
+    setEditEmployeeStatus,
+    setDeleteEmployersStatus,
+  } = useActions();
   const employers = useTypedSelector(
     (state) => state.employeeReducer.employeeList,
   );
   const postEmployeeStatus = useTypedSelector(
     (state) => state.employeeReducer.postStatus,
   );
-  const [deletedEmployers, setDeletedEmployers] = useState([] as IUser[]);
+  const editEmployeeStatus = useTypedSelector(
+    (state) => state.employeeReducer.editStatus,
+  );
+  const deleteEmployersStatus = useTypedSelector(
+    (state) => state.employeeReducer.deleteStatus,
+  );
+  const [deletedEmployers, setDeletedEmployers] = useState([] as number[]);
   const [isEmployersModalShow, setIsEmployersModalShow] = useState(false);
   const [editedEmployee, setEditedEmployee] = useState(initEmployee());
   const [isEditEmployersModalShow, setIsEditEmployersModalShow] =
@@ -57,16 +71,49 @@ export const EmployersContainer = () => {
     }
   }, [postEmployeeStatus]);
 
+  useEffect(() => {
+    switch (editEmployeeStatus.status) {
+      case ApiStatusType.SUCCESS:
+        setEditEmployeeStatus(initApiStatus());
+        setIsEditEmployeeRightsModalShow(false);
+        getEmployeeList();
+        setIsEmployersModalShow(true);
+        setStatusMessage(t("employers.employee_was_edited"));
+        setIsStatusInfoModalShow(true);
+        setIsStatusSuccess(true);
+        setIsStatusRestore(false);
+        break;
+    }
+  }, [editEmployeeStatus]);
+
+  useEffect(() => {
+    switch (deleteEmployersStatus.status) {
+      case ApiStatusType.SUCCESS:
+        setDeleteEmployersStatus(initApiStatus());
+        setIsEditEmployersModalShow(false);
+        getEmployeeList();
+        setIsEmployersModalShow(true);
+        setStatusMessage(t("employers.employee_was_deleted"));
+        setIsStatusInfoModalShow(true);
+        setIsStatusSuccess(true);
+        setIsStatusRestore(true);
+        break;
+    }
+  }, [deleteEmployersStatus]);
+
   const handleOnDeleteEmployers = (employersForDelete: IUser[]) => {
-    setDeletedEmployers(employersForDelete);
-    console.log(deletedEmployers);
+    setDeletedEmployers(
+      employersForDelete.map((employee: IUser) => employee.id!),
+    );
     setIsEditEmployersModalShow(false);
     setIsConfirmDeleteModalShow(true);
   };
 
   const handleOnConfirmDeleteEmployers = () => {
     setIsConfirmDeleteModalShow(false);
-    setIsStatusInfoModalShow(true);
+    deleteEmployers({
+      employers: deletedEmployers,
+    });
   };
 
   return (
@@ -109,10 +156,7 @@ export const EmployersContainer = () => {
       <EditEmployeeRightsModal
         isShow={isEditEmployeeRightsModalShow}
         employee={editedEmployee}
-        onSave={() => {
-          setIsEditEmployeeRightsModalShow(false);
-          setIsEmployersModalShow(true);
-        }}
+        onSave={(employee: IUser) => editEmployee({ employee: employee })}
         onClose={() => setIsEditEmployeeRightsModalShow(false)}
       />
       <AddEmployeeModal

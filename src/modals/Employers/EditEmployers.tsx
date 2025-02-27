@@ -36,10 +36,8 @@ export const EditEmployersModal: React.FC<IEditEmployersModalProps> = ({
   const [currentEmployers, setCurrentEmployers] = useState(employers);
 
   useEffect(() => {
-    const contentDiv = document.getElementById("edit_employers_content");
-    contentDiv?.scrollTo({ top: 0, behavior: "smooth" });
     setCurrentEmployers(employers);
-  }, [isShow]);
+  }, [employers]);
 
   return (
     <div className={`${modalStyles.modal} ${isShow ? modalStyles.active : ""}`}>
@@ -54,81 +52,83 @@ export const EditEmployersModal: React.FC<IEditEmployersModalProps> = ({
             <CloseIcon />
           </div>
         </div>
-        <div className={styles.employers_container}>
-          <div className={styles.employers_content} id="edit_employers_content">
-            <div className={styles.employers_selector}>
-              <div className={styles.checkbox}>
-                <MultiCheckbox
-                  checkboxState={
-                    currentEmployers.filter(
-                      (employee: IUser) => employee.isSelected,
-                    ).length === 0
-                      ? CheckboxState.NotChecked
-                      : currentEmployers.filter(
-                            (employee: IUser) => employee.isSelected,
-                          ).length === currentEmployers.length
-                        ? CheckboxState.AllChecked
-                        : CheckboxState.AnyChecked
-                  }
-                  onChangeStatus={(status: CheckboxState) =>
-                    setCurrentEmployers(
-                      currentEmployers.map((employee: IUser) => {
-                        return {
-                          ...employee,
-                          isSelected: status === CheckboxState.AllChecked,
-                        };
-                      }),
-                    )
-                  }
-                />
+        {isShow ? (
+          <div className={styles.employers_container}>
+            <div className={styles.employers_content}>
+              <div className={styles.employers_selector}>
+                <div className={styles.checkbox}>
+                  <MultiCheckbox
+                    checkboxState={
+                      currentEmployers.filter(
+                        (employee: IUser) => employee.isSelected,
+                      ).length === 0
+                        ? CheckboxState.NotChecked
+                        : currentEmployers.filter(
+                              (employee: IUser) => employee.isSelected,
+                            ).length === currentEmployers.length
+                          ? CheckboxState.AllChecked
+                          : CheckboxState.AnyChecked
+                    }
+                    onChangeStatus={(status: CheckboxState) =>
+                      setCurrentEmployers(
+                        currentEmployers.map((employee: IUser) => {
+                          return {
+                            ...employee,
+                            isSelected: status === CheckboxState.AllChecked,
+                          };
+                        }),
+                      )
+                    }
+                  />
+                </div>
+                {t("global.select_all")}
               </div>
-              {t("global.select_all")}
+              {currentEmployers.map((employee: IUser, index: number) => (
+                <div className={styles.employer_item} key={index}>
+                  <UserCard
+                    userItem={employee}
+                    isCheckedItem={true}
+                    onCheckedChange={(status: boolean) =>
+                      setCurrentEmployers(
+                        currentEmployers.map((tmpEmployee: IUser) => {
+                          if (tmpEmployee.id === employee.id) {
+                            return { ...tmpEmployee, isSelected: status };
+                          } else {
+                            return tmpEmployee;
+                          }
+                        }),
+                      )
+                    }
+                  />
+                </div>
+              ))}
             </div>
-            {currentEmployers.map((employee: IUser, index: number) => (
-              <div className={styles.employer_item} key={index}>
-                <UserCard
-                  userItem={employee}
-                  isCheckedItem={true}
-                  onCheckedChange={(status: boolean) =>
-                    setCurrentEmployers(
-                      currentEmployers.map((tmpEmployee: IUser) => {
-                        if (tmpEmployee.id === employee.id) {
-                          return { ...tmpEmployee, isSelected: status };
-                        } else {
-                          return tmpEmployee;
-                        }
-                      }),
-                    )
-                  }
-                />
-              </div>
-            ))}
-          </div>
-          <div className={styles.bottom_actions}>
-            <div
-              className={styles.selected_count}
-            >{`${currentEmployers.filter((employee: IUser) => employee.isSelected).length} ${t("global.selected")}`}</div>
-            <button
-              className={`${globalStyles.inverted} ${globalStyles.small} ${globalStyles.delete}`}
-              type="button"
-              disabled={
-                currentEmployers.filter(
-                  (employee: IUser) => employee.isSelected,
-                ).length === 0
-              }
-              onClick={() => onDelete()}
-            >
-              <TrashIcon
-                isDisabled={
+            <div className={styles.bottom_actions}>
+              <div
+                className={styles.selected_count}
+              >{`${currentEmployers.filter((employee: IUser) => employee.isSelected).length} ${t("global.selected")}`}</div>
+              <button
+                className={`${globalStyles.inverted} ${globalStyles.small} ${globalStyles.delete}`}
+                type="button"
+                disabled={
                   currentEmployers.filter(
                     (employee: IUser) => employee.isSelected,
                   ).length === 0
                 }
-              />
-              {t("global.delete")}
-            </button>
+                onClick={() => onDelete()}
+              >
+                <TrashIcon
+                  isDisabled={
+                    currentEmployers.filter(
+                      (employee: IUser) => employee.isSelected,
+                    ).length === 0
+                  }
+                />
+                {t("global.delete")}
+              </button>
+            </div>
           </div>
-        </div>
+        ) : null}
         <div className={modalStyles.actions}>
           <div />
           <div className={modalStyles.buttons}>

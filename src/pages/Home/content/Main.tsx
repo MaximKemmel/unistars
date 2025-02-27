@@ -6,15 +6,13 @@ import { useTypedSelector } from "../../../hooks/useTypedSelector";
 import { UniversityInfoContainer } from "./mainContainers/UniversityInfoContainer";
 import { GalleryContainer } from "./mainContainers/GalleryContainer";
 import { BookletsContainer } from "./mainContainers/BookletsContainer";
+import { AmbassadorsContainer } from "./userContainers/AmbassadorsContainer";
 import { EmployersContainer } from "./userContainers/EmployersContainer";
 
 import { SubscribersModal } from "../../../modals/Subscribers/Subscribers";
 import { SubscribersDownloadModal } from "../../../modals/Subscribers/SubscribersDownload";
 import { StudentsModal } from "../../../modals/Students/Students";
 import { EditStudentsModal } from "../../../modals/Students/EditStudents";
-import { AmbassadorsModal } from "../../../modals/Ambassadors/Ambassadors";
-import { EditAmbassadorsModal } from "../../../modals/Ambassadors/EditAmbassadors";
-import { EditAmbassadorRequestsModal } from "../../../modals/Ambassadors/EditAmbassadorRequests";
 import { ConfirmDeleteModal } from "../../../modals/ConfirmDelete/ConfirmDelete";
 import { StatusInfoModal } from "../../../modals/StatusInfo/StatusInfo";
 
@@ -48,15 +46,6 @@ export const Main = () => {
           : 0,
       label: t("home.students"),
     },
-    {
-      id: 2,
-      value:
-        universityProfile.ambassadorIds !== undefined &&
-        Array.isArray(universityProfile.ambassadorIds)
-          ? universityProfile.ambassadorIds.length
-          : 0,
-      label: t("home.ambassadors"),
-    },
   ];
 
   const [isSubscribersModalShow, setIsSubscribersModalShow] = useState(false);
@@ -64,33 +53,12 @@ export const Main = () => {
     useState(false);
   const [isStudentsModalShow, setIsStudentsModalShow] = useState(false);
   const [isStudentsEditModalShow, setIsStudentsEditModalShow] = useState(false);
-  const [isAmbassadorsModalShow, setIsAmbassadorsModalShow] = useState(false);
-  const [isAmbassadorsEditModalShow, setIsAmbassadorsEditModalShow] =
-    useState(false);
-  const [
-    isAmbassadorRequestsEditModalShow,
-    setIsAmbassadorRequestsEditModalShow,
-  ] = useState(false);
   const [isConfirmDeleteModalShow, setIsConfirmDeleteModalShow] =
     useState(false);
   const [confirmDeleteHead, setConfirmDeleteHead] = useState("");
   const [confirmDeleteTitle, setConfirmDeleteTitle] = useState("");
   const [isStatusInfoModalShow, setIsStatusInfoModalShow] = useState(false);
   const [deleteMode, setDeleteMode] = useState("");
-
-  const handleOnDeleteAmbassadors = (ambassadors: IUser[]) => {
-    setDeleteMode("AMBASSADORS");
-    console.log(ambassadors);
-    setIsAmbassadorsEditModalShow(false);
-    setConfirmDeleteHead(t("ambassadors.deleting_ambassadors"));
-    setConfirmDeleteTitle(t("ambassadors.delete_description"));
-    setIsConfirmDeleteModalShow(true);
-  };
-
-  const handleOnConfirmDeleteAmbassadors = () => {
-    setIsConfirmDeleteModalShow(false);
-    setIsStatusInfoModalShow(true);
-  };
 
   const handleOnDeleteStudents = (students: IUser[]) => {
     setDeleteMode("STUDENTS");
@@ -139,9 +107,6 @@ export const Main = () => {
                     if (item.id === 1) {
                       setIsStudentsModalShow(true);
                     }
-                    if (item.id === 2) {
-                      setIsAmbassadorsModalShow(true);
-                    }
                   }}
                 >
                   <div className={styles.item_value}>{item.value}</div>
@@ -149,6 +114,7 @@ export const Main = () => {
                 </div>
               );
             })}
+            <AmbassadorsContainer />
             <EmployersContainer />
           </div>
         </div>
@@ -191,33 +157,6 @@ export const Main = () => {
           setIsStudentsEditModalShow(false);
         }}
       />
-      <AmbassadorsModal
-        isShow={isAmbassadorsModalShow}
-        onAmbassadorsEdit={() => {
-          setIsAmbassadorsModalShow(false);
-          setIsAmbassadorsEditModalShow(true);
-        }}
-        onAmbassadorRequestsEdit={() => {
-          setIsAmbassadorsModalShow(false);
-          setIsAmbassadorRequestsEditModalShow(true);
-        }}
-        onClose={() => {
-          setIsAmbassadorsModalShow(false);
-        }}
-      />
-      <EditAmbassadorsModal
-        isShow={isAmbassadorsEditModalShow}
-        onDelete={handleOnDeleteAmbassadors}
-        onCancel={() => {
-          setIsAmbassadorsEditModalShow(false);
-          setIsAmbassadorsModalShow(true);
-        }}
-        onClose={() => setIsAmbassadorsEditModalShow(false)}
-      />
-      <EditAmbassadorRequestsModal
-        isShow={isAmbassadorRequestsEditModalShow}
-        onClose={() => setIsAmbassadorRequestsEditModalShow(false)}
-      />
       <ConfirmDeleteModal
         isShow={isConfirmDeleteModalShow}
         head={confirmDeleteHead}
@@ -225,9 +164,6 @@ export const Main = () => {
         message={""}
         onConfirm={() => {
           switch (deleteMode) {
-            case "AMBASSADORS":
-              handleOnConfirmDeleteAmbassadors();
-              break;
             case "STUDENTS":
               handleOnConfirmDeleteStudents();
               break;
@@ -235,7 +171,6 @@ export const Main = () => {
         }}
         onClose={() => {
           setIsConfirmDeleteModalShow(false);
-          setIsAmbassadorsEditModalShow(true);
         }}
       />
       <StatusInfoModal

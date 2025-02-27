@@ -40,11 +40,9 @@ export const EmployersModal: React.FC<IEmployersModalProps> = ({
   const [searchValue, setSearchValue] = useState("");
 
   useEffect(() => {
-    const contentDiv = document.getElementById("employers_content");
-    contentDiv?.scrollTo({ top: 0, behavior: "smooth" });
     setFilteredEmployers(employers);
     setSearchValue("");
-  }, [isShow]);
+  }, [employers]);
 
   useEffect(() => {
     if (searchValue.length === 0) {
@@ -71,79 +69,83 @@ export const EmployersModal: React.FC<IEmployersModalProps> = ({
             <CloseIcon />
           </div>
         </div>
-        <div className={styles.employers_container}>
-          <div className={styles.employers_content} id="employers_content">
-            <div className={modalStyles.search_input}>
-              <Input
-                value={searchValue}
-                onChange={(value: string) => setSearchValue(value)}
-                placeholder={t("employers.employers_search")}
-                type="text"
-                isSearch={true}
-              />
-            </div>
-            <div
-              className={styles.employers_count}
-            >{`${t("global.founded")}: ${filteredEmployers.length}`}</div>
-            {employers.length === 0 ? (
-              <div className={modalStyles.empty_container}>
-                <img
-                  className={modalStyles.empty_image}
-                  src={NothingFound}
-                  alt=""
+        {isShow ? (
+          <div className={styles.employers_container}>
+            <div className={styles.employers_content} id="employers_list">
+              <div className={modalStyles.search_input}>
+                <Input
+                  value={searchValue}
+                  onChange={(value: string) => setSearchValue(value)}
+                  placeholder={t("employers.employers_search")}
+                  type="text"
+                  isSearch={true}
                 />
-                <div className={modalStyles.empty_info}>
-                  <div className={modalStyles.empty_title}>
-                    {t("global.nothing_was_found")}
-                  </div>
-                  <div className={modalStyles.empty_description}>
-                    {t("employers.don_t_have_employers")}
-                  </div>
-                </div>
               </div>
-            ) : (
-              <>
-                {filteredEmployers.length === 0 ? (
-                  <div className={modalStyles.empty_container}>
-                    <img
-                      className={modalStyles.empty_image}
-                      src={NothingFound}
-                      alt=""
-                    />
-                    <div className={modalStyles.empty_info}>
-                      <div className={modalStyles.empty_title}>
-                        {t("global.nothing_was_found")}
-                      </div>
-                      <div className={modalStyles.empty_description}>
-                        {t("global.enter_other_params")}
-                      </div>
+              <div
+                className={styles.employers_count}
+              >{`${t("global.founded")}: ${filteredEmployers.length}`}</div>
+              {employers.length === 0 ? (
+                <div className={modalStyles.empty_container}>
+                  <img
+                    className={modalStyles.empty_image}
+                    src={NothingFound}
+                    alt=""
+                  />
+                  <div className={modalStyles.empty_info}>
+                    <div className={modalStyles.empty_title}>
+                      {t("global.nothing_was_found")}
+                    </div>
+                    <div className={modalStyles.empty_description}>
+                      {t("employers.don_t_have_employers")}
                     </div>
                   </div>
-                ) : (
-                  <>
-                    {filteredEmployers.map((employee: IUser, index: number) => (
-                      <div className={styles.employer_item} key={index}>
-                        <UserCard
-                          userItem={employee}
-                          isWithMoreItem={true}
-                          moreItems={[
-                            <div
-                              className={styles.popup_item}
-                              onClick={() => onEditRights(employee)}
-                            >
-                              {t("employers.rights_settings")}
-                              <img src={LockIcon} alt="" />
-                            </div>,
-                          ]}
-                        />
+                </div>
+              ) : (
+                <>
+                  {filteredEmployers.length === 0 ? (
+                    <div className={modalStyles.empty_container}>
+                      <img
+                        className={modalStyles.empty_image}
+                        src={NothingFound}
+                        alt=""
+                      />
+                      <div className={modalStyles.empty_info}>
+                        <div className={modalStyles.empty_title}>
+                          {t("global.nothing_was_found")}
+                        </div>
+                        <div className={modalStyles.empty_description}>
+                          {t("global.enter_other_params")}
+                        </div>
                       </div>
-                    ))}
-                  </>
-                )}
-              </>
-            )}
+                    </div>
+                  ) : (
+                    <>
+                      {filteredEmployers.map(
+                        (employee: IUser, index: number) => (
+                          <div className={styles.employer_item} key={index}>
+                            <UserCard
+                              userItem={employee}
+                              isWithMoreItem={true}
+                              moreItems={[
+                                <div
+                                  className={styles.popup_item}
+                                  onClick={() => onEditRights(employee)}
+                                >
+                                  {t("employers.rights_settings")}
+                                  <img src={LockIcon} alt="" />
+                                </div>,
+                              ]}
+                            />
+                          </div>
+                        ),
+                      )}
+                    </>
+                  )}
+                </>
+              )}
+            </div>
           </div>
-        </div>
+        ) : null}
         {employers.length > 0 ? (
           <div className={modalStyles.actions}>
             <div />
