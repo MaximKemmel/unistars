@@ -145,14 +145,13 @@ export const SubscribersModal: React.FC<ISubscribersModalProps> = ({
                   </div>
                 ) : (
                   <>
-                    {filteredSubscribers.map((subscriber: IUser) => (
-                      <div
-                        className={styles.subscriber_item}
-                        key={subscriber.id}
-                      >
-                        <UserCard userItem={subscriber} />
-                      </div>
-                    ))}
+                    {filteredSubscribers.map(
+                      (subscriber: IUser, index: number) => (
+                        <div className={styles.subscriber_item} key={index}>
+                          <UserCard userItem={subscriber} />
+                        </div>
+                      ),
+                    )}
                   </>
                 )}
               </>

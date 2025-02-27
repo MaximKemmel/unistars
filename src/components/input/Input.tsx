@@ -49,7 +49,7 @@ export const Input: React.FC<IInputProps> = ({
             type={isPassword && !isPasswordVisible ? "password" : type}
             required={isRequired}
             maxLength={maxLength ?? 1000000}
-            minLength={isPassword ? 3 : 0}
+            minLength={isPassword ? 8 : 0}
           />
           {isSearch ? (
             <img className={styles.search_icon} src={SearchIcon} alt="" />

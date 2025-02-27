@@ -8,14 +8,12 @@ import { ApiStatusType } from "../../enums/local/apiStatusType";
 
 interface ISubscriberState {
   subscriberList: IUser[];
-  subscribersFile: any[];
   getStatus: IApiStatus;
   getFileStatus: IApiStatus;
 }
 
 const initialState: ISubscriberState = {
   subscriberList: [] as IUser[],
-  subscribersFile: [],
   getStatus: initApiStatus(),
   getFileStatus: initApiStatus(),
 };
@@ -55,12 +53,9 @@ export const subscriberSlice = createSlice({
       state.getFileStatus = { status: ApiStatusType.IN_PROGRESS };
     });
     builder.addCase(getSubscribersFile.fulfilled, (state) => {
-      state.subscribersFile = [];
-      console.log(getSubscribersFile);
       state.getFileStatus = { status: ApiStatusType.SUCCESS };
     });
     builder.addCase(getSubscribersFile.rejected, (state, action) => {
-      state.subscribersFile = [];
       state.getFileStatus = {
         status: ApiStatusType.ERROR,
         error: action.payload as string,

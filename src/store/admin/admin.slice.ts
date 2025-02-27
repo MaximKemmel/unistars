@@ -1,6 +1,11 @@
 ﻿import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-import { login, refreshToken, requestUniversity } from "./admin.actions";
+import {
+  changePassword,
+  login,
+  refreshToken,
+  requestUniversity,
+} from "./admin.actions";
 
 import { IApiStatus, initApiStatus } from "../../types/local/apiStatus";
 import { ApiStatusType } from "../../enums/local/apiStatusType";
@@ -11,6 +16,7 @@ interface IAdminState {
   isRefreshed: boolean;
   loginResponse: ILoginResponse;
   loginStatus: IApiStatus;
+  changePasswordStatus: IApiStatus;
   refreshStatus: IApiStatus;
   requestStatus: IApiStatus;
 }
@@ -20,6 +26,7 @@ const initialState: IAdminState = {
   isRefreshed: false,
   loginResponse: { accessToken: "", refreshToken: "" },
   loginStatus: initApiStatus(),
+  changePasswordStatus: initApiStatus(),
   refreshStatus: initApiStatus(),
   requestStatus: initApiStatus(),
 };
@@ -40,6 +47,9 @@ export const adminSlice = createSlice({
     },
     setLoginStatus(state, action: PayloadAction<IApiStatus>) {
       state.loginStatus = action.payload;
+    },
+    setChangePasswordStatus(state, action: PayloadAction<IApiStatus>) {
+      state.changePasswordStatus = action.payload;
     },
     setRefreshStatus(state, action: PayloadAction<IApiStatus>) {
       state.refreshStatus = action.payload;
@@ -69,6 +79,21 @@ export const adminSlice = createSlice({
     });
     builder.addCase(login.rejected, (state, action) => {
       state.loginStatus = {
+        status: ApiStatusType.ERROR,
+        error: action.payload as string,
+      };
+    });
+    //#endregion
+
+    //#region Change password
+    builder.addCase(changePassword.pending, (state) => {
+      state.changePasswordStatus = { status: ApiStatusType.IN_PROGRESS };
+    });
+    builder.addCase(changePassword.fulfilled, (state) => {
+      state.changePasswordStatus = { status: ApiStatusType.SUCCESS };
+    });
+    builder.addCase(changePassword.rejected, (state, action) => {
+      state.changePasswordStatus = {
         status: ApiStatusType.ERROR,
         error: action.payload as string,
       };

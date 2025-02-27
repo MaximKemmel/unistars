@@ -25,9 +25,6 @@ export const SubscribersDownloadModal: React.FC<
 > = ({ isShow, onClose }) => {
   const { t } = useTranslation();
   const { getSubscribersFile, setGetFileStatus } = useActions();
-  const file = useTypedSelector(
-    (state) => state.subscriberReducer.subscribersFile,
-  );
   const downloadStatus = useTypedSelector(
     (state) => state.subscriberReducer.getFileStatus,
   );
@@ -37,10 +34,6 @@ export const SubscribersDownloadModal: React.FC<
     setIsLoadShow(false);
     setGetFileStatus(initApiStatus());
   }, [isShow]);
-
-  useEffect(() => {
-    console.log(file);
-  }, [file]);
 
   return (
     <div className={`${modalStyles.modal} ${isShow ? modalStyles.active : ""}`}>
@@ -75,14 +68,15 @@ export const SubscribersDownloadModal: React.FC<
                       <img src={CheckIcon} alt="" />
                       {t("global.sended")}
                     </div>
-                  ) : (
+                  ) : null}
+                  {downloadStatus.status === ApiStatusType.ERROR ? (
                     <div
                       className={`${styles.loading_progress} ${styles.error}`}
                     >
                       {t("global.error")}
                       <CloseIcon fill="#C45F1C" isBold={true} />
                     </div>
-                  )}
+                  ) : null}
                 </div>
               </>
             ) : null}
@@ -114,7 +108,8 @@ export const SubscribersDownloadModal: React.FC<
                 >
                   {t("global.close")}
                 </button>
-              ) : (
+              ) : null}
+              {downloadStatus.status === ApiStatusType.ERROR ? (
                 <button
                   className={globalStyles.small}
                   type="button"
@@ -125,7 +120,7 @@ export const SubscribersDownloadModal: React.FC<
                 >
                   {t("global.try_again")}
                 </button>
-              )}
+              ) : null}
             </>
           )}
         </div>

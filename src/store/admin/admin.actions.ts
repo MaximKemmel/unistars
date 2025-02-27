@@ -19,6 +19,23 @@ export const login = createAsyncThunk(
   },
 );
 
+export const changePassword = createAsyncThunk(
+  "api/changePassword",
+  async (
+    { oldPassword, newPassword }: { oldPassword: string; newPassword: string },
+    { rejectWithValue },
+  ) => {
+    const response = await axios.post("/change_password", {
+      passwordOld: oldPassword,
+      passwordNew: newPassword,
+    });
+    if (response.status !== 200) {
+      throw rejectWithValue("Server error!");
+    }
+    return response.data;
+  },
+);
+
 export const refreshToken = createAsyncThunk(
   "api/refresh",
   async (_, { rejectWithValue }) => {
