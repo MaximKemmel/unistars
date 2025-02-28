@@ -2,8 +2,6 @@
 import { DatePicker } from "@gravity-ui/date-components";
 import { dateTimeParse } from "@gravity-ui/date-utils";
 
-import "./Calendar.css";
-
 interface ICalendarProps {
   date: Date;
   setDate: React.Dispatch<React.SetStateAction<Date>>;

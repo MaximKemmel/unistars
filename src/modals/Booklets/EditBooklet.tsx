@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { Spin } from "@gravity-ui/uikit";
 
 import { useActions } from "../../hooks/useActions";
 import { useTypedSelector } from "../../hooks/useTypedSelector";
@@ -12,6 +13,7 @@ import modalStyles from "../Modal.module.sass";
 
 import { IBooklet } from "../../types/booklet/booklet";
 import { ApiStatusType } from "../../enums/local/apiStatusType";
+import { initApiStatus } from "../../types/local/apiStatus";
 
 import { Close as CloseIcon } from "../../assets/svgComponents/Close";
 import { Trash as TrashIcon } from "../../assets/svgComponents/Trash";
@@ -38,7 +40,12 @@ export const EditBookletModal: React.FC<IEditBookletModalProps> = ({
   onError,
 }) => {
   const { t } = useTranslation();
-  const { uploadBookletCover, uploadBookletFile } = useActions();
+  const {
+    uploadBookletCover,
+    uploadBookletFile,
+    setUploadCoverStatus,
+    setUploadFileStatus,
+  } = useActions();
   const [currentBooklet, setCurrentBooklet] = useState(booklet);
   const inputImageRef = useRef<HTMLInputElement>(null);
   const [uploadImageProgress, setUploadImageProgress] = useState(-1);
@@ -74,24 +81,17 @@ export const EditBookletModal: React.FC<IEditBookletModalProps> = ({
   }, [currentBooklet]);
 
   useEffect(() => {
-    if (uploadImageProgress === 100) {
-      setUploadImageProgress(-1);
-    }
-  }, [uploadImageProgress]);
-
-  useEffect(() => {
-    if (uploadFileProgress === 100) {
-      setUploadFileProgress(-1);
-    }
-  }, [uploadFileProgress]);
-
-  useEffect(() => {
     switch (uploadImageStatus.status) {
       case ApiStatusType.SUCCESS:
         setCurrentBooklet({
           ...currentBooklet,
           imageUrl: Object.values(bookletCover)[0],
         });
+        setUploadImageProgress(-1);
+        break;
+      case ApiStatusType.ERROR:
+        setUploadImageProgress(-1);
+        onError(uploadImageStatus.error ?? "Server error!");
         break;
     }
   }, [uploadImageStatus]);
@@ -103,6 +103,11 @@ export const EditBookletModal: React.FC<IEditBookletModalProps> = ({
           ...currentBooklet,
           bookletFileUrl: Object.values(bookletFile)[0],
         });
+        setUploadFileProgress(-1);
+        break;
+      case ApiStatusType.ERROR:
+        setUploadFileProgress(-1);
+        onError(uploadFileStatus.error ?? "Server error!");
         break;
     }
   }, [uploadFileStatus]);
@@ -111,26 +116,23 @@ export const EditBookletModal: React.FC<IEditBookletModalProps> = ({
     try {
       const file = event.target.files[0];
       setImageName(file.name);
-      if (file.size < 5242880) {
-        if (
-          file.name.endsWith(".png") ||
-          file.name.endsWith(".jpg") ||
-          file.name.endsWith(".jpeg") ||
-          file.name.endsWith(".bmp")
-        ) {
-          uploadBookletCover({
-            file: file,
-            onUploadProgress: (data) => {
-              setUploadImageProgress(
-                Math.round(100 * (data.loaded / data.total!)),
-              );
-            },
-          });
-        } else {
-          onError("неверный формат");
-        }
+      if (
+        file.name.endsWith(".png") ||
+        file.name.endsWith(".jpg") ||
+        file.name.endsWith(".jpeg") ||
+        file.name.endsWith(".bmp")
+      ) {
+        setUploadCoverStatus(initApiStatus());
+        uploadBookletCover({
+          file: file,
+          onUploadProgress: (data) => {
+            setUploadImageProgress(
+              Math.round(100 * (data.loaded / data.total!)),
+            );
+          },
+        });
       } else {
-        onError("слишком большой файл");
+        onError("неверный формат");
       }
       event.target.value = "";
     } catch (error) {
@@ -142,18 +144,13 @@ export const EditBookletModal: React.FC<IEditBookletModalProps> = ({
     try {
       const file = event.target.files[0];
       setFileName(file.name);
-      if (file.size < 10000000) {
-        uploadBookletFile({
-          file: file,
-          onUploadProgress: (data) => {
-            setUploadFileProgress(
-              Math.round(100 * (data.loaded / data.total!)),
-            );
-          },
-        });
-      } else {
-        onError("слишком большой файл");
-      }
+      setUploadFileStatus(initApiStatus());
+      uploadBookletFile({
+        file: file,
+        onUploadProgress: (data) => {
+          setUploadFileProgress(Math.round(100 * (data.loaded / data.total!)));
+        },
+      });
       event.target.value = "";
     } catch (error) {
       onError(error);
@@ -196,7 +193,6 @@ export const EditBookletModal: React.FC<IEditBookletModalProps> = ({
                       }
                       placeholder={t("booklets.enter_a_heading")}
                       type="text"
-                      isRequired={true}
                       maxLength={255}
                     />
                   </div>
@@ -212,8 +208,12 @@ export const EditBookletModal: React.FC<IEditBookletModalProps> = ({
                       hidden
                     />
                     <div
-                      className={modalStyles.form_button}
-                      onClick={() => inputImageRef.current!.click()}
+                      className={`${modalStyles.form_button} ${uploadImageProgress !== -1 ? modalStyles.disabled : ""}`}
+                      onClick={() => {
+                        if (uploadImageProgress === -1) {
+                          inputImageRef.current!.click();
+                        }
+                      }}
                     >
                       <img src={UploadImageIcon} alt="" />
                     </div>
@@ -253,7 +253,18 @@ export const EditBookletModal: React.FC<IEditBookletModalProps> = ({
                               </div>
                             )}
                           </>
-                        ) : null}
+                        ) : (
+                          <>
+                            {uploadImageProgress !== -1 ? (
+                              <div
+                                className={`${modalStyles.upload_progress} ${modalStyles.loading}`}
+                              >
+                                {`${uploadImageProgress}%`}
+                                <Spin size="xs" />
+                              </div>
+                            ) : null}
+                          </>
+                        )}
                       </div>
                     )}
                   </div>
@@ -272,7 +283,6 @@ export const EditBookletModal: React.FC<IEditBookletModalProps> = ({
                         })
                       }
                       placeholder={t("booklets.enter_a_description")}
-                      isRequired={true}
                     />
                   </div>
                 </div>
@@ -290,8 +300,12 @@ export const EditBookletModal: React.FC<IEditBookletModalProps> = ({
                       hidden
                     />
                     <div
-                      className={`${modalStyles.form_button} ${modalStyles.filled}`}
-                      onClick={() => inputFileRef.current!.click()}
+                      className={`${modalStyles.form_button} ${modalStyles.filled} ${uploadFileProgress !== -1 ? modalStyles.disabled : ""}`}
+                      onClick={() => {
+                        if (uploadFileProgress === -1) {
+                          inputFileRef.current!.click();
+                        }
+                      }}
                     >
                       <img src={UploadFileIcon} alt="" />
                     </div>
@@ -331,7 +345,18 @@ export const EditBookletModal: React.FC<IEditBookletModalProps> = ({
                               </div>
                             )}
                           </>
-                        ) : null}
+                        ) : (
+                          <>
+                            {uploadFileProgress !== -1 ? (
+                              <div
+                                className={`${modalStyles.upload_progress} ${modalStyles.loading}`}
+                              >
+                                {`${uploadFileProgress}%`}
+                                <Spin size="xs" />
+                              </div>
+                            ) : null}
+                          </>
+                        )}
                       </div>
                     )}
                   </div>

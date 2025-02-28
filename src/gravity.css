@@ -54,3 +54,10 @@
     font-size: 16px !important;
     font-weight: 600 !important;
 }
+
+.g-spin__inner {
+    border: none ;
+    border-top: 2px solid #6547FD;
+    border-bottom: 2px solid #6547FD;
+    border-right: 2px solid #6547FD;
+}

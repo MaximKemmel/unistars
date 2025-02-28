@@ -41,9 +41,6 @@ export const bookletSlice = createSlice({
   name: "booklet",
   initialState,
   reducers: {
-    setGetBookletsStatus(state, action: PayloadAction<IApiStatus>) {
-      state.getStatus = action.payload;
-    },
     setPostBookletStatus(state, action: PayloadAction<IApiStatus>) {
       state.postStatus = action.payload;
     },
@@ -163,6 +160,7 @@ export const bookletSlice = createSlice({
       state.bookletFile = action.payload;
     });
     builder.addCase(uploadBookletFile.rejected, (state, action) => {
+      console.log(action.payload);
       state.uploadFileStatus = {
         status: ApiStatusType.ERROR,
         error: action.payload as string,

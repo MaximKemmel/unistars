@@ -17,6 +17,7 @@ import { Home } from "./pages/Home/Home";
 import { SignIn } from "./pages/SignIn/SignIn";
 
 import styles from "./App.module.sass";
+import "./gravity.css";
 
 import "./utils/i18n.js";
 
