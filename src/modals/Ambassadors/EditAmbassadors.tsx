@@ -36,10 +36,8 @@ export const EditAmbassadorsModal: React.FC<IEditAmbassadorsModalProps> = ({
   const [currentAmbassadors, setCurrentAmbassadors] = useState(ambassadors);
 
   useEffect(() => {
-    const contentDiv = document.getElementById("edit_ambassadors_content");
-    contentDiv?.scrollTo({ top: 0, behavior: "smooth" });
     setCurrentAmbassadors(ambassadors);
-  }, [isShow]);
+  }, [ambassadors]);
 
   return (
     <div className={`${modalStyles.modal} ${isShow ? modalStyles.active : ""}`}>
@@ -54,92 +52,94 @@ export const EditAmbassadorsModal: React.FC<IEditAmbassadorsModalProps> = ({
             <CloseIcon />
           </div>
         </div>
-        <div className={styles.ambassadors_container}>
-          <div
-            className={styles.ambassadors_content}
-            id="edit_ambassadors_content"
-          >
-            <div className={styles.ambassadors_selector}>
-              <div className={styles.checkbox}>
-                <MultiCheckbox
-                  checkboxState={
-                    currentAmbassadors.filter(
-                      (ambassador: IUser) => ambassador.isSelected,
-                    ).length === 0
-                      ? CheckboxState.NotChecked
-                      : currentAmbassadors.filter(
-                            (ambassador: IUser) => ambassador.isSelected,
-                          ).length === currentAmbassadors.length
-                        ? CheckboxState.AllChecked
-                        : CheckboxState.AnyChecked
-                  }
-                  onChangeStatus={(status: CheckboxState) =>
-                    setCurrentAmbassadors(
-                      currentAmbassadors.map((ambassador: IUser) => {
-                        return {
-                          ...ambassador,
-                          isSelected: status === CheckboxState.AllChecked,
-                        };
-                      }),
-                    )
-                  }
-                />
+        {isShow ? (
+          <div className={styles.ambassadors_container}>
+            <div
+              className={styles.ambassadors_content}
+              id="edit_ambassadors_content"
+            >
+              <div className={styles.ambassadors_selector}>
+                <div className={styles.checkbox}>
+                  <MultiCheckbox
+                    checkboxState={
+                      currentAmbassadors.filter(
+                        (ambassador: IUser) => ambassador.isSelected,
+                      ).length === 0
+                        ? CheckboxState.NotChecked
+                        : currentAmbassadors.filter(
+                              (ambassador: IUser) => ambassador.isSelected,
+                            ).length === currentAmbassadors.length
+                          ? CheckboxState.AllChecked
+                          : CheckboxState.AnyChecked
+                    }
+                    onChangeStatus={(status: CheckboxState) =>
+                      setCurrentAmbassadors(
+                        currentAmbassadors.map((ambassador: IUser) => {
+                          return {
+                            ...ambassador,
+                            isSelected: status === CheckboxState.AllChecked,
+                          };
+                        }),
+                      )
+                    }
+                  />
+                </div>
+                {t("global.select_all")}
               </div>
-              {t("global.select_all")}
+              {currentAmbassadors.map((ambassador: IUser, index: number) => (
+                <div className={styles.ambassador_item} key={index}>
+                  <UserCard
+                    userItem={ambassador}
+                    isCheckedItem={true}
+                    onCheckedChange={(status: boolean) =>
+                      setCurrentAmbassadors(
+                        currentAmbassadors.map((tmpAmbassador: IUser) => {
+                          if (tmpAmbassador.id === ambassador.id) {
+                            return { ...tmpAmbassador, isSelected: status };
+                          } else {
+                            return tmpAmbassador;
+                          }
+                        }),
+                      )
+                    }
+                  />
+                </div>
+              ))}
             </div>
-            {currentAmbassadors.map((ambassador: IUser, index: number) => (
-              <div className={styles.ambassador_item} key={index}>
-                <UserCard
-                  userItem={ambassador}
-                  isCheckedItem={true}
-                  onCheckedChange={(status: boolean) =>
-                    setCurrentAmbassadors(
-                      currentAmbassadors.map((tmpAmbassador: IUser) => {
-                        if (tmpAmbassador.id === ambassador.id) {
-                          return { ...tmpAmbassador, isSelected: status };
-                        } else {
-                          return tmpAmbassador;
-                        }
-                      }),
-                    )
-                  }
-                />
-              </div>
-            ))}
-          </div>
-          <div className={styles.bottom_actions}>
-            <div className={styles.selected_count}>{`${
-              currentAmbassadors.filter(
-                (ambassador: IUser) => ambassador.isSelected,
-              ).length
-            } ${t("global.selected")}`}</div>
-            <button
-              className={`${globalStyles.inverted} ${globalStyles.small} ${globalStyles.delete}`}
-              type="button"
-              disabled={
+            <div className={styles.bottom_actions}>
+              <div className={styles.selected_count}>{`${
                 currentAmbassadors.filter(
                   (ambassador: IUser) => ambassador.isSelected,
-                ).length === 0
-              }
-              onClick={() =>
-                onDelete(
-                  currentAmbassadors.filter(
-                    (ambassador: IUser) => ambassador.isSelected,
-                  ),
-                )
-              }
-            >
-              <TrashIcon
-                isDisabled={
+                ).length
+              } ${t("global.selected")}`}</div>
+              <button
+                className={`${globalStyles.inverted} ${globalStyles.small} ${globalStyles.delete}`}
+                type="button"
+                disabled={
                   currentAmbassadors.filter(
                     (ambassador: IUser) => ambassador.isSelected,
                   ).length === 0
                 }
-              />
-              {t("global.delete")}
-            </button>
+                onClick={() =>
+                  onDelete(
+                    currentAmbassadors.filter(
+                      (ambassador: IUser) => ambassador.isSelected,
+                    ),
+                  )
+                }
+              >
+                <TrashIcon
+                  isDisabled={
+                    currentAmbassadors.filter(
+                      (ambassador: IUser) => ambassador.isSelected,
+                    ).length === 0
+                  }
+                />
+                {t("global.delete")}
+              </button>
+            </div>
           </div>
-        </div>
+        ) : null}
         <div className={modalStyles.actions}>
           <div />
           <div className={modalStyles.buttons}>

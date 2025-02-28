@@ -1,7 +1,6 @@
 ﻿import React from "react";
 import { useTranslation } from "react-i18next";
 
-import { useActions } from "../../hooks/useActions";
 import { useTypedSelector } from "../../hooks/useTypedSelector";
 
 import { UserCard } from "../../cards/user/UserCard";
@@ -19,6 +18,7 @@ interface IAmbassadorsModalProps {
   isShow: boolean;
   onAmbassadorsEdit: Function;
   onAmbassadorRequestsEdit: Function;
+  onAmbassadorAccept: Function;
   onClose: Function;
 }
 
@@ -26,10 +26,10 @@ export const AmbassadorsModal: React.FC<IAmbassadorsModalProps> = ({
   isShow,
   onAmbassadorsEdit,
   onAmbassadorRequestsEdit,
+  onAmbassadorAccept,
   onClose,
 }) => {
   const { t } = useTranslation();
-  const { acceptAmbassador } = useActions();
   const ambassadors = useTypedSelector(
     (state) => state.ambassadorReducer.ambassadorList,
   );
@@ -99,16 +99,10 @@ export const AmbassadorsModal: React.FC<IAmbassadorsModalProps> = ({
                               userItem={ambassadorRequest}
                               isRequestItem={true}
                               onCancelRequest={() =>
-                                acceptAmbassador({
-                                  ambassadorId: ambassadorRequest.id!,
-                                  isAccept: false,
-                                })
+                                onAmbassadorAccept(ambassadorRequest.id!, false)
                               }
                               onAcceptRequest={() =>
-                                acceptAmbassador({
-                                  ambassadorId: ambassadorRequest.id!,
-                                  isAccept: true,
-                                })
+                                onAmbassadorAccept(ambassadorRequest.id!, true)
                               }
                             />
                           </div>

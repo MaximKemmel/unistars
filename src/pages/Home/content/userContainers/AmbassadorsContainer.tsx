@@ -1,6 +1,7 @@
-﻿import { useState } from "react";
+﻿import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 
+import { useActions } from "../../../../hooks/useActions";
 import { useTypedSelector } from "../../../../hooks/useTypedSelector";
 
 import { AmbassadorsModal } from "../../../../modals/Ambassadors/Ambassadors";
@@ -12,11 +13,17 @@ import { StatusInfoModal } from "../../../../modals/StatusInfo/StatusInfo";
 import styles from "../../Home.module.sass";
 
 import { IUser } from "../../../../types/user/user";
+import { ApiStatusType } from "../../../../enums/local/apiStatusType";
+import { initApiStatus } from "../../../../types/local/apiStatus";
 
 export const AmbassadorsContainer = () => {
   const { t } = useTranslation();
+  const { acceptAmbassador, setAcceptAmbassadorStatus } = useActions();
   const universityProfile = useTypedSelector(
     (state) => state.universityReducer.universityProfile,
+  );
+  const acceptStatus = useTypedSelector(
+    (state) => state.ambassadorReducer.acceptStatus,
   );
   const [deletedAmbassadors, setDeletedAmbassadors] = useState([] as number[]);
   const [isAmbassadorsModalShow, setIsAmbassadorsModalShow] = useState(false);
@@ -32,6 +39,20 @@ export const AmbassadorsContainer = () => {
   const [statusMessage, setStatusMessage] = useState("");
   const [isStatusSuccess, setIsStatusSuccess] = useState(true);
   const [isStatusRestore, setIsStatusRestore] = useState(false);
+
+  useEffect(() => {
+    switch (acceptStatus.status) {
+      case ApiStatusType.SUCCESS:
+        setAcceptAmbassadorStatus(initApiStatus());
+        break;
+      case ApiStatusType.ERROR:
+        setStatusMessage(acceptStatus.error ?? "Server error");
+        setIsStatusInfoModalShow(true);
+        setIsStatusSuccess(false);
+        setIsStatusRestore(false);
+        break;
+    }
+  }, [acceptStatus]);
 
   const handleOnDeleteAmbassadors = (ambassadorsForDelete: IUser[]) => {
     setDeletedAmbassadors(
@@ -77,6 +98,9 @@ export const AmbassadorsContainer = () => {
           setIsAmbassadorsModalShow(false);
           setIsEditAmbassadorRequestsModalShow(true);
         }}
+        onAmbassadorAccept={(id: number, isAccept: boolean) =>
+          acceptAmbassador({ ambassadorId: id, isAccept: isAccept })
+        }
         onClose={() => {
           setIsAmbassadorsModalShow(false);
         }}
@@ -92,6 +116,17 @@ export const AmbassadorsContainer = () => {
       />
       <EditAmbassadorRequestsModal
         isShow={isEditAmbassadorRequestsModalShow}
+        onAmbassadorAccept={(id: number, isAccept: boolean) =>
+          acceptAmbassador({ ambassadorId: id, isAccept: isAccept })
+        }
+        onAmbassadorAcceptArray={(ambassadors: IUser[], isAccept: boolean) => {
+          ambassadors.forEach((ambassador: IUser) =>
+            acceptAmbassador({
+              ambassadorId: ambassador.id!,
+              isAccept: isAccept,
+            }),
+          );
+        }}
         onClose={() => setIsEditAmbassadorRequestsModalShow(false)}
       />
       <ConfirmDeleteModal

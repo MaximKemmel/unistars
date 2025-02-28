@@ -31,8 +31,11 @@ export const ambassadorSlice = createSlice({
   name: "ambassador",
   initialState,
   reducers: {
-    setGetStatus(state, action: PayloadAction<IApiStatus>) {
+    setGetAmbassadorsStatus(state, action: PayloadAction<IApiStatus>) {
       state.getStatus = action.payload;
+    },
+    setAcceptAmbassadorStatus(state, action: PayloadAction<IApiStatus>) {
+      state.acceptStatus = action.payload;
     },
     clearAmbassadors(state) {
       state.ambassadorList = [] as IUser[];
