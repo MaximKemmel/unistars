@@ -58,7 +58,6 @@ export const StudentsContainer = () => {
         </div>
         <div className={styles.item_label}>{t("home.students")}</div>
       </div>
-
       <StudentsModal
         isShow={isStudentsModalShow}
         onEdit={() => {
@@ -82,8 +81,8 @@ export const StudentsContainer = () => {
       />
       <ConfirmDeleteModal
         isShow={isConfirmDeleteModalShow}
-        head={t("ambassadors.deleting_ambassadors")}
-        title={t("ambassadors.delete_description")}
+        head={t("students.deleting_students")}
+        title={t("students.delete_description")}
         message={""}
         onConfirm={handleOnConfirmDeleteStudents}
         onClose={() => {
