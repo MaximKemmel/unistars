@@ -52,14 +52,10 @@ export const SignInForm: React.FC<ISignInFormProps> = ({ setCurrentStage }) => {
 
   const handleOnSubmit = (event: any) => {
     event.preventDefault();
-    if (email === "test@mail.ru") {
-      setCurrentStage(2);
-    } else {
-      login({
-        email: email,
-        password: password,
-      });
-    }
+    login({
+      email: email,
+      password: password,
+    });
   };
 
   return (

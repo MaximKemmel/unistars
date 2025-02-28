@@ -26,6 +26,7 @@ interface IEditBookletModalProps {
   onSave: Function;
   onDelete: Function;
   onClose: Function;
+  onError: Function;
 }
 
 export const EditBookletModal: React.FC<IEditBookletModalProps> = ({
@@ -34,6 +35,7 @@ export const EditBookletModal: React.FC<IEditBookletModalProps> = ({
   onSave,
   onDelete,
   onClose,
+  onError,
 }) => {
   const { t } = useTranslation();
   const { uploadBookletCover, uploadBookletFile } = useActions();
@@ -109,25 +111,30 @@ export const EditBookletModal: React.FC<IEditBookletModalProps> = ({
     try {
       const file = event.target.files[0];
       setImageName(file.name);
-      if (
-        file.size < 5242880 &&
-        (file.name.endsWith(".png") ||
+      if (file.size < 5242880) {
+        if (
+          file.name.endsWith(".png") ||
           file.name.endsWith(".jpg") ||
           file.name.endsWith(".jpeg") ||
-          file.name.endsWith(".bmp"))
-      ) {
-        uploadBookletCover({
-          file: file,
-          onUploadProgress: (data) => {
-            setUploadImageProgress(
-              Math.round(100 * (data.loaded / data.total!)),
-            );
-          },
-        });
+          file.name.endsWith(".bmp")
+        ) {
+          uploadBookletCover({
+            file: file,
+            onUploadProgress: (data) => {
+              setUploadImageProgress(
+                Math.round(100 * (data.loaded / data.total!)),
+              );
+            },
+          });
+        } else {
+          onError("неверный формат");
+        }
+      } else {
+        onError("слишком большой файл");
       }
       event.target.value = "";
     } catch (error) {
-      console.warn(error);
+      onError(error);
     }
   };
 
@@ -144,10 +151,12 @@ export const EditBookletModal: React.FC<IEditBookletModalProps> = ({
             );
           },
         });
+      } else {
+        onError("слишком большой файл");
       }
       event.target.value = "";
     } catch (error) {
-      console.warn(error);
+      onError(error);
     }
   };
 

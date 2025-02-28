@@ -63,6 +63,10 @@ export const BookletsContainer = () => {
         break;
       case ApiStatusType.ERROR:
         setPostBookletStatus(initApiStatus());
+        setStatusMessage(postStatus.error ?? "Server error");
+        setIsStatusInfoModalShow(true);
+        setIsStatusSuccess(false);
+        setIsStatusRestore(false);
         break;
     }
   }, [postStatus]);
@@ -208,6 +212,12 @@ export const BookletsContainer = () => {
         }}
         onDelete={handleOnDeleteBooklet}
         onClose={() => setIsEditBookletModalShow(false)}
+        onError={(error: string) => {
+          setStatusMessage(error);
+          setIsStatusInfoModalShow(true);
+          setIsStatusSuccess(false);
+          setIsStatusRestore(false);
+        }}
       />
       <ConfirmDeleteModal
         isShow={isConfirmDeleteModalShow}
