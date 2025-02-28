@@ -60,7 +60,7 @@ export const AmbassadorsContainer = () => {
     );
 
     console.log(deletedAmbassadors);
-    setStatusMessage(t("employers.employee_was_added"));
+    setStatusMessage(t("ambassadors.ambassador_was_deleted"));
     setIsStatusSuccess(true);
     setIsStatusRestore(false);
 

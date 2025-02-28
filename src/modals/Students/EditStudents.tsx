@@ -36,10 +36,8 @@ export const EditStudentsModal: React.FC<IEditStudentsModalProps> = ({
   const [currentStudents, setCurrentStudents] = useState(students);
 
   useEffect(() => {
-    const contentDiv = document.getElementById("edit_students_content");
-    contentDiv?.scrollTo({ top: 0, behavior: "smooth" });
     setCurrentStudents(students);
-  }, [isShow]);
+  }, [students]);
 
   return (
     <div className={`${modalStyles.modal} ${isShow ? modalStyles.active : ""}`}>
@@ -54,85 +52,88 @@ export const EditStudentsModal: React.FC<IEditStudentsModalProps> = ({
             <CloseIcon />
           </div>
         </div>
-        <div className={styles.students_container}>
-          <div className={styles.students_content} id="edit_students_content">
-            <div className={styles.students_selector}>
-              <div className={styles.checkbox}>
-                <MultiCheckbox
-                  checkboxState={
-                    currentStudents.filter(
-                      (student: IUser) => student.isSelected,
-                    ).length === 0
-                      ? CheckboxState.NotChecked
-                      : currentStudents.filter(
-                            (student: IUser) => student.isSelected,
-                          ).length === currentStudents.length
-                        ? CheckboxState.AllChecked
-                        : CheckboxState.AnyChecked
-                  }
-                  onChangeStatus={(status: CheckboxState) =>
-                    setCurrentStudents(
-                      currentStudents.map((student: IUser) => {
-                        return {
-                          ...student,
-                          isSelected: status === CheckboxState.AllChecked,
-                        };
-                      }),
-                    )
-                  }
-                />
+        {isShow ? (
+          <div className={styles.students_container}>
+            <div className={styles.students_content}>
+              <div className={styles.students_selector}>
+                <div className={styles.checkbox}>
+                  <MultiCheckbox
+                    checkboxState={
+                      currentStudents.filter(
+                        (student: IUser) => student.isSelected,
+                      ).length === 0
+                        ? CheckboxState.NotChecked
+                        : currentStudents.filter(
+                              (student: IUser) => student.isSelected,
+                            ).length === currentStudents.length
+                          ? CheckboxState.AllChecked
+                          : CheckboxState.AnyChecked
+                    }
+                    onChangeStatus={(status: CheckboxState) =>
+                      setCurrentStudents(
+                        currentStudents.map((student: IUser) => {
+                          return {
+                            ...student,
+                            isSelected: status === CheckboxState.AllChecked,
+                          };
+                        }),
+                      )
+                    }
+                  />
+                </div>
+                {t("global.select_all")}
               </div>
-              {t("global.select_all")}
+              {currentStudents.map((student: IUser, index: number) => (
+                <div className={styles.student_item} key={index}>
+                  <UserCard
+                    userItem={student}
+                    isCheckedItem={true}
+                    onCheckedChange={(status: boolean) =>
+                      setCurrentStudents(
+                        currentStudents.map((tmpStudent: IUser) => {
+                          if (tmpStudent.id === student.id) {
+                            return { ...tmpStudent, isSelected: status };
+                          } else {
+                            return tmpStudent;
+                          }
+                        }),
+                      )
+                    }
+                  />
+                </div>
+              ))}
             </div>
-            {currentStudents.map((student: IUser, index: number) => (
-              <div className={styles.student_item} key={index}>
-                <UserCard
-                  userItem={student}
-                  isCheckedItem={true}
-                  onCheckedChange={(status: boolean) =>
-                    setCurrentStudents(
-                      currentStudents.map((tmpStudent: IUser) => {
-                        if (tmpStudent.id === student.id) {
-                          return { ...tmpStudent, isSelected: status };
-                        } else {
-                          return tmpStudent;
-                        }
-                      }),
-                    )
-                  }
-                />
-              </div>
-            ))}
-          </div>
-          <div className={styles.bottom_actions}>
-            <div
-              className={styles.selected_count}
-            >{`${currentStudents.filter((student: IUser) => student.isSelected).length} ${t("global.selected")}`}</div>
-            <button
-              className={`${globalStyles.inverted} ${globalStyles.small} ${globalStyles.delete}`}
-              type="button"
-              disabled={
-                currentStudents.filter((student: IUser) => student.isSelected)
-                  .length === 0
-              }
-              onClick={() =>
-                onDelete(
-                  currentStudents.filter(
-                    (student: IUser) => student.isSelected,
-                  ),
-                )
-              }
-            >
-              <TrashIcon
-                isDisabled={
+            <div className={styles.bottom_actions}>
+              <div
+                className={styles.selected_count}
+              >{`${currentStudents.filter((student: IUser) => student.isSelected).length} ${t("global.selected")}`}</div>
+              <button
+                className={`${globalStyles.inverted} ${globalStyles.small} ${globalStyles.delete}`}
+                type="button"
+                disabled={
                   currentStudents.filter((student: IUser) => student.isSelected)
                     .length === 0
                 }
-              />
-              {t("global.delete")}
-            </button>
+                onClick={() =>
+                  onDelete(
+                    currentStudents.filter(
+                      (student: IUser) => student.isSelected,
+                    ),
+                  )
+                }
+              >
+                <TrashIcon
+                  isDisabled={
+                    currentStudents.filter(
+                      (student: IUser) => student.isSelected,
+                    ).length === 0
+                  }
+                />
+                {t("global.delete")}
+              </button>
+            </div>
           </div>
-        </div>
+        ) : null}
         <div className={modalStyles.actions}>
           <div />
           <div className={modalStyles.buttons}>

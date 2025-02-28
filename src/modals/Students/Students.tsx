@@ -35,11 +35,9 @@ export const StudentsModal: React.FC<IStudentsModalProps> = ({
   const [searchValue, setSearchValue] = useState("");
 
   useEffect(() => {
-    const contentDiv = document.getElementById("students_content");
-    contentDiv?.scrollTo({ top: 0, behavior: "smooth" });
     setFilteredStudents(students);
     setSearchValue("");
-  }, [isShow]);
+  }, [students]);
 
   useEffect(() => {
     if (searchValue.length === 0) {
@@ -66,67 +64,69 @@ export const StudentsModal: React.FC<IStudentsModalProps> = ({
             <CloseIcon />
           </div>
         </div>
-        <div className={styles.students_container}>
-          <div className={styles.students_content} id="students_content">
-            <div className={modalStyles.search_input}>
-              <Input
-                value={searchValue}
-                onChange={(value: string) => setSearchValue(value)}
-                placeholder={t("students.students_search")}
-                type="text"
-                isSearch={true}
-              />
-            </div>
-            <div
-              className={styles.students_count}
-            >{`${t("global.founded")}: ${filteredStudents.length}`}</div>
-            {students.length === 0 ? (
-              <div className={modalStyles.empty_container}>
-                <img
-                  className={modalStyles.empty_image}
-                  src={NothingFound}
-                  alt=""
+        {isShow ? (
+          <div className={styles.students_container}>
+            <div className={styles.students_content} id="students_content">
+              <div className={modalStyles.search_input}>
+                <Input
+                  value={searchValue}
+                  onChange={(value: string) => setSearchValue(value)}
+                  placeholder={t("students.students_search")}
+                  type="text"
+                  isSearch={true}
                 />
-                <div className={modalStyles.empty_info}>
-                  <div className={modalStyles.empty_title}>
-                    {t("global.nothing_was_found")}
-                  </div>
-                  <div className={modalStyles.empty_description}>
-                    {t("students.don_t_have_students")}
-                  </div>
-                </div>
               </div>
-            ) : (
-              <>
-                {filteredStudents.length === 0 ? (
-                  <div className={modalStyles.empty_container}>
-                    <img
-                      className={modalStyles.empty_image}
-                      src={NothingFound}
-                      alt=""
-                    />
-                    <div className={modalStyles.empty_info}>
-                      <div className={modalStyles.empty_title}>
-                        {t("global.nothing_was_found")}
-                      </div>
-                      <div className={modalStyles.empty_description}>
-                        {t("global.enter_other_params")}
-                      </div>
+              <div
+                className={styles.students_count}
+              >{`${t("global.founded")}: ${filteredStudents.length}`}</div>
+              {students.length === 0 ? (
+                <div className={modalStyles.empty_container}>
+                  <img
+                    className={modalStyles.empty_image}
+                    src={NothingFound}
+                    alt=""
+                  />
+                  <div className={modalStyles.empty_info}>
+                    <div className={modalStyles.empty_title}>
+                      {t("global.nothing_was_found")}
+                    </div>
+                    <div className={modalStyles.empty_description}>
+                      {t("students.don_t_have_students")}
                     </div>
                   </div>
-                ) : (
-                  <>
-                    {filteredStudents.map((student: IUser, index: number) => (
-                      <div className={styles.student_item} key={index}>
-                        <UserCard userItem={student} />
+                </div>
+              ) : (
+                <>
+                  {filteredStudents.length === 0 ? (
+                    <div className={modalStyles.empty_container}>
+                      <img
+                        className={modalStyles.empty_image}
+                        src={NothingFound}
+                        alt=""
+                      />
+                      <div className={modalStyles.empty_info}>
+                        <div className={modalStyles.empty_title}>
+                          {t("global.nothing_was_found")}
+                        </div>
+                        <div className={modalStyles.empty_description}>
+                          {t("global.enter_other_params")}
+                        </div>
                       </div>
-                    ))}
-                  </>
-                )}
-              </>
-            )}
+                    </div>
+                  ) : (
+                    <>
+                      {filteredStudents.map((student: IUser, index: number) => (
+                        <div className={styles.student_item} key={index}>
+                          <UserCard userItem={student} />
+                        </div>
+                      ))}
+                    </>
+                  )}
+                </>
+              )}
+            </div>
           </div>
-        </div>
+        ) : null}
         {students.length > 0 ? (
           <div className={modalStyles.actions}>
             <div />
