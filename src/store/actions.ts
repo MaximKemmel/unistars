@@ -13,10 +13,12 @@ import { actions as employeeActions } from "./employee/employee.slice";
 import * as employeeActionsDb from "./employee/employee.actions";
 import { actions as bookletActions } from "./booklet/booklet.slice";
 import * as bookletActionsDb from "./booklet/booklet.actions";
-import { actions as advertActions } from "./advert/advert.slice";
-import * as advertActionsDb from "./advert/advert.actions";
 import { actions as eventActions } from "./event/event.slice";
 import * as eventActionsDb from "./event/event.actions";
+import { actions as advertActions } from "./advert/advert.slice";
+import * as advertActionsDb from "./advert/advert.actions";
+import { actions as mailingActions } from "./mailing/mailing.slice";
+import * as mailingActionsDb from "./mailing/mailing.actions";
 
 export const rootActions = {
   ...coreActionsDb,
@@ -34,8 +36,10 @@ export const rootActions = {
   ...employeeActionsDb,
   ...bookletActions,
   ...bookletActionsDb,
-  ...advertActions,
-  ...advertActionsDb,
   ...eventActions,
   ...eventActionsDb,
+  ...advertActions,
+  ...advertActionsDb,
+  ...mailingActions,
+  ...mailingActionsDb,
 };

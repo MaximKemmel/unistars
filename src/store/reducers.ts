@@ -10,6 +10,7 @@ import { reducer as employeeReducer } from "./employee/employee.slice";
 import { reducer as bookletReducer } from "./booklet/booklet.slice";
 import { reducer as eventReducer } from "./event/event.slice";
 import { reducer as advertReducer } from "./advert/advert.slice";
+import { reducer as mailingReducer } from "./mailing/mailing.slice";
 
 export const reducers = combineReducers({
   coreReducer,
@@ -22,4 +23,5 @@ export const reducers = combineReducers({
   bookletReducer,
   eventReducer,
   advertReducer,
+  mailingReducer,
 });
