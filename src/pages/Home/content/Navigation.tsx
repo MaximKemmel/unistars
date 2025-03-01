@@ -4,7 +4,7 @@ import { useTranslation } from "react-i18next";
 
 import { useActions } from "../../../hooks/useActions";
 
-import { SettingsModal } from "../../../modals/Settings/SettingsModal";
+import { SettingsModal } from "../../../modals/Settings/Settings";
 
 import styles from "../Home.module.sass";
 

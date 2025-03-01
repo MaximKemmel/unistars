@@ -4,7 +4,7 @@ import { useTranslation } from "react-i18next";
 import { useActions } from "../../../../hooks/useActions";
 import { useTypedSelector } from "../../../../hooks/useTypedSelector";
 
-import { UniversityModal } from "../../../../modals/University/UniversityModal";
+import { UniversityModal } from "../../../../modals/University/University";
 
 import globalStyles from "../../../../App.module.sass";
 import styles from "../../Home.module.sass";

@@ -10,13 +10,17 @@ import NotActiveIcon from "../../assets/svg/not_active.svg";
 
 interface IMailingCardProps {
   mailingItem: any;
+  onView: Function;
 }
 
-export const MailingCard: React.FC<IMailingCardProps> = ({ mailingItem }) => {
+export const MailingCard: React.FC<IMailingCardProps> = ({
+  mailingItem,
+  onView,
+}) => {
   const { t } = useTranslation();
 
   return (
-    <div className={styles.mailing_container}>
+    <div className={styles.mailing_container} onClick={() => onView()}>
       <div className={styles.mailing_status}>
         {mailingItem.status === 0 ? (
           <>

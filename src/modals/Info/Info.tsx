@@ -1,3 +1,4 @@
+import React from "react";
 import styles from "./InfoModal.module.sass";
 
 import { Close as CloseIcon } from "../../assets/svgComponents/Close";
@@ -10,10 +11,19 @@ interface IInfoModalProps {
   onClose: Function;
 }
 
-export const InfoModal: React.FC<IInfoModalProps> = ({ isShow, title, message, image, onClose }) => {
+export const InfoModal: React.FC<IInfoModalProps> = ({
+  isShow,
+  title,
+  message,
+  image,
+  onClose,
+}) => {
   return (
     <div className={`${styles.modal} ${isShow ? styles.active : ""}`}>
-      <div className={`${styles.overlay} ${isShow ? styles.active : ""}`} onClick={() => onClose()} />
+      <div
+        className={`${styles.overlay} ${isShow ? styles.active : ""}`}
+        onClick={() => onClose()}
+      />
       <div className={styles.modal_content}>
         <div className={styles.close} onClick={() => onClose()}>
           <CloseIcon />

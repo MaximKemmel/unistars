@@ -8,7 +8,7 @@ import { Navigation } from "./content/Navigation";
 import { Main } from "./content/Main";
 import { Events } from "./content/Events";
 import { Adverts } from "./content/Adverts";
-import { MailList } from "./content/MailList";
+import { MailingList } from "./content/MailingList";
 
 import styles from "./Home.module.sass";
 import { IAmbassadorRequest } from "src/types/ambassador/ambassadorRequest";
@@ -42,7 +42,7 @@ export const Home = () => {
     <Main />,
     <Events />,
     <Adverts />,
-    <MailList />,
+    <MailingList />,
   ] as JSX.Element[];
 
   useEffect(() => {

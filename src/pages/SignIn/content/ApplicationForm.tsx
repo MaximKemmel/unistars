@@ -9,7 +9,7 @@ import { Input } from "../../../components/input/Input";
 
 import styles from "../SignIn.module.sass";
 
-import { InfoModal } from "../../../modals/Info/InfoModal";
+import { InfoModal } from "../../../modals/Info/Info";
 
 import { ApiStatusType } from "../../../enums/local/apiStatusType";
 import { initApiStatus } from "../../../types/local/apiStatus";

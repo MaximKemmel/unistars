@@ -1,3 +1,4 @@
+import React from "react";
 import { useTranslation } from "react-i18next";
 
 import { Toggle } from "../../components/toggle/Toggle";
@@ -12,12 +13,18 @@ interface ISettingsModalProps {
   onClose: Function;
 }
 
-export const SettingsModal: React.FC<ISettingsModalProps> = ({ isShow, onClose }) => {
+export const SettingsModal: React.FC<ISettingsModalProps> = ({
+  isShow,
+  onClose,
+}) => {
   const { t } = useTranslation();
 
   return (
     <div className={`${modalStyles.modal} ${isShow ? modalStyles.active : ""}`}>
-      <div className={`${modalStyles.overlay} ${isShow ? modalStyles.active : ""}`} onClick={() => onClose()} />
+      <div
+        className={`${modalStyles.overlay} ${isShow ? modalStyles.active : ""}`}
+        onClick={() => onClose()}
+      />
       <div className={`${modalStyles.modal_content} ${styles.modal_content}`}>
         <div className={modalStyles.head}>
           <h4>{t("global.settings")}</h4>
@@ -26,7 +33,9 @@ export const SettingsModal: React.FC<ISettingsModalProps> = ({ isShow, onClose }
           </div>
         </div>
         <div className={styles.settings_container}>
-          <div className={styles.settings_label}>{t("settings.interface_language")}</div>
+          <div className={styles.settings_label}>
+            {t("settings.interface_language")}
+          </div>
           <Toggle isSettings={true} />
         </div>
       </div>

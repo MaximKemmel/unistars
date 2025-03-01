@@ -1,6 +1,9 @@
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 
+import { MailingModal } from "../../../modals/Mailing/Mailing";
+import { EditMailingModal } from "../../../modals/Mailing/EditMailing";
+
 import { MailingCard } from "../../../cards/mailing/MailingCard";
 import { Toggle } from "../../../components/toggle/Toggle";
 
@@ -11,9 +14,12 @@ import { IToggleItem } from "../../../types/local/toggleItem";
 
 import PlusIcon from "../../../assets/svg/plus.svg";
 
-export const MailList = () => {
+export const MailingList = () => {
   const { t } = useTranslation();
   const [viewMode, setViewMode] = useState(0);
+  const [editedMailing, setEditedMailing] = useState<any>(null);
+  const [isMailingModalShow, setIsMailingModalShow] = useState(false);
+  const [isEditMailingModalShow, setIsEditMailingModalShow] = useState(false);
 
   const standardMailList = Array(8)
     .fill(1)
@@ -22,9 +28,22 @@ export const MailList = () => {
         id: index,
         status: index < 3 ? 0 : 1,
         name: "Заголовок",
+        pushText:
+          "ChatGPT — чат-бот с генеративным искусственным интеллектом, разработанный компанией OpenAI",
+        senders: [
+          "example@gmail.com",
+          "example@gmail.com",
+          "example@gmail.com",
+          "example@gmail.com",
+          "example@gmail.com",
+          "example@gmail.com",
+        ],
+        title: "ChatGPT",
+        text: "ChatGPT — чат-бот с генеративным искусственным интеллектом, разработанный компанией OpenAI и способный работать в диалоговом режиме, поддерживающий запросы на естественных языках. Система способна отвечать на вопросы, генерировать тексты на разных языках, включая русский, относящиеся к различным предметным областям.",
         date: new Date(Date.UTC(2025, 0, index + 1)),
-        type: index !== 0 && index % 2 === 0 ? "чат" : "e-mail",
+        type: index !== 0 && index % 2 === 0 ? "Чат" : "E-mail",
         recipients: index * 248 + 5,
+        files: ["Буклет.pdf", "Буклет.pdf"],
       };
     });
 
@@ -35,8 +54,21 @@ export const MailList = () => {
         id: index,
         status: index < 3 ? 2 : 3,
         name: "Заголовок",
+        pushText:
+          "ChatGPT — чат-бот с генеративным искусственным интеллектом, разработанный компанией OpenAI",
+        senders: [
+          "example@gmail.com",
+          "example@gmail.com",
+          "example@gmail.com",
+          "example@gmail.com",
+          "example@gmail.com",
+          "example@gmail.com",
+        ],
+        title: "ChatGPT",
+        text: "ChatGPT — чат-бот с генеративным искусственным интеллектом, разработанный компанией OpenAI и способный работать в диалоговом режиме, поддерживающий запросы на естественных языках. Система способна отвечать на вопросы, генерировать тексты на разных языках, включая русский, относящиеся к различным предметным областям.",
         date: new Date(Date.UTC(2025, 0, index + 1)),
-        type: index !== 0 && index % 2 === 0 ? "чат" : "e-mail",
+        type: index !== 0 && index % 2 === 0 ? "Чат" : "E-mail",
+        files: ["Буклет.pdf", "Буклет.pdf"],
       };
     });
 
@@ -77,7 +109,13 @@ export const MailList = () => {
                 <div className={styles.mail_list_container}>
                   {standardMailList.map((mailing, index: number) => (
                     <div className={styles.mailing_item} key={index}>
-                      <MailingCard mailingItem={mailing} />
+                      <MailingCard
+                        mailingItem={mailing}
+                        onView={() => {
+                          setEditedMailing(mailing);
+                          setIsMailingModalShow(true);
+                        }}
+                      />
                     </div>
                   ))}
                 </div>
@@ -99,7 +137,13 @@ export const MailList = () => {
                 <div className={styles.mail_list_container}>
                   {automaticMailList.map((mailing, index: number) => (
                     <div className={styles.mailing_item} key={index}>
-                      <MailingCard mailingItem={mailing} />
+                      <MailingCard
+                        mailingItem={mailing}
+                        onView={() => {
+                          setEditedMailing(mailing);
+                          setIsMailingModalShow(true);
+                        }}
+                      />
                     </div>
                   ))}
                 </div>
@@ -118,6 +162,17 @@ export const MailList = () => {
           )}
         </>
       </div>
+      <MailingModal
+        isShow={isMailingModalShow}
+        mailing={editedMailing}
+        onDelete={() => {}}
+        onClose={() => setIsMailingModalShow(false)}
+      />
+      <EditMailingModal
+        isShow={isEditMailingModalShow}
+        mailing={editedMailing}
+        onClose={() => setIsEditMailingModalShow(false)}
+      />
     </div>
   );
 };

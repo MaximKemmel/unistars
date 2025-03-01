@@ -4,7 +4,7 @@ import { useTranslation } from "react-i18next";
 import { useActions } from "../../../hooks/useActions";
 import { useTypedSelector } from "../../../hooks/useTypedSelector";
 
-import { EventModal } from "../../../modals/Event/EventModal";
+import { EventModal } from "../../../modals/Event/Event";
 import { ConfirmDeleteModal } from "../../../modals/ConfirmDelete/ConfirmDelete";
 import { StatusInfoModal } from "../../../modals/StatusInfo/StatusInfo";
 

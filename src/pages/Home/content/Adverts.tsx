@@ -4,7 +4,7 @@ import { useTranslation } from "react-i18next";
 import { useActions } from "../../../hooks/useActions";
 import { useTypedSelector } from "../../../hooks/useTypedSelector";
 
-import { AdvertModal } from "../../../modals/Advert/AdvertModal";
+import { AdvertModal } from "../../../modals/Advert/Advert";
 import { StatusInfoModal } from "../../../modals/StatusInfo/StatusInfo";
 
 import { AdvertCard } from "../../../cards/advert/AdvertCard";
