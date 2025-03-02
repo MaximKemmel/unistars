@@ -5,8 +5,8 @@ import styles from "./MailingCard.module.sass";
 
 import ProgressIcon from "../../assets/svg/progress.svg";
 import SuccessIcon from "../../assets/svg/success.svg";
-import ActiveIcon from "../../assets/svg/active.svg";
-import NotActiveIcon from "../../assets/svg/not_active.svg";
+import { Start as StartIcon } from "../../assets/svgComponents/Start";
+import { Pause as PauseIcon } from "../../assets/svgComponents/Pause";
 
 interface IMailingCardProps {
   mailingItem: any;
@@ -38,13 +38,13 @@ export const MailingCard: React.FC<IMailingCardProps> = ({
         ) : null}
         {mailingItem.status === 2 ? (
           <>
-            <img src={ActiveIcon} alt="" />
+            <StartIcon isActive={true} />
             <div className={styles.mailing_active}>{t("mail_list.active")}</div>
           </>
         ) : null}
         {mailingItem.status === 3 ? (
           <>
-            <img src={NotActiveIcon} alt="" />
+            <PauseIcon isActive={true} />
             <div className={styles.mailing_not_active}>
               {t("mail_list.not_active")}
             </div>

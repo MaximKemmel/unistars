@@ -45,7 +45,8 @@ $separator_color: #14171A14
           gap: 4px
           font-size: 14px
 
-          img
+          img,
+          svg
             width: 16px
             height: auto
 
@@ -72,10 +73,17 @@ $separator_color: #14171A14
 
             img
               width: 16px
-              height: 16px
+              height: auto
 
       .separator
         width: calc(100% - 2px)
         height: 0
         border: 1px solid $separator_color
         flex-shrink: 0
+
+  .view_toggle
+    width: 100%
+
+  .form_description
+    font-size: 16px
+    color: $text_secondary_color

@@ -126,7 +126,7 @@ export const AdvertModal: React.FC<IAdvertModalProps> = ({
         </div>
         {isShow ? (
           <form className={modalStyles.form}>
-            <div className={modalStyles.form_content} id="form">
+            <div className={modalStyles.form_content}>
               <div className={modalStyles.part_container}>
                 <div
                   className={`${modalStyles.part_multi} ${modalStyles.double}`}

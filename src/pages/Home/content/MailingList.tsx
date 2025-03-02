@@ -165,12 +165,21 @@ export const MailingList = () => {
       <MailingModal
         isShow={isMailingModalShow}
         mailing={editedMailing}
+        onEdit={() => {
+          setIsMailingModalShow(false);
+          setIsEditMailingModalShow(true);
+        }}
         onDelete={() => {}}
         onClose={() => setIsMailingModalShow(false)}
       />
       <EditMailingModal
         isShow={isEditMailingModalShow}
         mailing={editedMailing}
+        onSave={() => {}}
+        onCancel={() => {
+          setIsEditMailingModalShow(false);
+          setIsMailingModalShow(true);
+        }}
         onClose={() => setIsEditMailingModalShow(false)}
       />
     </div>

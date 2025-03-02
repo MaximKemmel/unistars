@@ -61,3 +61,7 @@
     border-bottom: 2px solid #6547FD;
     border-right: 2px solid #6547FD;
 }
+
+.g-switch_checked .g-switch__indicator::before, .g-switch_checked:hover .g-switch__indicator::before {
+    background-color: #6547FD !important;
+}
