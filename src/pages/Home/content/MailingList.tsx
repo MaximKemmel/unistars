@@ -126,7 +126,14 @@ export const MailingList = () => {
                   </div>
                 </div>
               )}
-              <button className={globalStyles.small} type="button">
+              <button
+                className={globalStyles.small}
+                type="button"
+                onClick={() => {
+                  setEditedMailing(null);
+                  setIsEditMailingModalShow(true);
+                }}
+              >
                 {t("mail_list.create_mail_list")}
                 <img src={PlusIcon} alt="" />
               </button>
@@ -154,7 +161,14 @@ export const MailingList = () => {
                   </div>
                 </div>
               )}
-              <button className={globalStyles.small} type="button">
+              <button
+                className={globalStyles.small}
+                type="button"
+                onClick={() => {
+                  setEditedMailing(null);
+                  setIsEditMailingModalShow(true);
+                }}
+              >
                 {t("mail_list.create_mail_list")}
                 <img src={PlusIcon} alt="" />
               </button>

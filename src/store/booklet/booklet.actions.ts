@@ -7,57 +7,61 @@ import { IBooklet } from "../../types/booklet/booklet.js";
 export const getBookletList = createAsyncThunk(
   "api/getBookletList",
   async ({ universityId }: { universityId: number }, { rejectWithValue }) => {
-    const response = await axios.get(
-      `/booklet/get_list?universityId=${universityId}`,
-    );
-    if (response.status !== 200) {
-      throw rejectWithValue("Server error!");
+    try {
+      const response = await axios.get(
+        `/booklet/get_list?universityId=${universityId}`,
+      );
+      return response.data;
+    } catch (error: any) {
+      return rejectWithValue(error.response.data.message);
     }
-    return response.data;
   },
 );
 
 export const postBooklet = createAsyncThunk(
   "api/postBooklet",
   async ({ booklet }: { booklet: IBooklet }, { rejectWithValue }) => {
-    const response = await axios.post("/booklet", {
-      title: booklet.title,
-      bookletFileUrl: booklet.bookletFileUrl,
-      description: booklet.description,
-      imageUrl: booklet.imageUrl,
-    });
-    if (response.status !== 200) {
-      throw rejectWithValue("Server error!");
+    try {
+      const response = await axios.post("/booklet", {
+        title: booklet.title,
+        bookletFileUrl: booklet.bookletFileUrl,
+        description: booklet.description,
+        imageUrl: booklet.imageUrl,
+      });
+      return response.data;
+    } catch (error: any) {
+      return rejectWithValue(error.response.data.message);
     }
-    return response.data;
   },
 );
 
 export const editBooklet = createAsyncThunk(
   "api/editBooklet",
   async ({ booklet }: { booklet: IBooklet }, { rejectWithValue }) => {
-    const response = await axios.patch("/booklet", {
-      id: booklet.id,
-      title: booklet.title,
-      bookletFileUrl: booklet.bookletFileUrl,
-      description: booklet.description,
-      imageUrl: booklet.imageUrl,
-    });
-    if (response.status !== 200) {
-      throw rejectWithValue("Server error!");
+    try {
+      const response = await axios.patch("/booklet", {
+        id: booklet.id,
+        title: booklet.title,
+        bookletFileUrl: booklet.bookletFileUrl,
+        description: booklet.description,
+        imageUrl: booklet.imageUrl,
+      });
+      return response.data;
+    } catch (error: any) {
+      return rejectWithValue(error.response.data.message);
     }
-    return response.data;
   },
 );
 
 export const deleteBooklet = createAsyncThunk(
   "api/deleteBooklet",
   async ({ id }: { id: number }, { rejectWithValue }) => {
-    const response = await axios.delete(`/booklet?id=${id}`);
-    if (response.status !== 200) {
-      throw rejectWithValue("Server error!");
+    try {
+      const response = await axios.delete(`/booklet?id=${id}`);
+      return response.data;
+    } catch (error: any) {
+      return rejectWithValue(error.response.data.message);
     }
-    return response.data;
   },
 );
 
@@ -73,16 +77,17 @@ export const uploadBookletCover = createAsyncThunk(
     },
     { rejectWithValue },
   ) => {
-    const formData = new FormData();
-    formData.append("type", "IMAGE");
-    formData.append("files", file);
-    const response = await axios.post("/storage", formData, {
-      onUploadProgress: (data) => onUploadProgress(data),
-    });
-    if (response.status !== 200) {
-      throw rejectWithValue("Server error!");
+    try {
+      const formData = new FormData();
+      formData.append("type", "IMAGE");
+      formData.append("files", file);
+      const response = await axios.post("/storage", formData, {
+        onUploadProgress: (data) => onUploadProgress(data),
+      });
+      return response.data;
+    } catch (error: any) {
+      return rejectWithValue(error.response.data.message);
     }
-    return response.data;
   },
 );
 
@@ -98,15 +103,16 @@ export const uploadBookletFile = createAsyncThunk(
     },
     { rejectWithValue },
   ) => {
-    const formData = new FormData();
-    formData.append("type", "DOCUMENT");
-    formData.append("files", file);
-    const response = await axios.post("/storage", formData, {
-      onUploadProgress: (data) => onUploadProgress(data),
-    });
-    if (response.status !== 200) {
-      throw rejectWithValue("Server error!");
+    try {
+      const formData = new FormData();
+      formData.append("type", "DOCUMENT");
+      formData.append("files", file);
+      const response = await axios.post("/storage", formData, {
+        onUploadProgress: (data) => onUploadProgress(data),
+      });
+      return response.data;
+    } catch (error: any) {
+      return rejectWithValue(error.response.data.message);
     }
-    return response.data;
   },
 );

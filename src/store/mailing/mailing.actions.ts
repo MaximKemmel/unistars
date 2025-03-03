@@ -5,11 +5,11 @@ import axios from "../../utils/axios.js";
 export const getMailingList = createAsyncThunk(
   "api/getMailingList",
   async (_, { rejectWithValue }) => {
-    const response = await axios.get("/email_mass_communication");
-    console.log(response.data);
-    if (response.status !== 200) {
-      throw rejectWithValue("Server error!");
+    try {
+      const response = await axios.get("/email_mass_communication");
+      return response.data;
+    } catch (error: any) {
+      return rejectWithValue(error.response.data.message);
     }
-    return response.data;
   },
 );

@@ -5,22 +5,24 @@ import axios from "../../utils/axios.js";
 export const getAmbassador = createAsyncThunk(
   "api/getAmbassador",
   async ({ ambassadorId }: { ambassadorId: number }, { rejectWithValue }) => {
-    const response = await axios.get(`/student_profile?id=${ambassadorId}`);
-    if (response.status !== 200) {
-      throw rejectWithValue("Server error!");
+    try {
+      const response = await axios.get(`/student_profile?id=${ambassadorId}`);
+      return response.data;
+    } catch (error: any) {
+      return rejectWithValue(error.response.data.message);
     }
-    return response.data;
   },
 );
 
 export const getAmbassadorRequest = createAsyncThunk(
   "api/getAmbassadorRequest",
   async ({ ambassadorId }: { ambassadorId: number }, { rejectWithValue }) => {
-    const response = await axios.get(`/student_profile?id=${ambassadorId}`);
-    if (response.status !== 200) {
-      throw rejectWithValue("Server error!");
+    try {
+      const response = await axios.get(`/student_profile?id=${ambassadorId}`);
+      return response.data;
+    } catch (error: any) {
+      return rejectWithValue(error.response.data.message);
     }
-    return response.data;
   },
 );
 
@@ -30,26 +32,28 @@ export const acceptAmbassador = createAsyncThunk(
     { ambassadorId, isAccept }: { ambassadorId: number; isAccept: boolean },
     { rejectWithValue },
   ) => {
-    const response = await axios.post(`/accept_ambassador`, {
-      ambassadorId: ambassadorId,
-      accept: isAccept,
-    });
-    if (response.status !== 200) {
-      throw rejectWithValue("Server error!");
+    try {
+      const response = await axios.post(`/accept_ambassador`, {
+        ambassadorId: ambassadorId,
+        accept: isAccept,
+      });
+      return response.data;
+    } catch (error: any) {
+      return rejectWithValue(error.response.data.message);
     }
-    return response.data;
   },
 );
 
 export const exceptAmbassador = createAsyncThunk(
   "api/exceptAmbassador",
   async ({ ambassadorId }: { ambassadorId: number }, { rejectWithValue }) => {
-    const response = await axios.post(`/except_ambassador`, {
-      studentId: ambassadorId,
-    });
-    if (response.status !== 200) {
-      throw rejectWithValue("Server error!");
+    try {
+      const response = await axios.post(`/except_ambassador`, {
+        studentId: ambassadorId,
+      });
+      return response.data;
+    } catch (error: any) {
+      return rejectWithValue(error.response.data.message);
     }
-    return response.data;
   },
 );

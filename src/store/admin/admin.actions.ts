@@ -8,14 +8,15 @@ export const login = createAsyncThunk(
     { email, password }: { email: string; password: string },
     { rejectWithValue },
   ) => {
-    const response = await axios.post("/login", {
-      email: email,
-      password: password,
-    });
-    if (response.status !== 200) {
-      throw rejectWithValue("Server error!");
+    try {
+      const response = await axios.post("/login", {
+        email: email,
+        password: password,
+      });
+      return response.data;
+    } catch (error: any) {
+      return rejectWithValue(error.response.data.message);
     }
-    return response.data;
   },
 );
 
@@ -25,39 +26,42 @@ export const changePassword = createAsyncThunk(
     { oldPassword, newPassword }: { oldPassword: string; newPassword: string },
     { rejectWithValue },
   ) => {
-    const response = await axios.post("/change_password", {
-      passwordOld: oldPassword,
-      passwordNew: newPassword,
-    });
-    if (response.status !== 200) {
-      throw rejectWithValue("Server error!");
+    try {
+      const response = await axios.post("/change_password", {
+        passwordOld: oldPassword,
+        passwordNew: newPassword,
+      });
+      return response.data;
+    } catch (error: any) {
+      return rejectWithValue(error.response.data.message);
     }
-    return response.data;
   },
 );
 
 export const refreshToken = createAsyncThunk(
   "api/refresh",
   async (_, { rejectWithValue }) => {
-    const response = await axios.post("/refresh", {
-      refreshToken: localStorage.getItem("unistars_refresh_token"),
-    });
-    if (response.status !== 200) {
-      throw rejectWithValue("Server error!");
+    try {
+      const response = await axios.post("/refresh", {
+        refreshToken: localStorage.getItem("unistars_refresh_token"),
+      });
+      return response.data;
+    } catch (error: any) {
+      return rejectWithValue(error.response.data.message);
     }
-    return response.data;
   },
 );
 
 export const requestUniversity = createAsyncThunk(
   "api/requestUniversity",
   async ({ email }: { email: string }, { rejectWithValue }) => {
-    const response = await axios.post("/request_new_university ", {
-      email: email,
-    });
-    if (response.status !== 200) {
-      throw rejectWithValue("Server error!");
+    try {
+      const response = await axios.post("/request_new_university ", {
+        email: email,
+      });
+      return response.data;
+    } catch (error: any) {
+      return rejectWithValue(error.response.data.message);
     }
-    return response.data;
   },
 );

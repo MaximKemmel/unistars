@@ -5,10 +5,11 @@ import axios from "../../utils/axios.js";
 export const getStudents = createAsyncThunk(
   "api/getStudents",
   async (_, { rejectWithValue }) => {
-    const response = await axios.get(`/university_students?size=10000`);
-    if (response.status !== 200) {
-      throw rejectWithValue("Server error!");
+    try {
+      const response = await axios.get(`/university_students?size=10000`);
+      return response.data;
+    } catch (error: any) {
+      return rejectWithValue(error.response.data.message);
     }
-    return response.data;
   },
 );
