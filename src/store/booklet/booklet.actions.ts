@@ -57,7 +57,21 @@ export const deleteBooklet = createAsyncThunk(
   "api/deleteBooklet",
   async ({ id }: { id: number }, { rejectWithValue }) => {
     try {
-      const response = await axios.delete(`/booklet?id=${id}`);
+      const response = await axios.delete(`/booklet/pending_delete?id=${id}`);
+      return response.data;
+    } catch (error: any) {
+      return rejectWithValue(error.response.data.message);
+    }
+  },
+);
+
+export const rollbackDeleteBooklet = createAsyncThunk(
+  "api/rollbackDeleteBooklet",
+  async ({ id }: { id: number }, { rejectWithValue }) => {
+    try {
+      const response = await axios.patch(
+        `/cancel_pending_request?requestId=${id}`,
+      );
       return response.data;
     } catch (error: any) {
       return rejectWithValue(error.response.data.message);

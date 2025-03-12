@@ -133,7 +133,7 @@
     "delete_description": "Он исчезнет из списка буклетов, и пользователи больше не смогут его посмотреть.",
     "booklet_was_deleted": "Буклет успешно удален",
     "booklet_was_edited": "Буклет успешно изменен",
-    "booklet_was_added": "Буклет успешно добавлен"
+    "booklet_was_created": "Буклет успешно добавлен"
   },
   "events": {
     "create_event": "Создать ивент",

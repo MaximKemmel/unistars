@@ -25,9 +25,11 @@ export const BookletsContainer = () => {
     postBooklet,
     editBooklet,
     deleteBooklet,
+    rollbackDeleteBooklet,
     setPostBookletStatus,
     setEditBookletStatus,
     setDeleteBookletStatus,
+    setRollbackDeleteBookletStatus,
   } = useActions();
   const booklets = useTypedSelector((state) => state.bookletReducer.booklets);
   const [currentBooklet, setCurrentBooklet] = useState(initBooklet());
@@ -39,6 +41,12 @@ export const BookletsContainer = () => {
   );
   const deleteStatus = useTypedSelector(
     (state) => state.bookletReducer.deleteStatus,
+  );
+  const rollbackDeleteStatus = useTypedSelector(
+    (state) => state.bookletReducer.rollbackDeleteStatus,
+  );
+  const rollbackId = useTypedSelector(
+    (state) => state.bookletReducer.rollbackId,
   );
   const [deletedBooklet, setDeletedBooklet] = useState(initBooklet());
   const [isBookletsModalShow, setIsBookletsModalShow] = useState(false);
@@ -103,6 +111,19 @@ export const BookletsContainer = () => {
         break;
     }
   }, [deleteStatus]);
+
+  useEffect(() => {
+    switch (rollbackDeleteStatus.status) {
+      case ApiStatusType.SUCCESS:
+        setRollbackDeleteBookletStatus(initApiStatus());
+        getUniversityProfile();
+        setIsStatusInfoModalShow(false);
+        break;
+      case ApiStatusType.ERROR:
+        setRollbackDeleteBookletStatus(initApiStatus());
+        break;
+    }
+  }, [rollbackDeleteStatus]);
 
   const handleOnDeleteBooklet = (booklet: IBooklet) => {
     setDeletedBooklet(booklet);
@@ -236,7 +257,9 @@ export const BookletsContainer = () => {
         isSuccess={isStatusSuccess}
         onClose={() => setIsStatusInfoModalShow(false)}
         isRestore={isStatusRestore}
-        onRestore={() => setIsStatusInfoModalShow(false)}
+        onRestore={() => {
+          rollbackDeleteBooklet({ id: rollbackId });
+        }}
       />
     </>
   );
