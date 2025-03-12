@@ -56,7 +56,7 @@ export const requestUniversity = createAsyncThunk(
   "api/requestUniversity",
   async ({ email }: { email: string }, { rejectWithValue }) => {
     try {
-      const response = await axios.post("/request_new_university ", {
+      const response = await axios.post("/request_new_university", {
         email: email,
       });
       return response.data;
