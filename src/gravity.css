@@ -57,9 +57,9 @@
 
 .g-spin__inner {
     border: none ;
-    border-top: 2px solid #6547FD;
-    border-bottom: 2px solid #6547FD;
-    border-right: 2px solid #6547FD;
+    border-top: 3px solid #14171A99;
+    border-bottom: 3px solid #14171A99;
+    border-right: 3px solid #14171A99;
 }
 
 .g-switch_checked .g-switch__indicator::before, .g-switch_checked:hover .g-switch__indicator::before {

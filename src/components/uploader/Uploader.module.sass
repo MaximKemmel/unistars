@@ -1,0 +1,75 @@
+$background_primary_color: #FFFFFF
+$border_color: #14171A24
+$background_error_color: #D92D2024
+$text_error_color: #BF0D1F
+$background_success_color: #03985524
+$text_success_color: #008046
+
+.uploader_container
+  display: flex
+  flex-direction: column
+  gap: 4px
+  width: 100%
+
+  .file_item
+    display: flex
+    align-items: center
+    justify-content: space-between
+    gap: 10px
+    height: 64px
+
+    .file_name
+      display: flex
+      align-items: center
+      gap: 4px
+      flex-grow: 1
+      font-size: 14px
+      overflow: hidden
+
+      img
+        width: 16px
+        height: auto
+
+      .name
+        text-overflow: ellipsis
+        white-space: nowrap
+        overflow: hidden
+
+    .actions
+      display: flex
+      align-items: center
+      gap: 8px
+
+      .status
+        display: flex
+        align-items: center
+        gap: 8px
+        height: 40px
+        padding: 0 16px
+        border-radius: 8px
+        font-size: 16px
+
+        &.success
+          background-color: $background_success_color
+          color: $text_success_color
+
+        &.error
+          background-color: $background_error_color
+          color: $text_error_color
+
+        img,
+        svg
+          width: 16px
+          height: auto
+
+    .button
+        display: flex
+        align-items: center
+        justify-content: center
+        width: 40px
+        height: 40px
+        cursor: pointer
+
+        img
+          width: 20px
+          height: auto

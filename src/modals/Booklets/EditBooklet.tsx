@@ -1,12 +1,12 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Spin } from "@gravity-ui/uikit";
 
 import { useActions } from "../../hooks/useActions";
 import { useTypedSelector } from "../../hooks/useTypedSelector";
 
 import { Input } from "../../components/input/Input";
 import { Textarea } from "../../components/textarea/Textarea";
+import { Uploader } from "../../components/uploader/Uploader";
 
 import globalStyles from "../../App.module.sass";
 import modalStyles from "../Modal.module.sass";
@@ -17,10 +17,6 @@ import { initApiStatus } from "../../types/local/apiStatus";
 
 import { Close as CloseIcon } from "../../assets/svgComponents/Close";
 import { Trash as TrashIcon } from "../../assets/svgComponents/Trash";
-import UploadImageIcon from "../../assets/svg/upload-image.svg";
-import UploadFileIcon from "../../assets/svg/upload-file.svg";
-import FileIcon from "../../assets/svg/file.svg";
-import CheckIcon from "../../assets/svg/circled-check.svg";
 
 interface IEditBookletModalProps {
   isShow: boolean;
@@ -56,6 +52,7 @@ export const EditBookletModal: React.FC<IEditBookletModalProps> = ({
     (state) => state.bookletReducer.bookletCover,
   );
   const [imageName, setImageName] = useState("");
+  const [imageData, setImageData] = useState(null);
   const inputFileRef = useRef<HTMLInputElement>(null);
   const [uploadFileProgress, setUploadFileProgress] = useState(-1);
   const uploadFileStatus = useTypedSelector(
@@ -65,10 +62,15 @@ export const EditBookletModal: React.FC<IEditBookletModalProps> = ({
     (state) => state.bookletReducer.bookletFile,
   );
   const [fileName, setFileName] = useState("");
+  const [fileData, setFileData] = useState(null);
   const [isButtonEnabled, setIsButtonEnabled] = useState(false);
 
   useEffect(() => {
     setCurrentBooklet(booklet);
+    setImageName("");
+    setImageData(null);
+    setFileName("");
+    setFileData(null);
   }, [booklet]);
 
   useEffect(() => {
@@ -115,13 +117,14 @@ export const EditBookletModal: React.FC<IEditBookletModalProps> = ({
   const handleOnChangeImage = (event) => {
     try {
       const file = event.target.files[0];
-      setImageName(file.name);
       if (
         file.name.endsWith(".png") ||
         file.name.endsWith(".jpg") ||
         file.name.endsWith(".jpeg") ||
         file.name.endsWith(".bmp")
       ) {
+        setImageName(file.name);
+        setImageData(file);
         setUploadCoverStatus(initApiStatus());
         uploadBookletCover({
           file: file,
@@ -144,6 +147,7 @@ export const EditBookletModal: React.FC<IEditBookletModalProps> = ({
     try {
       const file = event.target.files[0];
       setFileName(file.name);
+      setFileData(file);
       setUploadFileStatus(initApiStatus());
       uploadBookletFile({
         file: file,
@@ -198,76 +202,52 @@ export const EditBookletModal: React.FC<IEditBookletModalProps> = ({
                   </div>
                 </div>
                 <div className={modalStyles.part}>
-                  <div className={modalStyles.cover}>
-                    <input
-                      ref={inputImageRef}
-                      type="file"
-                      id="file"
-                      accept="image/png, image/jpeg"
-                      onChange={handleOnChangeImage}
-                      hidden
-                    />
-                    <div
-                      className={`${modalStyles.form_button} ${uploadImageProgress !== -1 ? modalStyles.disabled : ""}`}
-                      onClick={() => {
-                        if (uploadImageProgress === -1) {
-                          inputImageRef.current!.click();
-                        }
-                      }}
-                    >
-                      <img src={UploadImageIcon} alt="" />
-                    </div>
-                    {currentBooklet.imageUrl === null ||
-                    currentBooklet.imageUrl.trim().length === 0 ? (
-                      <div className={modalStyles.form_button_label}>
-                        {t("booklets.choose_a_cover")}
-                      </div>
-                    ) : (
-                      <div className={modalStyles.file_info}>
-                        <div className={modalStyles.file_name}>
-                          <img src={FileIcon} alt="" />
-                          <div className={modalStyles.name}>
-                            {imageName.trim().length === 0
-                              ? currentBooklet.imageUrl
-                              : imageName}
-                          </div>
-                        </div>
-                        {uploadImageStatus.status !== ApiStatusType.NONE &&
-                        uploadImageStatus.status !==
-                          ApiStatusType.IN_PROGRESS ? (
-                          <>
-                            {uploadImageStatus.status ===
-                            ApiStatusType.SUCCESS ? (
-                              <div
-                                className={`${modalStyles.upload_progress} ${modalStyles.success}`}
-                              >
-                                <img src={CheckIcon} alt="" />
-                                {t("global.sended")}
-                              </div>
-                            ) : (
-                              <div
-                                className={`${modalStyles.upload_progress} ${modalStyles.error}`}
-                              >
-                                {t("global.error")}
-                                <CloseIcon fill="#C45F1C" isBold={true} />
-                              </div>
-                            )}
-                          </>
-                        ) : (
-                          <>
-                            {uploadImageProgress !== -1 ? (
-                              <div
-                                className={`${modalStyles.upload_progress} ${modalStyles.loading}`}
-                              >
-                                {`${uploadImageProgress}%`}
-                                <Spin size="xs" />
-                              </div>
-                            ) : null}
-                          </>
-                        )}
-                      </div>
-                    )}
-                  </div>
+                  <input
+                    ref={inputImageRef}
+                    type="file"
+                    id="file"
+                    accept="image/png, image/jpeg"
+                    onChange={handleOnChangeImage}
+                    hidden
+                  />
+                  <Uploader
+                    path={
+                      imageName.trim().length === 0
+                        ? currentBooklet.imageUrl
+                        : imageName
+                    }
+                    status={uploadImageStatus.status}
+                    title={t("booklets.choose_a_cover")}
+                    onClick={() => {
+                      if (uploadImageProgress === -1) {
+                        inputImageRef.current!.click();
+                      }
+                    }}
+                    onRetry={() => {
+                      setUploadCoverStatus(initApiStatus());
+                      uploadBookletCover({
+                        file: imageData! as Blob,
+                        onUploadProgress: (data) => {
+                          setUploadImageProgress(
+                            Math.round(100 * (data.loaded / data.total!)),
+                          );
+                        },
+                      });
+                    }}
+                    onClear={() => {
+                      setCurrentBooklet({
+                        ...currentBooklet,
+                        imageUrl: "",
+                      });
+                      setImageName("");
+                      setImageData(null);
+                    }}
+                    isDisabled={
+                      imageName.trim().length +
+                        currentBooklet.imageUrl.trim().length >
+                      0
+                    }
+                  />
                 </div>
                 <div className={modalStyles.part}>
                   <div className={modalStyles.part_label}>
@@ -290,76 +270,52 @@ export const EditBookletModal: React.FC<IEditBookletModalProps> = ({
                   <div className={modalStyles.part_label}>
                     {t("booklets.file")}
                   </div>
-                  <div className={modalStyles.cover}>
-                    <input
-                      ref={inputFileRef}
-                      type="file"
-                      id="file"
-                      accept="application/pdf, .doc, .docx, image/png, image/jpeg"
-                      onChange={handleOnChangeFile}
-                      hidden
-                    />
-                    <div
-                      className={`${modalStyles.form_button} ${modalStyles.filled} ${uploadFileProgress !== -1 ? modalStyles.disabled : ""}`}
-                      onClick={() => {
-                        if (uploadFileProgress === -1) {
-                          inputFileRef.current!.click();
-                        }
-                      }}
-                    >
-                      <img src={UploadFileIcon} alt="" />
-                    </div>
-                    {currentBooklet.bookletFileUrl === null ||
-                    currentBooklet.bookletFileUrl.trim().length === 0 ? (
-                      <div className={modalStyles.form_button_label}>
-                        {t("booklets.upload_file")}
-                      </div>
-                    ) : (
-                      <div className={modalStyles.file_info}>
-                        <div className={modalStyles.file_name}>
-                          <img src={FileIcon} alt="" />
-                          <div className={modalStyles.name}>
-                            {fileName.trim().length === 0
-                              ? currentBooklet.bookletFileUrl
-                              : fileName}
-                          </div>
-                        </div>
-                        {uploadFileStatus.status !== ApiStatusType.NONE &&
-                        uploadFileStatus.status !==
-                          ApiStatusType.IN_PROGRESS ? (
-                          <>
-                            {uploadFileStatus.status ===
-                            ApiStatusType.SUCCESS ? (
-                              <div
-                                className={`${modalStyles.upload_progress} ${modalStyles.success}`}
-                              >
-                                <img src={CheckIcon} alt="" />
-                                {t("global.sended")}
-                              </div>
-                            ) : (
-                              <div
-                                className={`${modalStyles.upload_progress} ${modalStyles.error}`}
-                              >
-                                {t("global.error")}
-                                <CloseIcon fill="#C45F1C" isBold={true} />
-                              </div>
-                            )}
-                          </>
-                        ) : (
-                          <>
-                            {uploadFileProgress !== -1 ? (
-                              <div
-                                className={`${modalStyles.upload_progress} ${modalStyles.loading}`}
-                              >
-                                {`${uploadFileProgress}%`}
-                                <Spin size="xs" />
-                              </div>
-                            ) : null}
-                          </>
-                        )}
-                      </div>
-                    )}
-                  </div>
+                  <input
+                    ref={inputFileRef}
+                    type="file"
+                    id="file"
+                    accept="application/pdf, .doc, .docx, image/png, image/jpeg"
+                    onChange={handleOnChangeFile}
+                    hidden
+                  />
+                  <Uploader
+                    path={
+                      fileName.trim().length === 0
+                        ? currentBooklet.bookletFileUrl
+                        : fileName
+                    }
+                    status={uploadFileStatus.status}
+                    title={t("booklets.upload_file")}
+                    onClick={() => {
+                      if (uploadFileProgress === -1) {
+                        inputFileRef.current!.click();
+                      }
+                    }}
+                    onRetry={() => {
+                      setUploadFileStatus(initApiStatus());
+                      uploadBookletFile({
+                        file: fileData! as Blob,
+                        onUploadProgress: (data) => {
+                          setUploadFileProgress(
+                            Math.round(100 * (data.loaded / data.total!)),
+                          );
+                        },
+                      });
+                    }}
+                    onClear={() => {
+                      setCurrentBooklet({
+                        ...currentBooklet,
+                        bookletFileUrl: "",
+                      });
+                      setFileName("");
+                      setFileData(null);
+                    }}
+                    isDisabled={
+                      fileName.trim().length +
+                        currentBooklet.bookletFileUrl.trim().length >
+                      0
+                    }
+                  />
                 </div>
               </div>
             </div>

@@ -10,6 +10,7 @@ import { Textarea } from "../../components/textarea/Textarea";
 import { Dropdown } from "../../components/dropdown/Dropdown";
 import { Toggle } from "../../components/toggle/Toggle";
 import { Calendar } from "../../components/calendar/Calendar";
+import { Uploader } from "../../components/uploader/Uploader";
 
 import globalStyles from "../../App.module.sass";
 import modalStyles from "../Modal.module.sass";
@@ -22,11 +23,9 @@ import { IEventPrivacy } from "../../types/event/eventPrivacy";
 import { IDropdownItem } from "../../types/local/dropdownItem";
 import { IToggleItem } from "../../types/local/toggleItem";
 import { ApiStatusType } from "../../enums/local/apiStatusType";
+import { initApiStatus } from "../../types/local/apiStatus";
 
 import { Close as CloseIcon } from "../../assets/svgComponents/Close";
-import UploadImageIcon from "../../assets/svg/upload-image.svg";
-import FileIcon from "../../assets/svg/file.svg";
-import CheckIcon from "../../assets/svg/circled-check.svg";
 import { Trash as TrashIcon } from "../../assets/svgComponents/Trash";
 
 interface IEventModalProps {
@@ -45,7 +44,7 @@ export const EventModal: React.FC<IEventModalProps> = ({
   onClose,
 }) => {
   const { t } = useTranslation();
-  const { uploadEventCover } = useActions();
+  const { uploadEventCover, setUploadCoverStatus } = useActions();
   const eventTypes = useTypedSelector((state) => state.eventReducer.eventTypes);
   const [currentEvent, setCurrentEvent] = useState(eventInfo);
   const inputImageRef = useRef<HTMLInputElement>(null);
@@ -55,6 +54,7 @@ export const EventModal: React.FC<IEventModalProps> = ({
   );
   const eventCover = useTypedSelector((state) => state.eventReducer.eventCover);
   const [imageName, setImageName] = useState("");
+  const [imageData, setImageData] = useState(null);
   const [isOnline, setIsOnline] = useState(
     currentEvent.link != undefined && currentEvent.link.trim().length > 0,
   );
@@ -114,7 +114,6 @@ export const EventModal: React.FC<IEventModalProps> = ({
   const handleOnChangeImage = (event) => {
     try {
       const file = event.target.files[0];
-      setImageName(file.name);
       if (
         file.size < 5242880 &&
         (file.name.endsWith(".png") ||
@@ -122,6 +121,8 @@ export const EventModal: React.FC<IEventModalProps> = ({
           file.name.endsWith(".jpeg") ||
           file.name.endsWith(".bmp"))
       ) {
+        setImageName(file.name);
+        setImageData(file);
         uploadEventCover({
           file: file,
           onUploadProgress: (data) => {
@@ -187,62 +188,54 @@ export const EventModal: React.FC<IEventModalProps> = ({
                     <div className={modalStyles.part_label}>
                       {t("events.cover")}
                     </div>
-                    <div className={modalStyles.cover}>
-                      <input
-                        ref={inputImageRef}
-                        type="file"
-                        id="file"
-                        accept="image/png, image/jpeg"
-                        onChange={handleOnChangeImage}
-                        hidden
-                      />
-                      <div
-                        className={modalStyles.form_button}
-                        onClick={() => inputImageRef.current!.click()}
-                      >
-                        <img src={UploadImageIcon} alt="" />
-                      </div>
-                      {currentEvent.coverUrl === null ||
-                      currentEvent.coverUrl === undefined ||
-                      currentEvent.coverUrl!.trim().length < 5 ? (
-                        <div className={modalStyles.form_button_label}>
-                          {t("events.choose_a_cover")}
-                        </div>
-                      ) : (
-                        <div className={modalStyles.file_info}>
-                          <div className={modalStyles.file_name}>
-                            <img src={FileIcon} alt="" />
-                            <div className={modalStyles.name}>
-                              {imageName.trim().length === 0
-                                ? currentEvent.coverUrl
-                                : imageName}
-                            </div>
-                          </div>
-                          {uploadImageStatus.status !== ApiStatusType.NONE &&
-                          uploadImageStatus.status !==
-                            ApiStatusType.IN_PROGRESS ? (
-                            <>
-                              {uploadImageStatus.status ===
-                              ApiStatusType.SUCCESS ? (
-                                <div
-                                  className={`${modalStyles.upload_progress} ${modalStyles.success}`}
-                                >
-                                  <img src={CheckIcon} alt="" />
-                                  {t("global.sended")}
-                                </div>
-                              ) : (
-                                <div
-                                  className={`${modalStyles.upload_progress} ${modalStyles.error}`}
-                                >
-                                  {t("global.error")}
-                                  <CloseIcon fill="#C45F1C" isBold={true} />
-                                </div>
-                              )}
-                            </>
-                          ) : null}
-                        </div>
-                      )}
-                    </div>
+                    <input
+                      ref={inputImageRef}
+                      type="file"
+                      id="file"
+                      accept="image/png, image/jpeg"
+                      onChange={handleOnChangeImage}
+                      hidden
+                    />
+                    <Uploader
+                      path={
+                        imageName.trim().length === 0 &&
+                        currentEvent.coverUrl !== undefined
+                          ? currentEvent.coverUrl
+                          : imageName
+                      }
+                      status={uploadImageStatus.status}
+                      title={t("events.choose_a_cover")}
+                      onClick={() => {
+                        if (uploadImageProgress === -1) {
+                          inputImageRef.current!.click();
+                        }
+                      }}
+                      onRetry={() => {
+                        setUploadCoverStatus(initApiStatus());
+                        uploadEventCover({
+                          file: imageData! as Blob,
+                          onUploadProgress: (data) => {
+                            setUploadImageProgress(
+                              Math.round(100 * (data.loaded / data.total!)),
+                            );
+                          },
+                        });
+                      }}
+                      onClear={() => {
+                        setCurrentEvent({
+                          ...currentEvent,
+                          coverUrl: "",
+                        });
+                        setImageName("");
+                        setImageData(null);
+                      }}
+                      isDisabled={
+                        currentEvent.coverUrl !== undefined &&
+                        imageName.trim().length +
+                          currentEvent.coverUrl.trim().length >
+                          0
+                      }
+                    />
                   </div>
                 </div>
                 <div className={modalStyles.part}>
