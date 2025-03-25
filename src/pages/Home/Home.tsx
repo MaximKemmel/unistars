@@ -1,17 +1,19 @@
 import { useEffect, useState } from "react";
-import { IAmbassadorId } from "src/types/ambassador/ambassadorId";
 
 import { useActions } from "../../hooks/useActions";
 import { useTypedSelector } from "../../hooks/useTypedSelector";
 
 import { Navigation } from "./content/Navigation";
 import { Main } from "./content/Main";
+import { Profiles } from "./content/Profiles";
 import { Events } from "./content/Events";
 import { Adverts } from "./content/Adverts";
 import { MailingList } from "./content/MailingList";
 
 import styles from "./Home.module.sass";
-import { IAmbassadorRequest } from "src/types/ambassador/ambassadorRequest";
+
+import { IAmbassadorRequest } from "../../types/ambassador/ambassadorRequest";
+import { IAmbassadorId } from "../../types/ambassador/ambassadorId";
 
 export const Home = () => {
   const {
@@ -40,6 +42,7 @@ export const Home = () => {
   const [isMinimized, setIsMinimized] = useState(false);
   const contentSections = [
     <Main />,
+    <Profiles />,
     <Events />,
     <Adverts />,
     <MailingList />,

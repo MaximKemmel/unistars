@@ -11,6 +11,7 @@ import styles from "../Home.module.sass";
 import Logo from "../../../assets/svg/logo-black.svg";
 import LogoMinimized from "../../../assets/svg/logo-minimized.svg";
 import { Home as HomeIcon } from "../../../assets/svgComponents/Home";
+import { Profiles as ProfilesIcon } from "../../../assets/svgComponents/Profiles";
 import { Event as EventIcon } from "../../../assets/svgComponents/Event";
 import { Advert as AdvertIcon } from "../../../assets/svgComponents/Advert";
 import { MailList as MailListIcon } from "../../../assets/svgComponents/MailList";
@@ -45,18 +46,24 @@ export const Navigation: React.FC<INavigationProps> = ({
     },
     {
       id: 1,
+      text: t("navigation.profiles"),
+      icon: <ProfilesIcon />,
+      activeIcon: <ProfilesIcon isActive={true} />,
+    },
+    {
+      id: 2,
       text: t("navigation.events"),
       icon: <EventIcon />,
       activeIcon: <EventIcon isActive={true} />,
     },
     {
-      id: 2,
+      id: 3,
       text: t("navigation.advertisements"),
       icon: <AdvertIcon />,
       activeIcon: <AdvertIcon isActive={true} />,
     },
     {
-      id: 3,
+      id: 4,
       text: t("navigation.mail_list"),
       icon: <MailListIcon />,
       activeIcon: <MailListIcon isActive={true} />,

@@ -44,6 +44,7 @@
   },
   "navigation": {
     "home": "Главная",
+    "profiles": "Профили",
     "events": "Ивенты",
     "advertisements": "Реклама",
     "mail_list": "Рассылки",

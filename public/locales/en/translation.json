@@ -44,6 +44,7 @@
   },
   "navigation": {
     "home": "Home",
+    "profiles": "Profiles",
     "events": "Events",
     "advertisements": "Advertisements",
     "mail_list": "Mail list",
