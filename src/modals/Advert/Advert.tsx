@@ -7,17 +7,16 @@ import { useTypedSelector } from "../../hooks/useTypedSelector";
 
 import { Input } from "../../components/input/Input";
 import { Calendar } from "../../components/calendar/Calendar";
+import { Uploader } from "../../components/uploader/Uploader";
 
 import globalStyles from "../../App.module.sass";
 import modalStyles from "../Modal.module.sass";
 
 import { initAdvert } from "../../types/advert/initAdvert";
 import { ApiStatusType } from "../../enums/local/apiStatusType";
+import { initApiStatus } from "../../types/local/apiStatus";
 
 import { Close as CloseIcon } from "../../assets/svgComponents/Close";
-import UploadImageIcon from "../../assets/svg/upload-image.svg";
-import FileIcon from "../../assets/svg/file.svg";
-import CheckIcon from "../../assets/svg/circled-check.svg";
 
 interface IAdvertModalProps {
   isShow: boolean;
@@ -31,7 +30,7 @@ export const AdvertModal: React.FC<IAdvertModalProps> = ({
   onClose,
 }) => {
   const { t } = useTranslation();
-  const { uploadAdvertCover } = useActions();
+  const { uploadAdvertCover, setUploadAdvertCoverStatus } = useActions();
   const [currentAdvert, setCurrentAdvert] = useState(initAdvert());
   const universityInfo = useTypedSelector(
     (state) => state.universityReducer.universityProfile,
@@ -45,6 +44,7 @@ export const AdvertModal: React.FC<IAdvertModalProps> = ({
     (state) => state.advertReducer.advertCover,
   );
   const [imageName, setImageName] = useState("");
+  const [imageData, setImageData] = useState(null);
   const [startDate, setStartDate] = useState(new Date("01.01.1900"));
   const [endDate, setEndDate] = useState(new Date("01.01.1900"));
   const [isButtonEnabled, setIsButtonEnabled] = useState(false);
@@ -88,7 +88,6 @@ export const AdvertModal: React.FC<IAdvertModalProps> = ({
   const handleOnChangeImage = (event) => {
     try {
       const file = event.target.files[0];
-      setImageName(file.name);
       if (
         file.size < 5242880 &&
         (file.name.endsWith(".png") ||
@@ -96,6 +95,8 @@ export const AdvertModal: React.FC<IAdvertModalProps> = ({
           file.name.endsWith(".jpeg") ||
           file.name.endsWith(".bmp"))
       ) {
+        setImageName(file.name);
+        setImageData(file);
         uploadAdvertCover({
           file: file,
           onUploadProgress: (data) => {
@@ -184,60 +185,54 @@ export const AdvertModal: React.FC<IAdvertModalProps> = ({
                     <div className={modalStyles.part_label}>
                       {t("advertisements.banner_cover")}
                     </div>
-                    <div className={modalStyles.cover}>
-                      <input
-                        ref={inputImageRef}
-                        type="file"
-                        id="file"
-                        accept="image/png, image/jpeg"
-                        onChange={handleOnChangeImage}
-                        hidden
-                      />
-                      <div
-                        className={modalStyles.form_button}
-                        onClick={() => inputImageRef.current!.click()}
-                      >
-                        <img src={UploadImageIcon} alt="" />
-                      </div>
-                      {currentAdvert.imageUrl.trim().length < 5 ? (
-                        <div className={modalStyles.form_button_label}>
-                          {t("advertisements.choose_cover")}
-                        </div>
-                      ) : (
-                        <div className={modalStyles.file_info}>
-                          <div className={modalStyles.file_name}>
-                            <img src={FileIcon} alt="" />
-                            <div className={modalStyles.name}>
-                              {imageName.trim().length === 0
-                                ? currentAdvert.imageUrl
-                                : imageName}
-                            </div>
-                          </div>
-                          {uploadImageStatus.status !== ApiStatusType.NONE &&
-                          uploadImageStatus.status !==
-                            ApiStatusType.IN_PROGRESS ? (
-                            <>
-                              {uploadImageStatus.status ===
-                              ApiStatusType.SUCCESS ? (
-                                <div
-                                  className={`${modalStyles.upload_progress} ${modalStyles.success}`}
-                                >
-                                  <img src={CheckIcon} alt="" />
-                                  {t("global.sended")}
-                                </div>
-                              ) : (
-                                <div
-                                  className={`${modalStyles.upload_progress} ${modalStyles.error}`}
-                                >
-                                  {t("global.error")}
-                                  <CloseIcon fill="#C45F1C" isBold={true} />
-                                </div>
-                              )}
-                            </>
-                          ) : null}
-                        </div>
-                      )}
-                    </div>
+                    <input
+                      ref={inputImageRef}
+                      type="file"
+                      id="file"
+                      accept="image/png, image/jpeg"
+                      onChange={handleOnChangeImage}
+                      hidden
+                    />
+                    <Uploader
+                      path={
+                        imageName.trim().length === 0 &&
+                        currentAdvert.imageUrl !== undefined
+                          ? currentAdvert.imageUrl
+                          : imageName
+                      }
+                      status={uploadImageStatus.status}
+                      title={t("events.choose_a_cover")}
+                      onClick={() => {
+                        if (uploadImageProgress === -1) {
+                          inputImageRef.current!.click();
+                        }
+                      }}
+                      onRetry={() => {
+                        setUploadAdvertCoverStatus(initApiStatus());
+                        uploadAdvertCover({
+                          file: imageData! as Blob,
+                          onUploadProgress: (data) => {
+                            setUploadImageProgress(
+                              Math.round(100 * (data.loaded / data.total!)),
+                            );
+                          },
+                        });
+                      }}
+                      onClear={() => {
+                        setCurrentAdvert({
+                          ...currentAdvert,
+                          imageUrl: "",
+                        });
+                        setImageName("");
+                        setImageData(null);
+                      }}
+                      isDisabled={
+                        currentAdvert.imageUrl !== undefined &&
+                        imageName.trim().length +
+                          currentAdvert.imageUrl.trim().length >
+                          0
+                      }
+                    />
                   </div>
                   <div className={modalStyles.part}>
                     <div

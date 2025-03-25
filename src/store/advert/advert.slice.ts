@@ -40,7 +40,7 @@ export const advertSlice = createSlice({
     setPostAdvertStatus(state, action: PayloadAction<IApiStatus>) {
       state.postStatus = action.payload;
     },
-    setUploadCoverStatus(state, action: PayloadAction<IApiStatus>) {
+    setUploadAdvertCoverStatus(state, action: PayloadAction<IApiStatus>) {
       state.uploadCoverStatus = action.payload;
     },
   },
