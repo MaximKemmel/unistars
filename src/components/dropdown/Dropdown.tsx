@@ -3,6 +3,8 @@ import { useTranslation } from "react-i18next";
 
 import useOutsideAlerter from "../../hooks/useOutsideAlerter";
 
+import { Input } from "../../components/input/Input";
+
 import styles from "./Dropdown.module.sass";
 
 import { IDropdownItem } from "../../types/local/dropdownItem";
@@ -14,16 +16,41 @@ interface IDropdownProps {
   placeholder: string;
   items: IDropdownItem[];
   onItemSelect: Function;
+  withSearch?: boolean;
+  searchPlaceholder?: string;
 }
 
 export const Dropdown: React.FC<IDropdownProps> = ({
   placeholder,
   items,
   onItemSelect,
+  withSearch,
+  searchPlaceholder,
 }) => {
   const { i18n } = useTranslation();
   const dropdownRef = useRef<HTMLDivElement>(null);
   const [isActive, setIsActive] = useState(false);
+  const [searchValue, setSearchValue] = useState("");
+  const [filteredItems, setFilteredItems] = useState(items);
+
+  useEffect(() => {
+    setFilteredItems(items);
+    setSearchValue("");
+  }, [isActive]);
+
+  useEffect(() => {
+    if (searchValue.length === 0) {
+      setFilteredItems(items);
+    } else {
+      setFilteredItems(
+        items.filter(
+          (item: IDropdownItem) =>
+            item.text.toLowerCase().includes(searchValue.toLowerCase()) ||
+            item.text_eng.toLowerCase().includes(searchValue.toLowerCase()),
+        ),
+      );
+    }
+  }, [searchValue]);
 
   useOutsideAlerter(dropdownRef, () => {
     if (isActive) {
@@ -79,7 +106,18 @@ export const Dropdown: React.FC<IDropdownProps> = ({
           className={styles.dropdown_list}
           id={isActive ? "dropdown_list" : `list`}
         >
-          {items.map((item: IDropdownItem) => (
+          {withSearch ? (
+            <div className={styles.search_input}>
+              <Input
+                value={searchValue}
+                onChange={(value: string) => setSearchValue(value)}
+                placeholder={searchPlaceholder ?? ""}
+                type="text"
+                isSearch={true}
+              />
+            </div>
+          ) : null}
+          {filteredItems.map((item: IDropdownItem) => (
             <div
               key={item.id}
               className={`${styles.dropdown_item} ${item.is_selected ? styles.active : ""}`}

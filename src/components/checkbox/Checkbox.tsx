@@ -1,19 +1,22 @@
+import React from "react";
+
 import styles from "./Checkbox.module.sass";
 
 import { Check as CheckIcon } from "../../assets/svgComponents/Check";
-import React from "react";
 
 interface ICheckboxProps {
   isChecked: boolean;
   onChangeStatus: Function;
+  text?: string;
 }
 
 export const Checkbox: React.FC<ICheckboxProps> = ({
   isChecked,
   onChangeStatus,
+  text,
 }) => {
   return (
-    <label className={styles.checkbox}>
+    <label className={`${styles.checkbox} ${text !== null ? styles.wide : ""}`}>
       <input type="checkbox" onChange={() => onChangeStatus(!isChecked)} />
       <span
         className={`${styles.checkbox_mark} ${isChecked ? styles.active : ""}`}
@@ -25,6 +28,7 @@ export const Checkbox: React.FC<ICheckboxProps> = ({
           </div>
         ) : null}
       </span>
+      {text ?? ""}
     </label>
   );
 };

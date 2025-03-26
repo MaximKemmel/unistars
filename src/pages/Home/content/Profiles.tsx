@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { ProfilesFiltersModal } from "../../../modals/ProfilesFilters/ProfilesFilters";
 
@@ -9,13 +9,19 @@ import { Input } from "../../../components/input/Input";
 import { Toggle } from "../../../components/toggle/Toggle";
 
 import { IToggleItem } from "../../../types/local/toggleItem";
+import { initUserFilter } from "../../../types/userFilter/initUserFilter";
 
-import FilterIcon from "../../../assets/svg/filter.svg";
+import { Filter as FilterIcon } from "../../../assets/svgComponents/Filter";
 
 export const Profiles = () => {
   const [viewMode, setViewMode] = useState(0);
+  const [filter, setFilter] = useState(initUserFilter());
   const [searchValue, setSearchValue] = useState("");
   const [isFiltersModalShow, setIsFiltersModalShow] = useState(false);
+
+  useEffect(() => {
+    setFilter(initUserFilter());
+  }, [viewMode]);
 
   return (
     <>
@@ -64,13 +70,15 @@ export const Profiles = () => {
               onClick={() => setIsFiltersModalShow(true)}
             >
               <span>Фильтры</span>
-              <img src={FilterIcon} alt="" />
+              <FilterIcon isActive={true} />
             </button>
           </div>
         </div>
       </div>
       <ProfilesFiltersModal
         isShow={isFiltersModalShow}
+        viewMode={viewMode}
+        filter={filter}
         onSave={() => {}}
         onClose={() => setIsFiltersModalShow(false)}
       />

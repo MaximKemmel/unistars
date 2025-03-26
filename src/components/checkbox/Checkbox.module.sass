@@ -1,5 +1,5 @@
 $additional_color: #7B61FF
-$border_secondary_color: #939393
+$border_secondary_color: #14171A57
 $background_primary_color: #FFFFFF
 
 input[type='checkbox']
@@ -16,20 +16,25 @@ input[type='checkbox']
     align-items: center
     gap: 5px
     width: max-content
-    cursor: pointer
     user-select: none
+    font-size: 16px
+
+    &.wide
+        min-width: 140px
+        height: 44px
 
     .checkbox_mark
-        height: 22px
-        width: 22px
+        height: 18px
+        width: 18px
         background: $background_primary_color
-        border: 2px $border_secondary_color solid
+        border: 1px $border_secondary_color solid
         margin-right: 4px
         border-radius: 5px
         display: flex
         align-items: center
         justify-content: center
         overflow: hidden
+        cursor: pointer
         transition: all 0.15s ease-out
 
         .mark
@@ -41,9 +46,9 @@ input[type='checkbox']
 
             img,
             svg
-                width: 19px
+                width: 16px
                 height: auto
 
         &.active
             background-color: $additional_color
-            border: 2px $additional_color solid
+            border: 1px $additional_color solid

@@ -144,55 +144,51 @@ export const UniversityModal: React.FC<IUniversityModalProps> = ({
                     <div className={modalStyles.part_label}>
                       {t("university.country")}
                     </div>
-                    {
-                      <Dropdown
-                        placeholder={t("university.choose_your_country")}
-                        items={[
-                          {
-                            id: -1,
-                            text: t("global.not_selected"),
-                            text_eng: t("global.not_selected"),
+                    <Dropdown
+                      placeholder={t("university.choose_your_country")}
+                      items={[
+                        {
+                          id: -1,
+                          text: t("global.not_selected"),
+                          text_eng: t("global.not_selected"),
+                          is_selected:
+                            currentUniversityProfile.userCountries ==
+                              undefined ||
+                            !Array.isArray(
+                              currentUniversityProfile.userCountries,
+                            ) ||
+                            currentUniversityProfile.userCountries.length === 0,
+                        } as IDropdownItem,
+                        ...(countries.map((country: ICountry) => {
+                          return {
+                            id: country.id,
+                            text: country.name,
+                            text_eng: country.nameEnglish,
                             is_selected:
-                              currentUniversityProfile.userCountries ==
-                                undefined ||
-                              !Array.isArray(
+                              currentUniversityProfile.userCountries !=
+                                undefined &&
+                              Array.isArray(
                                 currentUniversityProfile.userCountries,
-                              ) ||
-                              currentUniversityProfile.userCountries.length ===
-                                0,
-                          } as IDropdownItem,
-                          ...(countries.map((country: ICountry) => {
-                            return {
-                              id: country.id,
-                              text: country.name,
-                              text_eng: country.nameEnglish,
-                              is_selected:
-                                currentUniversityProfile.userCountries !=
-                                  undefined &&
-                                Array.isArray(
-                                  currentUniversityProfile.userCountries,
-                                ) &&
-                                currentUniversityProfile.userCountries.length >
-                                  0 &&
-                                currentUniversityProfile.userCountries[0].id ===
-                                  country.id,
-                            } as IDropdownItem;
-                          }) as IDropdownItem[]),
-                        ]}
-                        onItemSelect={(item: IDropdownItem) => {
-                          setCurrentUniversityProfile({
-                            ...currentUniversityProfile,
-                            userCountries:
-                              item.id === -1
-                                ? []
-                                : countries.filter(
-                                    (country: ICountry) =>
-                                      country.id === item.id,
-                                  ),
-                          });
-                        }}
-                      />
-                    }
+                              ) &&
+                              currentUniversityProfile.userCountries.length >
+                                0 &&
+                              currentUniversityProfile.userCountries[0].id ===
+                                country.id,
+                          } as IDropdownItem;
+                        }) as IDropdownItem[]),
+                      ]}
+                      onItemSelect={(item: IDropdownItem) => {
+                        setCurrentUniversityProfile({
+                          ...currentUniversityProfile,
+                          userCountries:
+                            item.id === -1
+                              ? []
+                              : countries.filter(
+                                  (country: ICountry) => country.id === item.id,
+                                ),
+                        });
+                      }}
+                    />
                   </div>
                   <div className={modalStyles.part}>
                     <div className={modalStyles.part_label}>
