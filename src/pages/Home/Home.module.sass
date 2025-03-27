@@ -6,12 +6,15 @@ $text_secondary_color: #939393
 $text_neutral_color: #202327
 $text_action_alternative_color: #7B61FF
 $text_neutral_description_color: #8496AE
+$text_disabled_color: #14171A57
 $hover_color: #14171A14
 $row_hover_color: #14171A0A
 $logout_hover_color: #D92D2014
 $separator_color: #14171A14
 $system_error_color: #FF3B30
 $border_neutral_color: #E2E8F0
+$page_background_color: #7B61FF24
+$page_text_color: #7B61FF
 
 .container
     position: relative
@@ -508,13 +511,59 @@ $border_neutral_color: #E2E8F0
                             width: 100%
                             height: auto
 
-            .pagination
+            .table_footer
                 display: flex
+                justify-content: space-between
                 align-items: center
-                justify-content: end
                 padding: 0 24px
-                height: 70px
-                border-top: 1px solid $separator_color
+                font-weight: 600
+
+                .items_count
+                    span
+                        color: $text_disabled_color
+
+                .pagination
+                    display: flex
+                    align-items: center
+                    justify-content: end
+                    gap: 4px
+                    height: 70px
+                    border-top: 1px solid $separator_color
+
+                    .page
+                        display: flex
+                        align-items: center
+                        justify-content: center
+                        height: 32px
+                        width: 32px
+                        cursor: pointer
+                        border-radius: 8px
+
+                        &.active
+                            background-color: $page_background_color
+                            color: $page_text_color
+
+                    .slide_button
+                        display: flex
+                        align-items: center
+                        justify-content: center
+                        height: 32px
+                        width: 32px
+
+                        svg
+                            width: 16px
+                            height: auto
+
+                        &.prev
+                            svg
+                                transform: rotate(90deg)
+
+                        &.next
+                            svg
+                                transform: rotate(270deg)
+
+                        &.active
+                            cursor: pointer
 
 @media (hover: hover)
     .container

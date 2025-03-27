@@ -16,6 +16,7 @@ import { IUser } from "../../../types/user/user";
 
 import { Filter as FilterIcon } from "../../../assets/svgComponents/Filter";
 import EmptyAvatarImage from "../../../assets/png/empty-avatar.png";
+import { Chevron as ChevronIcon } from "../../../assets/svgComponents/Chevron";
 
 export const Profiles = () => {
   const users = useTypedSelector(
@@ -148,17 +149,54 @@ export const Profiles = () => {
                     </div>
                   ))}
               </div>
-              {users.length > 10 ? (
-                <div className={styles.pagination}>
-                  {Array(Math.ceil(users.length / 10))
-                    .fill(1)
-                    .map((_, index: number) => (
-                      <div onClick={() => setCurrentPage(index + 1)}>
-                        {index + 1}
-                      </div>
-                    ))}
+              <div className={styles.table_footer}>
+                <div className={styles.items_count}>
+                  <span>Всего:</span>
+                  {` ${users.length}`}
                 </div>
-              ) : null}
+                {users.length > 10 ? (
+                  <div className={styles.pagination}>
+                    <div
+                      className={`${styles.slide_button} ${styles.prev} ${currentPage > 1 ? styles.active : ""}`}
+                      onClick={() => {
+                        if (currentPage > 1) {
+                          setCurrentPage(currentPage - 1);
+                        }
+                      }}
+                    >
+                      <ChevronIcon
+                        fill={currentPage === 1 ? "#14171A57" : "#14171A"}
+                      />
+                    </div>
+                    {Array(Math.ceil(users.length / 10))
+                      .fill(1)
+                      .map((_, index: number) => (
+                        <div
+                          className={`${styles.page} ${currentPage === index + 1 ? styles.active : ""}`}
+                          onClick={() => setCurrentPage(index + 1)}
+                        >
+                          {index + 1}
+                        </div>
+                      ))}
+                    <div
+                      className={`${styles.slide_button} ${styles.next} ${currentPage < Math.ceil(users.length / 10) ? styles.active : ""}`}
+                      onClick={() => {
+                        if (currentPage < Math.ceil(users.length / 10)) {
+                          setCurrentPage(currentPage + 1);
+                        }
+                      }}
+                    >
+                      <ChevronIcon
+                        fill={
+                          currentPage === Math.ceil(users.length / 10)
+                            ? "#14171A57"
+                            : "#14171A"
+                        }
+                      />
+                    </div>
+                  </div>
+                ) : null}
+              </div>
             </div>
           ) : (
             <div className={styles.profiles_table}>
@@ -218,17 +256,26 @@ export const Profiles = () => {
                     </div>
                   ))}
               </div>
-              {users.length > 10 ? (
-                <div className={styles.pagination}>
-                  {Array(Math.ceil(users.length / 10))
-                    .fill(1)
-                    .map((_, index: number) => (
-                      <div onClick={() => setCurrentPage(index + 1)}>
-                        {index + 1}
-                      </div>
-                    ))}
+              <div className={styles.table_footer}>
+                <div className={styles.items_count}>
+                  <span>Всего:</span>
+                  {` ${users.length}`}
                 </div>
-              ) : null}
+                {users.length > 10 ? (
+                  <div className={styles.pagination}>
+                    {Array(Math.ceil(users.length / 10))
+                      .fill(1)
+                      .map((_, index: number) => (
+                        <div
+                          className={`${styles.page} ${currentPage === index + 1 ? styles.active : ""}`}
+                          onClick={() => setCurrentPage(index + 1)}
+                        >
+                          {index + 1}
+                        </div>
+                      ))}
+                  </div>
+                ) : null}
+              </div>
             </div>
           )}
         </div>
