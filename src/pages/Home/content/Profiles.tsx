@@ -17,6 +17,7 @@ import { IUser } from "../../../types/user/user";
 import { Filter as FilterIcon } from "../../../assets/svgComponents/Filter";
 import EmptyAvatarImage from "../../../assets/png/empty-avatar.png";
 import { Chevron as ChevronIcon } from "../../../assets/svgComponents/Chevron";
+import { Close as CloseIcon } from "../../../assets/svgComponents/Close";
 
 export const Profiles = () => {
   const users = useTypedSelector(
@@ -27,10 +28,12 @@ export const Profiles = () => {
   const [searchValue, setSearchValue] = useState("");
   const [isFiltersModalShow, setIsFiltersModalShow] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
+  const [currentUser, setCurrentUser] = useState({ id: -1 } as IUser);
 
   useEffect(() => {
     setFilter(initUserFilter());
     setCurrentPage(1);
+    setCurrentUser({ id: -1 } as IUser);
   }, [viewMode]);
 
   return (
@@ -113,7 +116,13 @@ export const Profiles = () => {
                 {users
                   .slice((currentPage - 1) * 10, currentPage * 10)
                   .map((user: IUser) => (
-                    <div className={styles.table_row}>
+                    <div
+                      className={`${styles.table_row} ${user.id === currentUser.id! ? styles.active : ""}`}
+                      onClick={() => {
+                        console.log(user);
+                        setCurrentUser(user);
+                      }}
+                    >
                       <div
                         className={`${styles.tr} ${styles.name}`}
                         style={{ width: "20%" }}
@@ -224,7 +233,10 @@ export const Profiles = () => {
                 {users
                   .slice((currentPage - 1) * 10, currentPage * 10)
                   .map((user: IUser) => (
-                    <div className={styles.table_row}>
+                    <div
+                      className={`${styles.table_row} ${user.id === currentUser.id! ? styles.active : ""}`}
+                      onClick={() => setCurrentUser(user)}
+                    >
                       <div
                         className={`${styles.tr} ${styles.name}`}
                         style={{ width: "20%" }}
@@ -278,6 +290,30 @@ export const Profiles = () => {
               </div>
             </div>
           )}
+          {currentUser.id! > -1 ? (
+            <div className={styles.user_info}>
+              <div className={styles.user_head}>
+                <div className={styles.avatar}>
+                  {currentUser.avatarUrl ? (
+                    <img src={currentUser.avatarUrl} alt="" />
+                  ) : (
+                    <img src={EmptyAvatarImage} alt="" />
+                  )}
+                </div>
+                <div className={styles.user_name}>
+                  <div className={styles.name}>{currentUser.fullName}</div>
+                  <div className={styles.state}>Заполненный профиль</div>
+                </div>
+                <div
+                  className={styles.close}
+                  onClick={() => setCurrentUser({ id: -1 } as IUser)}
+                >
+                  <CloseIcon />
+                </div>
+              </div>
+              <div className={styles.user_states}></div>
+            </div>
+          ) : null}
         </div>
       </div>
       <ProfilesFiltersModal

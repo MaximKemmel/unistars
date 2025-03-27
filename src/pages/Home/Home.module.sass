@@ -13,8 +13,10 @@ $logout_hover_color: #D92D2014
 $separator_color: #14171A14
 $system_error_color: #FF3B30
 $border_neutral_color: #E2E8F0
-$page_background_color: #7B61FF24
-$page_text_color: #7B61FF
+$state_background_color: #7B61FF24
+$state_text_color: #7B61FF
+$close_button_border_color: #14171A24
+$user_info_border_color: #ECECED
 
 .container
     position: relative
@@ -146,6 +148,7 @@ $page_text_color: #7B61FF
 
             &.profiles_table_container
                 padding: 0
+                position: relative
 
             .content_container_head
                 display: flex
@@ -485,6 +488,9 @@ $page_text_color: #7B61FF
                 border-top: 1px solid $separator_color
                 cursor: pointer
 
+                &.active
+                    background-color: #7B61FF14
+
             .th,
             .tr
                 display: flex
@@ -517,6 +523,7 @@ $page_text_color: #7B61FF
                 align-items: center
                 padding: 0 24px
                 font-weight: 600
+                border-top: 1px solid $separator_color
 
                 .items_count
                     span
@@ -528,7 +535,6 @@ $page_text_color: #7B61FF
                     justify-content: end
                     gap: 4px
                     height: 70px
-                    border-top: 1px solid $separator_color
 
                     .page
                         display: flex
@@ -540,8 +546,8 @@ $page_text_color: #7B61FF
                         border-radius: 8px
 
                         &.active
-                            background-color: $page_background_color
-                            color: $page_text_color
+                            background-color: $state_background_color
+                            color: $state_text_color
 
                     .slide_button
                         display: flex
@@ -564,6 +570,75 @@ $page_text_color: #7B61FF
 
                         &.active
                             cursor: pointer
+
+        .user_info
+            display: flex
+            flex-direction: column
+            gap: 24px
+            padding: 24px
+            height: calc(100% - 48px)
+            min-height: 800px
+            width: 625px
+            position: absolute
+            z-index: 1
+            right: 0
+            top: 0
+            background-color: $background_primary_color
+            border-radius: 0 24px 24px 0
+            border-left: 1px solid $user_info_border_color
+
+            .user_head
+                display: flex
+                gap: 16px
+
+                .avatar
+                    position: relative
+                    width: 64px
+                    height: 64px
+                    border-radius: 100px
+                    overflow: hidden
+                    user-select: none
+                    flex-shrink: 0
+
+                    img
+                        position: absolute
+                        z-index: 1
+                        width: 100%
+                        height: auto
+
+                .user_name
+                    display: flex
+                    flex-direction: column
+                    justify-content: center
+                    flex-grow: 1
+                    gap: 8px
+
+                    .name
+                        font-size: 20px
+                        font-weight: 700
+
+                    .state
+                        padding: 4px 8px
+                        width: max-content
+                        border-radius: 6px
+                        font-size: 12px
+                        background-color: $state_background_color
+                        color: $state_text_color
+
+                .close
+                    display: flex
+                    align-items: center
+                    justify-content: center
+                    height: 44px
+                    width: 44px
+                    border-radius: 12px
+                    border: 1px solid $close_button_border_color
+                    cursor: pointer
+
+                    svg
+                        width: 20px
+                        height: auto
+
 
 @media (hover: hover)
     .container
@@ -592,3 +667,7 @@ $page_text_color: #7B61FF
                 .table_row
                     &:hover
                         background-color: $row_hover_color
+
+                    &.active
+                        &:hover
+                            background-color: #7B61FF24
