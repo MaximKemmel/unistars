@@ -7,8 +7,9 @@ $text_neutral_color: #202327
 $text_action_alternative_color: #7B61FF
 $text_neutral_description_color: #8496AE
 $hover_color: #14171A14
+$row_hover_color: #14171A0A
 $logout_hover_color: #D92D2014
-$separator_color: #CBD5E0
+$separator_color: #14171A14
 $system_error_color: #FF3B30
 $border_neutral_color: #E2E8F0
 
@@ -133,12 +134,15 @@ $border_neutral_color: #E2E8F0
             padding: 24px
             background-color: $background_primary_color
             border-radius: 24px
-            box-shadow: 0px 4px 16px -1px rgba(20, 23, 26, 0.04)
+            box-shadow: 0 4px 16px -1px rgba(20, 23, 26, 0.04)
 
             &.half
                 width: calc(50% - 58px)
                 height: max-content
                 flex-shrink: 0
+
+            &.profiles_table_container
+                padding: 0
 
             .content_container_head
                 display: flex
@@ -454,6 +458,63 @@ $border_neutral_color: #E2E8F0
             .profiles_search
                 width: 340px
 
+        .profiles_table
+            display: flex
+            flex-direction: column
+            width: 100%
+            font-size: 14px
+            overflow-y: auto
+
+            .table_body
+                display: flex
+                flex-direction: column
+                width: 100%
+
+            .table_head,
+            .table_row
+                display: flex
+                justify-content: space-between
+                align-items: center
+                height: 70px
+                padding: 0 24px
+
+            .table_row
+                border-top: 1px solid $separator_color
+                cursor: pointer
+
+            .th,
+            .tr
+                display: flex
+                flex-shrink: 0
+
+            .tr
+                &.name
+                    display: flex
+                    align-items: center
+                    gap: 8px
+
+                    .avatar
+                        position: relative
+                        width: 48px
+                        height: 48px
+                        border-radius: 50px
+                        overflow: hidden
+                        user-select: none
+                        flex-shrink: 0
+
+                        img
+                            position: absolute
+                            z-index: 1
+                            width: 100%
+                            height: auto
+
+            .pagination
+                display: flex
+                align-items: center
+                justify-content: end
+                padding: 0 24px
+                height: 70px
+                border-top: 1px solid $separator_color
 
 @media (hover: hover)
     .container
@@ -476,3 +537,9 @@ $border_neutral_color: #E2E8F0
                         &.logout
                             &:hover +.hidden
                                 background-color: $system_error_color
+
+        .content
+            .profiles_table
+                .table_row
+                    &:hover
+                        background-color: $row_hover_color
