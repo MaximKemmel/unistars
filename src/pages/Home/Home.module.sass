@@ -2,7 +2,7 @@ $background_secondary_color: #F5F5F5
 $background_primary_color: #FFFFFF
 $background_primary_inverse_color: #14171A
 $text_primary_color: #14171A
-$text_secondary_color: #939393
+$text_secondary_color: #14171A99
 $text_neutral_color: #202327
 $text_action_alternative_color: #7B61FF
 $text_neutral_description_color: #8496AE
@@ -517,6 +517,17 @@ $user_info_border_color: #ECECED
                             width: 100%
                             height: auto
 
+            .languages
+                display: flex
+                align-items: center
+
+                img
+                    width: 32px
+                    height: auto
+
+                    &.front
+                        margin-left: -10px
+
             .table_footer
                 display: flex
                 justify-content: space-between
@@ -575,10 +586,10 @@ $user_info_border_color: #ECECED
             display: flex
             flex-direction: column
             gap: 24px
-            padding: 24px
-            height: calc(100% - 48px)
+            height: 100%
             min-height: 800px
-            width: 625px
+            width: 0
+            opacity: 0
             position: absolute
             z-index: 1
             right: 0
@@ -586,59 +597,132 @@ $user_info_border_color: #ECECED
             background-color: $background_primary_color
             border-radius: 0 24px 24px 0
             border-left: 1px solid $user_info_border_color
+            transition: all .2s ease-out
 
-            .user_head
+            &.active
+                width: 625px
+                opacity: 1
+
+            .header
                 display: flex
-                gap: 16px
+                flex-direction: column
+                gap: 24px
+                padding: 24px 24px 0 24px
 
-                .avatar
-                    position: relative
-                    width: 64px
-                    height: 64px
-                    border-radius: 100px
-                    overflow: hidden
-                    user-select: none
-                    flex-shrink: 0
-
-                    img
-                        position: absolute
-                        z-index: 1
-                        width: 100%
-                        height: auto
-
-                .user_name
+                .user_head
                     display: flex
-                    flex-direction: column
-                    justify-content: center
-                    flex-grow: 1
-                    gap: 8px
+                    gap: 16px
 
-                    .name
-                        font-size: 20px
-                        font-weight: 700
+                    .avatar
+                        position: relative
+                        width: 64px
+                        height: 64px
+                        border-radius: 100px
+                        overflow: hidden
+                        user-select: none
+                        flex-shrink: 0
 
-                    .state
-                        padding: 4px 8px
-                        width: max-content
-                        border-radius: 6px
-                        font-size: 12px
-                        background-color: $state_background_color
-                        color: $state_text_color
+                        img
+                            position: absolute
+                            z-index: 1
+                            width: 100%
+                            height: auto
 
-                .close
+                    .user_name
+                        display: flex
+                        flex-direction: column
+                        justify-content: center
+                        flex-grow: 1
+                        gap: 8px
+
+                        .name
+                            font-size: 20px
+                            font-weight: 700
+
+                        .state
+                            padding: 4px 8px
+                            width: max-content
+                            border-radius: 6px
+                            font-size: 12px
+                            background-color: $state_background_color
+                            color: $state_text_color
+
+                    .close
+                        display: flex
+                        align-items: center
+                        justify-content: center
+                        height: 44px
+                        width: 44px
+                        border-radius: 12px
+                        border: 1px solid $close_button_border_color
+                        cursor: pointer
+
+                        svg
+                            width: 20px
+                            height: auto
+
+                .user_states
                     display: flex
                     align-items: center
-                    justify-content: center
-                    height: 44px
-                    width: 44px
-                    border-radius: 12px
-                    border: 1px solid $close_button_border_color
-                    cursor: pointer
+                    gap: 12px
 
-                    svg
-                        width: 20px
-                        height: auto
+                    .state_item
+                        display: flex
+                        align-items: center
+                        gap: 8px
 
+                        img
+                            width: 20px
+                            height: auto
+
+                        .value
+                            font-size: 14px
+                            font-weight: 600
+
+                        .languages
+                            display: flex
+                            align-items: center
+
+                            .front
+                                margin-left: -5px
+
+                    .separator
+                        height: 16px
+                        border-left: 1px solid $close_button_border_color
+
+            .tab_view
+                width: 100%
+                display: flex
+                flex-direction: column
+
+                .tabs_container
+                    display: flex
+                    border-bottom: 1px solid $user_info_border_color
+
+                    .tabs_list
+                        display: flex
+                        align-items: center
+                        gap: 24px
+                        padding: 0 24px
+
+                        .tab
+                            display: flex
+                            height: 32px
+                            font-size: 16px
+                            font-weight: 600
+                            color: $text_secondary_color
+                            border-bottom: 2px solid $background_primary_color
+                            cursor: pointer
+
+                            &.active
+                                color: $text_primary_color
+                                border-bottom: 2px solid $state_text_color
+
+                .tab_content
+                    display: flex
+                    flex-direction: column
+                    gap: 20px
+                    padding: 24px
 
 @media (hover: hover)
     .container

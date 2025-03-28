@@ -18,6 +18,12 @@ import { Filter as FilterIcon } from "../../../assets/svgComponents/Filter";
 import EmptyAvatarImage from "../../../assets/png/empty-avatar.png";
 import { Chevron as ChevronIcon } from "../../../assets/svgComponents/Chevron";
 import { Close as CloseIcon } from "../../../assets/svgComponents/Close";
+import RuIcon from "../../../assets/svg/tmp_ru.svg";
+import EnIcon from "../../../assets/svg/tmp_en.svg";
+import UzIcon from "../../../assets/svg/tmp_uz.svg";
+import LanguageIcon from "../../../assets/svg/language.svg";
+import EducationIcon from "../../../assets/svg/education.svg";
+import RateIcon from "../../../assets/svg/rate.svg";
 
 export const Profiles = () => {
   const users = useTypedSelector(
@@ -29,11 +35,13 @@ export const Profiles = () => {
   const [isFiltersModalShow, setIsFiltersModalShow] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [currentUser, setCurrentUser] = useState({ id: -1 } as IUser);
+  const [currentInfoTab, setCurrentInfoTab] = useState(0);
 
   useEffect(() => {
     setFilter(initUserFilter());
     setCurrentPage(1);
     setCurrentUser({ id: -1 } as IUser);
+    setCurrentInfoTab(0);
   }, [viewMode]);
 
   return (
@@ -139,21 +147,20 @@ export const Profiles = () => {
                       <div className={styles.tr} style={{ width: "20%" }}>
                         Казахстан, Узбекистан
                       </div>
-                      <div className={styles.th} style={{ width: "17%" }}>
+                      <div className={styles.tr} style={{ width: "17%" }}>
                         Бакалавриат
                       </div>
-                      <div className={styles.th} style={{ width: "15%" }}>
+                      <div className={styles.tr} style={{ width: "15%" }}>
                         Гуманитарные и социальные науки
                       </div>
-                      <div className={styles.th} style={{ width: "13%" }}>
+                      <div className={styles.tr} style={{ width: "13%" }}>
                         2025
                       </div>
-                      <div className={styles.th} style={{ width: "13%" }}>
-                        {user.languages !== null &&
-                        user.languages !== undefined &&
-                        user.languages.length > 0
-                          ? user.languages[0].name
-                          : ""}
+                      <div className={styles.tr} style={{ width: "13%" }}>
+                        <div className={styles.languages}>
+                          <img src={RuIcon} alt="" />
+                          <img className={styles.front} src={EnIcon} alt="" />
+                        </div>
                       </div>
                     </div>
                   ))}
@@ -290,30 +297,86 @@ export const Profiles = () => {
               </div>
             </div>
           )}
-          {currentUser.id! > -1 ? (
-            <div className={styles.user_info}>
-              <div className={styles.user_head}>
-                <div className={styles.avatar}>
-                  {currentUser.avatarUrl ? (
-                    <img src={currentUser.avatarUrl} alt="" />
-                  ) : (
-                    <img src={EmptyAvatarImage} alt="" />
-                  )}
+          <div
+            className={`${styles.user_info} ${currentUser.id! > -1 ? styles.active : ""}`}
+          >
+            {currentUser.id! > -1 ? (
+              <>
+                <div className={styles.header}>
+                  <div className={styles.user_head}>
+                    <div className={styles.avatar}>
+                      {currentUser.avatarUrl ? (
+                        <img src={currentUser.avatarUrl} alt="" />
+                      ) : (
+                        <img src={EmptyAvatarImage} alt="" />
+                      )}
+                    </div>
+                    <div className={styles.user_name}>
+                      <div className={styles.name}>{currentUser.fullName}</div>
+                      <div className={styles.state}>Заполненный профиль</div>
+                    </div>
+                    <div
+                      className={styles.close}
+                      onClick={() => setCurrentUser({ id: -1 } as IUser)}
+                    >
+                      <CloseIcon />
+                    </div>
+                  </div>
+                  <div className={styles.user_states}>
+                    <div className={styles.state_item}>
+                      <div className={styles.languages}>
+                        <img src={UzIcon} alt="" />
+                        <img className={styles.front} src={UzIcon} alt="" />
+                      </div>
+                      <div className={styles.value}>Узбекистан, Казахстан</div>
+                    </div>
+                    <div className={styles.separator} />
+                    <div className={styles.state_item}>
+                      <img src={LanguageIcon} alt="" />
+                      <div className={styles.value}>Рус, Узб</div>
+                    </div>
+                    <div className={styles.separator} />
+                    <div className={styles.state_item}>
+                      <img src={EducationIcon} alt="" />
+                      <div className={styles.value}>Среднее</div>
+                    </div>
+                    <div className={styles.separator} />
+                    <div className={styles.state_item}>
+                      <img src={RateIcon} alt="" />
+                      <div className={styles.value}>4.5</div>
+                    </div>
+                  </div>
                 </div>
-                <div className={styles.user_name}>
-                  <div className={styles.name}>{currentUser.fullName}</div>
-                  <div className={styles.state}>Заполненный профиль</div>
+                <div className={styles.tab_view}>
+                  <div className={styles.tabs_container}>
+                    <div className={styles.tabs_list}>
+                      <div
+                        className={`${styles.tab} ${currentInfoTab === 0 ? styles.active : ""}`}
+                        onClick={() => setCurrentInfoTab(0)}
+                      >
+                        Личные данные
+                      </div>
+                      <div
+                        className={`${styles.tab} ${currentInfoTab === 1 ? styles.active : ""}`}
+                        onClick={() => setCurrentInfoTab(1)}
+                      >
+                        Образование
+                      </div>
+                      <div
+                        className={`${styles.tab} ${currentInfoTab === 2 ? styles.active : ""}`}
+                        onClick={() => setCurrentInfoTab(2)}
+                      >
+                        Пожелания
+                      </div>
+                    </div>
+                  </div>
+                  <div className={styles.tab_content}>
+                    {currentInfoTab === 0 ? <></> : null}
+                  </div>
                 </div>
-                <div
-                  className={styles.close}
-                  onClick={() => setCurrentUser({ id: -1 } as IUser)}
-                >
-                  <CloseIcon />
-                </div>
-              </div>
-              <div className={styles.user_states}></div>
-            </div>
-          ) : null}
+              </>
+            ) : null}
+          </div>
         </div>
       </div>
       <ProfilesFiltersModal
