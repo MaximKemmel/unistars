@@ -1,4 +1,4 @@
-﻿import { IAgeRange } from "../types/userFilter/ageRange";
+﻿import { IAgeRange } from "src/types/profileFilter/ageRange";
 
 export const ageRanges = [
   {

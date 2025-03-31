@@ -2,17 +2,17 @@
 
 import { getProfilesList } from "./profile.actions";
 
-import { IStudentProfile } from "../../types/student/studentProfile";
+import { IProfile } from "src/types/profile/profile";
 import { IApiStatus, initApiStatus } from "../../types/local/apiStatus";
 import { ApiStatusType } from "../../enums/local/apiStatusType";
 
 interface IProfileState {
-  profilesList: IStudentProfile[];
+  profilesList: IProfile[];
   getStatus: IApiStatus;
 }
 
 const initialState: IProfileState = {
-  profilesList: [] as IStudentProfile[],
+  profilesList: [] as IProfile[],
   getStatus: initApiStatus(),
 };
 
@@ -31,7 +31,8 @@ export const profileSlice = createSlice({
     });
     builder.addCase(getProfilesList.fulfilled, (state, action) => {
       state.profilesList = [];
-      state.profilesList = action.payload as IStudentProfile[];
+      const response = action.payload;
+      state.profilesList = response.content as IProfile[];
       state.getStatus = { status: ApiStatusType.SUCCESS };
     });
     builder.addCase(getProfilesList.rejected, (state, action) => {

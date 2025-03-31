@@ -9,11 +9,11 @@ import { Dropdown } from "../../components/dropdown/Dropdown";
 import globalStyles from "../../App.module.sass";
 import modalStyles from "../Modal.module.sass";
 
-import { IUserFilter } from "../../types/userFilter/userFilter";
+import { IProfileFilter } from "../../types/profileFilter/profileFilter";
 import { IDropdownItem } from "../../types/local/dropdownItem";
 import { ageRanges } from "../../data/ageRanges";
-import { IAgeRange } from "../../types/userFilter/ageRange";
-import { initUserFilter } from "../../types/userFilter/initUserFilter";
+import { IAgeRange } from "../../types/profileFilter/ageRange";
+import { initProfileFilter } from "../../types/profileFilter/initProfileFilter";
 import { ICountry } from "../../types/core/country";
 
 import { Close as CloseIcon } from "../../assets/svgComponents/Close";
@@ -22,7 +22,7 @@ import { Filter as FilterIcon } from "../../assets/svgComponents/Filter";
 interface IProfilesFiltersModalProps {
   isShow: boolean;
   viewMode: number;
-  filter: IUserFilter;
+  filter: IProfileFilter;
   onSave: Function;
   onClose: Function;
 }
@@ -613,7 +613,7 @@ export const ProfilesFiltersModal: React.FC<IProfilesFiltersModalProps> = ({
             <button
               type="button"
               className={`${globalStyles.inverted} ${globalStyles.small}`}
-              onClick={() => setCurrentFilter(initUserFilter())}
+              onClick={() => setCurrentFilter(initProfileFilter())}
             >
               <span>Сбросить</span>
             </button>

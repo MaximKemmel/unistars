@@ -2,8 +2,8 @@
 import { IEducation } from "./education";
 import { IEducationPreferences } from "./educationPreferences";
 
-export interface IStudentProfile {
-  avatar: string;
+export interface IProfile {
+  avatarUrl: string;
   fullName: string;
   personalData: IPersonalData;
   education: IEducation;

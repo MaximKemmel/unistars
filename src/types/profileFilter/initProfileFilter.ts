@@ -1,6 +1,6 @@
-﻿import { IUserFilter } from "./userFilter";
+﻿import { IProfileFilter } from "./profileFilter";
 
-export function initUserFilter(): IUserFilter {
+export function initProfileFilter(): IProfileFilter {
   const defaults = {
     isCompleted: false,
     sex: -1,
