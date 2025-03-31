@@ -11,6 +11,7 @@ import { reducer as bookletReducer } from "./booklet/booklet.slice";
 import { reducer as eventReducer } from "./event/event.slice";
 import { reducer as advertReducer } from "./advert/advert.slice";
 import { reducer as mailingReducer } from "./mailing/mailing.slice";
+import { reducer as profileReducer } from "./profile/profile.slice";
 
 export const reducers = combineReducers({
   coreReducer,
@@ -24,4 +25,5 @@ export const reducers = combineReducers({
   eventReducer,
   advertReducer,
   mailingReducer,
+  profileReducer,
 });

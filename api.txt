@@ -3,7 +3,7 @@ info:
   title: OpenAPI definition
   version: v0
 servers:
-- url: http://51.250.4.213.nip.io
+- url: http://51.250.4.213:8081
   description: Generated server url
 paths:
   /v1/set_confirmed_applicant:
@@ -2084,6 +2084,24 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/StudentDto'
+  /v1/student_profiles:
+    get:
+      tags:
+      - student-controller
+      operationId: getAllStudentProfiles
+      parameters:
+      - name: pageable
+        in: query
+        required: true
+        schema:
+          $ref: '#/components/schemas/Pageable'
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/PageStudentProfileDto'
   /v1/student_profile:
     get:
       tags:
@@ -3641,6 +3659,37 @@ components:
           format: int32
         name:
           type: string
+    StudentShort:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int32
+        name:
+          type: string
+        surname:
+          type: string
+        photo:
+          type: string
+    SubscriberStudentShort:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int32
+        email:
+          type: string
+        name:
+          type: string
+        imageUrl:
+          type: string
+        online:
+          type: boolean
+        lastOnline:
+          type: string
+          format: date-time
+        shownOnboarding:
+          type: boolean
     UniversityDto:
       type: object
       properties:
@@ -3668,6 +3717,11 @@ components:
           type: string
         logoUrl:
           type: string
+        online:
+          type: boolean
+        lastOnline:
+          type: string
+          format: date-time
         coverUrl:
           type: string
         costOfEducationMin:
@@ -3726,6 +3780,26 @@ components:
           items:
             type: integer
             format: int32
+        students:
+          uniqueItems: true
+          type: array
+          items:
+            $ref: '#/components/schemas/StudentShort'
+        subscribers:
+          uniqueItems: true
+          type: array
+          items:
+            $ref: '#/components/schemas/UserShort'
+        subscriberStudents:
+          uniqueItems: true
+          type: array
+          items:
+            $ref: '#/components/schemas/SubscriberStudentShort'
+        subscriberUniversities:
+          uniqueItems: true
+          type: array
+          items:
+            $ref: '#/components/schemas/UniversityShort'
         userId:
           type: integer
           format: int32
@@ -3792,6 +3866,8 @@ components:
         linksSocialNetwork:
           type: array
           items:
+            maxLength: 255
+            minLength: 0
             type: string
         universityTypeOfDegrees:
           uniqueItems: true
@@ -3804,6 +3880,28 @@ components:
           - NONE
           - BASIC
           - PAID
+    UniversityShort:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int32
+        name:
+          type: string
+        shortName:
+          type: string
+        logoUrl:
+          type: string
+    UserShort:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int32
+        name:
+          type: string
+        imageUrl:
+          type: string
     RefreshTokenRequest:
       type: object
       properties:
@@ -3946,6 +4044,11 @@ components:
             - CREATE_AND_EDIT_EVENTS
             - RECEIVE_DIRECT_MESSAGES
             - CREATE_AND_EDIT_ARTICLES
+        online:
+          type: boolean
+        lastOnline:
+          type: string
+          format: date-time
     MailingDto:
       required:
       - emails
@@ -4825,6 +4928,11 @@ components:
         birthday:
           type: string
           format: date
+        online:
+          type: boolean
+        lastOnline:
+          type: string
+          format: date-time
     UniversityShortDto:
       type: object
       properties:
@@ -4862,6 +4970,149 @@ components:
           maxLength: 50
           minLength: 0
           type: string
+    Education:
+      type: object
+      properties:
+        currentUniversity:
+          type: string
+        pastEducations:
+          type: array
+          items:
+            $ref: '#/components/schemas/PastEducation'
+        desiredEducationLevel:
+          type: string
+    EducationPreferences:
+      type: object
+      properties:
+        educationLevel:
+          type: string
+        studyLanguages:
+          type: array
+          items:
+            type: string
+        specializations:
+          type: string
+        dormitoryNeeded:
+          type: boolean
+        motivationLetter:
+          type: string
+    PageStudentProfileDto:
+      type: object
+      properties:
+        totalElements:
+          type: integer
+          format: int64
+        totalPages:
+          type: integer
+          format: int32
+        size:
+          type: integer
+          format: int32
+        content:
+          type: array
+          items:
+            $ref: '#/components/schemas/StudentProfileDto'
+        number:
+          type: integer
+          format: int32
+        sort:
+          type: array
+          items:
+            $ref: '#/components/schemas/SortObject'
+        first:
+          type: boolean
+        last:
+          type: boolean
+        numberOfElements:
+          type: integer
+          format: int32
+        pageable:
+          $ref: '#/components/schemas/PageableObject'
+        empty:
+          type: boolean
+    PageableObject:
+      type: object
+      properties:
+        offset:
+          type: integer
+          format: int64
+        sort:
+          type: array
+          items:
+            $ref: '#/components/schemas/SortObject'
+        pageSize:
+          type: integer
+          format: int32
+        paged:
+          type: boolean
+        pageNumber:
+          type: integer
+          format: int32
+        unpaged:
+          type: boolean
+    PastEducation:
+      type: object
+      properties:
+        school:
+          type: string
+        cityName:
+          type: string
+        dateIssue:
+          type: string
+        receiptDate:
+          type: string
+        educationLevel:
+          type: string
+    PersonalData:
+      type: object
+      properties:
+        gender:
+          type: string
+        birthday:
+          type: string
+          format: date
+        citizenship:
+          type: string
+        languages:
+          type: string
+        email:
+          type: string
+        subscribedUniversities:
+          type: array
+          items:
+            type: string
+        hobbies:
+          type: string
+    SortObject:
+      type: object
+      properties:
+        direction:
+          type: string
+        nullHandling:
+          type: string
+        ascending:
+          type: boolean
+        property:
+          type: string
+        ignoreCase:
+          type: boolean
+    StudentProfileDto:
+      type: object
+      properties:
+        avatarUrl:
+          type: string
+        fullName:
+          type: string
+        personalData:
+          $ref: '#/components/schemas/PersonalData'
+        education:
+          $ref: '#/components/schemas/Education'
+        educationPreferences:
+          $ref: '#/components/schemas/EducationPreferences'
+        ambassador:
+          type: boolean
+        profileFilled:
+          type: boolean
     DictionaryResponseStatusDto:
       type: object
       properties:
@@ -5235,6 +5486,11 @@ components:
         birthday:
           type: string
           format: date
+        online:
+          type: boolean
+        lastOnline:
+          type: string
+          format: date-time
         profession:
           type: string
         permissions:
@@ -5341,26 +5597,6 @@ components:
       properties:
         history:
           $ref: '#/components/schemas/SliceMapStringObject'
-    PageableObject:
-      type: object
-      properties:
-        offset:
-          type: integer
-          format: int64
-        sort:
-          type: array
-          items:
-            $ref: '#/components/schemas/SortObject'
-        paged:
-          type: boolean
-        pageSize:
-          type: integer
-          format: int32
-        pageNumber:
-          type: integer
-          format: int32
-        unpaged:
-          type: boolean
     SliceMapStringObject:
       type: object
       properties:
@@ -5380,29 +5616,16 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/SortObject'
-        pageable:
-          $ref: '#/components/schemas/PageableObject'
-        numberOfElements:
-          type: integer
-          format: int32
         first:
           type: boolean
         last:
           type: boolean
+        numberOfElements:
+          type: integer
+          format: int32
+        pageable:
+          $ref: '#/components/schemas/PageableObject'
         empty:
-          type: boolean
-    SortObject:
-      type: object
-      properties:
-        direction:
-          type: string
-        nullHandling:
-          type: string
-        ascending:
-          type: boolean
-        property:
-          type: string
-        ignoreCase:
           type: boolean
     Ambassador:
       required:
@@ -6007,6 +6230,8 @@ components:
               type: string
             iso3Country:
               type: string
+        localeString:
+          type: string
         zoneId:
           type: object
           properties:
@@ -6070,11 +6295,11 @@ components:
                       dateTimeAfter:
                         type: string
                         format: date-time
+                      overlap:
+                        type: boolean
                       instant:
                         type: string
                         format: date-time
-                      overlap:
-                        type: boolean
                 transitionRules:
                   type: array
                   items:
@@ -6142,8 +6367,6 @@ components:
                         $ref: '#/components/schemas/LocalTime'
                       midnightEndOfDay:
                         type: boolean
-        localeString:
-          type: string
     Specialization:
       type: object
       properties:
@@ -6540,6 +6763,9 @@ components:
           format: date-time
         online:
           type: boolean
+        dateOnline:
+          type: string
+          format: date-time
         auditLogs:
           uniqueItems: true
           type: array
@@ -6583,25 +6809,25 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/LanguageOfInstruction'
-        roleRu:
-          type: string
-        ambassador:
-          type: boolean
         employee:
-          type: boolean
-        graduate:
-          type: boolean
-        applicant:
-          type: boolean
-        confirmedApplicant:
-          type: boolean
-        userWithTempPassword:
           type: boolean
         studentStatus:
           type: boolean
-        admin:
+        userWithTempPassword:
+          type: boolean
+        confirmedApplicant:
+          type: boolean
+        ambassador:
+          type: boolean
+        applicant:
+          type: boolean
+        roleRu:
+          type: string
+        graduate:
           type: boolean
         deleted:
+          type: boolean
+        admin:
           type: boolean
     RequestNewUniversityDto:
       type: object

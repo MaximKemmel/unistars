@@ -19,6 +19,8 @@ import { actions as advertActions } from "./advert/advert.slice";
 import * as advertActionsDb from "./advert/advert.actions";
 import { actions as mailingActions } from "./mailing/mailing.slice";
 import * as mailingActionsDb from "./mailing/mailing.actions";
+import { actions as profileActions } from "./profile/profile.slice";
+import * as profileActionsDb from "./profile/profile.actions";
 
 export const rootActions = {
   ...coreActionsDb,
@@ -42,4 +44,6 @@ export const rootActions = {
   ...advertActionsDb,
   ...mailingActions,
   ...mailingActionsDb,
+  ...profileActions,
+  ...profileActionsDb,
 };

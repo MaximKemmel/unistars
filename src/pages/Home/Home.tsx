@@ -32,6 +32,7 @@ export const Home = () => {
     getEventTypes,
     getAdvertList,
     getMailingList,
+    getProfilesList,
   } = useActions();
   const universityProfile = useTypedSelector(
     (state) => state.universityReducer.universityProfile,
@@ -61,6 +62,7 @@ export const Home = () => {
       getEventTypes();
       getAdvertList();
       getMailingList();
+      getProfilesList();
 
       if (!Array.isArray(countries) || countries.length === 0) {
         getCountries();
