@@ -4,6 +4,7 @@ import {
   acceptAmbassador,
   exceptAmbassador,
   getAmbassador,
+  getAmbassadorList,
   getAmbassadorRequest,
 } from "./ambassador.actions";
 
@@ -42,6 +43,23 @@ export const ambassadorSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
+    //#region Ambassadors
+    builder.addCase(getAmbassadorList.pending, (state) => {
+      state.getStatus = { status: ApiStatusType.IN_PROGRESS };
+    });
+    builder.addCase(getAmbassadorList.fulfilled, (state, action) => {
+      state.ambassadorList = [] as IUser[];
+      state.ambassadorList = action.payload as IUser[];
+      state.getStatus = { status: ApiStatusType.SUCCESS };
+    });
+    builder.addCase(getAmbassadorList.rejected, (state, action) => {
+      state.getStatus = {
+        status: ApiStatusType.ERROR,
+        error: action.payload as string,
+      };
+    });
+    //#endregion
+
     //#region Ambassador
     builder.addCase(getAmbassador.pending, (state) => {
       state.getStatus = { status: ApiStatusType.IN_PROGRESS };

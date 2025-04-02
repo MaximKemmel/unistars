@@ -24,6 +24,7 @@ export const Home = () => {
     getStudents,
     clearStudents,
     getAmbassador,
+    getAmbassadorList,
     getAmbassadorRequest,
     clearAmbassadors,
     getEmployeeList,
@@ -56,6 +57,7 @@ export const Home = () => {
   useEffect(() => {
     if (universityProfile != undefined && universityProfile.id) {
       getSubscribersList({ universityId: universityProfile.id });
+      getAmbassadorList();
       getEmployeeList();
       getBookletList({ universityId: universityProfile.id });
       getEventList();

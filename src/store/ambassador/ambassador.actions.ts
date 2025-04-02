@@ -2,6 +2,18 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 
 import axios from "../../utils/axios.js";
 
+export const getAmbassadorList = createAsyncThunk(
+  "api/getAmbassadorList",
+  async (_, { rejectWithValue }) => {
+    try {
+      const response = await axios.get(`/ambassadors`);
+      return response.data;
+    } catch (error: any) {
+      return rejectWithValue(error.response.data.message);
+    }
+  },
+);
+
 export const getAmbassador = createAsyncThunk(
   "api/getAmbassador",
   async ({ ambassadorId }: { ambassadorId: number }, { rejectWithValue }) => {
