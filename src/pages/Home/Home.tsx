@@ -13,7 +13,6 @@ import { MailingList } from "./content/MailingList";
 import styles from "./Home.module.sass";
 
 import { IAmbassadorRequest } from "../../types/ambassador/ambassadorRequest";
-import { IAmbassadorId } from "../../types/ambassador/ambassadorId";
 
 export const Home = () => {
   const {
@@ -23,7 +22,6 @@ export const Home = () => {
     getSubscribersList,
     getStudents,
     clearStudents,
-    getAmbassador,
     getAmbassadorList,
     getAmbassadorRequest,
     clearAmbassadors,
@@ -79,18 +77,6 @@ export const Home = () => {
       ) {
         clearStudents();
         getStudents();
-      }
-
-      if (
-        universityProfile.ambassadorIds != undefined &&
-        Array.isArray(universityProfile.ambassadorIds)
-      ) {
-        clearAmbassadors();
-        universityProfile.ambassadorIds.forEach(
-          (ambassadorId: IAmbassadorId) => {
-            getAmbassador({ ambassadorId: ambassadorId.studentId! });
-          },
-        );
       }
 
       if (

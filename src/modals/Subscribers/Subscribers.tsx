@@ -47,16 +47,100 @@ export const SubscribersModal: React.FC<ISubscribersModalProps> = ({
   }, [isShow]);
 
   useEffect(() => {
-    if (searchValue.length === 0) {
-      setFilteredSubscribers(subscribers);
+    if (activePeriod !== -1) {
+      switch (activePeriod) {
+        case 0:
+          setFilteredSubscribers(
+            subscribers.filter(
+              (subscriber: IUser) =>
+                subscriber.subscriptionDate !== null &&
+                subscriber.subscriptionDate !== undefined &&
+                (new Date().getTime() -
+                  new Date(subscriber.subscriptionDate!).getTime()) /
+                  (24 * 3600 * 1000) <
+                  8 &&
+                (searchValue.length === 0 ||
+                  subscriber.fullName
+                    .toLowerCase()
+                    .includes(searchValue.toLowerCase())),
+            ),
+          );
+          break;
+        case 1:
+          setFilteredSubscribers(
+            subscribers.filter(
+              (subscriber: IUser) =>
+                subscriber.subscriptionDate !== null &&
+                subscriber.subscriptionDate !== undefined &&
+                (new Date().getTime() -
+                  new Date(subscriber.subscriptionDate!).getTime()) /
+                  (24 * 3600 * 1000) <
+                  30 &&
+                (searchValue.length === 0 ||
+                  subscriber.fullName
+                    .toLowerCase()
+                    .includes(searchValue.toLowerCase())),
+            ),
+          );
+          break;
+        case 2:
+          setFilteredSubscribers(
+            subscribers.filter(
+              (subscriber: IUser) =>
+                subscriber.subscriptionDate !== null &&
+                subscriber.subscriptionDate !== undefined &&
+                (new Date().getTime() -
+                  new Date(subscriber.subscriptionDate!).getTime()) /
+                  (24 * 3600 * 1000) <
+                  180 &&
+                (searchValue.length === 0 ||
+                  subscriber.fullName
+                    .toLowerCase()
+                    .includes(searchValue.toLowerCase())),
+            ),
+          );
+          break;
+        case 3:
+          setFilteredSubscribers(
+            subscribers.filter(
+              (subscriber: IUser) =>
+                subscriber.subscriptionDate !== null &&
+                subscriber.subscriptionDate !== undefined &&
+                new Date(subscriber.subscriptionDate!).getFullYear() === 2024 &&
+                (searchValue.length === 0 ||
+                  subscriber.fullName
+                    .toLowerCase()
+                    .includes(searchValue.toLowerCase())),
+            ),
+          );
+          break;
+        case 4:
+          setFilteredSubscribers(
+            subscribers.filter(
+              (subscriber: IUser) =>
+                subscriber.subscriptionDate !== null &&
+                subscriber.subscriptionDate !== undefined &&
+                new Date(subscriber.subscriptionDate!).getFullYear() === 2023 &&
+                (searchValue.length === 0 ||
+                  subscriber.fullName
+                    .toLowerCase()
+                    .includes(searchValue.toLowerCase())),
+            ),
+          );
+          break;
+      }
     } else {
       setFilteredSubscribers(
-        subscribers.filter((subscriber: IUser) =>
-          subscriber.fullName.toLowerCase().includes(searchValue.toLowerCase()),
+        subscribers.filter(
+          (subscriber: IUser) =>
+            searchValue.length === 0 ||
+            subscriber.fullName
+              .toLowerCase()
+              .includes(searchValue.toLowerCase()),
         ),
       );
     }
-  }, [searchValue]);
+  }, [searchValue, activePeriod]);
 
   return (
     <div className={`${modalStyles.modal} ${isShow ? modalStyles.active : ""}`}>
@@ -116,11 +200,11 @@ export const SubscribersModal: React.FC<ISubscribersModalProps> = ({
                   src={NothingFound}
                   alt=""
                 />
-                <div className={styles.empty_info}>
-                  <div className={styles.empty_title}>
+                <div className={modalStyles.empty_info}>
+                  <div className={modalStyles.empty_title}>
                     {t("global.nothing_was_found")}
                   </div>
-                  <div className={styles.empty_description}>
+                  <div className={modalStyles.empty_description}>
                     {t("subscribers.don_t_have_subscribers")}
                   </div>
                 </div>

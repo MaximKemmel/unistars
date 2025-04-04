@@ -33,4 +33,5 @@ export interface IUser {
   profession?: string;
   permissions?: string[];
   isSelected?: boolean;
+  subscriptionDate?: string;
 }

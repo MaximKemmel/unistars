@@ -3,7 +3,6 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import {
   acceptAmbassador,
   exceptAmbassador,
-  getAmbassador,
   getAmbassadorList,
   getAmbassadorRequest,
 } from "./ambassador.actions";
@@ -35,9 +34,6 @@ export const ambassadorSlice = createSlice({
     setGetAmbassadorsStatus(state, action: PayloadAction<IApiStatus>) {
       state.getStatus = action.payload;
     },
-    setAcceptAmbassadorStatus(state, action: PayloadAction<IApiStatus>) {
-      state.acceptStatus = action.payload;
-    },
     clearAmbassadors(state) {
       state.ambassadorList = [] as IUser[];
     },
@@ -53,25 +49,6 @@ export const ambassadorSlice = createSlice({
       state.getStatus = { status: ApiStatusType.SUCCESS };
     });
     builder.addCase(getAmbassadorList.rejected, (state, action) => {
-      state.getStatus = {
-        status: ApiStatusType.ERROR,
-        error: action.payload as string,
-      };
-    });
-    //#endregion
-
-    //#region Ambassador
-    builder.addCase(getAmbassador.pending, (state) => {
-      state.getStatus = { status: ApiStatusType.IN_PROGRESS };
-    });
-    builder.addCase(getAmbassador.fulfilled, (state, action) => {
-      state.ambassadorList =
-        state.ambassadorList.length === 0
-          ? [action.payload as IUser]
-          : [...state.ambassadorList, action.payload as IUser];
-      state.getStatus = { status: ApiStatusType.SUCCESS };
-    });
-    builder.addCase(getAmbassador.rejected, (state, action) => {
       state.getStatus = {
         status: ApiStatusType.ERROR,
         error: action.payload as string,

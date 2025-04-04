@@ -14,18 +14,6 @@ export const getAmbassadorList = createAsyncThunk(
   },
 );
 
-export const getAmbassador = createAsyncThunk(
-  "api/getAmbassador",
-  async ({ ambassadorId }: { ambassadorId: number }, { rejectWithValue }) => {
-    try {
-      const response = await axios.get(`/student_profile?id=${ambassadorId}`);
-      return response.data;
-    } catch (error: any) {
-      return rejectWithValue(error.response.data.message);
-    }
-  },
-);
-
 export const getAmbassadorRequest = createAsyncThunk(
   "api/getAmbassadorRequest",
   async ({ ambassadorId }: { ambassadorId: number }, { rejectWithValue }) => {
