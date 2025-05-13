@@ -12,25 +12,22 @@ import { MailingList } from "./content/MailingList";
 
 import styles from "./Home.module.sass";
 
-import { IAmbassadorRequest } from "../../types/ambassador/ambassadorRequest";
-
 export const Home = () => {
   const {
     getUniversityProfile,
     getCountries,
     getCities,
+    getLanguages,
     getSubscribersList,
     getStudents,
     clearStudents,
     getAmbassadorList,
-    getAmbassadorRequest,
-    clearAmbassadors,
+    getAmbassadorRequestList,
     getEmployeeList,
     getBookletList,
     getEventList,
     getEventTypes,
     getAdvertList,
-    getMailingList,
     getProfilesList,
   } = useActions();
   const universityProfile = useTypedSelector(
@@ -38,6 +35,7 @@ export const Home = () => {
   );
   const countries = useTypedSelector((state) => state.coreReducer.countries);
   const cities = useTypedSelector((state) => state.coreReducer.cities);
+  const languages = useTypedSelector((state) => state.coreReducer.languages);
   const [activeSection, setActiveSection] = useState(0);
   const [isMinimized, setIsMinimized] = useState(false);
   const contentSections = [
@@ -56,12 +54,12 @@ export const Home = () => {
     if (universityProfile != undefined && universityProfile.id) {
       getSubscribersList({ universityId: universityProfile.id });
       getAmbassadorList();
+      getAmbassadorRequestList();
       getEmployeeList();
       getBookletList({ universityId: universityProfile.id });
       getEventList();
       getEventTypes();
       getAdvertList();
-      getMailingList();
       getProfilesList();
 
       if (!Array.isArray(countries) || countries.length === 0) {
@@ -70,6 +68,9 @@ export const Home = () => {
       if (!Array.isArray(cities) || cities.length === 0) {
         getCities();
       }
+      if (!Array.isArray(languages) || languages.length === 0) {
+        getLanguages();
+      }
 
       if (
         universityProfile.studentIds != undefined &&
@@ -77,18 +78,6 @@ export const Home = () => {
       ) {
         clearStudents();
         getStudents();
-      }
-
-      if (
-        universityProfile.ambassadorRequests != undefined &&
-        Array.isArray(universityProfile.ambassadorRequests)
-      ) {
-        clearAmbassadors();
-        universityProfile.ambassadorRequests.forEach(
-          (ambassadorRequest: IAmbassadorRequest) => {
-            getAmbassadorRequest({ ambassadorId: ambassadorRequest.id! });
-          },
-        );
       }
     }
   }, [universityProfile]);
